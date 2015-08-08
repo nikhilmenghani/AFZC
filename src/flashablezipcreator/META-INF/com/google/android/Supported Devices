@@ -1,0 +1,29 @@
+HTC One S C2 (ville c2)_ville c2_/dev/block/mmcblk0p20_neon
+HTC One mini (M4)_M4_/dev/block/mmcblk0p31_neon
+Huawei honor (U8860)_u8860_/dev/block/mmcblk0p1_neon
+LG Optimus L5 (e610)_e610_/dev/block/platform/msm_sdcc.3/by-num/p9_neon
+LG Optimus L9 (p769)_p769_/dev/block/platform/omap/omap_hsmmc.1/by-name/boot_neon
+LG Optimus 4X HD (p880)_p880_/dev/block/platform/sdhci-tegra.3/by-name/LNX_neon
+Samsung Galaxy Fame (s6812)_s6812_/dev/block/mmcblk0p5_neon
+Samsung Galaxy R (i9103)_i9103_/dev/block/mmcblk0p9_nonneon
+Samsung Galaxy S (i9070)Advance_i9070_/dev/block/mmcblk0p15_neon
+Samsung Galaxy S II (i9100)_i9100_/dev/block/mmcblk0p5_neon
+Samsung Galaxy S III (i9300)_i9300_/dev/block/mmcblk0p5_neon
+Samsung Galaxy S IV (i9500)_i9500_/dev/block/mmcblk0p9_neon
+Samsung Galaxy Nexus (GSM)_maguro_/dev/block/platform/omap/omap_hsmmc.0/by-name/boot_neon
+Nexus 4 (e960)_e960_/dev/block/mmcblk0p6_neon
+Nexus 7 (2012 version)_grouper_/dev/block/platform/sdhci-tegra.3/by-name/LNX_neon
+Samsung Galaxy Note II (N7100)_N7100_/dev/block/mmcblk0p8_neon
+Samsung Galaxy Note III (hltetmo)_hltetmo_/dev/block/platform/msm_sdcc.1/by-name/boot_neon
+Xperia Go (st27i)_st27i_/dev/block/mmcblk0p9_neon
+Xperia Z1 Compact_xperiaZ1_xxx_neon
+LG G2 At&T (D800)_d800_xxx_neon
+LG G2 (D802)_d802_xxx_neon
+Motorola RAZR Maxx_XT912_xxx_neon
+Motorola Defy_mb525_xxx_neon
+Samsung Galaxy Note II AT&T (i317)_i317_xxx_neon
+Samsung Galaxy Note III (N9002)_N9002_xxx_neon
+Samsung Galaxy S IV (i9505)_i9505_xxx_neon
+Samsung Galaxy Pocket (s5300)_s5300_xxx_neon
+Neon_generic_nomountpoint_neon
+NonNeon_generic_nomountpoint_nonneon
