@@ -5,29 +5,19 @@
  */
 package flashablezipcreator;
 
-import static flashablezipcreator.AFZC.Protocols.p;
-import flashablezipcreator.DiskOperations.Read;
-import flashablezipcreator.DiskOperations.ReadZip;
-import flashablezipcreator.DiskOperations.Write;
-import flashablezipcreator.DiskOperations.WriteZip;
 import flashablezipcreator.Operations.JarOperations;
-import flashablezipcreator.Operations.XmlOperations;
-import java.io.File;
+import flashablezipcreator.Protocols.Device;
+import flashablezipcreator.Protocols.Jar;
+import flashablezipcreator.Protocols.Xml;
+import flashablezipcreator.UserInterface.AddDevice;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 import javax.swing.JOptionPane;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
@@ -166,6 +156,13 @@ public class FlashableZipCreator {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
+                    if (Jar.isExecutingThrough()) {
+                        JarOperations.setJarFileList();
+                        Device.loadDeviceList();
+                        AddDevice ad = new AddDevice();
+                    } else {
+                        Xml.file_details_path = "dist/" + Xml.file_details_path;
+                    }
                     new JTree().setVisible(true);
                 } catch (IOException ex) {
                     Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);

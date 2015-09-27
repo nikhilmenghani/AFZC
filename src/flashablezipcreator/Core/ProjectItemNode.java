@@ -62,11 +62,7 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
 
     public void addChild(ProjectItemNode child, DefaultTreeModel model) {
         children.add(child);
-        if (child.parent.type == ProjectItemNode.NODE_ROOT) {
-            model.reload(child.parent);
-        } else {
-            model.reload(parent);
-        }
+        model.reload(this);
     }
 
     public void removeChild(ProjectItemNode child) {

@@ -35,6 +35,10 @@ public class TreeOperations {
     public TreeOperations(ProjectItemNode rootNode) {
         this.rootNode = rootNode;
     }
+    
+    public TreeOperations(){
+        
+    }
 
     public void addChildTo(ProjectItemNode node, String childTitle, int childType, DefaultTreeModel model) {
 

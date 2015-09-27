@@ -95,7 +95,6 @@ public class Export {
                 }
             }
         }
-        show("hi8");
         if (isCustomGroupPresent) {
             wz.writeStringToZip(Xml.getString(GroupNode.GROUP_CUSTOM, rootNode), Xml.custom_path);
         }

@@ -30,7 +30,7 @@ public class Jar {
         if (to.getProjectNode(projectName, projectType) == null) {
             to.addChildTo(rootNode, projectName, projectType, model);
         }
-        JarOperations.setJarFileList();
+        //JarOperations.setJarFileList();//comment out this if already called in main thread.
         for (String theme : JarOperations.themesList) {
             to.addChildTo(to.getProjectNode(projectName, projectType), theme, GroupNode.GROUP_AROMA_THEMES, model);
             String themePath = "META-INF/com/google/android/aroma/themes/" + theme + "/";

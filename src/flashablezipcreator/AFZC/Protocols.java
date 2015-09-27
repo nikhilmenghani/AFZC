@@ -15,8 +15,8 @@ public class Protocols {
 
     //this function will save the time and effort in writing long System.out.println function.
     
-    public static void show(String content){
-        JOptionPane.showMessageDialog(null, content);
+    public static <T> void show(T content){
+        JOptionPane.showMessageDialog(null, content.toString());
     }
     
     public static void p(){

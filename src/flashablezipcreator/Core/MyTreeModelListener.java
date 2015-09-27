@@ -5,15 +5,12 @@
  */
 package flashablezipcreator.Core;
 
-import static flashablezipcreator.AFZC.Protocols.show;
 import flashablezipcreator.Operations.TreeOperations;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  *
@@ -23,8 +20,7 @@ public class MyTreeModelListener implements TreeModelListener {
 
     TreeOperations to = new TreeOperations(ProjectTreeBuilder.rootNode);
     public void treeNodesChanged(TreeModelEvent e) {
-        ProjectItemNode node;
-        node = (ProjectItemNode) (e.getTreePath().getLastPathComponent());
+        ProjectItemNode node = (ProjectItemNode) (e.getTreePath().getLastPathComponent());
         
         /*
          * If the event lists children, then the changed
@@ -37,14 +33,8 @@ public class MyTreeModelListener implements TreeModelListener {
             node = (ProjectItemNode) (node.getChildAt(index));
         } catch (NullPointerException exc) {
         }
-
-        System.out.println("The user has finished editing the node.");
-        System.out.println("New value: " + node.getUserObject());
-        
         try {
             to.renameNode(node, node.getUserObject().toString());
-            
-            //node.title = node.getUserObject().toString();
         } catch (IOException ex) {
             Logger.getLogger(MyTreeModelListener.class.getName()).log(Level.SEVERE, null, ex);
         }

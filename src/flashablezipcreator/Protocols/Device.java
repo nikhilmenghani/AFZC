@@ -9,6 +9,7 @@ import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.Operations.JarOperations;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import javax.swing.JOptionPane;
 
 /**
@@ -47,6 +48,18 @@ public class Device {
             list = list.substring(0, list.indexOf("_"));
             deviceList.add(list);
         }
+    }
+
+    public static int getSelectedDeviceIndex() {
+        int index = 0;
+        Collections.sort(deviceList);
+        for (String deviceName : deviceList) {
+            if(deviceName.contains(Device.selected)){
+                return index;
+            }
+            index++;
+        }
+        return -1;
     }
 
     public static boolean isInBlackList() {

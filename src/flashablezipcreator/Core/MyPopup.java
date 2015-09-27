@@ -14,8 +14,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.tree.TreePath;
 import static flashablezipcreator.AFZC.Protocols.show;
 import flashablezipcreator.Operations.MyFileFilter;
+import flashablezipcreator.UserInterface.AddName;
 import java.io.File;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -26,6 +28,7 @@ import javax.swing.tree.DefaultTreeModel;
 public class MyPopup {
 
     static JPopupMenu popup;
+    static AddName addGNUI;
     //static TreeOperations to = new TreeOperations(ProjectTreeBuilder.rootNode);
 
     public static JPopupMenu getPopup(TreePath[] paths, JTree myTree, DefaultTreeModel model) {
@@ -41,7 +44,7 @@ public class MyPopup {
         } else {
             switch (nodeList.get(0).type) {
                 case ProjectItemNode.NODE_ROOT:
-                    popup = getRootMenu();
+                    popup = getRootMenu(nodeList, model);
                     break;
                 case ProjectItemNode.NODE_PROJECT:
                     popup = getProjectMenu(nodeList, model);
@@ -60,39 +63,132 @@ public class MyPopup {
         return popup;
     }
 
-    public static JPopupMenu getRootMenu() {
+    public static JPopupMenu getRootMenu(ArrayList<ProjectItemNode> nodeList, DefaultTreeModel model) {
         JMenuItem mitemAddProject = new JMenuItem("Add Project");
         mitemAddProject.addActionListener((ActionEvent ae) -> {
-            show("Add Project");
+            addName("Project", "", nodeList.get(0), model);
         });
-        JMenuItem mitemAddThemes = new JMenuItem("Add Themes");
-        mitemAddThemes.addActionListener((ActionEvent ae) -> {
-            show("Add Themes");
-        });
+//        JMenuItem mitemAddThemes = new JMenuItem("Add Themes");
+//        mitemAddThemes.addActionListener((ActionEvent ae) -> {
+//            addName("Theme", "", nodeList.get(0), model);
+//        });
         popup = new JPopupMenu();
         popup.add(mitemAddProject);
-        popup.add(mitemAddThemes);
+        //popup.add(mitemAddThemes);
         return popup;
     }
 
     public static JPopupMenu getProjectMenu(ArrayList<ProjectItemNode> nodeList, DefaultTreeModel model) {
-        JMenuItem mitemAddGroup = new JMenuItem("Add Group");
-        mitemAddGroup.addActionListener((ActionEvent ae) -> {
-            //show("Group will be added to " + node.title);
+        JMenuItem mitemSystemApp = new JMenuItem("system/app");
+        mitemSystemApp.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/app", nodeList.get(0), model);
         });
-        JMenuItem mitemDeleteProject = new JMenuItem("Delete Projects/Themes");
+        JMenuItem mitemPrivApp = new JMenuItem("system/priv-app");
+        mitemPrivApp.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/priv-app", nodeList.get(0), model);
+        });
+        JMenuItem mitemSystemLib = new JMenuItem("system/lib");
+        mitemSystemLib.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/lib", nodeList.get(0), model);
+        });
+        JMenuItem mitemSystemEtc = new JMenuItem("system/etc");
+        mitemSystemEtc.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/etc", nodeList.get(0), model);
+        });
+        JMenuItem mitemPreloadSymlink = new JMenuItem("preload/symlink/system/app");
+        mitemPreloadSymlink.addActionListener((ActionEvent ae) -> {
+            addName("Group", "preload/symlink/system/app", nodeList.get(0), model);
+        });
+        JMenuItem mitemSystemCsc = new JMenuItem("system/csc");
+        mitemSystemCsc.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/csc", nodeList.get(0), model);
+        });
+        JMenuItem mitemDataApp = new JMenuItem("data/app");
+        mitemDataApp.addActionListener((ActionEvent ae) -> {
+            addName("Group", "data/app", nodeList.get(0), model);
+        });
+        JMenuItem mitemAlarms = new JMenuItem("system/media/audio/alarms");
+        mitemAlarms.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/media/audio/alarms", nodeList.get(0), model);
+        });
+        JMenuItem mitemNotifications = new JMenuItem("system/media/audio/notifications");
+        mitemNotifications.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/media/audio/notifications", nodeList.get(0), model);
+        });
+        JMenuItem mitemRingtones = new JMenuItem("system/media/audio/ringtones");
+        mitemRingtones.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/media/audio/ringtones", nodeList.get(0), model);
+        });
+        JMenuItem mitemUI = new JMenuItem("system/media/audio/ui");
+        mitemUI.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/media/audio/ui", nodeList.get(0), model);
+        });
+        JMenuItem mitemFonts = new JMenuItem("system/fonts");
+        mitemFonts.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/fonts", nodeList.get(0), model);
+        });
+        JMenuItem mitemBootAnimSystem = new JMenuItem("system/media");
+        mitemBootAnimSystem.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/media", nodeList.get(0), model);
+        });
+        JMenuItem mitemBootAnimLocal = new JMenuItem("data/local");
+        mitemBootAnimLocal.addActionListener((ActionEvent ae) -> {
+            addName("Group", "data/local", nodeList.get(0), model);
+        });
+        JMenuItem mitemSystemFramework = new JMenuItem("system/framework");
+        mitemSystemFramework.addActionListener((ActionEvent ae) -> {
+            addName("Group", "system/framework", nodeList.get(0), model);
+        });
+        
+        JMenuItem mitemAddKernel = new JMenuItem("Kernel Group");
+        mitemAddKernel.addActionListener((ActionEvent ae) -> {
+            addName("Group", "kernel", nodeList.get(0), model);
+        });
+
+        JMenuItem mitemDeleteProject = new JMenuItem("Delete Project");
         mitemDeleteProject.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList, model);
         });
-        JMenu myPopup = new JMenu("Add Group");
-        //myPopup.add(mitemDeleteProject);
+
         popup = new JPopupMenu();
-        
         if (nodeList.size() == 1) {
-            myPopup.add(mitemAddGroup);
-            popup.add(myPopup);
-            //popup.add(myPopup);
-            
+            if (((ProjectNode) nodeList.get(0)).projectType == ProjectNode.PROJECT_THEMES) {
+                JMenuItem mitemAddThemes = new JMenuItem("Add Theme");
+                mitemAddThemes.addActionListener((ActionEvent ae) -> {
+                    addName("Theme", "themes", nodeList.get(0), model);
+                });
+                popup.add(mitemAddThemes);
+            } else {
+                JMenu addGroupMenu = new JMenu("Add Group");
+                JMenu addSystemGroupMenu = new JMenu("System Group");
+                addSystemGroupMenu.add(mitemSystemApp);
+                addSystemGroupMenu.add(mitemPrivApp);
+                addSystemGroupMenu.add(mitemSystemLib);
+                addSystemGroupMenu.add(mitemSystemFramework);
+                addSystemGroupMenu.add(mitemSystemEtc);
+                addSystemGroupMenu.add(mitemSystemCsc);
+                addSystemGroupMenu.add(mitemPreloadSymlink);
+                JMenu addDataGroupMenu = new JMenu("Data Group");
+                addDataGroupMenu.add(mitemDataApp);
+                JMenu addFontsGroupMenu = new JMenu("Fonts Group");
+                addFontsGroupMenu.add(mitemFonts);
+                JMenu addTonesGroupMenu = new JMenu("Tones Group");
+                addTonesGroupMenu.add(mitemAlarms);
+                addTonesGroupMenu.add(mitemNotifications);
+                addTonesGroupMenu.add(mitemRingtones);
+                addTonesGroupMenu.add(mitemUI);
+                JMenu addBootAnimationGroupMenu = new JMenu("Boot Animation Group");
+                addBootAnimationGroupMenu.add(mitemBootAnimSystem);
+                addBootAnimationGroupMenu.add(mitemBootAnimLocal);
+                addGroupMenu.add(addSystemGroupMenu);
+                addGroupMenu.add(addDataGroupMenu);
+                addGroupMenu.add(addFontsGroupMenu);
+                addGroupMenu.add(addTonesGroupMenu);
+                addGroupMenu.add(addBootAnimationGroupMenu);
+                //a condition is required to be added here. only for supported devices.
+                addGroupMenu.add(mitemAddKernel);
+                popup.add(addGroupMenu);
+            }
         }
         popup.add(mitemDeleteProject);
         return popup;
@@ -102,13 +198,30 @@ public class MyPopup {
         JMenuItem mitemAddSubGroup = new JMenuItem("Add SubGroup");
         mitemAddSubGroup.addActionListener(
                 (ActionEvent ae) -> {
-                    //show("SubGroup will be added to " + node.title);
+                    switch (((GroupNode) nodeList.get(0)).groupType) {
+                        case GroupNode.GROUP_SYSTEM_FONTS:
+                            addName("SubGroup", "system/fonts", nodeList.get(0), model);
+                            break;
+                        case GroupNode.GROUP_DATA_LOCAL:
+                            addName("SubGroup", "data/local", nodeList.get(0), model);
+                            break;
+                        case GroupNode.GROUP_SYSTEM_MEDIA:
+                            addName("SubGroup", "system/media", nodeList.get(0), model);
+                            break;
+                        case GroupNode.GROUP_AROMA_KERNEL:
+                            addName("SubGroup", "kernel", nodeList.get(0), model);
+                            break;
+                    }
                 }
         );
         JMenuItem mitemAddFile = new JMenuItem("Add File(s)");
         mitemAddFile.addActionListener(
                 (ActionEvent ae) -> {
-                    addNode(nodeList, model);
+                    try {
+                        addNode(nodeList, model);
+                    } catch (NullPointerException npe) {
+
+                    }
                 }
         );
         JMenuItem mitemDeleteGroup = new JMenuItem("Delete Group(s)");
@@ -117,10 +230,35 @@ public class MyPopup {
                     deleteNode(nodeList, model);
                 }
         );
+        if (((GroupNode) nodeList.get(0)).groupType == GroupNode.GROUP_AROMA_THEMES) {
+            mitemDeleteGroup.setText("Delete Theme(s)");
+        }
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
-            popup.add(mitemAddSubGroup);
-            popup.add(mitemAddFile);
+            switch (((GroupNode) nodeList.get(0)).groupType) {
+                case GroupNode.GROUP_SYSTEM_APK:
+                case GroupNode.GROUP_SYSTEM_PRIV_APK:
+                case GroupNode.GROUP_SYSTEM_CSC:
+                case GroupNode.GROUP_SYSTEM_ETC:
+                case GroupNode.GROUP_SYSTEM_LIB:
+                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
+                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
+                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
+                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+                case GroupNode.GROUP_DATA_APP:
+                case GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP:
+                case GroupNode.GROUP_SYSTEM_FRAMEWORK:
+                case GroupNode.GROUP_AROMA_THEMES:
+                    popup.add(mitemAddFile);
+                    break;
+                case GroupNode.GROUP_SYSTEM_FONTS:
+                case GroupNode.GROUP_DATA_LOCAL:
+                case GroupNode.GROUP_SYSTEM_MEDIA:
+                case GroupNode.GROUP_AROMA_KERNEL:
+                    popup.add(mitemAddSubGroup);
+                    break;
+            }
+
         }
         popup.add(mitemDeleteGroup);
         return popup;
@@ -130,7 +268,11 @@ public class MyPopup {
         JMenuItem mitemAddFile = new JMenuItem("Add File(s)");
         mitemAddFile.addActionListener(
                 (ActionEvent ae) -> {
-                    addNode(nodeList, model);
+                    try {
+                        addNode(nodeList, model);
+                    } catch (NullPointerException npe) {
+
+                    }
                 }
         );
         JMenuItem mitemDeleteSubGroup = new JMenuItem("Delete SubGroup(s)");
@@ -184,5 +326,102 @@ public class MyPopup {
         for (ProjectItemNode node : nodeList) {
             node.removeMe(model);
         }
+    }
+
+    public static void addName(String nodeType, String location, ProjectItemNode node, DefaultTreeModel model) {
+        int groupType = -1;
+        String extension = "";
+        boolean isSelectBox = false;
+        switch (location) {
+            case "system/app":
+                groupType = GroupNode.GROUP_SYSTEM_APK;
+                extension = ".apk";
+                break;
+            case "system/priv-app":
+                groupType = GroupNode.GROUP_SYSTEM_PRIV_APK;
+                extension = ".apk";
+                break;
+            case "system/lib":
+                groupType = GroupNode.GROUP_SYSTEM_LIB;
+                extension = ".*";
+                break;
+            case "system/etc":
+                groupType = GroupNode.GROUP_SYSTEM_ETC;
+                extension = ".*";
+                break;
+            case "preload/symlink/system/app":
+                groupType = GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP;
+                extension = ".apk";
+                break;
+            case "system/csc":
+                groupType = GroupNode.GROUP_SYSTEM_CSC;
+                extension = ".*";
+                break;
+            case "data/app":
+                groupType = GroupNode.GROUP_DATA_APP;
+                extension = ".apk";
+                break;
+            case "system/media/audio/alarms":
+                groupType = GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS;
+                extension = ".acc||.mp3||.m4a||.wav||.ogg";
+                break;
+            case "system/media/audio/notifications":
+                groupType = GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS;
+                extension = ".acc||.mp3||.m4a||.wav||.ogg";
+                break;
+            case "system/media/audio/ringtones":
+                groupType = GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES;
+                extension = ".acc||.mp3||.m4a||.wav||.ogg";
+                break;
+            case "system/media/audio/ui":
+                groupType = GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI;
+                extension = ".acc||.mp3||.m4a||.wav||.ogg";
+                break;
+            case "system/fonts":
+                groupType = GroupNode.GROUP_SYSTEM_FONTS;
+                extension = ".tff";
+                isSelectBox = true;
+                break;
+            case "system/media":
+                groupType = GroupNode.GROUP_SYSTEM_MEDIA;
+                extension = ".zip";
+                isSelectBox = true;
+                break;
+            case "data/local":
+                groupType = GroupNode.GROUP_DATA_LOCAL;
+                extension = ".zip";
+                isSelectBox = true;
+                break;
+            case "system/framework":
+                groupType = GroupNode.GROUP_SYSTEM_FRAMEWORK;
+                extension = ".*";
+                break;
+            case "themes":
+                groupType = GroupNode.GROUP_AROMA_THEMES;
+                extension = ".png||.prop";
+                isSelectBox = true;
+                break;
+            case "kernel":
+                groupType = GroupNode.GROUP_AROMA_KERNEL;
+                extension = ".img";
+                isSelectBox = true;
+                break;
+
+        }
+        switch (nodeType) {
+            case "Group":
+                addGNUI = new AddName(location, groupType, extension, isSelectBox, (ProjectNode) node, model);
+                break;
+            case "SubGroup":
+                addGNUI = new AddName(location, groupType, extension, isSelectBox, (GroupNode) node, model);
+                break;
+            case "Project":
+                addGNUI = new AddName("Project", ProjectNode.PROJECT_AROMA, node, model);
+                break;
+            case "Theme":
+                addGNUI = new AddName(nodeType, groupType, extension, isSelectBox, (ProjectNode) node, model);
+                break;
+        }
+
     }
 }
