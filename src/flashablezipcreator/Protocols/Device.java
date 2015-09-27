@@ -20,7 +20,7 @@ public class Device {
 
     static Read r = new Read();
     //public static String selected = null;
-    public static String selected = "Samsung Galaxy R (i9103)";
+    public static String selected = "";//"Samsung Galaxy R (i9103)";
     public static final int CodeName = 1;
     public static final int NeonCompatibility = 2;
     public static final int MountPoint = 3;
@@ -49,7 +49,7 @@ public class Device {
             deviceList.add(list);
         }
     }
-
+    
     public static int getSelectedDeviceIndex() {
         int index = 0;
         Collections.sort(deviceList);

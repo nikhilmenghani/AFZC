@@ -5,11 +5,13 @@
  */
 package flashablezipcreator;
 
+import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.AddDevice;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -159,11 +161,21 @@ public class FlashableZipCreator {
                     if (Jar.isExecutingThrough()) {
                         JarOperations.setJarFileList();
                         Device.loadDeviceList();
-                        AddDevice ad = new AddDevice();
+                        String configString = "";
+                        File f = new File(Xml.device_config_path);
+                        if(f.exists()){
+                            Read r = new Read();
+                            configString = r.getFileString(Xml.device_config_path);
+                            Device.selected = Xml.getDeviceName(configString);
+                        }else{
+                            AddDevice ad = new AddDevice();
+                        }
                     } else {
                         Xml.file_details_path = "dist/" + Xml.file_details_path;
                     }
-                    new JTree().setVisible(true);
+                    if(!Device.selected.equals("")){
+                        new JTree().setVisible(true);
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ParserConfigurationException ex) {

@@ -26,6 +26,7 @@ import org.xml.sax.SAXException;
 public class Xml {
 
     static XmlOperations xo;
+    public static String device_config_path = "device.config";
     static String custom_path = "afzc/custom_data.xml";
     static String delete_path = "afzc/delete_data.xml";
     static String data_path = "afzc/file_data.xml";
@@ -122,5 +123,16 @@ public class Xml {
     public static void initializeProjectDetails(String data) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
         xo.initializeProjectData(data);
+    }
+    
+    public static String getDeviceConfigString() throws ParserConfigurationException, TransformerException{
+        xo = new XmlOperations();
+        xo.createDeviceConfig(Device.selected);
+        return xo.getXML();
+    }
+    
+    public static String getDeviceName(String configXml) throws ParserConfigurationException, SAXException, IOException{
+        xo = new XmlOperations();
+        return xo.getDeviceName(configXml);
     }
 }

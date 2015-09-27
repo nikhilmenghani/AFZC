@@ -35,9 +35,10 @@ public class JTreeDemo extends javax.swing.JFrame {
         btnCreateZip = new javax.swing.JButton();
         btnImportZip = new javax.swing.JButton();
         panel_logo = new javax.swing.JPanel();
-        lbl_logo = new javax.swing.JLabel();
+        lblHeader = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
         tree.setModel(new FileSystemModel(new File("src")));
         tree.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -61,20 +62,27 @@ public class JTreeDemo extends javax.swing.JFrame {
             }
         });
 
-        panel_logo.setBackground(new java.awt.Color(255, 255, 255));
+        panel_logo.setBackground(new java.awt.Color(120, 144, 156));
         panel_logo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        lbl_logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/flashablezipcreator/res/logo4.png"))); // NOI18N
+        lblHeader.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        lblHeader.setForeground(new java.awt.Color(255, 255, 255));
+        lblHeader.setText("   Android Flashable Zip Creator");
 
         javax.swing.GroupLayout panel_logoLayout = new javax.swing.GroupLayout(panel_logo);
         panel_logo.setLayout(panel_logoLayout);
         panel_logoLayout.setHorizontalGroup(
             panel_logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panel_logoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(129, Short.MAX_VALUE))
         );
         panel_logoLayout.setVerticalGroup(
             panel_logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_logo, javax.swing.GroupLayout.PREFERRED_SIZE, 156, Short.MAX_VALUE)
+            .addGroup(panel_logoLayout.createSequentialGroup()
+                .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -83,23 +91,23 @@ public class JTreeDemo extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnImportZip, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCreateZip, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(SP_tree))
-                .addGap(0, 10, Short.MAX_VALUE))
+                .addComponent(btnImportZip, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCreateZip, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(SP_tree, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(SP_tree, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(0, 0, 0)
+                .addComponent(SP_tree, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCreateZip, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnImportZip, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -160,7 +168,7 @@ public class JTreeDemo extends javax.swing.JFrame {
     private javax.swing.JScrollPane SP_tree;
     private javax.swing.JButton btnCreateZip;
     private javax.swing.JButton btnImportZip;
-    private javax.swing.JLabel lbl_logo;
+    private javax.swing.JLabel lblHeader;
     private javax.swing.JPanel panel_logo;
     private javax.swing.JTree tree;
     // End of variables declaration//GEN-END:variables

@@ -49,6 +49,37 @@ public class XmlOperations {
     public Element root;
     public Element rootGroup;
     public Element rootSubGroup;
+    
+    public void createDeviceConfig(String deviceName) throws ParserConfigurationException{
+        documentFactory = DocumentBuilderFactory.newInstance();
+        documentBuilder = documentFactory.newDocumentBuilder();
+        document = documentBuilder.newDocument();
+        root = document.createElement("Device");
+        document.appendChild(root);
+        Element name = document.createElement("Name");
+        name.setTextContent(deviceName);
+        root.appendChild(name);
+    }
+    
+    public String getDeviceName(String configData) throws ParserConfigurationException, SAXException, IOException{
+        String deviceName = "";
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        try {
+            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
+            NodeList nameList = genDoc.getElementsByTagName("Device");
+            for (int i = 0; i < nameList.getLength(); i++) {
+                Node nameNode = nameList.item(i);
+                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) nameNode;
+                    deviceName = element.getElementsByTagName("Name").item(0).getTextContent();
+                }
+            }
+        } catch (SAXParseException ex) {
+            System.out.println("Device Details Empty");
+        }
+        return deviceName;
+    }
 
     public void createXML() throws ParserConfigurationException {
         documentFactory = DocumentBuilderFactory.newInstance();
@@ -109,6 +140,7 @@ public class XmlOperations {
         parent.appendChild(child);
     }
 
+    //this will return string form of xml document which we can use to write it to a file
     public String getXML() throws TransformerConfigurationException, TransformerException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
@@ -119,37 +151,6 @@ public class XmlOperations {
         return writer.getBuffer().toString();
     }
 
-    //following function not used
-//    public void writeXML(String path) throws TransformerConfigurationException, TransformerException {
-//        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//        Transformer transformer = transformerFactory.newTransformer();
-//        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-//        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-//        transformer.transform(new DOMSource(document), new StreamResult(new File(path)));
-//        JOptionPane.showMessageDialog(null, "File saved to specified path");
-//    }
-//    public static FileNode addFileToTree(String fileName, String groupName, int groupType, String projectName, int projectType,
-//            ProjectItemNode rootNode, DefaultTreeModel model, TreeOperations to) {
-//        if (to.getProjectNode(projectName, projectType) == null) {
-//            to.addChildTo(rootNode, projectName, projectType, model);
-//        }
-//        if (to.getGroupNode(groupName, groupType, projectName) == null) {
-//            to.addChildTo(to.getProjectNode(projectName, projectType), groupName, groupType, model);
-//            JOptionPane.showMessageDialog(null, groupName + " imported");
-//        }
-//        if (to.getFileNode(fileName, groupName, projectName) != null) {
-//            if (groupType == GroupNode.GROUP_OTHER) {
-//                fileName += "_1";
-//                fileName = getUniqueName(fileName);
-//            }
-//        }
-//        if (groupType == GroupNode.GROUP_CUSTOM) {
-//            to.addChildTo(to.getGroupNode(groupName, groupType, projectName), fileName, "", "", model);
-//        } else {
-//            to.addChildTo(to.getGroupNode(groupName, groupType, projectName), fileName, ProjectItemNode.NODE_FILE, model);
-//        }
-//        return to.getFileNode(fileName, groupName, projectName);
-//    }
     //following is to initialize details of project (like rom name, version, etc) from external xml file.
     public void initializeProjectData(String data) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
