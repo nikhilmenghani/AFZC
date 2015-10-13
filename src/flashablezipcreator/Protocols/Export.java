@@ -12,6 +12,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.WriteZip;
+import flashablezipcreator.MyTree;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Operations.UpdaterScriptOperations;
@@ -40,7 +41,8 @@ public class Export {
         wz.close();
     }
 
-    public static void zip(ProjectItemNode rootNode) throws IOException, ParserConfigurationException, TransformerException {
+    public static void zip() throws IOException, ParserConfigurationException, TransformerException {
+        ProjectItemNode rootNode = MyTree.rootNode;
         wz = new WriteZip(Project.outputPath);
         to = new TreeOperations(rootNode);
         boolean isCustomGroupPresent = false;
@@ -71,7 +73,7 @@ public class Export {
                                 wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, ((FileNode) fileNode).fileZipPath);
                             }
                         } else if (node.type == ProjectItemNode.NODE_FILE) {
-                            
+
                             wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
                             //show("hi1");
                         }
@@ -104,17 +106,17 @@ public class Export {
         wz.writeStringToZip(Xml.getString(0, rootNode), Xml.data_path);
         wz.writeStringToZip(AromaConfig.build(rootNode), AromaConfig.aromaConfigPath);
         wz.writeStringToZip(UpdaterScript.build(rootNode), UpdaterScript.updaterScriptPath);
-        try{
+        try {
             wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath);
-        wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
-        writeTempFiles();
-        for (String file : Jar.getOtherFileList()) {
-            wz.writeFileToZip(JarOperations.getInputStream(file), file);
-        }
-        }catch(NullPointerException npe){
+            wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
+            writeTempFiles();
+            for (String file : Jar.getOtherFileList()) {
+                wz.writeFileToZip(JarOperations.getInputStream(file), file);
+            }
+        } catch (NullPointerException npe) {
             System.out.println("Executing through Netbeans hence skipping Jar Operations");
         }
-        
+
         wz.close();
         JOptionPane.showMessageDialog(null, "Zip Created Successfully..!!");
     }

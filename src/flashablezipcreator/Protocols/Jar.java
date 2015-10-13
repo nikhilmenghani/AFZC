@@ -9,6 +9,7 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.FlashableZipCreator;
+import flashablezipcreator.MyTree;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
 import static flashablezipcreator.Protocols.Import.to;
@@ -23,7 +24,10 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class Jar {
 
-    public static void addThemesToTree(ProjectItemNode rootNode, DefaultTreeModel model) throws IOException {
+    //ProjectItemNode rootNode, DefaultTreeModel model
+    public static void addThemesToTree() throws IOException {
+        ProjectItemNode rootNode = MyTree.rootNode;
+        DefaultTreeModel model = MyTree.model;
         to = new TreeOperations(rootNode);
         String projectName = "Themes";
         int projectType = ProjectNode.PROJECT_THEMES;

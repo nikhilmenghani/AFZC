@@ -12,13 +12,21 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.ReadZip;
+import flashablezipcreator.MyTree;
+import static flashablezipcreator.MyTree.panelLower;
+import static flashablezipcreator.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.TreeOperations;
+import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -28,17 +36,30 @@ import org.xml.sax.SAXException;
  *
  * @author Nikhil
  */
-public class Import {
+public class Import implements Runnable {
 
     static ReadZip rz;
     static TreeOperations to;
     static String exisingUpdaterScript = "";
     static String fileName = "";
     static int zipType;
+    public static int progressValue = 0;
+    String path;
+    ProjectItemNode rootNode;
+    DefaultTreeModel model;
+    public JDialog dialog;
 
-    public static void fromZip(String path, ProjectItemNode rootNode, DefaultTreeModel model) throws IOException, ParserConfigurationException, TransformerException, SAXException {
+    public Import(String path) throws IOException, ParserConfigurationException, TransformerException, SAXException, InterruptedException {
+        this.rootNode = MyTree.rootNode;
+        this.path = path;
+        this.model = MyTree.model;
+    }
+
+    public static void fromZip(String path) throws IOException, ParserConfigurationException, TransformerException, SAXException {
+        progressValue = 0;
+        ProjectItemNode rootNode = MyTree.rootNode;
+        DefaultTreeModel model = MyTree.model;
         zipType = Identify.scanZip(path);//this will automatically detect zip type.
-
         boolean containsDeleteXml = false;
         boolean containsCustomXml = false;
         boolean containsDataXml = false;
@@ -47,9 +68,9 @@ public class Import {
 
         rz = new ReadZip(path);
         to = new TreeOperations(rootNode);
-
+        int maxSize = rz.filesCount;
+        int fileIndex = 0;
         for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
-
             ZipEntry ze = e.nextElement();
             String name = ze.getName();
             InputStream in = rz.zf.getInputStream(ze);
@@ -61,7 +82,6 @@ public class Import {
             }
 
             p("\ncurrent file " + name + "\n");
-
             String filePath = name;
             String projectName = Identify.getProjectName(name);
             int projectType = Identify.getProjectType(filePath);
@@ -71,8 +91,23 @@ public class Import {
             String subGroupName = Identify.getSubGroupName(groupName, filePath);
             int subGroupType = groupType; //Groups that have subGroups have same type.
             String fileName = (new File(filePath)).getName();
-            FileNode file = null;
 
+            progressValue = (fileIndex * 100) / maxSize;
+            fileIndex++;
+            progressBarImportExport.setValue(progressValue);
+            switch (MyTree.progressBarFlag) {
+                case 0:
+                    progressBarImportExport.setString(progressValue + "%");
+                    break;
+                case 1:
+                    progressBarImportExport.setString("Importing " + fileName + "");
+                    break;
+                case 2:
+                    progressBarImportExport.setString(" ");
+                    break;
+            }
+
+            FileNode file = null;
             if (hasSubGroup) {
                 file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, projectName, projectType, rootNode, model);
                 if (subGroupType == SubGroupNode.TYPE_CUSTOM) {
@@ -126,7 +161,6 @@ public class Import {
                     Xml.addFileDataToGroup(file);
                 }
             }
-            //file.fileSourcePath = file.fileDestPath;
             file.fileSourcePath = file.path;
             rz.writeFileFromZip(in, file.fileSourcePath);
         }
@@ -142,6 +176,26 @@ public class Import {
         if (containsDataXml) {
             Xml.parseXml(0, rootNode, model);
         }
+        progressBarImportExport.setString("Successfully Imported");
+        progressBarImportExport.setValue(100);
         JOptionPane.showMessageDialog(null, "Successfully Imported");
+    }
+
+    @Override
+    public void run() {
+        try {
+            CardLayout cardLayout = (CardLayout) panelLower.getLayout();
+            cardLayout.show(panelLower, "card2");
+            fromZip(path);
+            cardLayout.show(panelLower, "card1");
+        } catch (IOException ex) {
+            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

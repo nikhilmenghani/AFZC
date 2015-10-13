@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,13 +35,17 @@ public class Identify {
     static ArrayList<String> aromaList = new ArrayList<>();
 
     public static void init() {
+        rom = false;
+        gapps = false;
+        aroma = false;
+        advanced = false;
+        normal = false;
+        other = false;
         gappsList = new ArrayList<>();
         //gappsList.add("etc/g.prop");
         gappsList.add("system/etc/preferred-apps/google.xml");
-
         romList = new ArrayList<>();
         romList.add("system/build.prop");
-
         aromaList = new ArrayList<>();
         aromaList.add("customize/aroma/");
     }
@@ -69,9 +74,10 @@ public class Identify {
                 return zipType;
             }
         }
+        JOptionPane.showMessageDialog(null, zipType + ".");
         return zipType;
     }
-    
+
     public static int check(String name) {
         if (isRom(name)) {
             rom = true;

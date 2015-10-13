@@ -35,11 +35,13 @@ public final class ReadZip {
     public ZipFile zf;
     public ZipEntry ze = null;
     public XmlOperations xo;
+    public int filesCount = 0;
 
     public ReadZip(String filePath) throws FileNotFoundException, IOException {
         xo = new XmlOperations();
         try {
             zf = new ZipFile((new File(filePath)).getAbsoluteFile());
+            filesCount = zf.size();
         } catch (IOException e1) {
             System.out.println("Sorry we couldn't find the file at path : " + (new File(filePath)).getAbsoluteFile());
             e1.printStackTrace();
