@@ -53,7 +53,7 @@ public class JTreeDemo extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
-        panel_logo.setBackground(new java.awt.Color(120, 144, 156));
+        panel_logo.setBackground(new java.awt.Color(78, 52, 46));
         panel_logo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblHeader.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -88,13 +88,15 @@ public class JTreeDemo extends javax.swing.JFrame {
         panelLower.setBackground(new java.awt.Color(255, 255, 255));
         panelLower.setLayout(new java.awt.CardLayout());
 
-        panelImportZip.setBackground(new java.awt.Color(120, 144, 156));
+        panelImportZip.setBackground(new java.awt.Color(255, 255, 255));
 
         btnImportZip.setBackground(new java.awt.Color(153, 153, 255));
-        btnImportZip.setForeground(new java.awt.Color(255, 255, 255));
+        btnImportZip.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnImportZip.setForeground(new java.awt.Color(62, 39, 35));
         btnImportZip.setText("Import Zip");
-        btnImportZip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnImportZip.setBorder(null);
         btnImportZip.setContentAreaFilled(false);
+        btnImportZip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnImportZip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnImportZipActionPerformed(evt);
@@ -112,12 +114,14 @@ public class JTreeDemo extends javax.swing.JFrame {
             .addComponent(btnImportZip, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
         );
 
-        panelCreateZip.setBackground(new java.awt.Color(120, 144, 156));
+        panelCreateZip.setBackground(new java.awt.Color(255, 255, 255));
 
-        btnCreateZip.setForeground(new java.awt.Color(255, 255, 255));
+        btnCreateZip.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnCreateZip.setForeground(new java.awt.Color(62, 39, 35));
         btnCreateZip.setText("Create Zip");
-        btnCreateZip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnCreateZip.setBorder(null);
         btnCreateZip.setContentAreaFilled(false);
+        btnCreateZip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCreateZip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCreateZipActionPerformed(evt);
@@ -160,9 +164,11 @@ public class JTreeDemo extends javax.swing.JFrame {
 
         panelLower.add(layeredPaneButtons, "card1");
 
-        progressBarImportExport.setForeground(new java.awt.Color(120, 144, 156));
+        progressBarImportExport.setBackground(new java.awt.Color(255, 255, 255));
+        progressBarImportExport.setForeground(new java.awt.Color(78, 52, 46));
         progressBarImportExport.setToolTipText("Click To Change Progress Mode");
         progressBarImportExport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        progressBarImportExport.setDoubleBuffered(true);
         progressBarImportExport.setStringPainted(true);
         progressBarImportExport.setVerifyInputWhenFocusTarget(false);
         progressBarImportExport.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -175,15 +181,11 @@ public class JTreeDemo extends javax.swing.JFrame {
         layeredPaneProgressBar.setLayout(layeredPaneProgressBarLayout);
         layeredPaneProgressBarLayout.setHorizontalGroup(
             layeredPaneProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 423, Short.MAX_VALUE)
-            .addGroup(layeredPaneProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(progressBarImportExport, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE))
+            .addComponent(progressBarImportExport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
         );
         layeredPaneProgressBarLayout.setVerticalGroup(
             layeredPaneProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 66, Short.MAX_VALUE)
-            .addGroup(layeredPaneProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(progressBarImportExport, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE))
+            .addComponent(progressBarImportExport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
         );
         layeredPaneProgressBar.setLayer(progressBarImportExport, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -194,7 +196,6 @@ public class JTreeDemo extends javax.swing.JFrame {
         panelMainLayout.setHorizontalGroup(
             panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMainLayout.createSequentialGroup()
-                .addGap(0, 0, 0)
                 .addComponent(panelLower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)

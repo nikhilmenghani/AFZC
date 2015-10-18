@@ -14,6 +14,7 @@ import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.MyTree;
 import static flashablezipcreator.MyTree.panelLower;
+import static flashablezipcreator.MyTree.progressBarFlag;
 import static flashablezipcreator.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.TreeOperations;
 import java.awt.CardLayout;
@@ -179,6 +180,9 @@ public class Import implements Runnable {
         progressBarImportExport.setString("Successfully Imported");
         progressBarImportExport.setValue(100);
         JOptionPane.showMessageDialog(null, "Successfully Imported");
+        progressBarImportExport.setString("0%");
+        progressBarImportExport.setValue(0);
+        progressBarFlag = 0;
     }
 
     @Override

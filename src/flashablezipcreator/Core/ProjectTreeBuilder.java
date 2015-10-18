@@ -27,6 +27,7 @@ public class ProjectTreeBuilder {
         tree.setDragEnabled(true);
         tree.setEditable(true);
         tree.setInvokesStopCellEditing(true);
+        tree.setShowsRootHandles(true);
         tree.setTransferHandler(new MyTransferHandler(rootNode, (DefaultTreeModel) ProjectTreeBuilder.tree.getModel()));
         //mouse click configurations
         ProjectMouseAdapter ma = new ProjectMouseAdapter();

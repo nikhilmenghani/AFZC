@@ -13,23 +13,35 @@ import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.WriteZip;
 import flashablezipcreator.MyTree;
+import static flashablezipcreator.MyTree.panelLower;
+import static flashablezipcreator.MyTree.progressBarFlag;
+import static flashablezipcreator.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Operations.UpdaterScriptOperations;
+import static flashablezipcreator.Protocols.Import.fromZip;
+import static flashablezipcreator.Protocols.Import.progressValue;
+import java.awt.CardLayout;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 /**
  *
  * @author Nikhil
  */
-public class Export {
+public class Export implements Runnable {
 
     static WriteZip wz;
     static TreeOperations to;
+    static int progressValue = 0;
+    static int maxSize = 0;
 
     public static void createZip(ArrayList<ProjectItemNode> fileNode) throws IOException {
         wz = new WriteZip(Project.outputPath);
@@ -47,7 +59,10 @@ public class Export {
         to = new TreeOperations(rootNode);
         boolean isCustomGroupPresent = false;
         boolean isDeleteGroupPresent = false;
-        for (ProjectItemNode project : to.getProjectsSorted(rootNode)) {
+        int fileIndex = 0;
+        List<ProjectItemNode> projectNodeList = to.getProjectsSorted(rootNode);
+        maxSize = getNodeCount(projectNodeList) + 10; //10 because we write more files than node count
+        for (ProjectItemNode project : projectNodeList) {
             if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
                 for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
                     if (((GroupNode) groupNode).groupType == GroupNode.GROUP_DELETE_FILES) {
@@ -58,8 +73,9 @@ public class Export {
                         for (ProjectItemNode node : ((GroupNode) groupNode).children) {
                             if (node.type == ProjectItemNode.NODE_FILE) {
                                 //not yet tested this
+                                increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
+                                fileIndex++;
                                 wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
-                                //wz.writeStringToZip(UpdaterScript.getDpiScript(((FileNode) node).title), ((FileNode) node).fileZipPath);
                             }
                         }
                         continue;
@@ -68,47 +84,66 @@ public class Export {
                         if (node.type == ProjectItemNode.NODE_SUBGROUP) {
                             for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
                                 if (((FileNode) fileNode).title.equals("DroidSans.ttf")) {
+                                    increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
+                                    fileIndex++;
                                     wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).title + ".ttf");
                                 }
+                                increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
+                                fileIndex++;
                                 wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, ((FileNode) fileNode).fileZipPath);
                             }
                         } else if (node.type == ProjectItemNode.NODE_FILE) {
-
+                            increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
+                            fileIndex++;
                             wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
-                            //show("hi1");
                         }
-                        //show("hi2");
                     }
-                    //show("hi3");
                     if (((GroupNode) groupNode).groupType == GroupNode.GROUP_CUSTOM) {
                         isCustomGroupPresent = true;
                     } else if (((GroupNode) groupNode).groupType == GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP) {
-                        //show("hi4");
+                        increaseProgressBar(fileIndex, "Symlink Script");
+                        fileIndex++;
                         wz.writeStringToZip(UpdaterScript.symlinkScript, UpdaterScript.symlinkScriptPath);
                     }
                 }
             } else {
                 for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
                     for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                        //show(((FileNode) node).fileSourcePath + " " + ((FileNode) node).fileZipPath);
+                        increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
+                        fileIndex++;
                         wz.writeFileToZip(JarOperations.getInputStream(((FileNode) node).fileSourcePath), ((FileNode) node).fileZipPath);
-                        //show(((FileNode) node).fileSourcePath + " " + ((FileNode) node).fileZipPath);
                     }
                 }
             }
         }
         if (isCustomGroupPresent) {
+            increaseProgressBar(fileIndex, "Custom Group Data");
+            fileIndex++;
             wz.writeStringToZip(Xml.getString(GroupNode.GROUP_CUSTOM, rootNode), Xml.custom_path);
         }
         if (isDeleteGroupPresent) {
+            increaseProgressBar(fileIndex, "Delete Group Data");
+            fileIndex++;
             wz.writeStringToZip(Xml.getString(GroupNode.GROUP_DELETE_FILES, rootNode), Xml.delete_path);
         }
+        increaseProgressBar(fileIndex, "Zip Data");
+        fileIndex++;
         wz.writeStringToZip(Xml.getString(0, rootNode), Xml.data_path);
+        increaseProgressBar(fileIndex, "Aroma Config");
+        fileIndex++;
         wz.writeStringToZip(AromaConfig.build(rootNode), AromaConfig.aromaConfigPath);
+        increaseProgressBar(fileIndex, "Updater-Script");
+        fileIndex++;
         wz.writeStringToZip(UpdaterScript.build(rootNode), UpdaterScript.updaterScriptPath);
         try {
+            increaseProgressBar(fileIndex, "Update Binary Installer");
+            fileIndex++;
             wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath);
+            increaseProgressBar(fileIndex, "Update Binary");
+            fileIndex++;
             wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
+            increaseProgressBar(fileIndex, "Jar Items");
+            fileIndex++;
             writeTempFiles();
             for (String file : Jar.getOtherFileList()) {
                 wz.writeFileToZip(JarOperations.getInputStream(file), file);
@@ -118,7 +153,44 @@ public class Export {
         }
 
         wz.close();
+        progressBarImportExport.setValue(100);
+        progressBarImportExport.setString("Zip Created Successfully..!!");
         JOptionPane.showMessageDialog(null, "Zip Created Successfully..!!");
+        progressBarImportExport.setString("0%");
+        progressBarImportExport.setValue(0);
+        progressBarFlag = 0;
+    }
+
+    @Override
+    public void run() {
+        try {
+            CardLayout cardLayout = (CardLayout) panelLower.getLayout();
+            cardLayout.show(panelLower, "card2");
+            zip();
+            cardLayout.show(panelLower, "card1");
+        } catch (IOException ex) {
+            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void increaseProgressBar(int fileIndex, String fileName) {
+        progressValue = (fileIndex * 100) / maxSize;
+        progressBarImportExport.setValue(progressValue);
+        switch (MyTree.progressBarFlag) {
+            case 0:
+                progressBarImportExport.setString(progressValue + "%");
+                break;
+            case 1:
+                progressBarImportExport.setString("Exporting " + fileName + "");
+                break;
+            case 2:
+                progressBarImportExport.setString(" ");
+                break;
+        }
     }
 
     //this is required to fix status 7 error while installing Rom
@@ -126,5 +198,23 @@ public class Export {
         for (String path : Project.getTempFilesList()) {
             wz.writeStringToZip("delete this file", path);
         }
+    }
+
+    public static int getNodeCount(List<ProjectItemNode> projectNodeList) {
+        int count = 0;
+        for (ProjectItemNode project : projectNodeList) {
+            for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
+                for (ProjectItemNode node : ((GroupNode) groupNode).children) {
+                    if (node.type == ProjectItemNode.NODE_SUBGROUP) {
+                        for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
+                            count++;
+                        }
+                    } else if (node.type == ProjectItemNode.NODE_FILE) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
     }
 }
