@@ -60,7 +60,7 @@ public class Import implements Runnable {
         progressValue = 0;
         ProjectItemNode rootNode = MyTree.rootNode;
         DefaultTreeModel model = MyTree.model;
-        zipType = Identify.scanZip(path);//this will automatically detect zip type.
+//        zipType = Identify.scanZip(path);//this will automatically detect zip type.
         boolean containsDeleteXml = false;
         boolean containsCustomXml = false;
         boolean containsDataXml = false;
@@ -115,29 +115,30 @@ public class Import implements Runnable {
                     Xml.addFileDataToSubGroup(file);
                 }
             } else {
-                if (projectType == ProjectNode.PROJECT_ROM || projectType == ProjectNode.PROJECT_GAPPS) {
-                    if (filePath.contains("META-INF/com/google/android/update-binary")) {
-                        if (to.getProjectNode(projectName, projectType) == null) {
-                            to.addChildTo(rootNode, projectName, projectType, model);
-                        }
-                        to.getProjectNode(projectName, projectType).update_binary = rz.getBytesFromFile(in);
-                        continue;
-                    } else if (filePath.contains("META-INF/com/google/android/updater-binary-installer")) {
-                        if (to.getProjectNode(projectName, projectType) == null) {
-                            to.addChildTo(rootNode, projectName, projectType, model);
-                        }
-                        to.getProjectNode(projectName, projectType).update_binary_installer = rz.getBytesFromFile(in);
-                        continue;
-                    } else if (filePath.contains("META-INF/com/google/android/updater-script")) {
-                        if (to.getProjectNode(projectName, projectType) == null) {
-                            to.addChildTo(rootNode, projectName, projectType, model);
-                        }
-                        to.getProjectNode(projectName, projectType).updater_script += rz.getStringFromFile(in);
-                        continue;
-                    } else if (filePath.contains("META-INF/com/google/android/aroma")) {
-                        continue;
-                    }
-                } else if (projectType == ProjectNode.PROJECT_AROMA || projectType == ProjectNode.PROJECT_NORMAL) {
+//                if (projectType == ProjectNode.PROJECT_ROM || projectType == ProjectNode.PROJECT_GAPPS) {
+//                    if (filePath.contains("META-INF/com/google/android/update-binary")) {
+//                        if (to.getProjectNode(projectName, projectType) == null) {
+//                            to.addChildTo(rootNode, projectName, projectType, model);
+//                        }
+//                        to.getProjectNode(projectName, projectType).update_binary = rz.getBytesFromFile(in);
+//                        continue;
+//                    } else if (filePath.contains("META-INF/com/google/android/updater-binary-installer")) {
+//                        if (to.getProjectNode(projectName, projectType) == null) {
+//                            to.addChildTo(rootNode, projectName, projectType, model);
+//                        }
+//                        to.getProjectNode(projectName, projectType).update_binary_installer = rz.getBytesFromFile(in);
+//                        continue;
+//                    } else if (filePath.contains("META-INF/com/google/android/updater-script")) {
+//                        if (to.getProjectNode(projectName, projectType) == null) {
+//                            to.addChildTo(rootNode, projectName, projectType, model);
+//                        }
+//                        to.getProjectNode(projectName, projectType).updater_script += rz.getStringFromFile(in);
+//                        continue;
+//                    } else if (filePath.contains("META-INF/com/google/android/aroma")) {
+//                        continue;
+//                    }
+//                } else 
+                    if (projectType == ProjectNode.PROJECT_AROMA) {// || projectType == ProjectNode.PROJECT_NORMAL) {
                     if (filePath.startsWith("META-INF")) {
                         continue;
                     }

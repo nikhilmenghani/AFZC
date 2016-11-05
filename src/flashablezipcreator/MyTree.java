@@ -7,7 +7,6 @@ package flashablezipcreator;
 
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectTreeBuilder;
-import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.ProjectOperations;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Operations.MyFileFilter;
@@ -15,17 +14,12 @@ import flashablezipcreator.Operations.UpdaterScriptOperations;
 import flashablezipcreator.Protocols.Export;
 import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Jar;
-import java.awt.CardLayout;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.GroupLayout;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JRootPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.ParserConfigurationException;
@@ -162,13 +156,11 @@ public class MyTree extends JFrame {
         btnCreateZip.setBorder(null);
         btnCreateZip.setContentAreaFilled(false);
         btnCreateZip.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnCreateZip.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                try {
-                    btnCreateZipActionPerformed(evt);
-                } catch (IOException | ParserConfigurationException | TransformerException ex) {
-                    Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        btnCreateZip.addActionListener((java.awt.event.ActionEvent evt) -> {
+            try {
+                btnCreateZipActionPerformed(evt);
+            } catch (IOException | ParserConfigurationException | TransformerException ex) {
+                Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
@@ -215,6 +207,7 @@ public class MyTree extends JFrame {
         progressBarImportExport.setStringPainted(true);
         progressBarImportExport.setVerifyInputWhenFocusTarget(false);
         progressBarImportExport.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 progressBarImportExportMouseClicked(evt);
             }

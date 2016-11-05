@@ -214,14 +214,14 @@ public class FileNode extends ProjectItemNode {
 
     public String getProjectType(ProjectNode project) {
         switch (project.projectType) {
-            case ProjectNode.PROJECT_ROM:
-                return "rom";
-            case ProjectNode.PROJECT_GAPPS:
-                return "gapps";
+//            case ProjectNode.PROJECT_ROM:
+//                return "rom";
+//            case ProjectNode.PROJECT_GAPPS:
+//                return "gapps";
             case ProjectNode.PROJECT_AROMA:
                 return "aroma";
-            case ProjectNode.PROJECT_NORMAL:
-                return "normal";
+//            case ProjectNode.PROJECT_NORMAL:
+//                return "normal";
         }
         return null;
     }

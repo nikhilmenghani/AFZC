@@ -5,7 +5,6 @@
  */
 package flashablezipcreator.Protocols;
 
-import static flashablezipcreator.AFZC.Protocols.show;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
@@ -18,9 +17,6 @@ import static flashablezipcreator.MyTree.progressBarFlag;
 import static flashablezipcreator.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
-import flashablezipcreator.Operations.UpdaterScriptOperations;
-import static flashablezipcreator.Protocols.Import.fromZip;
-import static flashablezipcreator.Protocols.Import.progressValue;
 import java.awt.CardLayout;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +26,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
-import org.xml.sax.SAXException;
 
 /**
  *

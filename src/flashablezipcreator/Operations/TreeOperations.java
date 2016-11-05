@@ -298,18 +298,18 @@ public class TreeOperations {
 
         for (ProjectItemNode project : getNodeList(ProjectItemNode.NODE_PROJECT)) {
             switch (((ProjectNode) project).projectType) {
-                case ProjectNode.PROJECT_ROM:
-                    projectRom.add(project);
-                    break;
-                case ProjectNode.PROJECT_GAPPS:
-                    projectGapps.add(project);
-                    break;
+//                case ProjectNode.PROJECT_ROM:
+//                    projectRom.add(project);
+//                    break;
+//                case ProjectNode.PROJECT_GAPPS:
+//                    projectGapps.add(project);
+//                    break;
                 case ProjectNode.PROJECT_AROMA:
                     projectAroma.add(project);
                     break;
-                case ProjectNode.PROJECT_NORMAL:
-                    projectNormal.add(project);
-                    break;
+//                case ProjectNode.PROJECT_NORMAL:
+//                    projectNormal.add(project);
+//                    break;
                 case ProjectNode.PROJECT_THEMES:
                     projectThemes.add(project);
                     break;

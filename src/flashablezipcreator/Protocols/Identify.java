@@ -50,47 +50,47 @@ public class Identify {
         aromaList.add("customize/aroma/");
     }
 
-    public static int scanCompleteZip(String path) throws IOException {
-        fileName = getFileName(path);
-        rz = new ReadZip(path);
-        int projectType = -1;
-        init();
-        for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
-            String entry = e.nextElement().getName();
-            if ((zipType = check(entry)) != -1 && projectType == -1) {
-                projectType = zipType;
-            }
-        }
-        return projectType;
-    }
+//    public static int scanCompleteZip(String path) throws IOException {
+//        fileName = getFileName(path);
+//        rz = new ReadZip(path);
+//        int projectType = -1;
+//        init();
+//        for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
+//            String entry = e.nextElement().getName();
+//            if ((zipType = check(entry)) != -1 && projectType == -1) {
+//                projectType = zipType;
+//            }
+//        }
+//        return projectType;
+//    }
 
-    public static int scanZip(String path) throws IOException {
-        fileName = getFileName(path);
-        rz = new ReadZip(path);
-        init();
-        for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
-            String entry = e.nextElement().getName();
-            if ((zipType = check(entry)) != -1) {
-                return zipType;
-            }
-        }
-        JOptionPane.showMessageDialog(null, zipType + ".");
-        return zipType;
-    }
+//    public static int scanZip(String path) throws IOException {
+//        fileName = getFileName(path);
+//        rz = new ReadZip(path);
+//        init();
+//        for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
+//            String entry = e.nextElement().getName();
+//            if ((zipType = check(entry)) != -1) {
+//                return zipType;
+//            }
+//        }
+//        JOptionPane.showMessageDialog(null, zipType + ".");
+//        return zipType;
+//    }
 
-    public static int check(String name) {
-        if (isRom(name)) {
-            rom = true;
-            return ProjectNode.PROJECT_ROM;
-        } else if (rom == false && isGapps(name)) {
-            gapps = true;
-            return ProjectNode.PROJECT_GAPPS;
-        } else if (rom == false && gapps == false && isAroma(name)) {
-            aroma = true;
-            return ProjectNode.PROJECT_AROMA;
-        }
-        return -1;
-    }
+//    public static int check(String name) {
+//        if (isRom(name)) {
+//            rom = true;
+//            return ProjectNode.PROJECT_ROM;
+//        } else if (rom == false && isGapps(name)) {
+//            gapps = true;
+//            return ProjectNode.PROJECT_GAPPS;
+//        } else if (rom == false && gapps == false && isAroma(name)) {
+//            aroma = true;
+//            return ProjectNode.PROJECT_AROMA;
+//        }
+//        return -1;
+//    }
 
     public static boolean isRom(String name) {
         for (String list : romList) {
@@ -333,21 +333,21 @@ public class Identify {
     }
 
     public static int getProjectType(String path) throws IOException {
-        if (path.startsWith("customize")) {
-            path = path.substring(path.indexOf("/") + 1, path.indexOf("/", path.indexOf("/") + 1));
-        } else {
-            return zipType;
-        }
-        switch (path) {
-            case "rom":
-                return ProjectNode.PROJECT_ROM;
-            case "gapps":
-                return ProjectNode.PROJECT_GAPPS;
-            case "aroma":
+//        if (path.startsWith("customize")) {
+//            path = path.substring(path.indexOf("/") + 1, path.indexOf("/", path.indexOf("/") + 1));
+//        } else {
+//            return zipType;
+//        }
+//        switch (path) {
+//            case "rom":
+//                return ProjectNode.PROJECT_ROM;
+//            case "gapps":
+//                return ProjectNode.PROJECT_GAPPS;
+//            case "aroma":
                 return ProjectNode.PROJECT_AROMA;
-            case "normal":
-                return ProjectNode.PROJECT_NORMAL;
-        }
-        return -1;
+//            case "normal":
+//                return ProjectNode.PROJECT_NORMAL;
+//        }
+//        return -1;
     }
 }

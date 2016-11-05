@@ -6,7 +6,6 @@
 package flashablezipcreator;
 
 import flashablezipcreator.Core.MyTreeModelListener;
-import flashablezipcreator.Core.NodeRenderer;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectMouseAdapter;
 import flashablezipcreator.Core.ProjectTreeBuilder;
@@ -20,13 +19,11 @@ import flashablezipcreator.Protocols.Export;
 import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Xml;
-import flashablezipcreator.UserInterface.AddDevice;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.JTextField;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultTreeModel;
@@ -92,7 +89,7 @@ public class JTree extends JFrame implements TreeSelectionListener {
         Read r = new Read();
         //comment following lines if running from netbeans.
         if (Jar.isExecutingThrough()) {
-            Jar.addThemesToTree(rootNode, model);
+            Jar.addThemesToTree();
             Device.loadDeviceList();
         } else {
             Xml.file_details_path = "dist/" + Xml.file_details_path;
@@ -197,7 +194,7 @@ public class JTree extends JFrame implements TreeSelectionListener {
 
     private void btnImportZipActionPerformed(java.awt.event.ActionEvent evt) throws IOException, ParserConfigurationException, TransformerException, SAXException {
         try {
-            Import.fromZip(uio.browseZipDestination(), rootNode, model);
+            Import.fromZip(uio.browseZipDestination());
         } catch (NullPointerException npe) {
             //JOptionPane.showMessageDialog(this, "cancelled by user");
         }
@@ -207,13 +204,13 @@ public class JTree extends JFrame implements TreeSelectionListener {
         ProjectItemNode node = (ProjectItemNode) tree.getLastSelectedPathComponent();
         System.out.println();
         Device.selected = "NonNeon";
-        Export.zip(rootNode);
+        Export.zip();
     }
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) throws IOException, ParserConfigurationException, TransformerException {
         ProjectItemNode node = (ProjectItemNode) tree.getLastSelectedPathComponent();
         Device.selected = "Neon";
-        Export.zip(rootNode);
+        Export.zip();
     }
 
     private javax.swing.JButton btnCreateZip;

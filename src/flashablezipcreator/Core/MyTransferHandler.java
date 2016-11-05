@@ -5,9 +5,7 @@
  */
 package flashablezipcreator.Core;
 
-import flashablezipcreator.MyTree;
-import static flashablezipcreator.MyTree.panelLower;
-import flashablezipcreator.Operations.MyFileFilter;
+import static flashablezipcreator.AFZC.Protocols.p;
 import flashablezipcreator.Protocols.Import;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -20,6 +18,7 @@ import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -49,9 +48,25 @@ public class MyTransferHandler extends TransferHandler {
     @Override
     public boolean importData(TransferSupport support) {
         if (!canImport(support)) {
+            p("cannot import");
             return false;
+        }else{
+            p("can import");
         }
 
+        //DefaultMutableTreeNode dragNode = getSelectedNode();
+        
+        JTree.DropLocation dropLocation = (JTree.DropLocation) support.getDropLocation();
+        TreePath path = dropLocation.getPath();
+        try{
+            ProjectItemNode parentNode = (ProjectItemNode) path.getLastPathComponent();
+            int type = parentNode.type;
+            parentNode = (GroupNode) path.getLastPathComponent();
+            type = parentNode.type;
+        }catch(Exception e){
+            p("Exception Caught");
+        }
+        
         Transferable t = support.getTransferable();
         try {
             List data = (List) t.getTransferData(DataFlavor.javaFileListFlavor);

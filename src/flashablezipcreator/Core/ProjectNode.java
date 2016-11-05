@@ -32,12 +32,12 @@ public class ProjectNode extends ProjectItemNode {
     public String gappsDate = Project.gappsDate;
     public String releaseVersion = Project.releaseVersion;
 
-    public static final int PROJECT_NORMAL = 1;
+    //public static final int PROJECT_NORMAL = 1;
     public static final int PROJECT_AROMA = 2;
-    public static final int PROJECT_GAPPS = 3;
-    public static final int PROJECT_ROM = 4;
+    //public static final int PROJECT_GAPPS = 3;
+    //public static final int PROJECT_ROM = 4;
     public static final int PROJECT_THEMES = 5;
-    public static final int PROJECT_ADVANCED = 6;
+    //public static final int PROJECT_ADVANCED = 6;
 
     public ProjectNode(String title, int projectType, ProjectItemNode parent) {
         super(title, ProjectItemNode.NODE_PROJECT, parent);
