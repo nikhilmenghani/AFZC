@@ -85,7 +85,7 @@ public class AromaScriptOperations {
         switch (node.groupType) {
             case GroupNode.GROUP_DATA_LOCAL:
             case GroupNode.GROUP_SYSTEM_MEDIA:
-            case GroupNode.GROUP_AROMA_KERNEL:
+//            case GroupNode.GROUP_AROMA_KERNEL:
             case GroupNode.GROUP_SCRIPT:
                 str += "\nselectbox(\"" + node.title + " List\",\"Select from " + node.title + "\",\"@personalize\",\"" + node.prop + "\",\n"
                         + "\"Select one from the list\", \"\", 2,\n"
@@ -178,21 +178,6 @@ public class AromaScriptOperations {
     public String addMenuBox(ProjectNode project) {
         String str = "";
         switch (project.projectType) {
-//            case ProjectNode.PROJECT_GAPPS:
-//                str += "\nmenubox(\"" + "Menu" + " List\",\"Select from " + "following" + "\",\"@installgapps\",\"" + project.title + ".prop" + "\",\n"
-//                        + "\"Install\", \"Install Gapps\", \"@install\"";
-//                str += ",\n\"" + "Skip" + "\", \"Do Not Install Gapps\", \"@exit\"";
-//                str += ");\n";
-//                str += "writetmpfile(\"" + project.title + ".prop" + "\",readtmpfile(\"" + project.title + ".prop" + "\"));\n";
-//                //str += "writetmpfile(\"" + project.title + ".prop" + "\",\"true=yes\");\n";
-//                break;
-//            case ProjectNode.PROJECT_ROM:
-//                str += "\nmenubox(\"" + "Menu" + " List\",\"Select from " + "following" + "\",\"@installrom\",\"" + project.title + ".prop" + "\",\n"
-//                        + "\"Install\", \"Install Rom\", \"@install\"";
-//                str += ",\n\"" + "Skip" + "\", \"Do Not Install Rom\", \"@apps\"";
-//                str += ");\n";
-//                str += "writetmpfile(\"" + project.title + ".prop" + "\",readtmpfile(\"" + project.title + ".prop" + "\"));\n";
-//                break;
             case ProjectNode.PROJECT_AROMA:
                 str += "\nmenubox(\"" + "Menu" + " List\",\"Select from " + "following" + "\",\"@installmods\",\"" + project.title + ".prop" + "\",\n"
                         + "\"Install\", \"Install Mods\", \"@install\"";
@@ -207,21 +192,6 @@ public class AromaScriptOperations {
     public String addInitString(ProjectNode project) {
         String str = "";
         switch (project.projectType) {
-//            case ProjectNode.PROJECT_ROM:
-//                str += "ini_set(\"rom_name\",\"" + project.romName + "\");\n"
-//                        + "ini_set(\"rom_version\",\"" + project.romVersion + "\");\n"
-//                        + "ini_set(\"rom_author\",\"" + project.romAuthor + "\");\n"
-//                        + "ini_set(\"rom_device\",\"" + project.romDevice + "\");\n"
-//                        + "ini_set(\"rom_date\",\"" + project.romDate + "\");\n"
-//                        + "setvar(\"file_creator\",\"" + Project.zipCreator + "\");\n";
-//                break;
-//            case ProjectNode.PROJECT_GAPPS:
-//                str += "setvar(\"gapps_name\",\"" + project.gappsName + "\");\n"
-//                        + "setvar(\"android_version\",\"" + project.androidVersion + "\");\n"
-//                        + "setvar(\"gapps_type\",\"" + project.gappsType + "\");\n"
-//                        + "setvar(\"gapps_date\",\"" + project.gappsDate + "\");\n"
-//                        + "setvar(\"file_creator\",\"" + Project.zipCreator + "\");\n";
-//                break;
             case ProjectNode.PROJECT_AROMA:
                 str += "setvar(\"release_version\",\"" + project.releaseVersion + "\");\n"
                         + "setvar(\"android_version\",\"" + project.androidVersion + "\");\n"
@@ -234,38 +204,6 @@ public class AromaScriptOperations {
     public String addWelcomeString(ProjectNode project) {
         String str = "";
         switch (project.projectType) {
-//            case ProjectNode.PROJECT_ROM:
-//                str += "\nviewbox(\n"
-//                        + "\"Welcome\",\n"
-//                        + "\"You are about to install <b>\"+\n"
-//                        + "ini_get(\"rom_name\")+\n"
-//                        + "\"</b> for <b>\"+ini_get(\"rom_device\")+\"</b>.\\n\\n\"+\n"
-//                        + "\n"
-//                        + "\"Version\\t        :\\t <b><#selectbg_g>\"+ini_get(\"rom_version\")+\"</#></b>\\n\"+\n"
-//                        + "\"Developed By\\t   :\\t <b><#selectbg_g>\"+ini_get(\"rom_author\")+\"</#></b>\\n\"+\n"
-//                        + "\"Update Date\\t    :\\t <b><#selectbg_g>\"+ini_get(\"rom_date\")+\"</#></b>\\n\\n\\n\"+\n"
-//                        + "\"File Created By\\t:\\t <b><#selectbg_g>\"+getvar(\"file_creator\")+\"</#></b>\\n\\n\\n\"+\n"
-//                        + "\n"
-//                        + "\"Press Next to Continue\",\n"
-//                        + "\"@welcome\"\n"
-//                        + ");\n";
-//                break;
-//            case ProjectNode.PROJECT_GAPPS:
-//                str += "\nviewbox(\n"
-//                        + "\"Welcome\",\n"
-//                        + "\"You are about to install <b>\"+\n"
-//                        + "getvar(\"gapps_name\")+\n"
-//                        + "\"</b> for <b>Your Device</b>.\\n\\n\"+"
-//                        + "\n"
-//                        + "\"Android Version\\t:\\t <b><#selectbg_g>\"+getvar(\"android_version\")+\"</#></b>\\n\"+\n"
-//                        + "\"Gapps Type\\t        :\\t <b><#selectbg_g>\"+getvar(\"gapps_type\")+\"</#></b>\\n\"+\n"
-//                        + "\"Gapps Date\\t        :\\t <b><#selectbg_g>\"+getvar(\"gapps_date\")+\"</#></b>\\n\\n\\n\"+\n"
-//                        + "\"File Created By\\t:\\t <b><#selectbg_g>\"+getvar(\"file_creator\")+\"</#></b>\\n\\n\\n\"+\n"
-//                        + "\n"
-//                        + "\"Press Next to Continue\",\n"
-//                        + "\"@welcome\"\n"
-//                        + ");\n";
-//                break;
             case ProjectNode.PROJECT_AROMA:
                 str += "\nviewbox(\n"
                         + "\"Welcome\",\n"
@@ -289,16 +227,11 @@ public class AromaScriptOperations {
         switch (node.groupType) {
             case GroupNode.GROUP_SYSTEM_APK:
             case GroupNode.GROUP_SYSTEM_PRIV_APK:
-            case GroupNode.GROUP_SYSTEM_CSC:
-            case GroupNode.GROUP_SYSTEM_ETC:
-            case GroupNode.GROUP_SYSTEM_LIB:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
             case GroupNode.GROUP_DATA_APP:
-            case GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP:
-            case GroupNode.GROUP_SYSTEM_FRAMEWORK:
             case GroupNode.GROUP_DELETE_FILES:
                 str += "\ncheckbox(\"" + node.title + " List\",\"Select from " + node.title + "\",\"@apps\",\"" + node.prop + "\",\n"
                         + "\"Select files from the list\", \"\", 2,\n"

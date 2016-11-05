@@ -56,16 +56,11 @@ public class TreeOperations {
                     //Group of predefined locations
                     case GroupNode.GROUP_SYSTEM_APK:
                     case GroupNode.GROUP_SYSTEM_PRIV_APK:
-                    case GroupNode.GROUP_SYSTEM_CSC:
-                    case GroupNode.GROUP_SYSTEM_ETC:
-                    case GroupNode.GROUP_SYSTEM_LIB:
                     case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                     case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
                     case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
                     case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
                     case GroupNode.GROUP_DATA_APP:
-                    case GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP:
-                    case GroupNode.GROUP_SYSTEM_FRAMEWORK:
                     case GroupNode.GROUP_OTHER:
                     case GroupNode.GROUP_AROMA_THEMES:
                     case GroupNode.GROUP_DELETE_FILES:
@@ -80,12 +75,10 @@ public class TreeOperations {
                     case GroupNode.GROUP_SYSTEM_FONTS:
                     case GroupNode.GROUP_DATA_LOCAL:
                     case GroupNode.GROUP_SYSTEM_MEDIA:
-                    case GroupNode.GROUP_AROMA_KERNEL:
                         switch (childType) {
                             case SubGroupNode.TYPE_SYSTEM_FONTS:
                             case SubGroupNode.TYPE_SYSTEM_MEDIA:
                             case SubGroupNode.TYPE_DATA_LOCAL:
-                            case SubGroupNode.TYPE_KERNEL:
                                 node.addChild(new SubGroupNode(childTitle, childType, (GroupNode) node), model);
                                 break;
                             case ProjectItemNode.NODE_FILE:
@@ -110,7 +103,6 @@ public class TreeOperations {
                     case SubGroupNode.TYPE_SYSTEM_FONTS:
                     case SubGroupNode.TYPE_SYSTEM_MEDIA:
                     case SubGroupNode.TYPE_DATA_LOCAL:
-                    case SubGroupNode.TYPE_KERNEL:
                         node.addChild(new FileNode(childTitle, (SubGroupNode) node), model);
                         break;
                 }
@@ -298,18 +290,9 @@ public class TreeOperations {
 
         for (ProjectItemNode project : getNodeList(ProjectItemNode.NODE_PROJECT)) {
             switch (((ProjectNode) project).projectType) {
-//                case ProjectNode.PROJECT_ROM:
-//                    projectRom.add(project);
-//                    break;
-//                case ProjectNode.PROJECT_GAPPS:
-//                    projectGapps.add(project);
-//                    break;
                 case ProjectNode.PROJECT_AROMA:
                     projectAroma.add(project);
                     break;
-//                case ProjectNode.PROJECT_NORMAL:
-//                    projectNormal.add(project);
-//                    break;
                 case ProjectNode.PROJECT_THEMES:
                     projectThemes.add(project);
                     break;

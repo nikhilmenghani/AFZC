@@ -95,11 +95,7 @@ public class Export implements Runnable {
                     }
                     if (((GroupNode) groupNode).groupType == GroupNode.GROUP_CUSTOM) {
                         isCustomGroupPresent = true;
-                    } else if (((GroupNode) groupNode).groupType == GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP) {
-                        increaseProgressBar(fileIndex, "Symlink Script");
-                        fileIndex++;
-                        wz.writeStringToZip(UpdaterScript.symlinkScript, UpdaterScript.symlinkScriptPath);
-                    }
+                    } 
                 }
             } else {
                 for (ProjectItemNode groupNode : ((ProjectNode) project).children) {

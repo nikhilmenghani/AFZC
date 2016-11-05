@@ -25,23 +25,17 @@ public class GroupNode extends ProjectItemNode {
 
     public static final int GROUP_SYSTEM_APK = 1;
     public static final int GROUP_SYSTEM_PRIV_APK = 2;
-    public static final int GROUP_SYSTEM_LIB = 3;
-    public static final int GROUP_PRELOAD_SYMLINK_SYSTEM_APP = 4;
-    public static final int GROUP_SYSTEM_ETC = 5;
-    public static final int GROUP_SYSTEM_CSC = 6;
     public static final int GROUP_SYSTEM_MEDIA_AUDIO_ALARMS = 7;
     public static final int GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS = 8;
     public static final int GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES = 9;
     public static final int GROUP_SYSTEM_MEDIA_AUDIO_UI = 10;
     public static final int GROUP_SYSTEM_MEDIA = 11;
     public static final int GROUP_SYSTEM_FONTS = 12;
-    public static final int GROUP_SYSTEM_FRAMEWORK = 13;
     public static final int GROUP_DATA_APP = 14;
     public static final int GROUP_DATA_LOCAL = 15;
     public static final int GROUP_CUSTOM = 16;
     public static final int GROUP_OTHER = 17;
     public static final int GROUP_AROMA_THEMES = 18;
-    public static final int GROUP_AROMA_KERNEL = 19;
     public static final int GROUP_DELETE_FILES = 20;
     public static final int GROUP_SCRIPT = 21;
 
@@ -62,23 +56,6 @@ public class GroupNode extends ProjectItemNode {
                 this.location = "/system/priv-app";
                 this.prop = getProp("system_priv");
                 this.extension = "apk";
-                break;
-            case GROUP_SYSTEM_LIB:
-                this.location = "/system/lib";
-                this.prop = getProp("system_lib");
-                break;
-            case GROUP_PRELOAD_SYMLINK_SYSTEM_APP:
-                this.location = "/preload/symlink/system/app";
-                this.prop = getProp("system_preload");
-                this.extension = "apk";
-                break;
-            case GROUP_SYSTEM_ETC:
-                this.location = "/system/etc";
-                this.prop = getProp("system_etc");
-                break;
-            case GROUP_SYSTEM_CSC:
-                this.location = "/system/csc";
-                this.prop = getProp("system_csc");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 this.location = "/system/media/audio/alarms";
@@ -112,10 +89,6 @@ public class GroupNode extends ProjectItemNode {
                 this.isSelectBox = true;
                 this.extension = "ttf";
                 break;
-            case GROUP_SYSTEM_FRAMEWORK:
-                this.location = "/system/framework";
-                this.prop = getProp("system_framework");
-                break;
             case GROUP_DATA_APP:
                 this.location = "/data/app";
                 this.prop = getProp("data_app");
@@ -126,13 +99,6 @@ public class GroupNode extends ProjectItemNode {
                 this.prop = getProp("data_local");
                 this.isSelectBox = true;
                 this.extension = "zip";
-                break;
-            case GROUP_AROMA_KERNEL:
-//                this.location = "";
-//                this.permissions = "";
-                this.prop = getProp("kernels");
-                this.isSelectBox = true;
-                this.extension = "img";
                 break;
             case GROUP_CUSTOM:
 //                this.location = "/custom";

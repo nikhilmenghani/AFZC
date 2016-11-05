@@ -148,9 +148,6 @@ public class UpdaterScriptOperations {
                             str += "package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"" + ((FileNode) file).installLocation + "/" + "bootanimation.zip" + "\");\n";
                             str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
                             break;
-                        case GroupNode.GROUP_AROMA_KERNEL:
-                            str += "assert(package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"" + Device.getMountPoint() + "\"));\n";
-                            break;
                     }
                 }
                 str += "endif;\n";
@@ -230,16 +227,11 @@ public class UpdaterScriptOperations {
             //Group of predefined locations
             case GroupNode.GROUP_SYSTEM_APK:
             case GroupNode.GROUP_SYSTEM_PRIV_APK:
-            case GroupNode.GROUP_SYSTEM_CSC:
-            case GroupNode.GROUP_SYSTEM_ETC:
-            case GroupNode.GROUP_SYSTEM_LIB:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
             case GroupNode.GROUP_DATA_APP:
-            case GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP:
-            case GroupNode.GROUP_SYSTEM_FRAMEWORK:
             case GroupNode.GROUP_DELETE_FILES:
             case GroupNode.GROUP_SCRIPT:
                 return predefinedGroupScript(node);
@@ -247,7 +239,6 @@ public class UpdaterScriptOperations {
             case GroupNode.GROUP_SYSTEM_FONTS:
             case GroupNode.GROUP_DATA_LOCAL:
             case GroupNode.GROUP_SYSTEM_MEDIA:
-            case GroupNode.GROUP_AROMA_KERNEL:
                 return predefinedSubGroupsScript(node);
             //Group of custom location.
             case GroupNode.GROUP_CUSTOM:

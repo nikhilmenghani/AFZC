@@ -174,6 +174,7 @@ public class MyPopup {
                 addFontsGroupMenu.add(mitemFonts);
                 JMenu addTonesGroupMenu = new JMenu("Tones Group");
                 addTonesGroupMenu.add(mitemAlarms);
+
                 addTonesGroupMenu.add(mitemNotifications);
                 addTonesGroupMenu.add(mitemRingtones);
                 addTonesGroupMenu.add(mitemUI);
@@ -208,9 +209,6 @@ public class MyPopup {
                         case GroupNode.GROUP_SYSTEM_MEDIA:
                             addName("SubGroup", "system/media", nodeList.get(0), model);
                             break;
-                        case GroupNode.GROUP_AROMA_KERNEL:
-                            addName("SubGroup", "kernel", nodeList.get(0), model);
-                            break;
                     }
                 }
         );
@@ -238,23 +236,17 @@ public class MyPopup {
             switch (((GroupNode) nodeList.get(0)).groupType) {
                 case GroupNode.GROUP_SYSTEM_APK:
                 case GroupNode.GROUP_SYSTEM_PRIV_APK:
-                case GroupNode.GROUP_SYSTEM_CSC:
-                case GroupNode.GROUP_SYSTEM_ETC:
-                case GroupNode.GROUP_SYSTEM_LIB:
                 case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
                 case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
                 case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
                 case GroupNode.GROUP_DATA_APP:
-                case GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP:
-                case GroupNode.GROUP_SYSTEM_FRAMEWORK:
                 case GroupNode.GROUP_AROMA_THEMES:
                     popup.add(mitemAddFile);
                     break;
                 case GroupNode.GROUP_SYSTEM_FONTS:
                 case GroupNode.GROUP_DATA_LOCAL:
                 case GroupNode.GROUP_SYSTEM_MEDIA:
-                case GroupNode.GROUP_AROMA_KERNEL:
                     popup.add(mitemAddSubGroup);
                     break;
             }
@@ -341,22 +333,6 @@ public class MyPopup {
                 groupType = GroupNode.GROUP_SYSTEM_PRIV_APK;
                 extension = ".apk";
                 break;
-            case "system/lib":
-                groupType = GroupNode.GROUP_SYSTEM_LIB;
-                extension = ".*";
-                break;
-            case "system/etc":
-                groupType = GroupNode.GROUP_SYSTEM_ETC;
-                extension = ".*";
-                break;
-            case "preload/symlink/system/app":
-                groupType = GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP;
-                extension = ".apk";
-                break;
-            case "system/csc":
-                groupType = GroupNode.GROUP_SYSTEM_CSC;
-                extension = ".*";
-                break;
             case "data/app":
                 groupType = GroupNode.GROUP_DATA_APP;
                 extension = ".apk";
@@ -392,21 +368,11 @@ public class MyPopup {
                 extension = ".zip";
                 isSelectBox = true;
                 break;
-            case "system/framework":
-                groupType = GroupNode.GROUP_SYSTEM_FRAMEWORK;
-                extension = ".*";
-                break;
             case "themes":
                 groupType = GroupNode.GROUP_AROMA_THEMES;
                 extension = ".png||.prop";
                 isSelectBox = true;
                 break;
-            case "kernel":
-                groupType = GroupNode.GROUP_AROMA_KERNEL;
-                extension = ".img";
-                isSelectBox = true;
-                break;
-
         }
         switch (nodeType) {
             case "Group":

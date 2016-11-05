@@ -61,12 +61,7 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
                 } else {
                     switch (gNode.groupType) {
                         case GroupNode.GROUP_SYSTEM_APK:
-                        case GroupNode.GROUP_SYSTEM_CSC:
-                        case GroupNode.GROUP_SYSTEM_ETC:
-                        case GroupNode.GROUP_SYSTEM_FRAMEWORK:
-                        case GroupNode.GROUP_SYSTEM_LIB:
                         case GroupNode.GROUP_SYSTEM_PRIV_APK:
-                        case GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP:
                             setIcon(iconSystemGroup);
                             break;
                         case GroupNode.GROUP_DATA_APP:
@@ -85,9 +80,6 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
                         case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
                             setIcon(iconMusicGroup);
                             break;
-                        case GroupNode.GROUP_AROMA_KERNEL:
-                            setIcon(iconKernelGroup);
-                            break;
                         default:
                             setIcon(iconGroup);
                     }
@@ -102,9 +94,6 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
                     case SubGroupNode.TYPE_SYSTEM_MEDIA:
                     case SubGroupNode.TYPE_DATA_LOCAL:
                         setIcon(iconBASubGroup);
-                        break;
-                    case SubGroupNode.TYPE_KERNEL:
-                        setIcon(iconKernelSubGroup);
                         break;
                 }
                 break;

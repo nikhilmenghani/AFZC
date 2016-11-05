@@ -64,12 +64,7 @@ public class FileNode extends ProjectItemNode {
     public void setPermissions(GroupNode parent) {
         switch (parent.groupType) {
             case GroupNode.GROUP_SYSTEM_APK:
-            case GroupNode.GROUP_SYSTEM_CSC:
-            case GroupNode.GROUP_SYSTEM_ETC:
-            case GroupNode.GROUP_SYSTEM_FRAMEWORK:
-            case GroupNode.GROUP_SYSTEM_LIB:
             case GroupNode.GROUP_SYSTEM_PRIV_APK:
-            case GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP:
                 setPermissions("0", "0", "0644", parent.location + "/" + title);
                 break;
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
@@ -116,18 +111,6 @@ public class FileNode extends ProjectItemNode {
                         str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
                                 + "system_priv_app" + File.separator + str;
                         break;
-                    case GroupNode.GROUP_SYSTEM_CSC:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_csc" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_SYSTEM_ETC:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_etc" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_SYSTEM_LIB:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_lib" + File.separator + str;
-                        break;
                     case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                         str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
                                 + "system_media_alarms" + File.separator + str;
@@ -147,14 +130,6 @@ public class FileNode extends ProjectItemNode {
                     case GroupNode.GROUP_DATA_APP:
                         str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
                                 + "data_app" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_preload" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_SYSTEM_FRAMEWORK:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_framework" + File.separator + str;
                         break;
                     case GroupNode.GROUP_CUSTOM:
                         str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
@@ -187,10 +162,6 @@ public class FileNode extends ProjectItemNode {
                         str = getProjectType((ProjectNode) parent.parent.parent) + File.separator + ((ProjectNode) parent.parent.parent).title + File.separator
                                 + "data_local" + File.separator + str;
                         break;
-                    case SubGroupNode.TYPE_KERNEL:
-                        str = getProjectType((ProjectNode) parent.parent.parent) + File.separator + ((ProjectNode) parent.parent.parent).title + File.separator
-                                + "kernels" + File.separator + str;
-                        break;
                     case SubGroupNode.TYPE_CUSTOM:
                         str = getProjectType((ProjectNode) parent.parent.parent) + File.separator + ((ProjectNode) parent.parent.parent).title + File.separator
                                 + "custom" + File.separator + str;
@@ -214,14 +185,8 @@ public class FileNode extends ProjectItemNode {
 
     public String getProjectType(ProjectNode project) {
         switch (project.projectType) {
-//            case ProjectNode.PROJECT_ROM:
-//                return "rom";
-//            case ProjectNode.PROJECT_GAPPS:
-//                return "gapps";
             case ProjectNode.PROJECT_AROMA:
                 return "aroma";
-//            case ProjectNode.PROJECT_NORMAL:
-//                return "normal";
         }
         return null;
     }

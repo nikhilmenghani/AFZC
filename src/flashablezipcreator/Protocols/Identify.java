@@ -63,7 +63,6 @@ public class Identify {
 //        }
 //        return projectType;
 //    }
-
 //    public static int scanZip(String path) throws IOException {
 //        fileName = getFileName(path);
 //        rz = new ReadZip(path);
@@ -77,7 +76,6 @@ public class Identify {
 //        JOptionPane.showMessageDialog(null, zipType + ".");
 //        return zipType;
 //    }
-
 //    public static int check(String name) {
 //        if (isRom(name)) {
 //            rom = true;
@@ -91,7 +89,6 @@ public class Identify {
 //        }
 //        return -1;
 //    }
-
     public static boolean isRom(String name) {
         for (String list : romList) {
             if (list.equals(name)) {
@@ -131,7 +128,7 @@ public class Identify {
         switch (getGroupType(path)) {
             case GroupNode.GROUP_SYSTEM_FONTS:
             case GroupNode.GROUP_SYSTEM_MEDIA:
-            case GroupNode.GROUP_AROMA_KERNEL:
+//            case GroupNode.GROUP_AROMA_KERNEL:
             case GroupNode.GROUP_DATA_LOCAL:
                 return true;
             case GroupNode.GROUP_CUSTOM:
@@ -265,14 +262,8 @@ public class Identify {
             case "system_priv_app":
             case "priv-app":
                 return GroupNode.GROUP_SYSTEM_PRIV_APK;
-            case "system_csc":
-                return GroupNode.GROUP_SYSTEM_CSC;
             case "script":
                 return GroupNode.GROUP_SCRIPT;
-            case "system_etc":
-                return GroupNode.GROUP_SYSTEM_ETC;
-            case "system_lib":
-                return GroupNode.GROUP_SYSTEM_LIB;
             case "system_media_alarms":
                 return GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS;
             case "system_media_notifications":
@@ -283,10 +274,6 @@ public class Identify {
                 return GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI;
             case "data_app":
                 return GroupNode.GROUP_DATA_APP;
-            case "system_preload":
-                return GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP;
-            case "system_framework":
-                return GroupNode.GROUP_SYSTEM_FRAMEWORK;
             case "system_fonts":
                 return GroupNode.GROUP_SYSTEM_FONTS;
             case "system_media":
@@ -295,8 +282,6 @@ public class Identify {
                 return GroupNode.GROUP_DATA_LOCAL;
             case "custom":
                 return GroupNode.GROUP_CUSTOM;
-            case "kernels":
-                return GroupNode.GROUP_AROMA_KERNEL;
             case "Other":
                 return GroupNode.GROUP_OTHER;
             default:
@@ -316,8 +301,6 @@ public class Identify {
                         default:
                             return GroupNode.GROUP_OTHER;// like system/media/video in stock touchwiz roms.
                     }
-                } else if (fullPath.startsWith("preload/symlink/system/app")) {
-                    return GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP;
                 } else {
                     return GroupNode.GROUP_OTHER;
                 }
@@ -333,21 +316,6 @@ public class Identify {
     }
 
     public static int getProjectType(String path) throws IOException {
-//        if (path.startsWith("customize")) {
-//            path = path.substring(path.indexOf("/") + 1, path.indexOf("/", path.indexOf("/") + 1));
-//        } else {
-//            return zipType;
-//        }
-//        switch (path) {
-//            case "rom":
-//                return ProjectNode.PROJECT_ROM;
-//            case "gapps":
-//                return ProjectNode.PROJECT_GAPPS;
-//            case "aroma":
-                return ProjectNode.PROJECT_AROMA;
-//            case "normal":
-//                return ProjectNode.PROJECT_NORMAL;
-//        }
-//        return -1;
+        return ProjectNode.PROJECT_AROMA;
     }
 }
