@@ -157,30 +157,30 @@ public class XmlOperations {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         try {
             Document genDoc = dBuilder.parse(new InputSource(new StringReader(data)));
-            NodeList romList = genDoc.getElementsByTagName("Rom");
-            for (int i = 0; i < romList.getLength(); i++) {
-                Node romNode = romList.item(i);
-                if (romNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) romNode;
-                    Project.romName = element.getElementsByTagName("RName").item(0).getTextContent();
-                    Project.romVersion = element.getElementsByTagName("RVersion").item(0).getTextContent();
-                    Project.romAuthor = element.getElementsByTagName("RAuthor").item(0).getTextContent();
-                    Project.romDevice = element.getElementsByTagName("RDevice").item(0).getTextContent();
-                    Project.romDate = element.getElementsByTagName("RDate").item(0).getTextContent();
-                }
-            }
-
-            NodeList gappsList = genDoc.getElementsByTagName("Gapps");
-            for (int i = 0; i < gappsList.getLength(); i++) {
-                Node gappsNode = gappsList.item(i);
-                if (gappsNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) gappsNode;
-                    Project.gappsName = element.getElementsByTagName("GName").item(0).getTextContent();
-                    Project.gappsType = element.getElementsByTagName("GType").item(0).getTextContent();
-                    Project.gappsDate = element.getElementsByTagName("GDate").item(0).getTextContent();
-                    Project.androidVersion = element.getElementsByTagName("GAndroidVersion").item(0).getTextContent();
-                }
-            }
+//            NodeList romList = genDoc.getElementsByTagName("Rom");
+//            for (int i = 0; i < romList.getLength(); i++) {
+//                Node romNode = romList.item(i);
+//                if (romNode.getNodeType() == Node.ELEMENT_NODE) {
+//                    Element element = (Element) romNode;
+//                    Project.romName = element.getElementsByTagName("RName").item(0).getTextContent();
+//                    Project.romVersion = element.getElementsByTagName("RVersion").item(0).getTextContent();
+//                    Project.romAuthor = element.getElementsByTagName("RAuthor").item(0).getTextContent();
+//                    Project.romDevice = element.getElementsByTagName("RDevice").item(0).getTextContent();
+//                    Project.romDate = element.getElementsByTagName("RDate").item(0).getTextContent();
+//                }
+//            }
+//
+//            NodeList gappsList = genDoc.getElementsByTagName("Gapps");
+//            for (int i = 0; i < gappsList.getLength(); i++) {
+//                Node gappsNode = gappsList.item(i);
+//                if (gappsNode.getNodeType() == Node.ELEMENT_NODE) {
+//                    Element element = (Element) gappsNode;
+//                    Project.gappsName = element.getElementsByTagName("GName").item(0).getTextContent();
+//                    Project.gappsType = element.getElementsByTagName("GType").item(0).getTextContent();
+//                    Project.gappsDate = element.getElementsByTagName("GDate").item(0).getTextContent();
+//                    Project.androidVersion = element.getElementsByTagName("GAndroidVersion").item(0).getTextContent();
+//                }
+//            }
 
             NodeList modList = genDoc.getElementsByTagName("Mod");
             for (int i = 0; i < modList.getLength(); i++) {
@@ -206,7 +206,7 @@ public class XmlOperations {
 
     //following will create file objects of delete file group.
     public void parseXML(String original, ProjectItemNode rootNode, DefaultTreeModel model) throws ParserConfigurationException, SAXException, IOException {
-        TreeOperations to = new TreeOperations(rootNode);
+        TreeOperations to = new TreeOperations();
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document genDoc = dBuilder.parse(new InputSource(new StringReader(original)));
@@ -220,7 +220,7 @@ public class XmlOperations {
                             element.getElementsByTagName("GroupName").item(0).getTextContent(),
                             Integer.parseInt(element.getElementsByTagName("GroupType").item(0).getTextContent()),
                             element.getElementsByTagName("ProjectName").item(0).getTextContent(),
-                            Integer.parseInt(element.getElementsByTagName("ProjectType").item(0).getTextContent()), rootNode, model);
+                            Integer.parseInt(element.getElementsByTagName("ProjectType").item(0).getTextContent()));
                 }
             }
         }
@@ -228,7 +228,7 @@ public class XmlOperations {
 
     //following is to set description of files.
     public void parseDataXML(ProjectItemNode rootNode, String data) throws SAXException, IOException, ParserConfigurationException {
-        TreeOperations to = new TreeOperations(rootNode);
+        TreeOperations to = new TreeOperations();
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document genDoc = dBuilder.parse(new InputSource(new StringReader(data)));
@@ -258,7 +258,7 @@ public class XmlOperations {
 
     //following is to set values of custom group.
     public void parseGeneratedXML(ProjectItemNode rootNode, String generated, String original) throws ParserConfigurationException, SAXException, IOException {
-        TreeOperations to = new TreeOperations(rootNode);
+        TreeOperations to = new TreeOperations();
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document genDoc = dBuilder.parse(new InputSource(new StringReader(generated)));

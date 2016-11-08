@@ -28,19 +28,19 @@ public class Jar {
     public static void addThemesToTree() throws IOException {
         ProjectItemNode rootNode = MyTree.rootNode;
         DefaultTreeModel model = MyTree.model;
-        to = new TreeOperations(rootNode);
+        to = new TreeOperations();
         String projectName = "Themes";
         int projectType = ProjectNode.PROJECT_THEMES;
         if (to.getProjectNode(projectName, projectType) == null) {
-            to.addChildTo(rootNode, projectName, projectType, model);
+            to.addChildTo(rootNode, projectName, projectType);
         }
         //JarOperations.setJarFileList();//comment out this if already called in main thread.
         for (String theme : JarOperations.themesList) {
-            to.addChildTo(to.getProjectNode(projectName, projectType), theme, GroupNode.GROUP_AROMA_THEMES, model);
+            to.addChildTo(to.getProjectNode(projectName, projectType), theme, GroupNode.GROUP_AROMA_THEMES);
             String themePath = "META-INF/com/google/android/aroma/themes/" + theme + "/";
             for (String themesPath : JarOperations.themesFileList) {
                 if (themesPath.contains(themePath)) {
-                    to.addChildTo(to.getGroupNode(theme, GroupNode.GROUP_AROMA_THEMES, projectName), themesPath, ProjectItemNode.NODE_FILE, model);
+                    to.addChildTo(to.getGroupNode(theme, GroupNode.GROUP_AROMA_THEMES, projectName), themesPath, ProjectItemNode.NODE_FILE);
                 }
             }
         }

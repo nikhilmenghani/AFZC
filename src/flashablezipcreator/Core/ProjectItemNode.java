@@ -12,6 +12,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import static flashablezipcreator.AFZC.Protocols.show;
+import flashablezipcreator.MyTree;
 import java.io.File;
 
 /**
@@ -28,13 +29,15 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
     //Using vector is better than ArrayList here
     public Vector<ProjectItemNode> children = new Vector<ProjectItemNode>();
     public ProjectItemNode parent;
+    public DefaultTreeModel model;
 
     //Constants for types of node
     public static final int NODE_ROOT = 0;
     public static final int NODE_PROJECT = 1;
     public static final int NODE_GROUP = 2;
     public static final int NODE_SUBGROUP = 3;
-    public static final int NODE_FILE = 4;
+    public static final int NODE_FOLDER = 4;
+    public static final int NODE_FILE = 5;
 
     //not required yet
     public ProjectItemNode(String title) {
@@ -56,28 +59,28 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
         setParent(parent);
     }
 
+//    public void addChild(ProjectItemNode child) {
+//        children.add(child);
+//    }
+
     public void addChild(ProjectItemNode child) {
         children.add(child);
+        MyTree.model.reload(this);
     }
 
-    public void addChild(ProjectItemNode child, DefaultTreeModel model) {
-        children.add(child);
-        model.reload(this);
-    }
+//    public void removeChild(ProjectItemNode child) {
+//        children.remove(child);
+//    }
 
     public void removeChild(ProjectItemNode child) {
         children.remove(child);
-    }
-
-    public void removeChild(ProjectItemNode child, DefaultTreeModel model) {
-        children.remove(child);
-        model.reload(this);
+        MyTree.model.reload(this);
     }
 
     //should be used this when we want to remove by child object
-    public void removeMe(DefaultTreeModel model) {
+    public void removeMe() {
         parent.children.remove(this);
-        model.reload(parent);
+        MyTree.model.reload(parent);
     }
 
     public void setParent(ProjectItemNode parent) {

@@ -27,23 +27,15 @@ public class ProjectMouseAdapter extends MouseAdapter {
         javax.swing.JTree myTree = (javax.swing.JTree) e.getSource();
 
         TreePath[] paths = myTree.getSelectionPaths();
-        //myTree.setCellEditor(new MyCellEditor());
-        //for (TreePath path : paths) {
-            //show("You've selected: " + path.getLastPathComponent());
-        //}
-
-        popup = MyPopup.getPopup(paths, myTree, (DefaultTreeModel) myTree.getModel());
-
-//        ProjectItemNode node = (ProjectItemNode) myTree.getLastSelectedPathComponent();
-//        if (node == null) {
-//            return;
-//        }
-        popup.show(myTree, e.getX(), e.getY());
+        if (paths != null) {
+            popup = MyPopup.getPopup(paths, myTree);
+            popup.show(myTree, e.getX(), e.getY());
+        }
     }
 
     public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger()) {
-            myPopupEvent(e);
+            //myPopupEvent(e);
         }
     }
 

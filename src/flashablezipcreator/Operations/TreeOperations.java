@@ -14,7 +14,6 @@ import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.MyTree;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -33,26 +32,24 @@ public class TreeOperations {
     ArrayList<String> repeatList = new ArrayList<>();//for files that have same names and different location in zip.
 
     ProjectItemNode rootNode;
-
-    public TreeOperations(ProjectItemNode rootNode) {
-        this.rootNode = rootNode;
-    }
+    DefaultTreeModel model;
     
     public TreeOperations(){
         this.rootNode = MyTree.rootNode;
+        this.model = MyTree.model;
     }
 
-    public void addChildTo(ProjectItemNode node, String childTitle, int childType, DefaultTreeModel model) {
+    public void addChildTo(ProjectItemNode parent, String childTitle, int childType) {
 
-        switch (node.type) {
+        switch (parent.type) {
             case ProjectItemNode.NODE_ROOT:
-                node.addChild(new ProjectNode(childTitle, childType, node), model);
+                parent.addChild(new ProjectNode(childTitle, childType, parent));
                 break;
             case ProjectItemNode.NODE_PROJECT:
-                node.addChild(new GroupNode(childTitle, childType, (ProjectNode) node), model);
+                parent.addChild(new GroupNode(childTitle, childType, (ProjectNode) parent));
                 break;
             case ProjectItemNode.NODE_GROUP:
-                switch (((GroupNode) node).groupType) {
+                switch (((GroupNode) parent).groupType) {
                     //Group of predefined locations
                     case GroupNode.GROUP_SYSTEM_APK:
                     case GroupNode.GROUP_SYSTEM_PRIV_APK:
@@ -66,7 +63,7 @@ public class TreeOperations {
                     case GroupNode.GROUP_DELETE_FILES:
                     case GroupNode.GROUP_SCRIPT:
                         if (childType == ProjectItemNode.NODE_FILE) {
-                            node.addChild(new FileNode(childTitle, (GroupNode) node), model);
+                            parent.addChild(new FileNode(childTitle, (GroupNode) parent));
                         } else {
                             System.out.println("You cannot add subgroup for this type..!!");
                         }
@@ -79,7 +76,7 @@ public class TreeOperations {
                             case SubGroupNode.TYPE_SYSTEM_FONTS:
                             case SubGroupNode.TYPE_SYSTEM_MEDIA:
                             case SubGroupNode.TYPE_DATA_LOCAL:
-                                node.addChild(new SubGroupNode(childTitle, childType, (GroupNode) node), model);
+                                parent.addChild(new SubGroupNode(childTitle, childType, (GroupNode) parent));
                                 break;
                             case ProjectItemNode.NODE_FILE:
                                 System.out.println("You cannot add files for this type..!!\nadd a subgroup and then files to it..!!");
@@ -89,7 +86,7 @@ public class TreeOperations {
                     //Group of custom location.
                     case GroupNode.GROUP_CUSTOM:
                         if (childType == SubGroupNode.TYPE_CUSTOM) {
-                            node.addChild(new SubGroupNode(childTitle, childType, (GroupNode) node), model);
+                            parent.addChild(new SubGroupNode(childTitle, childType, (GroupNode) parent));
                         }
                         break;
                     //here File Node can also act as child but due to different requirements of parameters,
@@ -97,13 +94,13 @@ public class TreeOperations {
                 }
                 break;
             case ProjectItemNode.NODE_SUBGROUP:
-                System.out.println(node.title);
-                System.out.println(node.type);
-                switch (((SubGroupNode) node).subGroupType) {
+                System.out.println(parent.title);
+                System.out.println(parent.type);
+                switch (((SubGroupNode) parent).subGroupType) {
                     case SubGroupNode.TYPE_SYSTEM_FONTS:
                     case SubGroupNode.TYPE_SYSTEM_MEDIA:
                     case SubGroupNode.TYPE_DATA_LOCAL:
-                        node.addChild(new FileNode(childTitle, (SubGroupNode) node), model);
+                        parent.addChild(new FileNode(childTitle, (SubGroupNode) parent));
                         break;
                 }
             default:
@@ -111,11 +108,11 @@ public class TreeOperations {
         }
     }
 
-    public void addChildTo(ProjectItemNode node, String childTitle, String installLocation, String permission, DefaultTreeModel model) {
-        if ((node.type == ProjectItemNode.NODE_GROUP && ((GroupNode) node).groupType == GroupNode.GROUP_CUSTOM)) {
-            node.addChild(new FileNode(childTitle, installLocation, permission, (GroupNode) node), model);
-        } else if ((node.type == ProjectItemNode.NODE_SUBGROUP && ((SubGroupNode) node).subGroupType == SubGroupNode.TYPE_CUSTOM)) {
-            node.addChild(new FileNode(childTitle, installLocation, permission, (SubGroupNode) node), model);
+    public void addChildTo(ProjectItemNode parent, String childTitle, String installLocation, String permission) {
+        if ((parent.type == ProjectItemNode.NODE_GROUP && ((GroupNode) parent).groupType == GroupNode.GROUP_CUSTOM)) {
+            parent.addChild(new FileNode(childTitle, installLocation, permission, (GroupNode) parent));
+        } else if ((parent.type == ProjectItemNode.NODE_SUBGROUP && ((SubGroupNode) parent).subGroupType == SubGroupNode.TYPE_CUSTOM)) {
+            parent.addChild(new FileNode(childTitle, installLocation, permission, (SubGroupNode) parent));
         }
     }
 
@@ -148,36 +145,36 @@ public class TreeOperations {
     }
 
     public void removeNode(ProjectItemNode node, DefaultTreeModel model) {
-        node.removeMe(model);
+        node.removeMe();
     }
 
     public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, String projectName, int projectType,
             ProjectItemNode rootNode, DefaultTreeModel model) {
         if (getProjectNode(projectName, projectType) == null) {
-            addChildTo(rootNode, projectName, projectType, model);
+            addChildTo(rootNode, projectName, projectType);
             System.out.println("Added project " + projectName + " project type " + projectType);
         }
         if (getGroupNode(groupName, groupType, projectName) == null) {
-            addChildTo(getProjectNode(projectName, projectType), groupName, groupType, model);
+            addChildTo(getProjectNode(projectName, projectType), groupName, groupType);
         }
         if (getSubGroupNode(subGroupName, groupType, groupName, projectName) == null) {
-            addChildTo(getGroupNode(groupName, groupType, projectName), subGroupName, subGroupType, model);
+            addChildTo(getGroupNode(groupName, groupType, projectName), subGroupName, subGroupType);
         }
         if (subGroupType == SubGroupNode.TYPE_CUSTOM) {
-            addChildTo(getSubGroupNode(subGroupName, subGroupType, groupName, projectName), fileName, "", "", model);
+            addChildTo(getSubGroupNode(subGroupName, subGroupType, groupName, projectName), fileName, "", "");
         } else {
-            addChildTo(getSubGroupNode(subGroupName, subGroupType, groupName, projectName), fileName, ProjectItemNode.NODE_FILE, model);
+            addChildTo(getSubGroupNode(subGroupName, subGroupType, groupName, projectName), fileName, ProjectItemNode.NODE_FILE);
         }
         return getFileNode(fileName, subGroupName, groupName, projectName);
     }
 
-    public FileNode addFileToTree(String fileName, String groupName, int groupType, String projectName, int projectType, ProjectItemNode rootNode, DefaultTreeModel model) {
+    public FileNode addFileToTree(String fileName, String groupName, int groupType, String projectName, int projectType) {
         if (getProjectNode(projectName, projectType) == null) {
-            addChildTo(rootNode, projectName, projectType, model);
+            addChildTo(rootNode, projectName, projectType);
             System.out.println("Added project " + projectName + " project type " + projectType);
         }
         if (getGroupNode(groupName, groupType, projectName) == null) {
-            addChildTo(getProjectNode(projectName, projectType), groupName, groupType, model);
+            addChildTo(getProjectNode(projectName, projectType), groupName, groupType);
         }
         if (getFileNode(fileName, groupName, projectName) != null) {
             if (groupType == GroupNode.GROUP_OTHER) {
@@ -186,9 +183,9 @@ public class TreeOperations {
             }
         }
         if (groupType == GroupNode.GROUP_CUSTOM) {
-            addChildTo(getGroupNode(groupName, groupType, projectName), fileName, "", "", model);
+            addChildTo(getGroupNode(groupName, groupType, projectName), fileName, "", "");
         } else {
-            addChildTo(getGroupNode(groupName, groupType, projectName), fileName, ProjectItemNode.NODE_FILE, model);
+            addChildTo(getGroupNode(groupName, groupType, projectName), fileName, ProjectItemNode.NODE_FILE);
         }
         return getFileNode(fileName, groupName, projectName);
     }

@@ -21,17 +21,18 @@ public class Project {
     public static int aromaCount = 0;
     public static int normalCount = 0;
     public static String outputPath = "Output.zip";
-    public static String romName = "I Don't Know Rom";
-    public static String romVersion = "I Don't Know Version";
-    public static String romAuthor = "I Don't Know Developer";
-    public static String romDevice = "I Don't Know Device";
-    public static String romDate = "I Don't Know Date";
-    public static String gappsName = "I Don't Know Name";
-    public static String androidVersion = "I Don't Know Version";
-    public static String gappsType = "I Don't Know Type";
-    public static String gappsDate = "I Don't Know Date";
-    public static String releaseVersion = "I Don't Know Version";
+//    public static String romName = "I Don't Know Rom";
+//    public static String romVersion = "I Don't Know Version";
+//    public static String romAuthor = "I Don't Know Developer";
+//    public static String romDevice = "I Don't Know Device";
+//    public static String romDate = "I Don't Know Date";
+//    public static String gappsName = "I Don't Know Name";
+    public static String androidVersion = "6.x+";
+//    public static String gappsType = "I Don't Know Type";
+//    public static String gappsDate = "I Don't Know Date";
+    public static String releaseVersion = "1.0";
     public static String zipCreator = "Nikhil";
+    public static boolean LStructure = true;
 
     static TreeOperations to;
 

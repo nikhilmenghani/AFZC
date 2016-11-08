@@ -9,6 +9,7 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
+import flashablezipcreator.MyTree;
 import flashablezipcreator.Operations.TreeOperations;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -35,7 +36,6 @@ public class AddName extends javax.swing.JFrame {
     ProjectNode pNode;
     GroupNode gNode;
     ProjectItemNode rNode;
-    DefaultTreeModel model;
     String location;
     String extension;
 
@@ -45,15 +45,13 @@ public class AddName extends javax.swing.JFrame {
 
     }
 
-    public AddName(String projectType, int type, ProjectItemNode node, DefaultTreeModel model) {
+    public AddName(String projectType, int type, ProjectItemNode node) {
         this.rNode = node;
         this.projectType = type;
-        this.model = model;
         initProjectComponents();
     }
 
-    public AddName(String location, int type, String extension, boolean isSelectBox, ProjectItemNode node, DefaultTreeModel model) {
-        this.model = model;
+    public AddName(String location, int type, String extension, boolean isSelectBox, ProjectItemNode node) {
         txtLocation.setText(location);
         txtLocation.setEditable(false);
         txtExtension.setEditable(false);
@@ -486,11 +484,11 @@ public class AddName extends javax.swing.JFrame {
         String projectName = txtProjectName.getText();
         if (!name.equals("") || !projectName.equals("")) {
             if (this.subGroupType != -1) {
-                gNode.addChild(new SubGroupNode(name, this.subGroupType, gNode), model);
+                gNode.addChild(new SubGroupNode(name, this.subGroupType, gNode));
             } else if (this.groupType != -1) {
-                pNode.addChild(new GroupNode(name, this.groupType, pNode), model);
+                pNode.addChild(new GroupNode(name, this.groupType, pNode));
             } else {
-                rNode.addChild(new ProjectNode(projectName, this.projectType, rNode), model);
+                rNode.addChild(new ProjectNode(projectName, this.projectType, rNode));
             }
             dialog.dispose();
         } else {

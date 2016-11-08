@@ -68,7 +68,7 @@ public class Import implements Runnable {
         Xml.initialize();
 
         rz = new ReadZip(path);
-        to = new TreeOperations(rootNode);
+        to = new TreeOperations();
         int maxSize = rz.filesCount;
         int fileIndex = 0;
         for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
@@ -156,7 +156,7 @@ public class Import implements Runnable {
                     containsDataXml = true;
                     continue;
                 }
-                file = to.addFileToTree(fileName, groupName, groupType, projectName, projectType, rootNode, model);
+                file = to.addFileToTree(fileName, groupName, groupType, projectName, projectType);
                 if (groupType == GroupNode.GROUP_OTHER) {
                     file.fileZipPath = filePath;
                 } else if (groupType == GroupNode.GROUP_CUSTOM) {

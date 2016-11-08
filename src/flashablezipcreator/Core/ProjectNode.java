@@ -21,15 +21,15 @@ public class ProjectNode extends ProjectItemNode {
     public String aroma_config = "";
     public byte[] update_binary = null;
     public byte[] update_binary_installer = null;
-    public String romName = Project.romName;
-    public String romVersion = Project.romVersion;
-    public String romAuthor = Project.romAuthor;
-    public String romDevice = Project.romDevice;
-    public String romDate = Project.romDate;
-    public String gappsName = Project.gappsName;
+//    public String romName = Project.romName;
+//    public String romVersion = Project.romVersion;
+//    public String romAuthor = Project.romAuthor;
+//    public String romDevice = Project.romDevice;
+//    public String romDate = Project.romDate;
+//    public String gappsName = Project.gappsName;
     public String androidVersion = Project.androidVersion;
-    public String gappsType = Project.gappsType;
-    public String gappsDate = Project.gappsDate;
+//    public String gappsType = Project.gappsType;
+//    public String gappsDate = Project.gappsDate;
     public String releaseVersion = Project.releaseVersion;
 
     //public static final int PROJECT_NORMAL = 1;

@@ -74,7 +74,7 @@ public class JTree extends JFrame implements TreeSelectionListener {
         SP_tree = ProjectTreeBuilder.buildScrollPane();
         tree.addTreeSelectionListener(this);
         rootNode = ProjectTreeBuilder.rootNode;
-        this.to = new TreeOperations(rootNode);
+        this.to = new TreeOperations();
         uso = new UpdaterScriptOperations();
 
         tree.setEditable(true);

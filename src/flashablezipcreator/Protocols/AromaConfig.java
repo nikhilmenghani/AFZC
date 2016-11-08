@@ -24,7 +24,7 @@ public class AromaConfig {
 
     public static String build(ProjectItemNode rootNode) {
         aromaConfig = "";
-        to = new TreeOperations(rootNode);
+        to = new TreeOperations();
         aromaConfig += op.addSplashString();
         aromaConfig += op.addFontsString();
         aromaConfig += op.addThemesString(rootNode);

@@ -26,7 +26,7 @@ public class UpdaterScript {
 
     public static String build(ProjectItemNode rootNode) {
         updaterScript = "";
-        to = new TreeOperations(rootNode);
+        to = new TreeOperations();
         updaterScript += op.initiateUpdaterScript();
         for (ProjectItemNode project : to.getProjectsSorted(rootNode)) {
             if (((ProjectNode) project).createZip) {

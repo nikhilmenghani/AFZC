@@ -51,7 +51,7 @@ public class Export implements Runnable {
     public static void zip() throws IOException, ParserConfigurationException, TransformerException {
         ProjectItemNode rootNode = MyTree.rootNode;
         wz = new WriteZip(Project.outputPath);
-        to = new TreeOperations(rootNode);
+        to = new TreeOperations();
         boolean isCustomGroupPresent = false;
         boolean isDeleteGroupPresent = false;
         int fileIndex = 0;
