@@ -55,6 +55,9 @@ public class MyPopup {
                 case ProjectItemNode.NODE_SUBGROUP:
                     popup = getSubGroupMenu(nodeList);
                     break;
+                case ProjectItemNode.NODE_FOLDER:
+                    popup = getFolderMenu(nodeList);
+                    break;
                 case ProjectItemNode.NODE_FILE:
                     popup = getFileMenu(nodeList);
                     break;
@@ -212,6 +215,10 @@ public class MyPopup {
                     }
                 }
         );
+        JMenuItem mitemAddFolder = new JMenuItem("Add Folder");
+        mitemAddFolder.addActionListener((ActionEvent ae) -> {
+            addName("Folder", "", nodeList.get(0));
+        });
         JMenuItem mitemAddFile = new JMenuItem("Add File(s)");
         mitemAddFile.addActionListener(
                 (ActionEvent ae) -> {
@@ -236,11 +243,14 @@ public class MyPopup {
             switch (((GroupNode) nodeList.get(0)).groupType) {
                 case GroupNode.GROUP_SYSTEM_APK:
                 case GroupNode.GROUP_SYSTEM_PRIV_APK:
+                case GroupNode.GROUP_DATA_APP:
+                    popup.add(mitemAddFolder);
+                    popup.add(mitemAddFile);
+                    break;
                 case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
                 case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
                 case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-                case GroupNode.GROUP_DATA_APP:
                 case GroupNode.GROUP_AROMA_THEMES:
                     popup.add(mitemAddFile);
                     break;
@@ -280,6 +290,29 @@ public class MyPopup {
         popup.add(mitemDeleteSubGroup);
         return popup;
     }
+    
+    public static JPopupMenu getFolderMenu(ArrayList<ProjectItemNode> nodeList){
+        JMenuItem mitemAddFile = new JMenuItem("Add File(s)");
+        mitemAddFile.addActionListener(
+                (ActionEvent ae) -> {
+                    try {
+                        addNode(nodeList);
+                    } catch (NullPointerException npe) {
+
+                    }
+                }
+        );
+        JMenuItem mitemDeleteFolder = new JMenuItem("Delete Folder(s)");
+        mitemDeleteFolder.addActionListener((ActionEvent ae) -> {
+            deleteNode(nodeList);
+        });
+        popup = new JPopupMenu();
+        if (nodeList.size() == 1) {
+            popup.add(mitemAddFile);
+        }
+        popup.add(mitemDeleteFolder);
+        return popup;
+    }
 
     public static JPopupMenu getFileMenu(ArrayList<ProjectItemNode> nodeList) {
         JMenuItem mitemDeleteFile = new JMenuItem("Delete File(s)");
@@ -308,6 +341,12 @@ public class MyPopup {
                     FileNode fnode = new FileNode(tempFile.getAbsolutePath(), (SubGroupNode) nodeList.get(0));
                     //fnode.fileSourcePath = tempFile.getAbsolutePath();
                     ((SubGroupNode) nodeList.get(0)).addChild(fnode);
+                }
+                break;
+            case ProjectNode.NODE_FOLDER:
+                for(File tempFile : MyFileFilter.getSelectedFiles("folder")){
+                    FileNode fnode = new FileNode(tempFile.getAbsolutePath(), (FolderNode) nodeList.get(0));
+                    ((FolderNode) nodeList.get(0)).addChild(fnode);
                 }
                 break;
         }
@@ -376,16 +415,20 @@ public class MyPopup {
         }
         switch (nodeType) {
             case "Group":
-                addGNUI = new AddName(location, groupType, extension, isSelectBox, (ProjectNode) node);
+                addGNUI = new AddName(location, groupType, extension, isSelectBox, node);
                 break;
             case "SubGroup":
-                addGNUI = new AddName(location, groupType, extension, isSelectBox, (GroupNode) node);
+                addGNUI = new AddName(location, groupType, extension, isSelectBox, node);
                 break;
             case "Project":
                 addGNUI = new AddName("Project", ProjectNode.PROJECT_AROMA, node);
                 break;
+            case "Folder":
+                addGNUI = new AddName("Folder", ProjectItemNode.NODE_FOLDER, node);
+                break;
+
             case "Theme":
-                addGNUI = new AddName(nodeType, groupType, extension, isSelectBox, (ProjectNode) node);
+                addGNUI = new AddName(nodeType, groupType, extension, isSelectBox, node);
                 break;
         }
 

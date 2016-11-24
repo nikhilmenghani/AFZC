@@ -27,25 +27,52 @@ public class FileNode extends ProjectItemNode {
     public String filePermission = "";
     public String description = "";
     public String fileZipPath = "";
+    public String projectName;
+    public String originalGroupType;
 
     public FileNode(String fileSourcePath, GroupNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
+        File file = new File(fileSourcePath);
         this.installLocation = parent.getLocation();
-        setPermissions(parent);
-        super.path = parent.path + File.separator + (new File(fileSourcePath)).getName();
+        setPermissions(parent.permission, title);
+        super.path = parent.path + File.separator + file.getName();
         //this.fileDestPath = parent.path + File.separator + (new File(fileSourcePath)).getName();
         //this.fileSourcePath = this.fileDestPath;
-        this.fileSourcePath = (new File(fileSourcePath)).getAbsolutePath();
+        this.fileSourcePath = file.getAbsolutePath();
+        this.projectName = parent.projectName;
+        this.originalGroupType = parent.originalGroupType;
         fileZipPath = getZipPath();
     }
 
     public FileNode(String fileSourcePath, SubGroupNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
+        File file = new File(fileSourcePath);
         this.installLocation = parent.getLocation();
-        setPermissions(parent);
-        super.path = parent.path + File.separator + (new File(fileSourcePath)).getName();
+        if (parent.isBootAnimationGroup) {
+            setPermissions(parent.permission, "bootanimation.zip");
+        } else {
+            setPermissions(parent.permission, title);
+        }
+        super.path = parent.path + File.separator + file.getName();
         this.fileSourcePath = fileSourcePath;
         //this.fileDestPath = parent.path + File.separator + (new File(fileSourcePath)).getName();
+        this.projectName = parent.projectName;
+        this.originalGroupType = parent.originalGroupType;
+        fileZipPath = getZipPath();
+    }
+
+    public FileNode(String fileSourcePath, FolderNode parent) {
+        super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
+        this.installLocation = parent.getLocation();
+        if (parent.isBootAnimationGroup) {
+            setPermissions(parent.permission, "bootanimation.zip");
+        } else {
+            setPermissions(parent.permission, title);
+        }
+        super.path = parent.path + File.separator + (new File(fileSourcePath)).getName();
+        this.fileSourcePath = fileSourcePath;
+        this.projectName = parent.projectName;
+        this.originalGroupType = parent.originalGroupType;
         fileZipPath = getZipPath();
     }
 
@@ -61,37 +88,6 @@ public class FileNode extends ProjectItemNode {
         fileZipPath = getZipPath();
     }
 
-    public void setPermissions(GroupNode parent) {
-        switch (parent.groupType) {
-            case GroupNode.GROUP_SYSTEM_APK:
-            case GroupNode.GROUP_SYSTEM_PRIV_APK:
-                setPermissions("0", "0", "0644", parent.location + "/" + title);
-                break;
-            case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-            case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-            case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-            case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-            case GroupNode.GROUP_DATA_APP:
-                setPermissions("1000", "1000", "0644", parent.location + "/" + title);
-                break;
-
-        }
-    }
-
-    public void setPermissions(SubGroupNode parent) {
-        switch (parent.subGroupType) {
-            case SubGroupNode.TYPE_SYSTEM_FONTS:
-                setPermissions("1000", "1000", "0644", parent.location + "/" + title);
-                break;
-            case SubGroupNode.TYPE_SYSTEM_MEDIA:
-                setPermissions("1000", "1000", "0644", parent.location + "/" + "bootanimation.zip");
-                break;
-            case SubGroupNode.TYPE_DATA_LOCAL:
-                setPermissions("0", "0", "0777", parent.location + "/" + "bootanimation.zip");
-                break;
-        }
-    }
-
     //this will generate a path that will be used as destination path of file in output zip.
     public final String getZipPath() {
         String str = "";
@@ -100,75 +96,8 @@ public class FileNode extends ProjectItemNode {
         //System.out.println("String before : " + str);
         str = str.substring(str.indexOf(File.separator) + 1, str.length());
         str = str.substring(str.indexOf(File.separator) + 1, str.length());
-        switch (parent.type) {
-            case ProjectItemNode.NODE_GROUP:
-                switch (((GroupNode) parent).groupType) {
-                    case GroupNode.GROUP_SYSTEM_APK:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_app" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_SYSTEM_PRIV_APK:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_priv_app" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_media_alarms" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_media_notifications" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_media_ringtones" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "system_media_ui" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_DATA_APP:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "data_app" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_CUSTOM:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "custom" + File.separator + str;
-                        break;
-                    case GroupNode.GROUP_AROMA_THEMES:
-                        //return this.fileDestPath.replaceAll("\\\\", "/");
-                        return super.path.replaceAll("\\\\", "/");
-                    case GroupNode.GROUP_DELETE_FILES:
-                        //Export.java will handle
-                        break;
-                    case GroupNode.GROUP_SCRIPT:
-                        str = getProjectType((ProjectNode) parent.parent) + File.separator + ((ProjectNode) parent.parent).title + File.separator
-                                + "script" + File.separator + str;
-                        break;
-                    //case GroupNode.GROUP_OTHER not needed and
-                }
-                break;
-            case ProjectItemNode.NODE_SUBGROUP:
-                switch (((SubGroupNode) parent).subGroupType) {
-                    case SubGroupNode.TYPE_SYSTEM_FONTS:
-                        str = getProjectType((ProjectNode) parent.parent.parent) + File.separator + ((ProjectNode) parent.parent.parent).title + File.separator
-                                + "system_fonts" + File.separator + str;
-                        break;
-                    case SubGroupNode.TYPE_SYSTEM_MEDIA:
-                        str = getProjectType((ProjectNode) parent.parent.parent) + File.separator + ((ProjectNode) parent.parent.parent).title + File.separator
-                                + "system_media" + File.separator + str;
-                        break;
-                    case SubGroupNode.TYPE_DATA_LOCAL:
-                        str = getProjectType((ProjectNode) parent.parent.parent) + File.separator + ((ProjectNode) parent.parent.parent).title + File.separator
-                                + "data_local" + File.separator + str;
-                        break;
-                    case SubGroupNode.TYPE_CUSTOM:
-                        str = getProjectType((ProjectNode) parent.parent.parent) + File.separator + ((ProjectNode) parent.parent.parent).title + File.separator
-                                + "custom" + File.separator + str;
-                        break;
-                }
-                break;
-        }
+        str = "aroma" + File.separator + this.projectName + File.separator
+                + this.originalGroupType + File.separator + str;
         str = "customize" + File.separator + str;
         //System.out.println("String after : " + str);
         str = str.replaceAll("\\\\", "/");
@@ -179,8 +108,8 @@ public class FileNode extends ProjectItemNode {
         return ((GroupNode) parent).getLocation() + "/" + title;
     }
 
-    public void setPermissions(String i, String j, String k, String path) {
-        this.filePermission = i + ", " + j + ", " + k + ", \"" + path + "\"";
+    public void setPermissions(String parentPermission, String title) {
+        this.filePermission = parentPermission + title + "\"";
     }
 
     public String getProjectType(ProjectNode project) {

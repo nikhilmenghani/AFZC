@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.UserInterface;
 
+import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
@@ -36,8 +37,13 @@ public class AddName extends javax.swing.JFrame {
     ProjectNode pNode;
     GroupNode gNode;
     ProjectItemNode rNode;
+    FolderNode fNode;
+    SubGroupNode sNode;
     String location;
     String extension;
+    String projectLabelTitle;
+    String projectDialogTitle;
+    String projectHeaderTitle;
 
     TreeOperations to = new TreeOperations();
 
@@ -45,13 +51,29 @@ public class AddName extends javax.swing.JFrame {
 
     }
 
-    public AddName(String projectType, int type, ProjectItemNode node) {
-        this.rNode = node;
-        this.projectType = type;
+    public AddName(String nodeType, int type, ProjectItemNode parent) {
+        switch (parent.type) {
+            case ProjectItemNode.NODE_ROOT:
+                this.rNode = parent;
+                this.projectType = type;
+                break;
+            case ProjectItemNode.NODE_GROUP:
+                gNode = (GroupNode) parent;
+                break;
+            case ProjectItemNode.NODE_SUBGROUP:
+                sNode = (SubGroupNode) parent;
+                break;
+            case ProjectItemNode.NODE_FOLDER:
+                fNode = (FolderNode) parent;
+                break;
+        }
+        this.projectDialogTitle = "Add " + nodeType + " Name";
+        this.projectHeaderTitle = "   Add " + nodeType + "";
+        this.projectLabelTitle = "" + nodeType + " Name ";
         initProjectComponents();
     }
 
-    public AddName(String location, int type, String extension, boolean isSelectBox, ProjectItemNode node) {
+    public AddName(String location, int type, String extension, boolean isSelectBox, ProjectItemNode parent) {
         txtLocation.setText(location);
         txtLocation.setEditable(false);
         txtExtension.setEditable(false);
@@ -62,10 +84,10 @@ public class AddName extends javax.swing.JFrame {
             rbCheck.setSelected(true);
         } else {
             rbRadio.setSelected(true);
-        }                
-        switch (node.type) {
+        }
+        switch (parent.type) {
             case ProjectItemNode.NODE_PROJECT:
-                this.pNode = (ProjectNode) node;
+                this.pNode = (ProjectNode) parent;
                 if (pNode.projectType == ProjectNode.PROJECT_THEMES) {
                     lblHeader.setText("   Add Theme");
                     lblGroupName.setText("Theme Name");
@@ -81,11 +103,11 @@ public class AddName extends javax.swing.JFrame {
                 lblHeader.setText("   Add SubGroup");
                 lblGroupName.setText("SubGroup Name");
                 this.subGroupType = type;
-                this.gNode = (GroupNode) node;
+                this.gNode = (GroupNode) parent;
                 panelHeader.setBackground(new java.awt.Color(96, 125, 139));
                 break;
         }
-        if(location.equals("kernel")){
+        if (location.equals("kernel")) {
             txtLocation.setText("");
             txtLocation.setEditable(true);
         }
@@ -101,7 +123,7 @@ public class AddName extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code"> 
 
     private void initProjectComponents() {
-        dialog = new JDialog(this, "Add Project Name", true);
+        dialog = new JDialog(this, this.projectDialogTitle, true);
         dialog.setResizable(false);
         panelAddProjectName = new javax.swing.JPanel();
         panelHeader = new javax.swing.JPanel();
@@ -121,42 +143,42 @@ public class AddName extends javax.swing.JFrame {
 
         lblHeader.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(255, 255, 255));
-        lblHeader.setText("   Add Project");
+        lblHeader.setText(this.projectHeaderTitle);
 
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
-            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelHeaderLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelHeaderLayout.setVerticalGroup(
-            panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblHeader, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(lblHeader, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         panelLeft.setBackground(new java.awt.Color(255, 255, 255));
 
         lblProjectName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        lblProjectName.setText("Project Name ");
+        lblProjectName.setText(this.projectLabelTitle);
 
         javax.swing.GroupLayout panelLeftLayout = new javax.swing.GroupLayout(panelLeft);
         panelLeft.setLayout(panelLeftLayout);
         panelLeftLayout.setHorizontalGroup(
-            panelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLeftLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblProjectName, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                panelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelLeftLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblProjectName, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelLeftLayout.setVerticalGroup(
-            panelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelLeftLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(lblProjectName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                panelLeftLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelLeftLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(lblProjectName, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelRight.setBackground(new java.awt.Color(255, 255, 255));
@@ -166,18 +188,18 @@ public class AddName extends javax.swing.JFrame {
         javax.swing.GroupLayout panelRightLayout = new javax.swing.GroupLayout(panelRight);
         panelRight.setLayout(panelRightLayout);
         panelRightLayout.setHorizontalGroup(
-            panelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRightLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtProjectName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                panelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelRightLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(txtProjectName, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(18, Short.MAX_VALUE))
         );
         panelRightLayout.setVerticalGroup(
-            panelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelRightLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(txtProjectName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                panelRightLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelRightLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(txtProjectName, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelBottom.setBackground(new java.awt.Color(255, 255, 255));
@@ -191,56 +213,56 @@ public class AddName extends javax.swing.JFrame {
         javax.swing.GroupLayout panelBottomLayout = new javax.swing.GroupLayout(panelBottom);
         panelBottom.setLayout(panelBottomLayout);
         panelBottomLayout.setHorizontalGroup(
-            panelBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBottomLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                panelBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBottomLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
         );
         panelBottomLayout.setVerticalGroup(
-            panelBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBottomLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                panelBottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelBottomLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelAddProjectNameLayout = new javax.swing.GroupLayout(panelAddProjectName);
         panelAddProjectName.setLayout(panelAddProjectNameLayout);
         panelAddProjectNameLayout.setHorizontalGroup(
-            panelAddProjectNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(panelAddProjectNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                .addComponent(panelBottom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAddProjectNameLayout.createSequentialGroup()
-                    .addComponent(panelLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(panelRight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                panelAddProjectNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelAddProjectNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(panelBottom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelAddProjectNameLayout.createSequentialGroup()
+                                .addComponent(panelLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panelRight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
         panelAddProjectNameLayout.setVerticalGroup(
-            panelAddProjectNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelAddProjectNameLayout.createSequentialGroup()
-                .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelAddProjectNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelRight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelBottom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                panelAddProjectNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelAddProjectNameLayout.createSequentialGroup()
+                        .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelAddProjectNameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(panelLeft, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(panelRight, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelBottom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelAddProjectName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(panelAddProjectName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(panelAddProjectName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, 0)
+                        .addComponent(panelAddProjectName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -482,13 +504,26 @@ public class AddName extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
         String name = txtGroupName.getText();
         String projectName = txtProjectName.getText();
-        if (!name.equals("") || !projectName.equals("")) {
-            if (this.subGroupType != -1) {
-                gNode.addChild(new SubGroupNode(name, this.subGroupType, gNode));
-            } else if (this.groupType != -1) {
-                pNode.addChild(new GroupNode(name, this.groupType, pNode));
-            } else {
+        if (!projectName.equals("")) {
+            if (this.rNode != null) {
                 rNode.addChild(new ProjectNode(projectName, this.projectType, rNode));
+            } else if (this.gNode != null) {
+                gNode.addChild(new FolderNode(projectName, gNode));
+            } else if (this.sNode != null) {
+                sNode.addChild(new FolderNode(projectName, sNode));
+            } else if (this.fNode != null) {
+                fNode.addChild(new FolderNode(projectName, fNode));
+            }
+            dialog.dispose();
+        } else if (!name.equals("")) {
+            if (this.gNode != null) {
+                gNode.addChild(new SubGroupNode(name, this.subGroupType, gNode));
+            } else if (this.pNode != null) {
+                pNode.addChild(new GroupNode(name, this.groupType, pNode));
+            } else if (this.rNode != null) {
+                rNode.addChild(new ProjectNode(projectName, this.projectType, rNode));
+            } else if (this.fNode != null) {
+                fNode.addChild(new FolderNode(name, fNode));
             }
             dialog.dispose();
         } else {
@@ -517,7 +552,7 @@ public class AddName extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(AddGroupNameUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */

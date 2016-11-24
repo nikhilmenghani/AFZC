@@ -16,10 +16,13 @@ public class SubGroupNode extends ProjectItemNode {
     String parentNodeName;
     String subGroupName;
     public String location = "";
-    public String permissions = "";
+    public String permission = "";
     public int subGroupType;
     public String description = "";
     public String extension = "";
+    public boolean isBootAnimationGroup = false;
+    public String projectName;
+    public String originalGroupType;
 
     public static final int TYPE_SYSTEM_FONTS = GroupNode.GROUP_SYSTEM_FONTS;
     public static final int TYPE_SYSTEM_MEDIA = GroupNode.GROUP_SYSTEM_MEDIA;
@@ -31,28 +34,30 @@ public class SubGroupNode extends ProjectItemNode {
         super.path = parent.path + File.separator + title;
         subGroupName = title;
         this.subGroupType = type;
+        this.projectName = parent.projectName;
+        this.originalGroupType = parent.originalGroupType;
         //System.out.println("SubGroup Path is : " + path);
         switch (type) {
             case TYPE_SYSTEM_FONTS:
                 this.location = "system/fonts";
-                this.permissions = "rwrr";
                 this.extension = "ttf";
                 break;
             case TYPE_SYSTEM_MEDIA:
                 this.location = "system/media";
-                this.permissions = "rwrr";
                 this.extension = "zip";
+                this.isBootAnimationGroup = true;
                 break;
             case TYPE_DATA_LOCAL:
                 this.location = "data/local";
-                this.permissions = "rwrr";
                 this.extension = "zip";
+                this.isBootAnimationGroup = true;
                 break;
 //            case TYPE_KERNEL:
             case TYPE_CUSTOM:
                 //location and permissions shall remain null and let file node override this property.
                 break;
         }
+        this.permission = parent.permission;
     }
 
     public String getLocation() {
@@ -60,7 +65,7 @@ public class SubGroupNode extends ProjectItemNode {
     }
 
     public String getPermissions() {
-        return permissions;
+        return permission;
     }
 
     public void setDescription(String desc) {

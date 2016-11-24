@@ -110,7 +110,7 @@ public class Import implements Runnable {
 
             FileNode file = null;
             if (hasSubGroup) {
-                file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, projectName, projectType, rootNode, model);
+                file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, projectName, projectType);
                 if (subGroupType == SubGroupNode.TYPE_CUSTOM) {
                     Xml.addFileDataToSubGroup(file);
                 }

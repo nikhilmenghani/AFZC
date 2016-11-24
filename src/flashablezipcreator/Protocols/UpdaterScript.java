@@ -54,8 +54,7 @@ public class UpdaterScript {
         str += op.getExtractDataString();
         str += "set_progress(0);\n";
         for (ProjectItemNode group : to.getNodeList(ProjectItemNode.NODE_GROUP)) {
-            if (((ProjectNode) group.parent).projectType == project.projectType
-                    && ((ProjectNode) group.parent).title.equals(project.title)) {
+            if (((ProjectNode) group.parent).projectType == project.projectType && ((ProjectNode) group.parent).title.equals(project.title)) {
                 str += op.generateUpdaterScript((GroupNode) group);
             }
         }
@@ -64,8 +63,7 @@ public class UpdaterScript {
         return str += "endif;\n";
     }
 
-    
-    public static String getDpiScript(String dpi){
+    public static String getDpiScript(String dpi) {
         return op.getDpiScript(dpi);
     }
 }

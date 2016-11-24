@@ -139,17 +139,16 @@ public class TreeOperations {
             case ProjectItemNode.NODE_FILE:
                 oldName = ((FileNode) node).fileSourcePath;
                 ((FileNode) node).renameMe(newName);
-                w.rename(oldName, newName);
+                w.rename(oldName, newName); //check if this is required
                 break;
         }
     }
 
-    public void removeNode(ProjectItemNode node, DefaultTreeModel model) {
+    public void removeNode(ProjectItemNode node) {
         node.removeMe();
     }
 
-    public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, String projectName, int projectType,
-            ProjectItemNode rootNode, DefaultTreeModel model) {
+    public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, String projectName, int projectType) {
         if (getProjectNode(projectName, projectType) == null) {
             addChildTo(rootNode, projectName, projectType);
             System.out.println("Added project " + projectName + " project type " + projectType);
@@ -202,29 +201,27 @@ public class TreeOperations {
         }
     }
 
-    public void buildDirectory() throws IOException {
-        buildDirectory(this.rootNode);
-    }
-
-    public void buildDirectory(ProjectItemNode node) throws IOException {
-        if (!node.isLeaf()) {
-            w.createFolder(((ProjectItemNode) node).path);
-            for (int i = 0; i < node.getChildCount(); i++) {
-                buildDirectory((ProjectItemNode) node.getChildAt(i));
-            }
-        } else {
-            try {
-                //this will create a file in project folder.
-                w.writeFile(((FileNode) node).fileSourcePath, ((FileNode) node).path);
-                //w.writeFile(((FileNode) node).fileSourcePath, ((FileNode) node).fileDestPath)
-                //this will make location of file from user selected location to project location.
-                ((FileNode) node).fileSourcePath = ((FileNode) node).path;
-                //((FileNode) node).fileSourcePath = ((FileNode) node).fileDestPath;
-            } catch (ClassCastException cce) {
-                System.out.println("Exception caught while casting..");
-            }
-        }
-    }
+//    public void buildDirectory() throws IOException {
+//        buildDirectory(this.rootNode);
+//    }
+//
+//    public void buildDirectory(ProjectItemNode node) throws IOException {
+//        if (!node.isLeaf()) {
+//            w.createFolder(((ProjectItemNode) node).path);
+//            for (int i = 0; i < node.getChildCount(); i++) {
+//                buildDirectory((ProjectItemNode) node.getChildAt(i));
+//            }
+//        } else {
+//            try {
+//                //this will create a file in project folder.
+//                w.writeFile(((FileNode) node).fileSourcePath, ((FileNode) node).path);
+//                //this will make location of file from user selected location to project location.
+//                ((FileNode) node).fileSourcePath = ((FileNode) node).path;
+//            } catch (ClassCastException cce) {
+//                System.out.println("Exception caught while casting..");
+//            }
+//        }
+//    }
 
     //this will iterate from given node to leaf node i.e. File Node and return list of FileNodes.
 //    public ArrayList<ProjectItemNode> parseNode(ProjectItemNode node) {
@@ -255,6 +252,11 @@ public class TreeOperations {
                             list.add((ProjectItemNode) node.getChildAt(i));
                         }
                         break;
+                    case ProjectItemNode.NODE_FOLDER:
+                        if (!list.contains((ProjectItemNode) node.getChildAt(i))) {
+                            list.add((ProjectItemNode) node.getChildAt(i));
+                        }
+                        break;    
                     case ProjectItemNode.NODE_SUBGROUP:
                         if (!list.contains((ProjectItemNode) node.getChildAt(i))) {
                             list.add((ProjectItemNode) node.getChildAt(i));
@@ -279,10 +281,10 @@ public class TreeOperations {
 
     public ArrayList<ProjectItemNode> getProjectsSorted(ProjectItemNode rootNode) {
         ArrayList<ProjectItemNode> projects = new ArrayList<>();
-        ArrayList<ProjectItemNode> projectRom = new ArrayList<>();
-        ArrayList<ProjectItemNode> projectGapps = new ArrayList<>();
+//        ArrayList<ProjectItemNode> projectRom = new ArrayList<>();
+//        ArrayList<ProjectItemNode> projectGapps = new ArrayList<>();
         ArrayList<ProjectItemNode> projectAroma = new ArrayList<>();
-        ArrayList<ProjectItemNode> projectNormal = new ArrayList<>();
+//        ArrayList<ProjectItemNode> projectNormal = new ArrayList<>();
         ArrayList<ProjectItemNode> projectThemes = new ArrayList<>();
 
         for (ProjectItemNode project : getNodeList(ProjectItemNode.NODE_PROJECT)) {
@@ -296,20 +298,20 @@ public class TreeOperations {
             }
         }
 
-        projectRom.stream().forEach((node) -> {
-            projects.add(node);
-        });
-        projectGapps.stream().forEach((node) -> {
-            projects.add(node);
-        });
+//        projectRom.stream().forEach((node) -> {
+//            projects.add(node);
+//        });
+//        projectGapps.stream().forEach((node) -> {
+//            projects.add(node);
+//        });
 
         projectAroma.stream().forEach((node) -> {
             projects.add(node);
         });
 
-        projectNormal.stream().forEach((node) -> {
-            projects.add(node);
-        });
+//        projectNormal.stream().forEach((node) -> {
+//            projects.add(node);
+//        });
 
         projectThemes.stream().forEach((node) -> {
             projects.add(node);

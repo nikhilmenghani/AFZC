@@ -27,6 +27,9 @@ public class MyFileFilter {
                 case "themes":
                     filter = new ThemesFilter();
                     break;
+                case "folder":
+                    filter = fileChooser.getFileFilter();
+                    break;
                 default:
                     filter = new FileNameExtensionFilter("." + type, type);
             }

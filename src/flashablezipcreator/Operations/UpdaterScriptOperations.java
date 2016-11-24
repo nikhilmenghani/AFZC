@@ -6,10 +6,12 @@
 package flashablezipcreator.Operations;
 
 import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.Protocols.Device;
+import flashablezipcreator.Protocols.Preferences;
 import flashablezipcreator.Protocols.Project;
 import static flashablezipcreator.Protocols.UpdaterScript.symlinkScriptPath;
 
@@ -72,6 +74,41 @@ public class UpdaterScriptOperations {
         return "";
     }
 
+    public String getFolderScript(String str, ProjectItemNode parent) {
+        for (ProjectItemNode child : parent.children) {
+            if (child.type == ProjectItemNode.NODE_FOLDER) {
+                getFolderScript(str, child);
+            } else if (child.type == ProjectItemNode.NODE_FILE) {
+                str += addPrintString(((FileNode) child).title, installString);
+                str += "package_extract_file(\"" + ((FileNode) child).getZipPath() + "\", \"" + ((FileNode) child).installLocation + "/" + ((FileNode) child).title + "\");\n";
+                str += "set_perm(" + ((FileNode) child).filePermission + ");\n";
+            }
+        }
+        return str;
+    }
+
+    public String predefinedFolderGroupScript(GroupNode node) {
+        String str = "";
+        if (node.isCheckBox()) {
+            int count = 1;
+            if (Preferences.IsFromLollipop) {
+                str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
+                for (ProjectItemNode folder : node.children) {
+                    str += getFolderScript(str, folder);
+                }
+                str += "endif;\n";
+                for (ProjectItemNode folder : node.children) {
+                    str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
+                    str += getFolderScript(str, folder);
+                    str += "endif;\n";
+                }
+            } else {
+                str = predefinedGroupScript(node);
+            }
+        }
+        return str;
+    }
+
     public String predefinedGroupScript(GroupNode node) {
         String str = "";
         if (node.isCheckBox()) {
@@ -112,7 +149,7 @@ public class UpdaterScriptOperations {
                 str += "endif;\n";
             }
         } else {
-            System.out.println("This Group not support");
+            System.out.println("This Group is not supported");
         }
         return str;
     }
@@ -227,11 +264,12 @@ public class UpdaterScriptOperations {
             //Group of predefined locations
             case GroupNode.GROUP_SYSTEM_APK:
             case GroupNode.GROUP_SYSTEM_PRIV_APK:
+            case GroupNode.GROUP_DATA_APP:
+                return predefinedFolderGroupScript(node);
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-            case GroupNode.GROUP_DATA_APP:
             case GroupNode.GROUP_DELETE_FILES:
             case GroupNode.GROUP_SCRIPT:
                 return predefinedGroupScript(node);

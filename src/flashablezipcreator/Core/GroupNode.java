@@ -17,11 +17,14 @@ public class GroupNode extends ProjectItemNode {
 
     public String groupName;
     public String location = "";
-    public String permissions = "";
+    public String permission = "";
     public int groupType;
     public String prop;
     public boolean isSelectBox = false;
     public String extension = "";
+    public boolean isBootAnimationGroup = false;
+    public String projectName;
+    public String originalGroupType;
 
     public static final int GROUP_SYSTEM_APK = 1;
     public static final int GROUP_SYSTEM_PRIV_APK = 2;
@@ -44,6 +47,7 @@ public class GroupNode extends ProjectItemNode {
         this.groupType = type;
         this.groupName = title;
         super.path = parent.path + File.separator + title;
+        this.projectName = parent.projectName;
         //System.out.println("Group Path is : " + path);
 
         switch (type) {
@@ -51,60 +55,83 @@ public class GroupNode extends ProjectItemNode {
                 this.location = "/system/app";
                 this.prop = getProp("system_app");
                 this.extension = "apk";
+                this.originalGroupType = "system_app";
+                setPermissions("0", "0", "0644", this.location + "/");
                 break;
             case GROUP_SYSTEM_PRIV_APK:
                 this.location = "/system/priv-app";
                 this.prop = getProp("system_priv");
                 this.extension = "apk";
+                this.originalGroupType = "system_priv_app";
+                setPermissions("0", "0", "0644", this.location + "/");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 this.location = "/system/media/audio/alarms";
                 this.prop = getProp("system_media_alarms");
                 this.extension = "audio";
+                this.originalGroupType = "system_media_alarms";
+                setPermissions("1000", "1000", "0644", this.location + "/");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
                 this.location = "/system/media/audio/notifications";
                 this.prop = getProp("system_media_notifications");
                 this.extension = "audio";
+                this.originalGroupType = "system_media_notifications";
+                setPermissions("1000", "1000", "0644", this.location + "/");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
                 this.location = "/system/media/audio/ringtones";
                 this.prop = getProp("system_media_ringtones");
                 this.extension = "audio";
+                this.originalGroupType = "system_media_ringtones";
+                setPermissions("1000", "1000", "0644", this.location + "/");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_UI:
                 this.location = "/system/media/audio/ui";
                 this.prop = getProp("system_media_ui");
                 this.extension = "audio";
+                this.originalGroupType = "system_media_ui";
+                setPermissions("1000", "1000", "0644", this.location + "/");
                 break;
             case GROUP_SYSTEM_MEDIA:
                 this.location = "/system/media";
                 this.prop = getProp("system_media");
                 this.isSelectBox = true;
                 this.extension = "zip";
+                this.isBootAnimationGroup = true;
+                this.originalGroupType = "system_media";
+                setPermissions("1000", "1000", "0644", this.location + "/");
                 break;
             case GROUP_SYSTEM_FONTS:
                 this.location = "/system/fonts";
                 this.prop = getProp("system_fonts");
                 this.isSelectBox = true;
                 this.extension = "ttf";
+                this.originalGroupType = "system_fonts";
+                setPermissions("1000", "1000", "0644", this.location + "/");
                 break;
             case GROUP_DATA_APP:
                 this.location = "/data/app";
                 this.prop = getProp("data_app");
                 this.extension = "apk";
+                this.originalGroupType = "data_app";
+                setPermissions("1000", "1000", "0644", this.location + "/");
                 break;
             case GROUP_DATA_LOCAL:
                 this.location = "/data/local";
                 this.prop = getProp("data_local");
                 this.isSelectBox = true;
                 this.extension = "zip";
+                this.isBootAnimationGroup = true;
+                this.originalGroupType = "data_local";
+                setPermissions("1000", "1000", "0644", this.location + "/");
                 break;
             case GROUP_CUSTOM:
 //                this.location = "/custom";
 //                this.permissions = "";
                 this.prop = getProp("custom");
                 this.isSelectBox = false;
+                this.originalGroupType = "custom";
                 break;
             case GROUP_OTHER:
 //                this.location = "";
@@ -112,6 +139,7 @@ public class GroupNode extends ProjectItemNode {
                 //following properties not needed but added.
                 this.prop = getProp("other");
                 this.isSelectBox = false;
+                this.originalGroupType = "other";
                 break;
             case GROUP_AROMA_THEMES:
 //                this.location = "";
@@ -125,13 +153,20 @@ public class GroupNode extends ProjectItemNode {
                 this.prop = getProp("delete");
                 this.isSelectBox = false;
                 this.extension = "delete";
+                this.originalGroupType = "delete";
                 break;
             case GROUP_SCRIPT:
                 this.prop = getProp("dpi");
                 this.isSelectBox = true;
                 this.extension = "sh";
+                this.originalGroupType = "script";
                 break;
         }
+    }
+
+    public String setPermissions(String i, String j, String k, String path) {
+        this.permission = i + ", " + j + ", " + k + ", \"" + path;
+        return this.permission;
     }
 
     public boolean isSelectBox() {
@@ -149,21 +184,21 @@ public class GroupNode extends ProjectItemNode {
     public String getLocation() {
         return location;
     }
-    
-    public void renameMe(String newName) throws IOException{
+
+    public void renameMe(String newName) throws IOException {
         super.setTitle(newName);
         this.groupName = newName;
         super.path = parent.path + File.separator + newName;
         this.updateChildrenPath();
     }
-    
+
     @Override
-    public void updateChildrenPath(){
+    public void updateChildrenPath() {
         super.updateChildrenPath();
-        for(ProjectItemNode node: children){
-            if(node.type == ProjectItemNode.NODE_FILE){
-                ((FileNode)node).fileZipPath = ((FileNode)node).getZipPath();
-                
+        for (ProjectItemNode node : children) {
+            if (node.type == ProjectItemNode.NODE_FILE) {
+                ((FileNode) node).fileZipPath = ((FileNode) node).getZipPath();
+
             }
         }
     }
