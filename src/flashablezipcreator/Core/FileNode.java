@@ -34,8 +34,8 @@ public class FileNode extends ProjectItemNode {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
         File file = new File(fileSourcePath);
         this.installLocation = parent.getLocation();
-        setPermissions(parent.permission, title);
         super.path = parent.path + File.separator + file.getName();
+        setPermissions(parent.permission, title);
         //this.fileDestPath = parent.path + File.separator + (new File(fileSourcePath)).getName();
         //this.fileSourcePath = this.fileDestPath;
         this.fileSourcePath = file.getAbsolutePath();
@@ -48,12 +48,12 @@ public class FileNode extends ProjectItemNode {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
         File file = new File(fileSourcePath);
         this.installLocation = parent.getLocation();
+        super.path = parent.path + File.separator + file.getName();
         if (parent.isBootAnimationGroup) {
             setPermissions(parent.permission, "bootanimation.zip");
         } else {
             setPermissions(parent.permission, title);
         }
-        super.path = parent.path + File.separator + file.getName();
         this.fileSourcePath = fileSourcePath;
         //this.fileDestPath = parent.path + File.separator + (new File(fileSourcePath)).getName();
         this.projectName = parent.projectName;
@@ -64,12 +64,15 @@ public class FileNode extends ProjectItemNode {
     public FileNode(String fileSourcePath, FolderNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
         this.installLocation = parent.getLocation();
+        super.path = parent.path + File.separator + (new File(fileSourcePath)).getName();
+        String str = super.path;
+        str = str.substring(str.indexOf(File.separator) + 1, str.length());
+        parent.description = this.description;
         if (parent.isBootAnimationGroup) {
             setPermissions(parent.permission, "bootanimation.zip");
         } else {
-            setPermissions(parent.permission, title);
+            setPermissions(parent.permission, str);
         }
-        super.path = parent.path + File.separator + (new File(fileSourcePath)).getName();
         this.fileSourcePath = fileSourcePath;
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
@@ -94,8 +97,8 @@ public class FileNode extends ProjectItemNode {
         str = super.path;
         //str = fileDestPath;
         //System.out.println("String before : " + str);
-        str = str.substring(str.indexOf(File.separator) + 1, str.length());
-        str = str.substring(str.indexOf(File.separator) + 1, str.length());
+        //str = str.substring(str.indexOf(File.separator) + 1, str.length());
+        //str = str.substring(str.indexOf(File.separator) + 1, str.length());
         str = "aroma" + File.separator + this.projectName + File.separator
                 + this.originalGroupType + File.separator + str;
         str = "customize" + File.separator + str;

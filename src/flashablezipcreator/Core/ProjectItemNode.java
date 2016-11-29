@@ -111,7 +111,7 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
 //        return path;
 //    }
     @Override
-    public TreeNode getChildAt(int i) {
+    public ProjectItemNode getChildAt(int i) {
         return children.elementAt(i);
     }
 
@@ -121,7 +121,7 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
     }
 
     @Override
-    public TreeNode getParent() {
+    public ProjectItemNode getParent() {
         return this.parent;
     }
 

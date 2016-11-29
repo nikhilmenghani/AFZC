@@ -6,10 +6,12 @@
 package flashablezipcreator.Operations;
 
 import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
+import flashablezipcreator.Protocols.Preferences;
 import flashablezipcreator.Protocols.Project;
 import javax.swing.JOptionPane;
 
@@ -150,11 +152,11 @@ public class AromaScriptOperations {
         }
         str += ");\n";
         str += "writetmpfile(\"" + node.prop.replace(".prop", "_temp.prop") + "\",\"init=no\\n\");\n";//initialize temp.prop.
-        
+
         str += "if prop(\"" + node.prop + "\", \"selected.0\")==\"" + 1 + "\" then\n";
         str += "setvar(\"fontname\",\"" + "default" + "\");\n";
         str += "endif;\n";
-        
+
         if (node.groupType == GroupNode.GROUP_SYSTEM_FONTS) {
             for (int i = 0; i < node.getChildCount(); i++) {
                 SubGroupNode sgnode = (SubGroupNode) node.getChildAt(i);
@@ -227,11 +229,31 @@ public class AromaScriptOperations {
         switch (node.groupType) {
             case GroupNode.GROUP_SYSTEM_APK:
             case GroupNode.GROUP_SYSTEM_PRIV_APK:
+            case GroupNode.GROUP_DATA_APP:
+                str += "\ncheckbox(\"" + node.title + " List\",\"Select from " + node.title + "\",\"@apps\",\"" + node.prop + "\",\n"
+                        + "\"Select files from the list\", \"\", 2,\n"
+                        + "\"Select All\",\"Installs All Files.\", 1";
+                for (int i = 0; i < node.getChildCount(); i++) {
+                    if (Preferences.IsFromLollipop) {
+                        switch (node.getChildAt(i).type) {
+                            case ProjectItemNode.NODE_FOLDER:
+                                str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FolderNode) node.getChildAt(i)).description + "\", 0";
+                                break;
+                            case ProjectItemNode.NODE_FILE:
+                                str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).description + "\", 0";
+                                break;
+                        }
+                    } else {
+                        str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).description + "\", 0";
+                    }
+                }
+                str += ");\n";
+                str += "writetmpfile(\"" + node.prop + "\",readtmpfile(\"" + node.prop + "\"));\n";
+                break;
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-            case GroupNode.GROUP_DATA_APP:
             case GroupNode.GROUP_DELETE_FILES:
                 str += "\ncheckbox(\"" + node.title + " List\",\"Select from " + node.title + "\",\"@apps\",\"" + node.prop + "\",\n"
                         + "\"Select files from the list\", \"\", 2,\n"

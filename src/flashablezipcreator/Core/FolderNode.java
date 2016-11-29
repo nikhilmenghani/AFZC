@@ -21,6 +21,7 @@ public class FolderNode extends ProjectItemNode {
     ProjectItemNode originalParent;
     String projectName;
     String originalGroupType;
+    public String description;
 
     public FolderNode(String title, int type, ProjectItemNode parent) {
         super(title, type, parent);
@@ -31,7 +32,7 @@ public class FolderNode extends ProjectItemNode {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
         this.folderName = title;
         super.path = parent + File.separator + "F_" + title;
-        this.location = parent.getLocation();
+        this.location = parent.getLocation() + File.separator + "F_" + title;
         this.permission = getPermissions(parent);
         this.originalParent = parent;
         this.projectName = parent.projectName;
@@ -42,7 +43,7 @@ public class FolderNode extends ProjectItemNode {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
         this.folderName = title;
         super.path = parent + File.separator + "F_" + title;
-        this.location = parent.getLocation();
+        this.location = parent.getLocation() + File.separator + "F_" + title;
         this.originalParent = parent;
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
@@ -52,7 +53,7 @@ public class FolderNode extends ProjectItemNode {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
         this.folderName = title;
         super.path = parent + File.separator + "F_" + title;
-        this.location = parent.getLocation();
+        this.location = parent.getLocation() + File.separator + "F_" + title;
         this.permission = parent.permission;
         this.originalParent = parent.originalParent;
         this.projectName = parent.projectName;

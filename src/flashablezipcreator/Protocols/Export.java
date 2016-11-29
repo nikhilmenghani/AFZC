@@ -6,6 +6,7 @@
 package flashablezipcreator.Protocols;
 
 import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
@@ -91,11 +92,19 @@ public class Export implements Runnable {
                             increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
                             fileIndex++;
                             wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
+                        } else if (node.type == ProjectItemNode.NODE_FOLDER) {
+                            ArrayList<FileNode> files = new ArrayList<FileNode>();
+                            for (FileNode file : getFilesOfFolder((FolderNode) node, files)) {
+                                increaseProgressBar(fileIndex, file.fileSourcePath);
+                                fileIndex++;
+                                wz.writeFileToZip(file.fileSourcePath, file.fileZipPath);
+                            }
+
                         }
                     }
                     if (((GroupNode) groupNode).groupType == GroupNode.GROUP_CUSTOM) {
                         isCustomGroupPresent = true;
-                    } 
+                    }
                 }
             } else {
                 for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
@@ -150,6 +159,18 @@ public class Export implements Runnable {
         progressBarImportExport.setString("0%");
         progressBarImportExport.setValue(0);
         progressBarFlag = 0;
+    }
+
+    public static ArrayList<FileNode> getFilesOfFolder(FolderNode folder, ArrayList<FileNode> fileList) {
+        for (ProjectItemNode node : folder.children) {
+            if (node.type == ProjectItemNode.NODE_FOLDER) {
+                fileList = getFilesOfFolder((FolderNode) node, fileList);
+            }
+            if (node.type == ProjectItemNode.NODE_FILE) {
+                fileList.add((FileNode) node);
+            }
+        }
+        return fileList;
     }
 
     @Override

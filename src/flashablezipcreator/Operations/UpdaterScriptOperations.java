@@ -94,12 +94,12 @@ public class UpdaterScriptOperations {
             if (Preferences.IsFromLollipop) {
                 str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
                 for (ProjectItemNode folder : node.children) {
-                    str += getFolderScript(str, folder);
+                    str = getFolderScript(str, folder);
                 }
                 str += "endif;\n";
                 for (ProjectItemNode folder : node.children) {
                     str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
-                    str += getFolderScript(str, folder);
+                    str = getFolderScript(str, folder);
                     str += "endif;\n";
                 }
             } else {
