@@ -32,7 +32,7 @@ public class FolderNode extends ProjectItemNode {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
         this.folderName = title;
         super.path = parent + File.separator + "F_" + title;
-        this.location = parent.getLocation() + File.separator + "F_" + title;
+        this.location = parent.getLocation() + File.separator + title;
         this.permission = getPermissions(parent);
         this.originalParent = parent;
         this.projectName = parent.projectName;
@@ -43,7 +43,7 @@ public class FolderNode extends ProjectItemNode {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
         this.folderName = title;
         super.path = parent + File.separator + "F_" + title;
-        this.location = parent.getLocation() + File.separator + "F_" + title;
+        this.location = parent.getLocation() + File.separator + title;
         this.originalParent = parent;
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
@@ -53,7 +53,7 @@ public class FolderNode extends ProjectItemNode {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
         this.folderName = title;
         super.path = parent + File.separator + "F_" + title;
-        this.location = parent.getLocation() + File.separator + "F_" + title;
+        this.location = parent.getLocation() + File.separator + title;
         this.permission = parent.permission;
         this.originalParent = parent.originalParent;
         this.projectName = parent.projectName;
@@ -64,14 +64,14 @@ public class FolderNode extends ProjectItemNode {
         switch (parent.groupType) {
             case GroupNode.GROUP_SYSTEM_APK:
             case GroupNode.GROUP_SYSTEM_PRIV_APK:
-                setPermissions("0", "0", "0644", parent.location + "/");
+                setPermissions("0", "0", "0644");
                 break;
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
             case GroupNode.GROUP_DATA_APP:
-                setPermissions("1000", "1000", "0644", parent.location + "/");
+                setPermissions("1000", "1000", "0644");
                 break;
         }
         return this.permission;
@@ -80,19 +80,19 @@ public class FolderNode extends ProjectItemNode {
     public String getPermissions(SubGroupNode parent) {
         switch (parent.subGroupType) {
             case SubGroupNode.TYPE_SYSTEM_FONTS:
-                setPermissions("1000", "1000", "0644", parent.location + "/");
+                setPermissions("1000", "1000", "0644");
                 break;
             case SubGroupNode.TYPE_SYSTEM_MEDIA:
             case SubGroupNode.TYPE_DATA_LOCAL:
-                setPermissions("1000", "1000", "0644", parent.location + "/");
+                setPermissions("1000", "1000", "0644");
                 this.isBootAnimationGroup = true;
                 break;
         }
         return this.permission;
     }
 
-    public String setPermissions(String i, String j, String k, String path) {
-        this.permission = i + ", " + j + ", " + k + ", \"" + path;
+    public String setPermissions(String i, String j, String k) {
+        this.permission = i + ", " + j + ", " + k + ", ";
         return this.permission;
     }
 

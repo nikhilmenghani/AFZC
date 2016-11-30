@@ -33,7 +33,7 @@ public class FileNode extends ProjectItemNode {
     public FileNode(String fileSourcePath, GroupNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
         File file = new File(fileSourcePath);
-        this.installLocation = parent.getLocation();
+        this.installLocation = parent.getLocation().replaceAll("\\\\", "/");
         super.path = parent.path + File.separator + file.getName();
         setPermissions(parent.permission, title);
         //this.fileDestPath = parent.path + File.separator + (new File(fileSourcePath)).getName();
@@ -47,7 +47,7 @@ public class FileNode extends ProjectItemNode {
     public FileNode(String fileSourcePath, SubGroupNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
         File file = new File(fileSourcePath);
-        this.installLocation = parent.getLocation();
+        this.installLocation = parent.getLocation().replaceAll("\\\\", "/");
         super.path = parent.path + File.separator + file.getName();
         if (parent.isBootAnimationGroup) {
             setPermissions(parent.permission, "bootanimation.zip");
@@ -63,15 +63,13 @@ public class FileNode extends ProjectItemNode {
 
     public FileNode(String fileSourcePath, FolderNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
-        this.installLocation = parent.getLocation();
+        this.installLocation = parent.getLocation().replaceAll("\\\\", "/");
         super.path = parent.path + File.separator + (new File(fileSourcePath)).getName();
-        String str = super.path;
-        str = str.substring(str.indexOf(File.separator) + 1, str.length());
         parent.description = this.description;
         if (parent.isBootAnimationGroup) {
             setPermissions(parent.permission, "bootanimation.zip");
         } else {
-            setPermissions(parent.permission, str);
+            setPermissions(parent.permission, title);
         }
         this.fileSourcePath = fileSourcePath;
         this.projectName = parent.projectName;
@@ -112,7 +110,7 @@ public class FileNode extends ProjectItemNode {
     }
 
     public void setPermissions(String parentPermission, String title) {
-        this.filePermission = parentPermission + title + "\"";
+        this.filePermission = (parentPermission + "\"" + this.installLocation + "/" + title + "\"").replaceAll("\\\\", "/");;
     }
 
     public String getProjectType(ProjectNode project) {

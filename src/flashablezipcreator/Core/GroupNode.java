@@ -56,42 +56,42 @@ public class GroupNode extends ProjectItemNode {
                 this.prop = getProp("system_app");
                 this.extension = "apk";
                 this.originalGroupType = "system_app";
-                setPermissions("0", "0", "0644", this.location + "/");
+                setPermissions("0", "0", "0644");
                 break;
             case GROUP_SYSTEM_PRIV_APK:
                 this.location = "/system/priv-app";
                 this.prop = getProp("system_priv");
                 this.extension = "apk";
                 this.originalGroupType = "system_priv_app";
-                setPermissions("0", "0", "0644", this.location + "/");
+                setPermissions("0", "0", "0644");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 this.location = "/system/media/audio/alarms";
                 this.prop = getProp("system_media_alarms");
                 this.extension = "audio";
                 this.originalGroupType = "system_media_alarms";
-                setPermissions("1000", "1000", "0644", this.location + "/");
+                setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
                 this.location = "/system/media/audio/notifications";
                 this.prop = getProp("system_media_notifications");
                 this.extension = "audio";
                 this.originalGroupType = "system_media_notifications";
-                setPermissions("1000", "1000", "0644", this.location + "/");
+                setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
                 this.location = "/system/media/audio/ringtones";
                 this.prop = getProp("system_media_ringtones");
                 this.extension = "audio";
                 this.originalGroupType = "system_media_ringtones";
-                setPermissions("1000", "1000", "0644", this.location + "/");
+                setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_UI:
                 this.location = "/system/media/audio/ui";
                 this.prop = getProp("system_media_ui");
                 this.extension = "audio";
                 this.originalGroupType = "system_media_ui";
-                setPermissions("1000", "1000", "0644", this.location + "/");
+                setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_SYSTEM_MEDIA:
                 this.location = "/system/media";
@@ -100,7 +100,7 @@ public class GroupNode extends ProjectItemNode {
                 this.extension = "zip";
                 this.isBootAnimationGroup = true;
                 this.originalGroupType = "system_media";
-                setPermissions("1000", "1000", "0644", this.location + "/");
+                setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_SYSTEM_FONTS:
                 this.location = "/system/fonts";
@@ -108,14 +108,14 @@ public class GroupNode extends ProjectItemNode {
                 this.isSelectBox = true;
                 this.extension = "ttf";
                 this.originalGroupType = "system_fonts";
-                setPermissions("1000", "1000", "0644", this.location + "/");
+                setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_DATA_APP:
                 this.location = "/data/app";
                 this.prop = getProp("data_app");
                 this.extension = "apk";
                 this.originalGroupType = "data_app";
-                setPermissions("1000", "1000", "0644", this.location + "/");
+                setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_DATA_LOCAL:
                 this.location = "/data/local";
@@ -124,7 +124,7 @@ public class GroupNode extends ProjectItemNode {
                 this.extension = "zip";
                 this.isBootAnimationGroup = true;
                 this.originalGroupType = "data_local";
-                setPermissions("1000", "1000", "0644", this.location + "/");
+                setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_CUSTOM:
 //                this.location = "/custom";
@@ -164,8 +164,8 @@ public class GroupNode extends ProjectItemNode {
         }
     }
 
-    public String setPermissions(String i, String j, String k, String path) {
-        this.permission = i + ", " + j + ", " + k + ", \"" + path;
+    public String setPermissions(String i, String j, String k) {
+        this.permission = i + ", " + j + ", " + k + ", ";
         return this.permission;
     }
 
