@@ -14,6 +14,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.tree.TreePath;
 import static flashablezipcreator.AFZC.Protocols.show;
 import flashablezipcreator.Operations.MyFileFilter;
+import flashablezipcreator.Protocols.Preferences;
 import flashablezipcreator.UserInterface.AddName;
 import java.io.File;
 import javax.swing.JMenu;
@@ -290,8 +291,8 @@ public class MyPopup {
         popup.add(mitemDeleteSubGroup);
         return popup;
     }
-    
-    public static JPopupMenu getFolderMenu(ArrayList<ProjectItemNode> nodeList){
+
+    public static JPopupMenu getFolderMenu(ArrayList<ProjectItemNode> nodeList) {
         JMenuItem mitemAddFile = new JMenuItem("Add File(s)");
         mitemAddFile.addActionListener(
                 (ActionEvent ae) -> {
@@ -335,10 +336,27 @@ public class MyPopup {
     public static void addNode(ArrayList<ProjectItemNode> nodeList) {
         switch (nodeList.get(0).type) {
             case ProjectNode.NODE_GROUP:
-                for (File tempFile : MyFileFilter.getSelectedFiles(((GroupNode) nodeList.get(0)).extension)) {
-                    FileNode fnode = new FileNode(tempFile.getAbsolutePath(), (GroupNode) nodeList.get(0));
-                    //fnode.fileSourcePath = tempFile.getAbsolutePath();
-                    ((GroupNode) nodeList.get(0)).addChild(fnode);
+                GroupNode gNode = (GroupNode) nodeList.get(0);
+                for (File tempFile : MyFileFilter.getSelectedFiles(gNode.extension)) {
+                    FileNode fnode;
+                    if (Preferences.IsFromLollipop) {
+                        switch (gNode.groupType) {
+                            case GroupNode.GROUP_SYSTEM_APK:
+                            case GroupNode.GROUP_SYSTEM_PRIV_APK:
+                            case GroupNode.GROUP_DATA_APP:
+                                FolderNode folderNode = new FolderNode(tempFile.getName().replaceFirst("[.][^.]+$", ""), gNode);
+                                fnode = new FileNode(tempFile.getAbsolutePath(), folderNode);
+                                folderNode.addChild(fnode);
+                                gNode.addChild(folderNode);
+                                break;
+                            default:
+                                fnode = new FileNode(tempFile.getAbsolutePath(), gNode);
+                                gNode.addChild(fnode);
+                        }
+                    } else {
+                        fnode = new FileNode(tempFile.getAbsolutePath(), gNode);
+                        gNode.addChild(fnode);
+                    }
                 }
                 break;
             case ProjectNode.NODE_SUBGROUP:
@@ -349,7 +367,7 @@ public class MyPopup {
                 }
                 break;
             case ProjectNode.NODE_FOLDER:
-                for(File tempFile : MyFileFilter.getSelectedFiles("folder")){
+                for (File tempFile : MyFileFilter.getSelectedFiles("folder")) {
                     FileNode fnode = new FileNode(tempFile.getAbsolutePath(), (FolderNode) nodeList.get(0));
                     ((FolderNode) nodeList.get(0)).addChild(fnode);
                 }
