@@ -16,7 +16,6 @@ import java.io.IOException;
 public class GroupNode extends ProjectItemNode {
 
     public String groupName;
-    public String location = "";
     public String permission = "";
     public int groupType;
     public String prop;
@@ -25,6 +24,7 @@ public class GroupNode extends ProjectItemNode {
     public boolean isBootAnimationGroup = false;
     public String projectName;
     public String originalGroupType;
+    String zipPathPrefix = "Group_";
 
     public static final int GROUP_SYSTEM_APK = 1;
     public static final int GROUP_SYSTEM_PRIV_APK = 2;
@@ -52,49 +52,49 @@ public class GroupNode extends ProjectItemNode {
 
         switch (type) {
             case GROUP_SYSTEM_APK:
-                this.location = "/system/app";
+                super.location = "/system/app";
                 this.prop = getProp("system_app");
                 this.extension = "apk";
                 this.originalGroupType = "system_app";
                 setPermissions("0", "0", "0644");
                 break;
             case GROUP_SYSTEM_PRIV_APK:
-                this.location = "/system/priv-app";
+                super.location = "/system/priv-app";
                 this.prop = getProp("system_priv");
                 this.extension = "apk";
                 this.originalGroupType = "system_priv_app";
                 setPermissions("0", "0", "0644");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                this.location = "/system/media/audio/alarms";
+                super.location = "/system/media/audio/alarms";
                 this.prop = getProp("system_media_alarms");
                 this.extension = "audio";
                 this.originalGroupType = "system_media_alarms";
                 setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                this.location = "/system/media/audio/notifications";
+                super.location = "/system/media/audio/notifications";
                 this.prop = getProp("system_media_notifications");
                 this.extension = "audio";
                 this.originalGroupType = "system_media_notifications";
                 setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                this.location = "/system/media/audio/ringtones";
+                super.location = "/system/media/audio/ringtones";
                 this.prop = getProp("system_media_ringtones");
                 this.extension = "audio";
                 this.originalGroupType = "system_media_ringtones";
                 setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_SYSTEM_MEDIA_AUDIO_UI:
-                this.location = "/system/media/audio/ui";
+                super.location = "/system/media/audio/ui";
                 this.prop = getProp("system_media_ui");
                 this.extension = "audio";
                 this.originalGroupType = "system_media_ui";
                 setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_SYSTEM_MEDIA:
-                this.location = "/system/media";
+                super.location = "/system/media";
                 this.prop = getProp("system_media");
                 this.isSelectBox = true;
                 this.extension = "zip";
@@ -103,7 +103,7 @@ public class GroupNode extends ProjectItemNode {
                 setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_SYSTEM_FONTS:
-                this.location = "/system/fonts";
+                super.location = "/system/fonts";
                 this.prop = getProp("system_fonts");
                 this.isSelectBox = true;
                 this.extension = "ttf";
@@ -111,14 +111,14 @@ public class GroupNode extends ProjectItemNode {
                 setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_DATA_APP:
-                this.location = "/data/app";
+                super.location = "/data/app";
                 this.prop = getProp("data_app");
                 this.extension = "apk";
                 this.originalGroupType = "data_app";
                 setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_DATA_LOCAL:
-                this.location = "/data/local";
+                super.location = "/data/local";
                 this.prop = getProp("data_local");
                 this.isSelectBox = true;
                 this.extension = "zip";
@@ -127,14 +127,14 @@ public class GroupNode extends ProjectItemNode {
                 setPermissions("1000", "1000", "0644");
                 break;
             case GROUP_CUSTOM:
-//                this.location = "/custom";
+//                super.location = "/custom";
 //                this.permissions = "";
                 this.prop = getProp("custom");
                 this.isSelectBox = false;
                 this.originalGroupType = "custom";
                 break;
             case GROUP_OTHER:
-//                this.location = "";
+//                super.location = "";
 //                this.permissions = "";
                 //following properties not needed but added.
                 this.prop = getProp("other");
@@ -142,7 +142,7 @@ public class GroupNode extends ProjectItemNode {
                 this.originalGroupType = "other";
                 break;
             case GROUP_AROMA_THEMES:
-//                this.location = "";
+//                super.location = "";
 //                this.permissions = "";
                 this.prop = "themes.prop";
                 this.isSelectBox = true;
@@ -162,6 +162,7 @@ public class GroupNode extends ProjectItemNode {
                 this.originalGroupType = "script";
                 break;
         }
+        super.zipPath = parent.zipPath + "/" + this.originalGroupType + "/" + zipPathPrefix + title;
     }
 
     public String setPermissions(String i, String j, String k) {
@@ -178,29 +179,47 @@ public class GroupNode extends ProjectItemNode {
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        super.location = location;
     }
 
     public String getLocation() {
         return location;
     }
 
+    public void updateZipPath(){
+        super.zipPath = parent.zipPath + "/" + this.originalGroupType + "/" + zipPathPrefix + title;
+    }
+    
     public void renameMe(String newName) throws IOException {
         super.setTitle(newName);
         this.groupName = newName;
         super.path = parent.path + File.separator + newName;
+        super.zipPath = parent.zipPath + "/" + this.originalGroupType + "/" + zipPathPrefix + newName;
         this.updateChildrenPath();
+        this.updateChildrenZipPath();
+    }
+    
+    public void updateChildrenZipPath(){
+        for (ProjectItemNode node : children) {
+            switch(node.type){
+                case ProjectItemNode.NODE_SUBGROUP:
+                    ((SubGroupNode)node).updateZipPath();
+                    ((SubGroupNode)node).updateChildrenZipPath();
+                    break;
+                case ProjectItemNode.NODE_FOLDER:
+                    ((FolderNode)node).updateZipPath();
+                    ((FolderNode)node).updateChildrenZipPath();
+                    break;
+                case ProjectItemNode.NODE_FILE:
+                    ((FileNode) node).updateZipPath();
+                    break;
+            }
+        }
     }
 
     @Override
     public void updateChildrenPath() {
         super.updateChildrenPath();
-        for (ProjectItemNode node : children) {
-            if (node.type == ProjectItemNode.NODE_FILE) {
-                ((FileNode) node).fileZipPath = ((FileNode) node).getZipPath();
-
-            }
-        }
     }
 //
 //    public String getPermissions() {

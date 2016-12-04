@@ -31,6 +31,7 @@ public class ProjectNode extends ProjectItemNode {
 //    public String gappsType = Project.gappsType;
 //    public String gappsDate = Project.gappsDate;
     public String releaseVersion = Project.releaseVersion;
+    String zipPathPrefix = "Project_";
 
     //public static final int PROJECT_NORMAL = 1;
     public static final int PROJECT_AROMA = 2;
@@ -44,27 +45,26 @@ public class ProjectNode extends ProjectItemNode {
         this.projectName = title;
         this.projectType = projectType;
         super.path = parent + File.separator + title;
+        super.zipPath = parent.zipPath + "/" + zipPathPrefix + title;
     }
 
     public void renameMe(String newName) {
         super.setTitle(newName);
         this.projectName = newName;
         super.path = parent.path + File.separator + newName;
+        super.zipPath = parent.zipPath + "/" + zipPathPrefix + newName;
         this.updateChildrenPath();
+        this.updateChildrenZipPath();
     }
 
-//    private void updateChildrenPath(String newName) {
-//        for (ProjectItemNode gnode : this.children) {
-//            ((GroupNode) gnode).path = this.path + File.separator + newName;
-//            
-//            for (ProjectItemNode node : gnode.children) {
-//                switch(node.type){
-//                    case ProjectItemNode.NODE_SUBGROUP:
-//                        break;
-//                    case ProjectItemNode.NODE_FILE:
-//                        break;
-//                }
-//            }
-//        }
-//    }
+    public void updateChildrenPath() {
+        super.updateChildrenPath();
+    }
+    
+    public void updateChildrenZipPath(){
+        for(ProjectItemNode node : children){
+            ((GroupNode)node).updateZipPath(); //casting to group node as project node cannot have child of any other type.
+            ((GroupNode)node).updateChildrenZipPath();
+        }
+    }
 }

@@ -302,6 +302,10 @@ public class MyPopup {
                     }
                 }
         );
+        JMenuItem mitemAddFolder = new JMenuItem("Add Folder");
+        mitemAddFolder.addActionListener((ActionEvent ae) -> {
+            addName("Folder", "", nodeList.get(0));
+        });
         JMenuItem mitemDeleteFolder = new JMenuItem("Delete Folder(s)");
         mitemDeleteFolder.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList);
@@ -309,6 +313,7 @@ public class MyPopup {
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
             popup.add(mitemAddFile);
+            popup.add(mitemAddFolder);
         }
         popup.add(mitemDeleteFolder);
         return popup;

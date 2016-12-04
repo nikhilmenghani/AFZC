@@ -6,6 +6,7 @@
 package flashablezipcreator.Operations;
 
 import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
@@ -108,14 +109,6 @@ public class TreeOperations {
         }
     }
 
-    public void addChildTo(ProjectItemNode parent, String childTitle, String installLocation, String permission) {
-        if ((parent.type == ProjectItemNode.NODE_GROUP && ((GroupNode) parent).groupType == GroupNode.GROUP_CUSTOM)) {
-            parent.addChild(new FileNode(childTitle, installLocation, permission, (GroupNode) parent));
-        } else if ((parent.type == ProjectItemNode.NODE_SUBGROUP && ((SubGroupNode) parent).subGroupType == SubGroupNode.TYPE_CUSTOM)) {
-            parent.addChild(new FileNode(childTitle, installLocation, permission, (SubGroupNode) parent));
-        }
-    }
-
     public void renameNode(ProjectItemNode node, String newName) throws IOException {
         String oldName = "";
         switch (node.type) {
@@ -135,6 +128,10 @@ public class TreeOperations {
                 oldName = ((SubGroupNode)node).path;
                 ((SubGroupNode)node).renameMe(newName);
                 //w.rename(oldName, newName);
+                break;
+            case ProjectItemNode.NODE_FOLDER:
+                oldName = ((FolderNode)node).path;
+                ((FolderNode)node).renameMe(newName);
                 break;
             case ProjectItemNode.NODE_FILE:
                 oldName = ((FileNode) node).fileSourcePath;
@@ -159,9 +156,7 @@ public class TreeOperations {
         if (getSubGroupNode(subGroupName, groupType, groupName, projectName) == null) {
             addChildTo(getGroupNode(groupName, groupType, projectName), subGroupName, subGroupType);
         }
-        if (subGroupType == SubGroupNode.TYPE_CUSTOM) {
-            addChildTo(getSubGroupNode(subGroupName, subGroupType, groupName, projectName), fileName, "", "");
-        } else {
+        if (subGroupType != SubGroupNode.TYPE_CUSTOM) {
             addChildTo(getSubGroupNode(subGroupName, subGroupType, groupName, projectName), fileName, ProjectItemNode.NODE_FILE);
         }
         return getFileNode(fileName, subGroupName, groupName, projectName);
@@ -181,9 +176,7 @@ public class TreeOperations {
                 fileName = getUniqueName(fileName);
             }
         }
-        if (groupType == GroupNode.GROUP_CUSTOM) {
-            addChildTo(getGroupNode(groupName, groupType, projectName), fileName, "", "");
-        } else {
+        if (groupType != GroupNode.GROUP_CUSTOM) {
             addChildTo(getGroupNode(groupName, groupType, projectName), fileName, ProjectItemNode.NODE_FILE);
         }
         return getFileNode(fileName, groupName, projectName);

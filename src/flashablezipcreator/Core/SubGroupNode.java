@@ -23,6 +23,7 @@ public class SubGroupNode extends ProjectItemNode {
     public boolean isBootAnimationGroup = false;
     public String projectName;
     public String originalGroupType;
+    String zipPathPrefix = "SubGroup_";
 
     public static final int TYPE_SYSTEM_FONTS = GroupNode.GROUP_SYSTEM_FONTS;
     public static final int TYPE_SYSTEM_MEDIA = GroupNode.GROUP_SYSTEM_MEDIA;
@@ -36,19 +37,17 @@ public class SubGroupNode extends ProjectItemNode {
         this.subGroupType = type;
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
+        super.location = parent.location;
         //System.out.println("SubGroup Path is : " + path);
         switch (type) {
             case TYPE_SYSTEM_FONTS:
-                this.location = "system/fonts";
                 this.extension = "ttf";
                 break;
             case TYPE_SYSTEM_MEDIA:
-                this.location = "system/media";
                 this.extension = "zip";
                 this.isBootAnimationGroup = true;
                 break;
             case TYPE_DATA_LOCAL:
-                this.location = "data/local";
                 this.extension = "zip";
                 this.isBootAnimationGroup = true;
                 break;
@@ -57,6 +56,7 @@ public class SubGroupNode extends ProjectItemNode {
                 //location and permissions shall remain null and let file node override this property.
                 break;
         }
+        super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
         this.permission = parent.permission;
     }
 
@@ -72,18 +72,35 @@ public class SubGroupNode extends ProjectItemNode {
         this.description = desc;
     }
     
-    @Override
-    public void updateChildrenPath(){
-        super.updateChildrenPath();
-        for(ProjectItemNode node: children){
-            ((FileNode)node).fileZipPath = ((FileNode)node).getZipPath();
+    public void updateZipPath(){
+        super.zipPath = parent.zipPath + "/" + zipPathPrefix + title;
+    }
+
+    public void updateChildrenZipPath(){
+        for (ProjectItemNode node : children) {
+            switch (node.type) {
+                case ProjectItemNode.NODE_FOLDER:
+                    ((FolderNode)node).updateZipPath();
+                    ((FolderNode)node).updateChildrenZipPath();
+                    break;
+                case ProjectItemNode.NODE_FILE:
+                    ((FileNode) node).updateZipPath();
+                    break;
+            }
         }
     }
     
-    public void renameMe(String newName){
+    @Override
+    public void updateChildrenPath() {
+        super.updateChildrenPath();
+    }
+
+    public void renameMe(String newName) {
         super.setTitle(newName);
         this.subGroupName = newName;
         super.path = parent.path + File.separator + newName;
+        super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
         this.updateChildrenPath();
+        this.updateChildrenZipPath();
     }
 }

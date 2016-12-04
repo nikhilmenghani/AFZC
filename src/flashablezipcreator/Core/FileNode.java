@@ -21,7 +21,6 @@ public class FileNode extends ProjectItemNode {
 
     public String fileName;
     public String fileSourcePath;
-    //public String fileDestPath;
     public String installLocation = "";
     public String belongsToGroup;
     public String filePermission = "";
@@ -33,21 +32,19 @@ public class FileNode extends ProjectItemNode {
     public FileNode(String fileSourcePath, GroupNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
         File file = new File(fileSourcePath);
-        this.installLocation = parent.getLocation().replaceAll("\\\\", "/");
+        this.installLocation = parent.location.replaceAll("\\\\", "/");
         super.path = parent.path + File.separator + file.getName();
         setPermissions(parent.permission, title);
-        //this.fileDestPath = parent.path + File.separator + (new File(fileSourcePath)).getName();
-        //this.fileSourcePath = this.fileDestPath;
         this.fileSourcePath = file.getAbsolutePath();
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
-        fileZipPath = getZipPath();
+        fileZipPath = parent.zipPath + "/" + title;
     }
 
     public FileNode(String fileSourcePath, SubGroupNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
         File file = new File(fileSourcePath);
-        this.installLocation = parent.getLocation().replaceAll("\\\\", "/");
+        this.installLocation = parent.location.replaceAll("\\\\", "/");
         super.path = parent.path + File.separator + file.getName();
         if (parent.isBootAnimationGroup) {
             setPermissions(parent.permission, "bootanimation.zip");
@@ -55,15 +52,14 @@ public class FileNode extends ProjectItemNode {
             setPermissions(parent.permission, title);
         }
         this.fileSourcePath = fileSourcePath;
-        //this.fileDestPath = parent.path + File.separator + (new File(fileSourcePath)).getName();
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
-        fileZipPath = getZipPath();
+        fileZipPath = parent.zipPath + "/" + title;
     }
 
     public FileNode(String fileSourcePath, FolderNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
-        this.installLocation = parent.getLocation().replaceAll("\\\\", "/");
+        this.installLocation = parent.location.replaceAll("\\\\", "/");
         super.path = parent.path + File.separator + (new File(fileSourcePath)).getName();
         parent.description = this.description;
         if (parent.isBootAnimationGroup) {
@@ -74,35 +70,20 @@ public class FileNode extends ProjectItemNode {
         this.fileSourcePath = fileSourcePath;
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
-        fileZipPath = getZipPath();
-    }
-
-    public FileNode(String fileSourcePath, String installLocation, String permission, ProjectItemNode parent) {
-        super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
-        this.installLocation = installLocation;
-        fileName = title;
-        super.path = parent.path + File.separator + (new File(fileSourcePath)).getName();
-        this.fileSourcePath = fileSourcePath;
-        //this.fileDestPath = parent.path + File.separator + (new File(fileSourcePath)).getName();
-        this.filePermission = permission;
-        belongsToGroup = (parent.type == SubGroupNode.TYPE_CUSTOM) ? parent.parent.toString() : parent.toString();
-        fileZipPath = getZipPath();
+        fileZipPath = parent.zipPath + "/" + title;
     }
 
     //this will generate a path that will be used as destination path of file in output zip.
     public final String getZipPath() {
-        String str = "";
-        str = super.path;
-        //str = fileDestPath;
-        //System.out.println("String before : " + str);
-        //str = str.substring(str.indexOf(File.separator) + 1, str.length());
-        //str = str.substring(str.indexOf(File.separator) + 1, str.length());
-        str = "aroma" + File.separator + this.projectName + File.separator
-                + this.originalGroupType + File.separator + str;
-        str = "customize" + File.separator + str;
-        //System.out.println("String after : " + str);
-        str = str.replaceAll("\\\\", "/");
-        return str;
+        return parent.zipPath + "/" + title;
+    }
+    
+    public void updateZipPath(){
+        fileZipPath = parent.zipPath + "/" + title;
+    }
+    
+    public void updateInstallLocation(){
+        this.installLocation = parent.location.replaceAll("\\\\", "/");
     }
 
     public String getDeleteLocation() {
@@ -132,7 +113,7 @@ public class FileNode extends ProjectItemNode {
         //this.fileDestPath = parent.path + File.separator + newName;
         Path p = FileSystems.getDefault().getPath(this.fileSourcePath);;
         this.fileSourcePath = p.resolveSibling(newName).toString();
-        this.fileZipPath = getZipPath();
+        this.fileZipPath = this.parent.zipPath + "/" + title;
     }
 
 }
