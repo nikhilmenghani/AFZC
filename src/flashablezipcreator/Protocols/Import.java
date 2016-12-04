@@ -112,7 +112,7 @@ public class Import implements Runnable {
             if (hasSubGroup) {
                 file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, projectName, projectType);
                 if (subGroupType == SubGroupNode.TYPE_CUSTOM) {
-                    Xml.addFileDataToSubGroup(file);
+                    //Xml.addFileDataToSubGroup(file);
                 }
             } else {
 //                if (projectType == ProjectNode.PROJECT_ROM || projectType == ProjectNode.PROJECT_GAPPS) {
@@ -160,7 +160,7 @@ public class Import implements Runnable {
                 if (groupType == GroupNode.GROUP_OTHER) {
                     file.fileZipPath = filePath;
                 } else if (groupType == GroupNode.GROUP_CUSTOM) {
-                    Xml.addFileDataToGroup(file);
+                    //Xml.addFileDataToGroup(file);
                 }
             }
             file.fileSourcePath = file.path;

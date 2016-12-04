@@ -6,6 +6,7 @@
 package flashablezipcreator.Operations;
 
 import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
@@ -49,8 +50,9 @@ public class XmlOperations {
     public Element root;
     public Element rootGroup;
     public Element rootSubGroup;
-    
-    public void createDeviceConfig(String deviceName) throws ParserConfigurationException{
+    public Element rootFolder;
+
+    public void createDeviceConfig(String deviceName) throws ParserConfigurationException {
         documentFactory = DocumentBuilderFactory.newInstance();
         documentBuilder = documentFactory.newDocumentBuilder();
         document = documentBuilder.newDocument();
@@ -60,8 +62,8 @@ public class XmlOperations {
         name.setTextContent(deviceName);
         root.appendChild(name);
     }
-    
-    public String getDeviceName(String configData) throws ParserConfigurationException, SAXException, IOException{
+
+    public String getDeviceName(String configData) throws ParserConfigurationException, SAXException, IOException {
         String deviceName = "";
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -87,57 +89,94 @@ public class XmlOperations {
         document = documentBuilder.newDocument();
         root = document.createElement("Root");
         document.appendChild(root);
-        rootGroup = document.createElement("GroupData");
-        addGroupNode(root, rootGroup);
-        rootSubGroup = document.createElement("SubGroupData");
-        addSubGroupNode(root, rootSubGroup);
     }
 
-    public void addGroupNode(Element root, Element group) {
-        root.appendChild(group);
-    }
-
-    public void addSubGroupNode(Element root, Element subGroup) {
-        root.appendChild(subGroup);
-    }
-
-    public void addFileNode(FileNode fileNode, Element parent) {
-        Element file = document.createElement("FileData");
-        parent.appendChild(file);
-        Attr attribute = document.createAttribute("name");
-        attribute.setValue(fileNode.title);
-        file.setAttributeNode(attribute);
-        document.getDocumentElement().normalize();
-        switch (fileNode.parent.type) {
-            case ProjectItemNode.NODE_GROUP:
-                addChildNode("ProjectName", fileNode.parent.parent.title, file);
-                addChildNode("ProjectType", ((ProjectNode) fileNode.parent.parent).projectType + "", file);
-                addChildNode("GroupName", fileNode.parent.title, file);
-                addChildNode("GroupType", ((GroupNode) fileNode.parent).groupType + "", file);
-                addChildNode("Description", fileNode.description, file);
-                addChildNode("InstallLocation", fileNode.installLocation, file);
-                addChildNode("Permissions", fileNode.filePermission, file);
-                addChildNode("ZipPath", fileNode.fileZipPath, file);
-                break;
-            case ProjectItemNode.NODE_SUBGROUP:
-                addChildNode("ProjectName", fileNode.parent.parent.parent.title, file);
-                addChildNode("ProjectType", ((ProjectNode) fileNode.parent.parent.parent).projectType + "", file);
-                addChildNode("GroupName", fileNode.parent.parent.title, file);
-                addChildNode("GroupType", ((GroupNode) fileNode.parent.parent).groupType + "", file);
-                addChildNode("SubGroupName", fileNode.parent.title, file);
-                addChildNode("SubGroupType", ((SubGroupNode) fileNode.parent).subGroupType + "", file);
-                addChildNode("Description", ((SubGroupNode) fileNode.parent).description, file);
-                addChildNode("InstallLocation", fileNode.installLocation, file);
-                addChildNode("Permissions", fileNode.filePermission, file);
-                addChildNode("ZipPath", fileNode.fileZipPath, file);
-                break;
+    public void addProjectNode(ProjectNode project) {
+        Element projectElem = document.createElement("ProjectData");
+        Attr attrPName = document.createAttribute("name");
+        attrPName.setValue(project.title);
+        Attr attrPType = document.createAttribute("type");
+        attrPType.setValue(Integer.toString(project.projectType));
+        projectElem.setAttributeNode(attrPName);
+        projectElem.setAttributeNode(attrPType);
+        for (ProjectItemNode projectChild : project.children) {
+            projectElem.appendChild(addGroupNode((GroupNode) projectChild));
         }
+        root.appendChild(projectElem);
     }
 
-    public void addChildNode(String childName, String childValue, Element parent) {
-        Element child = document.createElement(childName);
-        child.appendChild(document.createTextNode(childValue));
-        parent.appendChild(child);
+    public Element addFolderNode(FolderNode folder) {
+        Element folderElem = document.createElement("FolderData");
+        Attr attrFolName = document.createAttribute("name");
+        attrFolName.setValue(folder.title);
+        folderElem.setAttributeNode(attrFolName);
+        for (ProjectItemNode folderChild : folder.children) {
+            switch (folderChild.type) {
+                case ProjectItemNode.NODE_FOLDER:
+                    folderElem.appendChild(addFolderNode((FolderNode) folderChild));
+                    break;
+                case ProjectItemNode.NODE_FILE:
+                    folderElem.appendChild(addFileNode((FileNode) folderChild));
+                    break;
+            }
+        }
+        return folderElem;
+    }
+
+    public Element addFileNode(FileNode file) {
+        Element fileElem = document.createElement("FileData");
+        Attr attrFName = document.createAttribute("name");
+        attrFName.setValue(file.title);
+        fileElem.setAttributeNode(attrFName);
+        Element description = document.createElement("description");
+        description.appendChild(document.createTextNode(file.description));
+        fileElem.appendChild(description);
+        return fileElem;
+    }
+
+    public Element addSubGroupNode(SubGroupNode sgNode) {
+        Element subGroupElem = document.createElement("SubGroupData");
+        Attr attrSGName = document.createAttribute("name");
+        attrSGName.setValue(sgNode.title);
+        Attr attrSGType = document.createAttribute("type");
+        attrSGType.setValue(Integer.toString(sgNode.subGroupType));
+        subGroupElem.setAttributeNode(attrSGName);
+        subGroupElem.setAttributeNode(attrSGType);
+        for (ProjectItemNode subGroupChild : sgNode.children) {
+            switch (subGroupChild.type) {
+                case ProjectItemNode.NODE_FOLDER:
+                    subGroupElem.appendChild(addFolderNode((FolderNode) subGroupChild));
+                    break;
+                case ProjectItemNode.NODE_FILE:
+                    subGroupElem.appendChild(addFileNode((FileNode) subGroupChild));
+                    break;
+            }
+        }
+        return subGroupElem;
+    }
+
+    public Element addGroupNode(GroupNode gNode) {
+        Element groupElem = document.createElement("GroupData");
+        Attr attrGName = document.createAttribute("name");
+        attrGName.setValue(gNode.title);
+        Attr attrGType = document.createAttribute("type");
+        attrGType.setValue(Integer.toString(gNode.groupType));
+        groupElem.setAttributeNode(attrGName);
+        groupElem.setAttributeNode(attrGType);
+        for (ProjectItemNode groupChild : gNode.children) {
+            switch (groupChild.type) {
+                case ProjectItemNode.NODE_SUBGROUP:
+                    groupElem.appendChild(addSubGroupNode((SubGroupNode) groupChild));
+                    break;
+                case ProjectItemNode.NODE_FOLDER:
+                    groupElem.appendChild(addFolderNode((FolderNode) groupChild));
+                    break;
+                case ProjectItemNode.NODE_FILE:
+                    groupElem.appendChild(addFileNode((FileNode) groupChild));
+                    break;
+            }
+        }
+        return groupElem;
     }
 
     //this will return string form of xml document which we can use to write it to a file
@@ -145,6 +184,7 @@ public class XmlOperations {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         StringWriter writer = new StringWriter();
         transformer.transform(new DOMSource(document), new StreamResult(writer));

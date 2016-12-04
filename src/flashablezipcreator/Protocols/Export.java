@@ -119,16 +119,16 @@ public class Export implements Runnable {
         if (isCustomGroupPresent) {
             increaseProgressBar(fileIndex, "Custom Group Data");
             fileIndex++;
-            wz.writeStringToZip(Xml.getString(GroupNode.GROUP_CUSTOM, rootNode), Xml.custom_path);
+            //wz.writeStringToZip(Xml.getString(GroupNode.GROUP_CUSTOM, rootNode), Xml.custom_path);
         }
         if (isDeleteGroupPresent) {
             increaseProgressBar(fileIndex, "Delete Group Data");
             fileIndex++;
-            wz.writeStringToZip(Xml.getString(GroupNode.GROUP_DELETE_FILES, rootNode), Xml.delete_path);
+            //wz.writeStringToZip(Xml.getString(GroupNode.GROUP_DELETE_FILES, rootNode), Xml.delete_path);
         }
         increaseProgressBar(fileIndex, "Zip Data");
         fileIndex++;
-        wz.writeStringToZip(Xml.getString(0, rootNode), Xml.data_path);
+        wz.writeStringToZip(Xml.makeString(0), Xml.data_path);
         increaseProgressBar(fileIndex, "Aroma Config");
         fileIndex++;
         wz.writeStringToZip(AromaConfig.build(rootNode), AromaConfig.aromaConfigPath);
