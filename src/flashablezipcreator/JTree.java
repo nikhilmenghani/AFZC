@@ -194,7 +194,7 @@ public class JTree extends JFrame implements TreeSelectionListener {
 
     private void btnImportZipActionPerformed(java.awt.event.ActionEvent evt) throws IOException, ParserConfigurationException, TransformerException, SAXException {
         try {
-            Import.fromZip(uio.browseZipDestination());
+            Import.fromTheZip(uio.browseZipDestination());
         } catch (NullPointerException npe) {
             //JOptionPane.showMessageDialog(this, "cancelled by user");
         }

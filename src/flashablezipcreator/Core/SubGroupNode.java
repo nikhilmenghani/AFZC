@@ -13,8 +13,8 @@ import java.io.File;
  */
 public class SubGroupNode extends ProjectItemNode {
 
-    String parentNodeName;
-    String subGroupName;
+    public String parentNodeName;
+    public String subGroupName;
     public String location = "";
     public String permission = "";
     public int subGroupType;

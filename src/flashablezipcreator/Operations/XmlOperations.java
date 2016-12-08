@@ -245,7 +245,7 @@ public class XmlOperations {
     }
 
     //following will create file objects of delete file group.
-    public void parseXML(String original, ProjectItemNode rootNode, DefaultTreeModel model) throws ParserConfigurationException, SAXException, IOException {
+    public void parseXML(String original) throws ParserConfigurationException, SAXException, IOException {
         TreeOperations to = new TreeOperations();
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -256,11 +256,11 @@ public class XmlOperations {
             if (fileNode.getParentNode().getNodeName().equals("GroupData")) {
                 if (fileNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) fileNode;
-                    to.addFileToTree(element.getAttribute("name"),
-                            element.getElementsByTagName("GroupName").item(0).getTextContent(),
-                            Integer.parseInt(element.getElementsByTagName("GroupType").item(0).getTextContent()),
-                            element.getElementsByTagName("ProjectName").item(0).getTextContent(),
-                            Integer.parseInt(element.getElementsByTagName("ProjectType").item(0).getTextContent()));
+//                    to.addFileToTree(element.getAttribute("name"),
+//                            element.getElementsByTagName("GroupName").item(0).getTextContent(),
+//                            Integer.parseInt(element.getElementsByTagName("GroupType").item(0).getTextContent()),
+//                            element.getElementsByTagName("ProjectName").item(0).getTextContent(),
+//                            Integer.parseInt(element.getElementsByTagName("ProjectType").item(0).getTextContent()));
                 }
             }
         }

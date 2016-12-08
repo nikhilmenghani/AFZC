@@ -128,7 +128,7 @@ public class Export implements Runnable {
         }
         increaseProgressBar(fileIndex, "Zip Data");
         fileIndex++;
-        wz.writeStringToZip(Xml.makeString(0), Xml.data_path);
+        wz.writeStringToZip(Xml.makeString(), Xml.data_path);
         increaseProgressBar(fileIndex, "Aroma Config");
         fileIndex++;
         wz.writeStringToZip(AromaConfig.build(rootNode), AromaConfig.aromaConfigPath);

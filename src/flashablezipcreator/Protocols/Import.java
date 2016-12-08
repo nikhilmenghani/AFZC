@@ -21,6 +21,7 @@ import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,6 +55,69 @@ public class Import implements Runnable {
         this.rootNode = MyTree.rootNode;
         this.path = path;
         this.model = MyTree.model;
+    }
+
+    public static void fromTheZip(String path) throws ParserConfigurationException, TransformerException, IOException, SAXException {
+        progressValue = 0;
+        boolean containsDataXml = false;
+        Xml.initialize();
+        rz = new ReadZip(path);
+        to = new TreeOperations();
+        int maxSize = rz.filesCount;
+        int fileIndex = 0;
+        for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
+            ZipEntry ze = e.nextElement();
+            String name = ze.getName();
+            if (name.endsWith("/") || Project.getTempFilesList().contains(name) || name.startsWith("META-INF")) {
+                continue;
+            }
+            InputStream in = rz.zf.getInputStream(ze);
+            if (name.equals(Xml.data_path)) {
+                Xml.fileData = rz.getStringFromFile(in);
+                containsDataXml = true;
+                continue;
+            }
+            p("\ncurrent file " + name + "\n");
+            String filePath = name;
+            String projectName = Identify.getProjectName(name);
+            int projectType = Identify.getProjectType(filePath);
+            String groupName = Identify.getGroupName(filePath);
+            int groupType = Identify.getGroupType(filePath);
+            ArrayList<String> folderList = Identify.getFolderNames(filePath);
+            String subGroupName = Identify.getSubGroupName(groupName, filePath);
+            int subGroupType = groupType; //Groups that have subGroups have same type.
+            String fileName = (new File(filePath)).getName();
+
+            progressValue = (fileIndex * 100) / maxSize;
+            fileIndex++;
+            progressBarImportExport.setValue(progressValue);
+            switch (MyTree.progressBarFlag) {
+                case 0:
+                    progressBarImportExport.setString(progressValue + "%");
+                    break;
+                case 1:
+                    progressBarImportExport.setString("Importing " + fileName + "");
+                    break;
+                case 2:
+                    progressBarImportExport.setString(" ");
+                    break;
+            }
+            FileNode file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, projectType);
+            file.fileSourcePath = file.path;
+            rz.writeFileFromZip(in, file.fileSourcePath);
+        }
+
+        //adding nodes to tree should be done here.
+        Xml.terminate();
+        if (containsDataXml) {
+            //Xml.parseXml(0); //this is to set additional details like description to nodes
+        }
+        progressBarImportExport.setString("Successfully Imported");
+        progressBarImportExport.setValue(100);
+        JOptionPane.showMessageDialog(null, "Successfully Imported");
+        progressBarImportExport.setString("0%");
+        progressBarImportExport.setValue(0);
+        progressBarFlag = 0;
     }
 
     public static void fromZip(String path) throws IOException, ParserConfigurationException, TransformerException, SAXException {
@@ -110,7 +174,7 @@ public class Import implements Runnable {
 
             FileNode file = null;
             if (hasSubGroup) {
-                file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, projectName, projectType);
+                //file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, projectName, projectType);
                 if (subGroupType == SubGroupNode.TYPE_CUSTOM) {
                     //Xml.addFileDataToSubGroup(file);
                 }
@@ -138,7 +202,7 @@ public class Import implements Runnable {
 //                        continue;
 //                    }
 //                } else 
-                    if (projectType == ProjectNode.PROJECT_AROMA) {// || projectType == ProjectNode.PROJECT_NORMAL) {
+                if (projectType == ProjectNode.PROJECT_AROMA) {// || projectType == ProjectNode.PROJECT_NORMAL) {
                     if (filePath.startsWith("META-INF")) {
                         continue;
                     }
@@ -156,7 +220,7 @@ public class Import implements Runnable {
                     containsDataXml = true;
                     continue;
                 }
-                file = to.addFileToTree(fileName, groupName, groupType, projectName, projectType);
+                //file = to.addFileToTree(fileName, groupName, groupType, projectName, projectType);
                 if (groupType == GroupNode.GROUP_OTHER) {
                     file.fileZipPath = filePath;
                 } else if (groupType == GroupNode.GROUP_CUSTOM) {
@@ -170,13 +234,13 @@ public class Import implements Runnable {
         Xml.terminate();
 
         if (containsCustomXml) {
-            Xml.parseXml(GroupNode.GROUP_CUSTOM, rootNode, model);//this sets values of custom group/subGroup
+            Xml.parseXml(GroupNode.GROUP_CUSTOM);//this sets values of custom group/subGroup
         }
         if (containsDeleteXml) {
-            Xml.parseXml(GroupNode.GROUP_DELETE_FILES, rootNode, model);//this creates new file objects of delete group
+            Xml.parseXml(GroupNode.GROUP_DELETE_FILES);//this creates new file objects of delete group
         }
         if (containsDataXml) {
-            Xml.parseXml(0, rootNode, model);
+            Xml.parseXml(0);
         }
         progressBarImportExport.setString("Successfully Imported");
         progressBarImportExport.setValue(100);
@@ -191,15 +255,9 @@ public class Import implements Runnable {
         try {
             CardLayout cardLayout = (CardLayout) panelLower.getLayout();
             cardLayout.show(panelLower, "card2");
-            fromZip(path);
+            fromTheZip(path);
             cardLayout.show(panelLower, "card1");
-        } catch (IOException ex) {
-            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TransformerException ex) {
-            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
+        } catch (IOException | ParserConfigurationException | TransformerException | SAXException ex) {
             Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

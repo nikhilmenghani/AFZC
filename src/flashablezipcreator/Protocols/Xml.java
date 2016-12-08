@@ -38,7 +38,7 @@ public class Xml {
     static String deleteData = "";
     public static String fileDetailsData = "";
 
-    public static String makeString(int type) throws ParserConfigurationException, TransformerException{
+    public static String makeString() throws ParserConfigurationException, TransformerException{
         xo = new XmlOperations();
         xo.createXML();
         for (ProjectItemNode project : to.getProjectsSorted(MyTree.rootNode)) {
@@ -49,13 +49,14 @@ public class Xml {
         return xo.getXML();
     }
     
-    public static void parseXml(int type, ProjectItemNode rootNode, DefaultTreeModel model) throws ParserConfigurationException, SAXException, IOException {
+    public static void parseXml(int type) throws ParserConfigurationException, SAXException, IOException {
+        ProjectItemNode rootNode = MyTree.rootNode;
         switch (type) {
             case GroupNode.GROUP_CUSTOM:
                 xo.parseGeneratedXML(rootNode, generatedData, originalData);//generatedData and OriginalData are modified in Import.java.
                 break;
             case GroupNode.GROUP_DELETE_FILES:
-                xo.parseXML(deleteData, rootNode, model);
+                xo.parseXML(deleteData);
                 break;
             default:
                 xo.parseDataXML(rootNode, fileData);//this is for setting description of files.

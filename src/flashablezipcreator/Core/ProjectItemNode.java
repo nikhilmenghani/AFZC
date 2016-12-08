@@ -64,16 +64,15 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
 //    public void addChild(ProjectItemNode child) {
 //        children.add(child);
 //    }
-
-    public void addChild(ProjectItemNode child) {
+    public ProjectItemNode addChild(ProjectItemNode child) {
         children.add(child);
         MyTree.model.reload(this);
+        return child;
     }
 
 //    public void removeChild(ProjectItemNode child) {
 //        children.remove(child);
 //    }
-
     public void removeChild(ProjectItemNode child) {
         children.remove(child);
         MyTree.model.reload(this);

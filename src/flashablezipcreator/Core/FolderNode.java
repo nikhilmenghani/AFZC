@@ -17,11 +17,12 @@ public class FolderNode extends ProjectItemNode {
     String folderName;
     String permission;
     boolean isBootAnimationGroup = false;
-    ProjectItemNode originalParent;
+    public ProjectItemNode originalParent;
     String projectName;
     String originalGroupType;
     public String description;
     String zipPathPrefix = "Folder_";
+    public static final int FOLDER_TYPE = 0;
 
     public FolderNode(String title, int type, ProjectItemNode parent) {
         super(title, type, parent);
