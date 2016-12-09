@@ -386,6 +386,61 @@ public class TreeOperations {
         return null;
     }
 
+    public FileNode getFileNode(String name, ArrayList<String> folders, String subGroupName, String groupName, String projectName) {
+        for (ProjectItemNode node : getNodeList(ProjectItemNode.NODE_FILE)) {
+            FileNode file = (FileNode) node;
+            if (file.title.equals(name)) {
+                switch (file.parent.type) {
+                    case ProjectItemNode.NODE_GROUP:
+                        if (file.parent.title.equals(groupName) && file.parent.parent.title.equals(projectName)) {
+                            return file;
+                        }
+                        break;
+                    case ProjectItemNode.NODE_SUBGROUP:
+                        if (file.parent.title.equals(subGroupName)
+                                && file.parent.parent.title.equals(groupName)
+                                && file.parent.parent.parent.title.equals(projectName)) {
+                            return file;
+                        }
+                        break;
+                    case ProjectItemNode.NODE_FOLDER:
+                        FolderNode folder = (FolderNode) file.parent;
+                        int size = folders.size();
+                        boolean folderMatch = true;
+                        while (size > 0) {
+                            if (folder.title.equals(folders.get(size - 1))) {
+                                if (size > 1) {
+                                    folder = (FolderNode) folder.parent;
+                                }
+                                size--;
+                            } else {
+                                folderMatch = false;
+                                break;
+                            }
+                        }
+                        if (folderMatch) {
+                            switch (folder.parent.type) {
+                                case ProjectItemNode.NODE_GROUP:
+                                    if (folder.parent.title.equals(groupName) && folder.parent.parent.title.equals(projectName)) {
+                                        return file;
+                                    }
+                                    break;
+                                case ProjectItemNode.NODE_SUBGROUP:
+                                    if (folder.parent.title.equals(subGroupName)
+                                            && folder.parent.parent.title.equals(groupName)
+                                            && folder.parent.parent.parent.title.equals(projectName)) {
+                                        return file;
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+        return null;
+    }
+
     public FileNode getFileNode(String name, String subGroupName, String groupName, String projectName) {
         for (ProjectItemNode node : getNodeList(ProjectItemNode.NODE_FILE)) {
             if (node.title.equals(name) && node.parent.title.equals(subGroupName) && node.parent.parent.title.equals(groupName) && node.parent.parent.parent.title.equals(projectName)) {

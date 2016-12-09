@@ -110,7 +110,7 @@ public class Import implements Runnable {
         //adding nodes to tree should be done here.
         Xml.terminate();
         if (containsDataXml) {
-            //Xml.parseXml(0); //this is to set additional details like description to nodes
+            Xml.parseXml(0); //this is to set additional details like description to nodes
         }
         progressBarImportExport.setString("Successfully Imported");
         progressBarImportExport.setValue(100);

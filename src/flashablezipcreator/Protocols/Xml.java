@@ -59,7 +59,7 @@ public class Xml {
                 xo.parseXML(deleteData);
                 break;
             default:
-                xo.parseDataXML(rootNode, fileData);//this is for setting description of files.
+                xo.parseDataXML(fileData);//this is for setting description of files.
         }
 
     }

@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Operations;
 
+import com.sun.org.apache.xpath.internal.axes.SubContextList;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.DocumentBuilder;
@@ -51,6 +53,7 @@ public class XmlOperations {
     public Element rootGroup;
     public Element rootSubGroup;
     public Element rootFolder;
+    TreeOperations to = new TreeOperations();
 
     public void createDeviceConfig(String deviceName) throws ParserConfigurationException {
         documentFactory = DocumentBuilderFactory.newInstance();
@@ -266,31 +269,90 @@ public class XmlOperations {
         }
     }
 
-    //following is to set description of files.
-    public void parseDataXML(ProjectItemNode rootNode, String data) throws SAXException, IOException, ParserConfigurationException {
+    public void parseDataXML(String data) throws ParserConfigurationException, SAXException, IOException {
         TreeOperations to = new TreeOperations();
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document genDoc = dBuilder.parse(new InputSource(new StringReader(data)));
-        NodeList fileList = genDoc.getElementsByTagName("FileData");
-        for (int j = 0; j < fileList.getLength(); j++) {
-            Node fileNode = fileList.item(j);
-            if (fileNode.getParentNode().getNodeName().equals("GroupData")) {
-                if (fileNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) fileNode;
-                    FileNode file = to.getFileNode(element.getAttribute("name"),
-                            element.getElementsByTagName("GroupName").item(0).getTextContent(),
-                            element.getElementsByTagName("ProjectName").item(0).getTextContent());
-                    setFileValues(file, element);
+        NodeList projectList = genDoc.getElementsByTagName("ProjectData");
+        for (int p = 0; p < projectList.getLength(); p++) {
+            Node projectNode = projectList.item(p);
+            String projectName = ((Element) projectNode).getAttribute("name");
+            NodeList groupList = projectNode.getChildNodes();
+            for (int g = 0; g < groupList.getLength(); g++) {
+                Node groupNode = groupList.item(g);
+                if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
+                    String groupName = ((Element) groupNode).getAttribute("name");
+                    NodeList groupChildList = groupNode.getChildNodes();
+                    for (int gc = 0; gc < groupChildList.getLength(); gc++) {
+                        Node groupChildNode = groupChildList.item(gc);
+                        String subGroupName = "";
+                        String folderName = "";
+                        ArrayList<String> folders = new ArrayList<>();
+                        if (groupChildNode.getNodeType() == Node.ELEMENT_NODE) {
+                            String groupChildName = ((Element) groupChildNode).getAttribute("name");
+                            switch (groupChildNode.getNodeName()) {
+                                case "SubGroupData":
+                                    subGroupName = groupChildName;
+                                    NodeList subGroupChildNodeList = groupChildNode.getChildNodes();
+                                    for (int sgc = 0; sgc < subGroupChildNodeList.getLength(); sgc++) {
+                                        Node subGroupChildNode = subGroupChildNodeList.item(sgc);
+                                        if (subGroupChildNode.getNodeType() == Node.ELEMENT_NODE) {
+                                            String subGroupChildName = ((Element) subGroupChildNode).getAttribute("name");
+                                            switch (subGroupChildNode.getNodeName()) {
+                                                case "FolderData":
+                                                    folders = new ArrayList<>();
+                                                    folderName = subGroupChildName;
+                                                    folders.add(folderName);
+                                                    HandleFolderData(projectName, groupName, subGroupName, subGroupChildNode, folders);
+                                                    break;
+                                                case "FileData":
+                                                    FileNode file = to.getFileNode(subGroupChildName, folders, subGroupName, groupName, projectName);
+                                                    file.description = ((Element) subGroupChildNode).getElementsByTagName("description").item(0).getTextContent();
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "FolderData":
+                                    folders = new ArrayList<>();
+                                    folderName = groupChildName;
+                                    folders.add(folderName);
+                                    HandleFolderData(projectName, groupName, subGroupName, groupChildNode, folders);
+                                    break;
+                                case "FileData":
+                                    FileNode file = to.getFileNode(groupChildName, folders, subGroupName, groupName, projectName);
+                                    file.description = ((Element) groupChildNode).getElementsByTagName("description").item(0).getTextContent();
+                                    break;
+                            }
+                        }
+                    }
                 }
-            } else if (fileNode.getParentNode().getNodeName().equals("SubGroupData")) {
-                if (fileNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) fileNode;
-                    FileNode file = to.getFileNode(element.getAttribute("name"),
-                            element.getElementsByTagName("SubGroupName").item(0).getTextContent(),
-                            element.getElementsByTagName("GroupName").item(0).getTextContent(),
-                            element.getElementsByTagName("ProjectName").item(0).getTextContent());
-                    setFileValues(file, element);
+            }
+        }
+    }
+
+    public void HandleFolderData(String ProjectName, String GroupName, String SubGroupName, Node folder, ArrayList<String> folders) {
+        if (folder.hasChildNodes()) {
+            NodeList folderChildList = folder.getChildNodes();
+            for (int fc = 0; fc < folderChildList.getLength(); fc++) {
+                Node folderChildNode = folderChildList.item(fc);
+                if (folderChildNode.getNodeType() == Node.ELEMENT_NODE) {
+                    String folderChildName = ((Element) folderChildNode).getAttribute("name");
+                    switch (folderChildNode.getNodeName()) {
+                        case "FolderData":
+                            folders.add(folderChildName);
+                            HandleFolderData(ProjectName, GroupName, SubGroupName, folderChildNode, folders);
+                            break;
+                        case "FileData":
+                            FileNode file = to.getFileNode(folderChildName, folders, SubGroupName, GroupName, ProjectName);
+                            System.out.println("working for: " + file.title);
+                            Element elem = ((Element) folderChildNode);
+                            Node temp = (Node) elem.getElementsByTagName("description").item(0);
+                            String value = temp.getTextContent();
+                            file.description = ((Element) folderChildNode).getElementsByTagName("description").item(0).getTextContent();
+                            break;
+                    }
                 }
             }
         }
