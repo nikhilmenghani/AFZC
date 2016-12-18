@@ -22,7 +22,10 @@ public class FolderNode extends ProjectItemNode {
     String originalGroupType;
     public String description;
     String zipPathPrefix = "Folder_";
+    String extractPathPrefix = "Extract_";
+    String extractZipPath;
     public static final int FOLDER_TYPE = 0;
+    String folderLocation;
 
     public FolderNode(String title, int type, ProjectItemNode parent) {
         super(title, type, parent);
@@ -34,7 +37,10 @@ public class FolderNode extends ProjectItemNode {
         this.folderName = title;
         super.path = parent + File.separator + title;
         super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
-        super.location = parent.location + File.separator + title;
+        super.location = parent.location;
+        this.folderLocation = parent.location + File.separator + title;
+        this.extractZipPath = parent.zipPath + "/" + extractPathPrefix + title + parent.location + File.separator + title;
+        //this.extractZipPath = parent.zipPath + "/" + extractPathPrefix + title + File.separator + parent.folder + title;
         this.permission = parent.permission;
         this.originalParent = parent;
         this.projectName = parent.projectName;
@@ -46,7 +52,9 @@ public class FolderNode extends ProjectItemNode {
         this.folderName = title;
         super.path = parent + File.separator + title;
         super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
-        super.location = parent.location + File.separator + title;
+        super.location = parent.location;
+        this.folderLocation = parent.location + File.separator + title;
+        this.extractZipPath = parent.zipPath + "/" + extractPathPrefix + title + parent.location + File.separator + title;
         this.permission = parent.permission;
         this.originalParent = parent;
         this.projectName = parent.projectName;
@@ -58,7 +66,8 @@ public class FolderNode extends ProjectItemNode {
         this.folderName = title;
         super.path = parent + File.separator + title;
         super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
-        super.location = parent.location + File.separator + title;
+        super.location = parent.location;
+        this.folderLocation = parent.folderLocation + File.separator + title;
         this.permission = parent.permission;
         this.originalParent = parent.originalParent;
         this.projectName = parent.projectName;

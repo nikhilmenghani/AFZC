@@ -6,6 +6,7 @@
 package flashablezipcreator.Core;
 
 import java.io.File;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,7 +16,6 @@ public class SubGroupNode extends ProjectItemNode {
 
     public String parentNodeName;
     public String subGroupName;
-    public String location = "";
     public String permission = "";
     public int subGroupType;
     public String description = "";
@@ -24,6 +24,8 @@ public class SubGroupNode extends ProjectItemNode {
     public String projectName;
     public String originalGroupType;
     String zipPathPrefix = "SubGroup_";
+    String extractPathPrefix = "Extract_";
+    String extractZipPath;
 
     public static final int TYPE_SYSTEM_FONTS = GroupNode.GROUP_SYSTEM_FONTS;
     public static final int TYPE_SYSTEM_MEDIA = GroupNode.GROUP_SYSTEM_MEDIA;
@@ -38,6 +40,7 @@ public class SubGroupNode extends ProjectItemNode {
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
         super.location = parent.location;
+        this.extractZipPath = parent.extractZipPath;
         //System.out.println("SubGroup Path is : " + path);
         switch (type) {
             case TYPE_SYSTEM_FONTS:

@@ -68,7 +68,9 @@ public class Import implements Runnable {
         for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
             ZipEntry ze = e.nextElement();
             String name = ze.getName();
-            if (name.endsWith("/") || Project.getTempFilesList().contains(name) || name.startsWith("META-INF")) {
+            if (name.endsWith("/") || Project.getTempFilesList().contains(name)
+                    || name.startsWith("META-INF")
+                    || name.contains("Extract_")) {
                 continue;
             }
             InputStream in = rz.zf.getInputStream(ze);

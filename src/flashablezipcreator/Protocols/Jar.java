@@ -24,7 +24,7 @@ import javax.swing.tree.DefaultTreeModel;
  */
 public class Jar {
 
-    //ProjectItemNode rootNode, DefaultTreeModel model
+    //ProjectItemNode rootNode, DefaultTreeModel model 
     public static void addThemesToTree() throws IOException {
         ProjectItemNode rootNode = MyTree.rootNode;
         DefaultTreeModel model = MyTree.model;

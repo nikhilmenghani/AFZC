@@ -344,7 +344,11 @@ public class MyPopup {
                             case GroupNode.GROUP_SYSTEM_APK:
                             case GroupNode.GROUP_SYSTEM_PRIV_APK:
                             case GroupNode.GROUP_DATA_APP:
-                                FolderNode folderNode = new FolderNode(tempFile.getName().replaceFirst("[.][^.]+$", ""), gNode);
+                                String folderName = tempFile.getName().replaceFirst("[.][^.]+$", "");
+                                if (gNode.groupType == GroupNode.GROUP_DATA_APP) {
+                                    folderName = tempFile.getName().replaceFirst("[.][^.]+$", "") + "-1";
+                                }
+                                FolderNode folderNode = new FolderNode(folderName, gNode);
                                 fnode = new FileNode(tempFile.getAbsolutePath(), folderNode);
                                 folderNode.addChild(fnode);
                                 gNode.addChild(folderNode);

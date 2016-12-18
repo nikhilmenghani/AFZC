@@ -5,7 +5,6 @@
  */
 package flashablezipcreator.Operations;
 
-import com.sun.org.apache.xpath.internal.axes.SubContextList;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
@@ -13,14 +12,10 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.Protocols.Project;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -347,9 +342,6 @@ public class XmlOperations {
                         case "FileData":
                             FileNode file = to.getFileNode(folderChildName, folders, SubGroupName, GroupName, ProjectName);
                             System.out.println("working for: " + file.title);
-                            Element elem = ((Element) folderChildNode);
-                            Node temp = (Node) elem.getElementsByTagName("description").item(0);
-                            String value = temp.getTextContent();
                             file.description = ((Element) folderChildNode).getElementsByTagName("description").item(0).getTextContent();
                             break;
                     }

@@ -28,6 +28,8 @@ public class FileNode extends ProjectItemNode {
     public String fileZipPath = "";
     public String projectName;
     public String originalGroupType;
+    public String extractZipPath;
+    public String groupLocation;
 
     public FileNode(String fileSourcePath, GroupNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
@@ -39,6 +41,11 @@ public class FileNode extends ProjectItemNode {
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
         fileZipPath = parent.zipPath + "/" + title;
+        if (parent.groupType == GroupNode.GROUP_AROMA_THEMES) {
+            fileZipPath = super.path.replaceAll("\\\\", "/");
+        }
+        this.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        this.groupLocation = parent.location;
     }
 
     public FileNode(String fileSourcePath, SubGroupNode parent) {
@@ -55,11 +62,13 @@ public class FileNode extends ProjectItemNode {
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
         fileZipPath = parent.zipPath + "/" + title;
+        this.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        this.groupLocation = parent.location;
     }
 
     public FileNode(String fileSourcePath, FolderNode parent) {
         super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
-        this.installLocation = parent.location.replaceAll("\\\\", "/");
+        this.installLocation = parent.folderLocation.replaceAll("\\\\", "/");
         super.path = parent.path + File.separator + (new File(fileSourcePath)).getName();
         parent.description = this.description;
         if (parent.isBootAnimationGroup) {
@@ -71,18 +80,20 @@ public class FileNode extends ProjectItemNode {
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
         fileZipPath = parent.zipPath + "/" + title;
+        this.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        this.groupLocation = parent.location;
     }
 
     //this will generate a path that will be used as destination path of file in output zip.
     public final String getZipPath() {
         return parent.zipPath + "/" + title;
     }
-    
-    public void updateZipPath(){
+
+    public void updateZipPath() {
         fileZipPath = parent.zipPath + "/" + title;
     }
-    
-    public void updateInstallLocation(){
+
+    public void updateInstallLocation() {
         this.installLocation = parent.location.replaceAll("\\\\", "/");
     }
 

@@ -26,6 +26,8 @@ public class GroupNode extends ProjectItemNode {
     public String originalGroupType;
     String zipPathPrefix = "Group_";
     String typePrefix = "Type_";
+    String extractPathPrefix = "Extract_";
+    public String extractZipPath;
 
     public static final int GROUP_SYSTEM_APK = 1;
     public static final int GROUP_SYSTEM_PRIV_APK = 2;
@@ -164,6 +166,7 @@ public class GroupNode extends ProjectItemNode {
                 break;
         }
         super.zipPath = parent.zipPath + "/" + this.originalGroupType + "/" + zipPathPrefix + title;
+        this.extractZipPath = super.zipPath + "/" + extractPathPrefix + title + super.location;
     }
 
     public String setPermissions(String i, String j, String k) {

@@ -51,7 +51,7 @@ public class UpdaterScript {
         String str = "";
         str += "if (file_getprop(\"/tmp/aroma/" + project.title + ".prop\", \"selected\")==\"1\") then\n";
         str += op.getMountMethod(1);
-        str += op.getExtractDataString();
+        //str += op.getExtractDataString();
         str += "set_progress(0);\n";
         for (ProjectItemNode group : to.getNodeList(ProjectItemNode.NODE_GROUP)) {
             if (((ProjectNode) group.parent).projectType == project.projectType && ((ProjectNode) group.parent).title.equals(project.title)) {

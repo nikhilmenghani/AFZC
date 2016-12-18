@@ -56,6 +56,7 @@ public class Export implements Runnable {
         boolean isCustomGroupPresent = false;
         boolean isDeleteGroupPresent = false;
         int fileIndex = 0;
+        ArrayList<String> tempPaths = new ArrayList<>();
         List<ProjectItemNode> projectNodeList = to.getProjectsSorted(rootNode);
         maxSize = getNodeCount(projectNodeList) + 10; //10 because we write more files than node count
         for (ProjectItemNode project : projectNodeList) {
@@ -87,9 +88,11 @@ public class Export implements Runnable {
                                 increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
                                 fileIndex++;
                                 wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, ((FileNode) fileNode).fileZipPath);
+                                tempPaths.add(((FileNode) fileNode).extractZipPath);
                             }
                         } else if (node.type == ProjectItemNode.NODE_FILE) {
                             increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
+                            tempPaths.add(((FileNode) node).extractZipPath);
                             fileIndex++;
                             wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
                         } else if (node.type == ProjectItemNode.NODE_FOLDER) {
@@ -98,6 +101,7 @@ public class Export implements Runnable {
                                 increaseProgressBar(fileIndex, file.fileSourcePath);
                                 fileIndex++;
                                 wz.writeFileToZip(file.fileSourcePath, file.fileZipPath);
+                                tempPaths.add(file.extractZipPath);
                             }
 
                         }
@@ -144,14 +148,14 @@ public class Export implements Runnable {
             wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
             increaseProgressBar(fileIndex, "Jar Items");
             fileIndex++;
-            writeTempFiles();
+            writeTempFiles(tempPaths);
             for (String file : Jar.getOtherFileList()) {
                 wz.writeFileToZip(JarOperations.getInputStream(file), file);
             }
         } catch (NullPointerException npe) {
             System.out.println("Executing through Netbeans hence skipping Jar Operations");
         }
-
+        writeTempFiles(tempPaths);
         wz.close();
         progressBarImportExport.setValue(100);
         progressBarImportExport.setString("Zip Created Successfully..!!");
@@ -206,8 +210,11 @@ public class Export implements Runnable {
     }
 
     //this is required to fix status 7 error while installing Rom
-    public static void writeTempFiles() throws IOException {
-        for (String path : Project.getTempFilesList()) {
+    public static void writeTempFiles(ArrayList<String> tempFiles) throws IOException {
+//        for (String path : Project.getTempFilesList()) {
+//            wz.writeStringToZip("delete this file", path);
+//        }
+        for (String path : tempFiles) {
             wz.writeStringToZip("delete this file", path);
         }
     }
