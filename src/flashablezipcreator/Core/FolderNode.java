@@ -23,7 +23,6 @@ public class FolderNode extends ProjectItemNode {
     public String description;
     String zipPathPrefix = "Folder_";
     String extractPathPrefix = "Extract_";
-    String extractZipPath;
     public static final int FOLDER_TYPE = 0;
     String folderLocation;
 
@@ -35,12 +34,11 @@ public class FolderNode extends ProjectItemNode {
     public FolderNode(String title, GroupNode parent) {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
         this.folderName = title;
-        super.path = parent + File.separator + title;
+        super.path = parent.path + File.separator + title;
         super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
         super.location = parent.location;
         this.folderLocation = parent.location + File.separator + title;
-        this.extractZipPath = parent.zipPath + "/" + extractPathPrefix + title + parent.location + File.separator + title;
-        //this.extractZipPath = parent.zipPath + "/" + extractPathPrefix + title + File.separator + parent.folder + title;
+        super.extractZipPath = parent.zipPath + "/" + extractPathPrefix + title + parent.location + File.separator + title;
         this.permission = parent.permission;
         this.originalParent = parent;
         this.projectName = parent.projectName;
@@ -50,11 +48,11 @@ public class FolderNode extends ProjectItemNode {
     public FolderNode(String title, SubGroupNode parent) {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
         this.folderName = title;
-        super.path = parent + File.separator + title;
+        super.path = parent.path + File.separator + title;
         super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
         super.location = parent.location;
         this.folderLocation = parent.location + File.separator + title;
-        this.extractZipPath = parent.zipPath + "/" + extractPathPrefix + title + parent.location + File.separator + title;
+        super.extractZipPath = parent.zipPath + "/" + extractPathPrefix + title + parent.location + File.separator + title;
         this.permission = parent.permission;
         this.originalParent = parent;
         this.projectName = parent.projectName;
@@ -64,7 +62,7 @@ public class FolderNode extends ProjectItemNode {
     public FolderNode(String title, FolderNode parent) {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
         this.folderName = title;
-        super.path = parent + File.separator + title;
+        super.path = parent.path + File.separator + title;
         super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
         super.location = parent.location;
         this.folderLocation = parent.folderLocation + File.separator + title;
@@ -90,6 +88,7 @@ public class FolderNode extends ProjectItemNode {
 
     public void updateZipPath() {
         super.zipPath = parent.zipPath + "/" + zipPathPrefix + title;
+        super.extractZipPath = parent.zipPath + "/" + extractPathPrefix + title + parent.location + File.separator + title;
     }
 
     public void updateChildrenZipPath() {

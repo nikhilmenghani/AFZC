@@ -24,8 +24,8 @@
 #--- COMMON SYSTEM STRING RESOURCE
 #
 text_ok=OK
-text_next=Selanjutnya >
-text_back=< Kembali
+text_next=Selanjutnya
+text_back=Kembali
 text_yes=Ya
 text_no=Tidak
 text_about=Tentang

@@ -58,7 +58,7 @@ public class Export implements Runnable {
         int fileIndex = 0;
         ArrayList<String> tempPaths = new ArrayList<>();
         List<ProjectItemNode> projectNodeList = to.getProjectsSorted(rootNode);
-        maxSize = getNodeCount(projectNodeList) + 10; //10 because we write more files than node count
+        maxSize = getNodeCount(to.getNodeList(ProjectItemNode.NODE_FILE)) + 10; //10 because we write more files than node count
         for (ProjectItemNode project : projectNodeList) {
             if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
                 for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
@@ -155,7 +155,6 @@ public class Export implements Runnable {
         } catch (NullPointerException npe) {
             System.out.println("Executing through Netbeans hence skipping Jar Operations");
         }
-        writeTempFiles(tempPaths);
         wz.close();
         progressBarImportExport.setValue(100);
         progressBarImportExport.setString("Zip Created Successfully..!!");
@@ -219,20 +218,10 @@ public class Export implements Runnable {
         }
     }
 
-    public static int getNodeCount(List<ProjectItemNode> projectNodeList) {
+    public static int getNodeCount(ArrayList<ProjectItemNode> fileList) {
         int count = 0;
-        for (ProjectItemNode project : projectNodeList) {
-            for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
-                for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                    if (node.type == ProjectItemNode.NODE_SUBGROUP) {
-                        for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
-                            count++;
-                        }
-                    } else if (node.type == ProjectItemNode.NODE_FILE) {
-                        count++;
-                    }
-                }
-            }
+        for (ProjectItemNode file : fileList) {
+            count++;
         }
         return count;
     }

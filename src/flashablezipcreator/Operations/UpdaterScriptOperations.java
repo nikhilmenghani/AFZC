@@ -80,16 +80,7 @@ public class UpdaterScriptOperations {
                 str = getFolderScript(str, child);
             } else if (child.type == ProjectItemNode.NODE_FILE) {
                 FileNode file = (FileNode) child;
-                str += addPrintString(file.title, installString);
-                String extractZipPath = file.extractZipPath;
-                extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(file.groupLocation));
-                if (file.groupLocation.contains("/system")) {
-                    str += addPrintString("Extracting afzc_temp to " + file.groupLocation);
-                    str += "package_extract_dir(\"" + extractZipPath + "/system" + "\",\"/system\");\n";
-                } else if (file.groupLocation.contains("/data")) {
-                    str += addPrintString("Extracting afzc_temp to " + file.groupLocation);
-                    str += "package_extract_dir(\"" + extractZipPath + "/data" + "\",\"/data\");\n";
-                }
+                str += getPackageExtractDirString(file);
                 str += "package_extract_file(\"" + file.fileZipPath + "\", \"" + file.installLocation + "/" + file.title + "\");\n";
                 str += "set_perm(" + file.filePermission + ");\n";
             }

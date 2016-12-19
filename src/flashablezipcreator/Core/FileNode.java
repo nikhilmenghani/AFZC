@@ -8,16 +8,13 @@ package flashablezipcreator.Core;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author Nikhil
  */
-public class FileNode extends ProjectItemNode {
+public final class FileNode extends ProjectItemNode {
 
     public String fileName;
     public String fileSourcePath;
@@ -28,7 +25,6 @@ public class FileNode extends ProjectItemNode {
     public String fileZipPath = "";
     public String projectName;
     public String originalGroupType;
-    public String extractZipPath;
     public String groupLocation;
 
     public FileNode(String fileSourcePath, GroupNode parent) {
@@ -44,7 +40,7 @@ public class FileNode extends ProjectItemNode {
         if (parent.groupType == GroupNode.GROUP_AROMA_THEMES) {
             fileZipPath = super.path.replaceAll("\\\\", "/");
         }
-        this.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        super.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
         this.groupLocation = parent.location;
     }
 
@@ -62,7 +58,7 @@ public class FileNode extends ProjectItemNode {
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
         fileZipPath = parent.zipPath + "/" + title;
-        this.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        super.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
         this.groupLocation = parent.location;
     }
 
@@ -80,7 +76,7 @@ public class FileNode extends ProjectItemNode {
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
         fileZipPath = parent.zipPath + "/" + title;
-        this.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        super.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
         this.groupLocation = parent.location;
     }
 
@@ -91,6 +87,7 @@ public class FileNode extends ProjectItemNode {
 
     public void updateZipPath() {
         fileZipPath = parent.zipPath + "/" + title;
+        super.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
     }
 
     public void updateInstallLocation() {
@@ -102,7 +99,7 @@ public class FileNode extends ProjectItemNode {
     }
 
     public void setPermissions(String parentPermission, String title) {
-        this.filePermission = (parentPermission + "\"" + this.installLocation + "/" + title + "\"").replaceAll("\\\\", "/");;
+        this.filePermission = (parentPermission + "\"" + this.installLocation + "/" + title + "\"").replaceAll("\\\\", "/");
     }
 
     public String getProjectType(ProjectNode project) {
@@ -122,7 +119,7 @@ public class FileNode extends ProjectItemNode {
         this.fileName = newName;
         super.path = parent.path + File.separator + newName;
         //this.fileDestPath = parent.path + File.separator + newName;
-        Path p = FileSystems.getDefault().getPath(this.fileSourcePath);;
+        Path p = FileSystems.getDefault().getPath(this.fileSourcePath);
         this.fileSourcePath = p.resolveSibling(newName).toString();
         this.fileZipPath = this.parent.zipPath + "/" + title;
     }
