@@ -18,6 +18,7 @@ import static flashablezipcreator.MyTree.progressBarFlag;
 import static flashablezipcreator.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
+import static flashablezipcreator.Protocols.Import.setCardLayout;
 import java.awt.CardLayout;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,109 +60,114 @@ public class Export implements Runnable {
         ArrayList<String> tempPaths = new ArrayList<>();
         List<ProjectItemNode> projectNodeList = to.getProjectsSorted(rootNode);
         maxSize = getNodeCount(to.getNodeList(ProjectItemNode.NODE_FILE)) + 10; //10 because we write more files than node count
-        for (ProjectItemNode project : projectNodeList) {
-            if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
-                for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
-                    if (((GroupNode) groupNode).groupType == GroupNode.GROUP_DELETE_FILES) {
-                        isDeleteGroupPresent = true;
-                        continue;
-                    }
-                    if (((GroupNode) groupNode).groupType == GroupNode.GROUP_SCRIPT) {
-                        for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                            if (node.type == ProjectItemNode.NODE_FILE) {
-                                //not yet tested this
-                                increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
-                                fileIndex++;
-                                wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
-                            }
+        try {
+            for (ProjectItemNode project : projectNodeList) {
+                if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
+                    for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
+                        if (((GroupNode) groupNode).groupType == GroupNode.GROUP_DELETE_FILES) {
+                            isDeleteGroupPresent = true;
+                            continue;
                         }
-                        continue;
-                    }
-                    for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                        if (node.type == ProjectItemNode.NODE_SUBGROUP) {
-                            for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
-                                if (((FileNode) fileNode).title.equals("DroidSans.ttf")) {
+                        if (((GroupNode) groupNode).groupType == GroupNode.GROUP_SCRIPT) {
+                            for (ProjectItemNode node : ((GroupNode) groupNode).children) {
+                                if (node.type == ProjectItemNode.NODE_FILE) {
+                                    //not yet tested this
+                                    increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
+                                    fileIndex++;
+                                    wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
+                                }
+                            }
+                            continue;
+                        }
+                        for (ProjectItemNode node : ((GroupNode) groupNode).children) {
+                            if (node.type == ProjectItemNode.NODE_SUBGROUP) {
+                                for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
+                                    if (((FileNode) fileNode).title.equals("DroidSans.ttf")) {
+                                        increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
+                                        fileIndex++;
+                                        wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).title + ".ttf");
+                                    }
                                     increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
                                     fileIndex++;
-                                    wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).title + ".ttf");
+                                    wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, ((FileNode) fileNode).fileZipPath);
+                                    tempPaths.add(((FileNode) fileNode).extractZipPath);
                                 }
-                                increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
+                            } else if (node.type == ProjectItemNode.NODE_FILE) {
+                                increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
+                                tempPaths.add(((FileNode) node).extractZipPath);
                                 fileIndex++;
-                                wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, ((FileNode) fileNode).fileZipPath);
-                                tempPaths.add(((FileNode) fileNode).extractZipPath);
-                            }
-                        } else if (node.type == ProjectItemNode.NODE_FILE) {
-                            increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
-                            tempPaths.add(((FileNode) node).extractZipPath);
-                            fileIndex++;
-                            wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
-                        } else if (node.type == ProjectItemNode.NODE_FOLDER) {
-                            ArrayList<FileNode> files = new ArrayList<FileNode>();
-                            for (FileNode file : getFilesOfFolder((FolderNode) node, files)) {
-                                increaseProgressBar(fileIndex, file.fileSourcePath);
-                                fileIndex++;
-                                wz.writeFileToZip(file.fileSourcePath, file.fileZipPath);
-                                tempPaths.add(file.extractZipPath);
-                            }
+                                wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
+                            } else if (node.type == ProjectItemNode.NODE_FOLDER) {
+                                ArrayList<FileNode> files = new ArrayList<FileNode>();
+                                for (FileNode file : getFilesOfFolder((FolderNode) node, files)) {
+                                    increaseProgressBar(fileIndex, file.fileSourcePath);
+                                    fileIndex++;
+                                    wz.writeFileToZip(file.fileSourcePath, file.fileZipPath);
+                                    tempPaths.add(file.extractZipPath);
+                                }
 
+                            }
+                        }
+                        if (((GroupNode) groupNode).groupType == GroupNode.GROUP_CUSTOM) {
+                            isCustomGroupPresent = true;
                         }
                     }
-                    if (((GroupNode) groupNode).groupType == GroupNode.GROUP_CUSTOM) {
-                        isCustomGroupPresent = true;
-                    }
-                }
-            } else {
-                for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
-                    for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                        increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
-                        fileIndex++;
-                        wz.writeFileToZip(JarOperations.getInputStream(((FileNode) node).fileSourcePath), ((FileNode) node).fileZipPath);
+                } else {
+                    for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
+                        for (ProjectItemNode node : ((GroupNode) groupNode).children) {
+                            increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
+                            fileIndex++;
+                            wz.writeFileToZip(JarOperations.getInputStream(((FileNode) node).fileSourcePath), ((FileNode) node).fileZipPath);
+                        }
                     }
                 }
             }
-        }
-        if (isCustomGroupPresent) {
-            increaseProgressBar(fileIndex, "Custom Group Data");
-            fileIndex++;
-            //wz.writeStringToZip(Xml.getString(GroupNode.GROUP_CUSTOM, rootNode), Xml.custom_path);
-        }
-        if (isDeleteGroupPresent) {
-            increaseProgressBar(fileIndex, "Delete Group Data");
-            fileIndex++;
-            //wz.writeStringToZip(Xml.getString(GroupNode.GROUP_DELETE_FILES, rootNode), Xml.delete_path);
-        }
-        increaseProgressBar(fileIndex, "Zip Data");
-        fileIndex++;
-        wz.writeStringToZip(Xml.makeString(), Xml.data_path);
-        increaseProgressBar(fileIndex, "Aroma Config");
-        fileIndex++;
-        wz.writeStringToZip(AromaConfig.build(rootNode), AromaConfig.aromaConfigPath);
-        increaseProgressBar(fileIndex, "Updater-Script");
-        fileIndex++;
-        wz.writeStringToZip(UpdaterScript.build(rootNode), UpdaterScript.updaterScriptPath);
-        try {
-            increaseProgressBar(fileIndex, "Update Binary Installer");
-            fileIndex++;
-            wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath);
-            increaseProgressBar(fileIndex, "Update Binary");
-            fileIndex++;
-            wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
-            increaseProgressBar(fileIndex, "Jar Items");
-            fileIndex++;
-            writeTempFiles(tempPaths);
-            for (String file : Jar.getOtherFileList()) {
-                wz.writeFileToZip(JarOperations.getInputStream(file), file);
+            if (isCustomGroupPresent) {
+                increaseProgressBar(fileIndex, "Custom Group Data");
+                fileIndex++;
+                //wz.writeStringToZip(Xml.getString(GroupNode.GROUP_CUSTOM, rootNode), Xml.custom_path);
             }
-        } catch (NullPointerException npe) {
-            System.out.println("Executing through Netbeans hence skipping Jar Operations");
+            if (isDeleteGroupPresent) {
+                increaseProgressBar(fileIndex, "Delete Group Data");
+                fileIndex++;
+                //wz.writeStringToZip(Xml.getString(GroupNode.GROUP_DELETE_FILES, rootNode), Xml.delete_path);
+            }
+            increaseProgressBar(fileIndex, "Zip Data");
+            fileIndex++;
+            wz.writeStringToZip(Xml.makeString(), Xml.data_path);
+            increaseProgressBar(fileIndex, "Aroma Config");
+            fileIndex++;
+            wz.writeStringToZip(AromaConfig.build(rootNode), AromaConfig.aromaConfigPath);
+            increaseProgressBar(fileIndex, "Updater-Script");
+            fileIndex++;
+            wz.writeStringToZip(UpdaterScript.build(rootNode), UpdaterScript.updaterScriptPath);
+            try {
+                increaseProgressBar(fileIndex, "Update Binary Installer");
+                fileIndex++;
+                wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath);
+                increaseProgressBar(fileIndex, "Update Binary");
+                fileIndex++;
+                wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
+                increaseProgressBar(fileIndex, "Jar Items");
+                fileIndex++;
+                writeTempFiles(tempPaths);
+                for (String file : Jar.getOtherFileList()) {
+                    wz.writeFileToZip(JarOperations.getInputStream(file), file);
+                }
+            } catch (NullPointerException npe) {
+                System.out.println("Executing through Netbeans hence skipping Jar Operations");
+            }
+            wz.close();
+            progressBarImportExport.setValue(100);
+            progressBarImportExport.setString("Zip Created Successfully..!!");
+            JOptionPane.showMessageDialog(null, "Zip Created Successfully..!!");
+            progressBarImportExport.setString("0%");
+            progressBarImportExport.setValue(0);
+            progressBarFlag = 0;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Something Went Wrong!\nTry Again!");
+            setCardLayout(1);
         }
-        wz.close();
-        progressBarImportExport.setValue(100);
-        progressBarImportExport.setString("Zip Created Successfully..!!");
-        JOptionPane.showMessageDialog(null, "Zip Created Successfully..!!");
-        progressBarImportExport.setString("0%");
-        progressBarImportExport.setValue(0);
-        progressBarFlag = 0;
     }
 
     public static ArrayList<FileNode> getFilesOfFolder(FolderNode folder, ArrayList<FileNode> fileList) {
@@ -176,13 +182,17 @@ public class Export implements Runnable {
         return fileList;
     }
 
+    public static void setCardLayout(int cardNo) {
+        CardLayout cardLayout = (CardLayout) panelLower.getLayout();
+        cardLayout.show(panelLower, "card" + Integer.toString(cardNo));
+    }
+
     @Override
     public void run() {
         try {
-            CardLayout cardLayout = (CardLayout) panelLower.getLayout();
-            cardLayout.show(panelLower, "card2");
+            setCardLayout(2);
             zip();
-            cardLayout.show(panelLower, "card1");
+            setCardLayout(1);
         } catch (IOException ex) {
             Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {

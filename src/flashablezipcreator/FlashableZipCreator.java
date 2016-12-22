@@ -7,17 +7,22 @@ package flashablezipcreator;
 
 import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
+import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
+import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.AddDevice;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -66,7 +71,7 @@ public class FlashableZipCreator {
             java.util.logging.Logger.getLogger(JTreeDemo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         try {
             if (Jar.isExecutingThrough()) {
                 JarOperations.setJarFileList();
@@ -101,39 +106,33 @@ public class FlashableZipCreator {
         } catch (SAXException ex) {
             Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
 
-        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                try {
-//                    if (Jar.isExecutingThrough()) {
-//                        JarOperations.setJarFileList();
-//                        Device.loadDeviceList();
-//                        String configString = "";
-//                        File f = new File(Xml.device_config_path);
-//                        if(f.exists()){
-//                            Read r = new Read();
-//                            configString = r.getFileString(Xml.device_config_path);
-//                            Device.selected = Xml.getDeviceName(configString);
-//                        }else{
-//                            AddDevice ad = new AddDevice();
-//                        }
-//                    } else {
-//                        Xml.file_details_path = "dist/" + Xml.file_details_path;
-//                    }
-//                    //if(!Device.selected.equals("")){
-//                        new MyTree().setVisible(true);
-//                    //}
-//                } catch (IOException ex) {
-//                    Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (ParserConfigurationException ex) {
-//                    Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (TransformerException ex) {
-//                    Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
-//                } catch (SAXException ex) {
-//                    Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//        });
+    public static void extractZip() throws IOException {
+        String dirPath = "C:\\Users\\Nikhil\\Documents\\NetBeansProjects\\FlashableZipCreator\\Fonts";
+        File folder = new File(dirPath);
+        for (File file : folder.listFiles()) {
+            ReadZip rz = new ReadZip(file.getAbsolutePath());
+            String fileName = file.getName().replace("Font_", "");
+            if (fileName.indexOf(".") > 0) {
+                fileName = fileName.substring(0, fileName.lastIndexOf("."));
+            }
+            for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
+                ZipEntry ze = e.nextElement();
+                String name = ze.getName();
+                if (name.startsWith("META-INF")) {
+                    continue;
+                }
+                File f = new File(name);
+
+                String parent = f.getParent();
+                String fName = f.getName();
+                String writeToPath = "My Fonts" + File.separator + parent + File.separator + fileName + File.separator + fName;
+                InputStream in = rz.zf.getInputStream(ze);
+                rz.writeFileFromZip(in, writeToPath);
+                System.out.println(writeToPath);
+            }
+            System.out.println();
+        }
     }
 }

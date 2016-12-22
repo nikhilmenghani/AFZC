@@ -14,10 +14,12 @@ import flashablezipcreator.Operations.UpdaterScriptOperations;
 import flashablezipcreator.Protocols.Export;
 import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Jar;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTree;
@@ -87,6 +89,8 @@ public class MyTree extends JFrame {
         menuFile = new javax.swing.JMenu();
         menuItemPreferences = new javax.swing.JMenuItem();
         menuItemExit = new javax.swing.JMenuItem();
+        menuAboutTool = new javax.swing.JMenuItem();
+        menuAboutDeveloper = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenu();
         SP_tree = ProjectTreeBuilder.buildScrollPane();
 
@@ -99,6 +103,13 @@ public class MyTree extends JFrame {
         lblHeader.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(255, 255, 255));
         lblHeader.setText("   Android Flashable Zip Creator");
+
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                System.exit(0);
+            }
+        });
 
         javax.swing.GroupLayout panel_logoLayout = new javax.swing.GroupLayout(panel_logo);
         panel_logo.setLayout(panel_logoLayout);
@@ -203,7 +214,7 @@ public class MyTree extends JFrame {
         progressBarImportExport.setForeground(new java.awt.Color(78, 52, 46));
         progressBarImportExport.setToolTipText("Click To Change Progress Mode");
         progressBarImportExport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        
+
         progressBarImportExport.setStringPainted(true);
         progressBarImportExport.setVerifyInputWhenFocusTarget(false);
         progressBarImportExport.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -263,11 +274,31 @@ public class MyTree extends JFrame {
         menuFile.add(menuItemPreferences);
 
         menuItemExit.setText("Exit");
+        menuItemExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed();
+            }
+        });
         menuFile.add(menuItemExit);
 
         menuBar.add(menuFile);
 
         menuAbout.setText("About");
+        
+        menuAboutTool.setText("Tool");
+        menuAboutTool.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed();
+            }
+        });
+        menuAboutDeveloper.setText("Developer");
+        menuAboutDeveloper.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutMenuItemActionPerformed();
+            }
+        });
+        menuAbout.add(menuAboutTool);
+        menuAbout.add(menuAboutDeveloper);
         menuBar.add(menuAbout);
 
         setJMenuBar(menuBar);
@@ -285,10 +316,23 @@ public class MyTree extends JFrame {
 
         pack();
         setLocationRelativeTo(null);
-    }// </editor-fold>                        
+    }// </editor-fold>     
+
+    private void exitMenuItemActionPerformed() {
+        File f = new File("Temp");
+        if (f.isDirectory() && f.exists()) {
+            //op.deleteDirectories("Temp");
+        }
+        System.out.println("Window Closing..");
+        System.exit(0);
+    }
+    
+    private void aboutMenuItemActionPerformed() {
+        JOptionPane.showMessageDialog(this, "About");
+    }
 
     private void menuItemPreferencesActionPerformed(java.awt.event.ActionEvent evt) {
-
+        JOptionPane.showMessageDialog(this, "Preferences");
     }
 
     private void menuItemExitActionPerformed(java.awt.event.ActionEvent evt) {
@@ -313,8 +357,11 @@ public class MyTree extends JFrame {
 
     private void btnImportZipActionPerformed(java.awt.event.ActionEvent evt) throws IOException, ParserConfigurationException, TransformerException, SAXException, InterruptedException {
         try {
-            Thread importZip = new Thread(new Import(MyFileFilter.browseZipDestination()), "ImportZip");
-            importZip.start();
+            String importFrom = MyFileFilter.browseZipDestination();
+            if (importFrom != null) {
+                Thread importZip = new Thread(new Import(importFrom), "ImportZip");
+                importZip.start();
+            }
         } catch (NullPointerException npe) {
         }
     }
@@ -337,6 +384,8 @@ public class MyTree extends JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemPreferences;
+    private javax.swing.JMenuItem menuAboutTool;
+    private javax.swing.JMenuItem menuAboutDeveloper;
     private javax.swing.JMenu menuFile;
     private javax.swing.JLayeredPane layeredPaneButtons;
     private javax.swing.JLayeredPane layeredPaneProgressBar;

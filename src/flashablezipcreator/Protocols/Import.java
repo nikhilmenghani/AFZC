@@ -65,61 +65,66 @@ public class Import implements Runnable {
         to = new TreeOperations();
         int maxSize = rz.filesCount;
         int fileIndex = 0;
-        for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
-            ZipEntry ze = e.nextElement();
-            String name = ze.getName();
-            if (name.endsWith("/") || Project.getTempFilesList().contains(name)
-                    || name.startsWith("META-INF")
-                    || name.contains("Extract_")) {
-                continue;
-            }
-            InputStream in = rz.zf.getInputStream(ze);
-            if (name.equals(Xml.data_path)) {
-                Xml.fileData = rz.getStringFromFile(in);
-                containsDataXml = true;
-                continue;
-            }
-            p("\ncurrent file " + name + "\n");
-            String filePath = name;
-            String projectName = Identify.getProjectName(name);
-            int projectType = Identify.getProjectType(filePath);
-            String groupName = Identify.getGroupName(filePath);
-            int groupType = Identify.getGroupType(filePath);
-            ArrayList<String> folderList = Identify.getFolderNames(filePath);
-            String subGroupName = Identify.getSubGroupName(groupName, filePath);
-            int subGroupType = groupType; //Groups that have subGroups have same type.
-            String fileName = (new File(filePath)).getName();
+        try {
+            for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
+                ZipEntry ze = e.nextElement();
+                String name = ze.getName();
+                if (name.endsWith("/") || Project.getTempFilesList().contains(name)
+                        || name.startsWith("META-INF")
+                        || name.contains("Extract_")) {
+                    continue;
+                }
+                InputStream in = rz.zf.getInputStream(ze);
+                if (name.equals(Xml.data_path)) {
+                    Xml.fileData = rz.getStringFromFile(in);
+                    containsDataXml = true;
+                    continue;
+                }
+                p("\ncurrent file " + name + "\n");
+                String filePath = name;
+                String projectName = Identify.getProjectName(name);
+                int projectType = Identify.getProjectType(filePath);
+                String groupName = Identify.getGroupName(filePath);
+                int groupType = Identify.getGroupType(filePath);
+                ArrayList<String> folderList = Identify.getFolderNames(filePath);
+                String subGroupName = Identify.getSubGroupName(groupName, filePath);
+                int subGroupType = groupType; //Groups that have subGroups have same type.
+                String fileName = (new File(filePath)).getName();
 
-            progressValue = (fileIndex * 100) / maxSize;
-            fileIndex++;
-            progressBarImportExport.setValue(progressValue);
-            switch (MyTree.progressBarFlag) {
-                case 0:
-                    progressBarImportExport.setString(progressValue + "%");
-                    break;
-                case 1:
-                    progressBarImportExport.setString("Importing " + fileName + "");
-                    break;
-                case 2:
-                    progressBarImportExport.setString(" ");
-                    break;
+                progressValue = (fileIndex * 100) / maxSize;
+                fileIndex++;
+                progressBarImportExport.setValue(progressValue);
+                switch (MyTree.progressBarFlag) {
+                    case 0:
+                        progressBarImportExport.setString(progressValue + "%");
+                        break;
+                    case 1:
+                        progressBarImportExport.setString("Importing " + fileName + "");
+                        break;
+                    case 2:
+                        progressBarImportExport.setString(" ");
+                        break;
+                }
+                FileNode file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, projectType);
+                file.fileSourcePath = file.path;
+                rz.writeFileFromZip(in, file.fileSourcePath);
             }
-            FileNode file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, projectType);
-            file.fileSourcePath = file.path;
-            rz.writeFileFromZip(in, file.fileSourcePath);
-        }
 
-        //adding nodes to tree should be done here.
-        Xml.terminate();
-        if (containsDataXml) {
-            Xml.parseXml(0); //this is to set additional details like description to nodes
+            //adding nodes to tree should be done here.
+            Xml.terminate();
+            if (containsDataXml) {
+                Xml.parseXml(0); //this is to set additional details like description to nodes
+            }
+            progressBarImportExport.setString("Successfully Imported");
+            progressBarImportExport.setValue(100);
+            JOptionPane.showMessageDialog(null, "Successfully Imported");
+            progressBarImportExport.setString("0%");
+            progressBarImportExport.setValue(0);
+            progressBarFlag = 0;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Something Went Wrong!\nTry Again!");
+            setCardLayout(1);
         }
-        progressBarImportExport.setString("Successfully Imported");
-        progressBarImportExport.setValue(100);
-        JOptionPane.showMessageDialog(null, "Successfully Imported");
-        progressBarImportExport.setString("0%");
-        progressBarImportExport.setValue(0);
-        progressBarFlag = 0;
     }
 
     public static void fromZip(String path) throws IOException, ParserConfigurationException, TransformerException, SAXException {
@@ -252,13 +257,17 @@ public class Import implements Runnable {
         progressBarFlag = 0;
     }
 
+    public static void setCardLayout(int cardNo) {
+        CardLayout cardLayout = (CardLayout) panelLower.getLayout();
+        cardLayout.show(panelLower, "card" + Integer.toString(cardNo));
+    }
+
     @Override
     public void run() {
         try {
-            CardLayout cardLayout = (CardLayout) panelLower.getLayout();
-            cardLayout.show(panelLower, "card2");
+            setCardLayout(2);
             fromTheZip(path);
-            cardLayout.show(panelLower, "card1");
+            setCardLayout(1);
         } catch (IOException | ParserConfigurationException | TransformerException | SAXException ex) {
             Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
         }

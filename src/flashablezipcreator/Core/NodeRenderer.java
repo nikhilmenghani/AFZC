@@ -46,60 +46,61 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
             case ProjectItemNode.NODE_ROOT:
                 setIcon(iconRoot);
                 break;
-            case ProjectItemNode.NODE_PROJECT:
-                ProjectNode pNode = (ProjectNode) node;
-                if (pNode.projectType == ProjectNode.PROJECT_THEMES) {
-                    setIcon(iconThemeProject);
-                } else {
-                    setIcon(iconAromaProject);
-                }
-                break;
+//            case ProjectItemNode.NODE_PROJECT:
+//                ProjectNode pNode = (ProjectNode) node;
+//                if (pNode.projectType == ProjectNode.PROJECT_THEMES) {
+//                    setIcon(iconThemeProject);
+//                } else {
+//                    setIcon(iconAromaProject);
+//                }
+//                break;
             case ProjectItemNode.NODE_GROUP:
                 GroupNode gNode = (GroupNode) node;
                 if (((ProjectNode) gNode.parent).projectType == ProjectNode.PROJECT_THEMES) {
                     setIcon(iconThemeGroup);
-                } else {
-                    switch (gNode.groupType) {
-                        case GroupNode.GROUP_SYSTEM_APK:
-                        case GroupNode.GROUP_SYSTEM_PRIV_APK:
-                            setIcon(iconSystemGroup);
-                            break;
-                        case GroupNode.GROUP_DATA_APP:
-                            setIcon(iconDataGroup);
-                            break;
-                        case GroupNode.GROUP_SYSTEM_FONTS:
-                            setIcon(iconFontsGroup);
-                            break;
-                        case GroupNode.GROUP_DATA_LOCAL:
-                        case GroupNode.GROUP_SYSTEM_MEDIA:
-                            setIcon(iconBAGroup);
-                            break;
-                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-                            setIcon(iconMusicGroup);
-                            break;
-                        default:
-                            setIcon(iconGroup);
-                    }
                 }
+//                else {
+//                    switch (gNode.groupType) {
+//                        case GroupNode.GROUP_SYSTEM_APK:
+//                        case GroupNode.GROUP_SYSTEM_PRIV_APK:
+//                            setIcon(iconSystemGroup);
+//                            break;
+//                        case GroupNode.GROUP_DATA_APP:
+//                            setIcon(iconDataGroup);
+//                            break;
+//                        case GroupNode.GROUP_SYSTEM_FONTS:
+//                            setIcon(iconFontsGroup);
+//                            break;
+//                        case GroupNode.GROUP_DATA_LOCAL:
+//                        case GroupNode.GROUP_SYSTEM_MEDIA:
+//                            setIcon(iconBAGroup);
+//                            break;
+//                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
+//                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
+//                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
+//                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+//                            setIcon(iconMusicGroup);
+//                            break;
+//                        default:
+//                            setIcon(iconGroup);
+//                    }
+//                }
                 break;
-            case ProjectItemNode.NODE_SUBGROUP:
-                SubGroupNode sgNode = (SubGroupNode) node;
-                switch (sgNode.subGroupType) {
-                    case SubGroupNode.TYPE_SYSTEM_FONTS:
-                        setIcon(iconFontsSubGroup);
-                        break;
-                    case SubGroupNode.TYPE_SYSTEM_MEDIA:
-                    case SubGroupNode.TYPE_DATA_LOCAL:
-                        setIcon(iconBASubGroup);
-                        break;
-                }
-                break;
-            case ProjectItemNode.NODE_FILE:
-                setIcon(iconFile);
-                break;
+//            case ProjectItemNode.NODE_SUBGROUP:
+//                SubGroupNode sgNode = (SubGroupNode) node;
+//                switch (sgNode.subGroupType) {
+//                    case SubGroupNode.TYPE_SYSTEM_FONTS:
+//                        setIcon(iconFontsSubGroup);
+//                        break;
+//                    case SubGroupNode.TYPE_SYSTEM_MEDIA:
+//                    case SubGroupNode.TYPE_DATA_LOCAL:
+//                        setIcon(iconBASubGroup);
+//                        break;
+//                }
+//                break;
+//            case ProjectItemNode.NODE_FILE:
+//                setIcon(iconFile);
+//                break;
         }
         return this;
     }
