@@ -46,6 +46,7 @@ public class Import implements Runnable {
     static String fileName = "";
     static int zipType;
     public static int progressValue = 0;
+    public static int fileIndex = 0;
     String path;
     ProjectItemNode rootNode;
     DefaultTreeModel model;
@@ -64,20 +65,25 @@ public class Import implements Runnable {
         rz = new ReadZip(path);
         to = new TreeOperations();
         int maxSize = rz.filesCount;
-        int fileIndex = 0;
+        fileIndex = 0;
         try {
             for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
                 ZipEntry ze = e.nextElement();
                 String name = ze.getName();
+                progressValue = (fileIndex * 100) / maxSize;
+                progressBarImportExport.setValue(progressValue);
+                setProgressBar("Importing " + (new File(name)).getName() + "");
                 if (name.endsWith("/") || Project.getTempFilesList().contains(name)
                         || name.startsWith("META-INF")
                         || name.contains("Extract_")) {
+                    System.out.println("Skipping " + name);
                     continue;
                 }
                 InputStream in = rz.zf.getInputStream(ze);
                 if (name.equals(Xml.data_path)) {
                     Xml.fileData = rz.getStringFromFile(in);
                     containsDataXml = true;
+                    System.out.println("Skipping " + name);
                     continue;
                 }
                 p("\ncurrent file " + name + "\n");
@@ -91,29 +97,18 @@ public class Import implements Runnable {
                 int subGroupType = groupType; //Groups that have subGroups have same type.
                 String fileName = (new File(filePath)).getName();
 
-                progressValue = (fileIndex * 100) / maxSize;
-                fileIndex++;
-                progressBarImportExport.setValue(progressValue);
-                switch (MyTree.progressBarFlag) {
-                    case 0:
-                        progressBarImportExport.setString(progressValue + "%");
-                        break;
-                    case 1:
-                        progressBarImportExport.setString("Importing " + fileName + "");
-                        break;
-                    case 2:
-                        progressBarImportExport.setString(" ");
-                        break;
-                }
                 FileNode file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, projectType);
                 file.fileSourcePath = file.path;
                 rz.writeFileFromZip(in, file.fileSourcePath);
             }
 
             //adding nodes to tree should be done here.
+            System.out.println("Terminating afzc.xml");
             Xml.terminate();
             if (containsDataXml) {
+                setProgressBar("Setting file details..");
                 Xml.parseXml(0); //this is to set additional details like description to nodes
+                setProgressBar("Setting file details done.");
             }
             progressBarImportExport.setString("Successfully Imported");
             progressBarImportExport.setValue(100);
@@ -125,6 +120,21 @@ public class Import implements Runnable {
             JOptionPane.showMessageDialog(null, "Something Went Wrong!\nTry Again!");
             setCardLayout(1);
         }
+    }
+
+    public static void setProgressBar(String value) {
+        switch (MyTree.progressBarFlag) {
+            case 0:
+                progressBarImportExport.setString(progressValue + "%");
+                break;
+            case 1:
+                progressBarImportExport.setString(value);
+                break;
+            case 2:
+                progressBarImportExport.setString(" ");
+                break;
+        }
+        fileIndex++;
     }
 
     public static void fromZip(String path) throws IOException, ParserConfigurationException, TransformerException, SAXException {

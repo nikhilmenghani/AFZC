@@ -7,11 +7,17 @@ package flashablezipcreator.Core;
 
 import static flashablezipcreator.AFZC.Protocols.p;
 import flashablezipcreator.Protocols.Import;
+import flashablezipcreator.Protocols.Preferences;
+import flashablezipcreator.Protocols.Project;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
@@ -19,6 +25,9 @@ import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -47,77 +56,62 @@ public class MyTransferHandler extends TransferHandler {
 
     @Override
     public boolean importData(TransferSupport support) {
-        if (!canImport(support)) {
-            p("cannot import");
-            return false;
-        }else{
-            p("can import");
-        }
-
-        //DefaultMutableTreeNode dragNode = getSelectedNode();
-        
-        JTree.DropLocation dropLocation = (JTree.DropLocation) support.getDropLocation();
-        TreePath path = dropLocation.getPath();
-        try{
-            ProjectItemNode parentNode = (ProjectItemNode) path.getLastPathComponent();
-            int type = parentNode.type;
-            parentNode = (GroupNode) path.getLastPathComponent();
-            type = parentNode.type;
-        }catch(Exception e){
-            p("Exception Caught");
-        }
-        
-        Transferable t = support.getTransferable();
         try {
+            if (!canImport(support)) {
+                return false;
+            }
+
+            GroupNode groupNode = null;
+            SubGroupNode subGroupNode = null;
+            FolderNode folderNode = null;
+            FileNode fileNode = null;
+
+            JTree.DropLocation dropLocation = (JTree.DropLocation) support.getDropLocation();
+            TreePath path = dropLocation.getPath();
+            Transferable t = support.getTransferable();
             List data = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
-            if (data.size() != 1) {
-                JOptionPane.showMessageDialog(null, "Cannot Import More than one Zip Files at a time.");
-//                Iterator i = data.iterator();
-//                while (i.hasNext()) {
-//                    File f = (File) i.next();
-//                }
-            } else {
+            ProjectItemNode parentNode = null;
+            try {
+                parentNode = (ProjectItemNode) path.getLastPathComponent();
+            } catch (Exception e) {
+                System.out.println("Trying to import zip..");
+            }
+            if (data.size() == 1) {
                 File f = (File) data.get(0);
-                if (f.getAbsoluteFile().toString().endsWith(".zip")) {
-                    try {
-                        Thread importZip = new Thread(new Import(f.getAbsolutePath()), "ImportZip");
-                        importZip.start();
-                    } catch (NullPointerException npe) {
-                    }
+                if (f.getAbsoluteFile().toString().endsWith(".zip") && parentNode == null) {
+                    Thread importZip = new Thread(new Import(f.getAbsolutePath()), "ImportZip");
+                    importZip.start();
+                    return true;
                 }
             }
-            //model.reload();
-            return true;
-        } catch (Exception ioe) {
-            System.out.println(ioe);
-        }
-        return false;
-    }
 
-    @Override
-    public boolean importData(JComponent comp, Transferable t) {
-        System.out.println("Hello");
-
-        if (!(comp instanceof JTree)) {
-            return false;
-        }
-        if (!t.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-            return false;
-        }
-        JTree tree = (JTree) comp;
-//        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-//        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-        try {
-            List data = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
-            Iterator i = data.iterator();
-            while (i.hasNext()) {
-                File f = (File) i.next();
-                rootNode.add(new DefaultMutableTreeNode(f.getName()));
+            if (parentNode != null) {
+                switch (parentNode.type) {
+                    case ProjectItemNode.NODE_ROOT:
+                        JOptionPane.showMessageDialog(null, "You cannot drop things on Project(s)!");
+                        break;
+                    case ProjectItemNode.NODE_GROUP:
+                        groupNode = (GroupNode) parentNode;
+                        addDataToNode(groupNode, data);
+                        break;
+                    case ProjectItemNode.NODE_SUBGROUP:
+                        subGroupNode = (SubGroupNode) parentNode;
+                        addDataToNode(subGroupNode, data);
+                        break;
+                    case ProjectItemNode.NODE_FOLDER:
+                        folderNode = (FolderNode) parentNode;
+                        addDataToNode(folderNode, data);
+                        break;
+                    case ProjectItemNode.NODE_FILE:
+                        JOptionPane.showMessageDialog(null, "You cannot drop things on File(s)!");
+                        break;
+                }
+                return true;
             }
-            model.reload();
-            return true;
-        } catch (Exception ioe) {
-            System.out.println(ioe);
+            JOptionPane.showMessageDialog(null, "Cannot import this file(s)!");
+            return false;
+        } catch (UnsupportedFlavorException | IOException | ParserConfigurationException | TransformerException | SAXException | InterruptedException ex) {
+            Logger.getLogger(MyTransferHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -134,4 +128,150 @@ public class MyTransferHandler extends TransferHandler {
         }
         return false;
     }
+
+    public void addDataToNode(GroupNode groupNode, List data) throws UnsupportedFlavorException, IOException {
+        Iterator i = data.iterator();
+        while (i.hasNext()) {
+            File f = (File) i.next();
+            p(f.getPath());
+            switch (groupNode.groupType) {
+                case GroupNode.GROUP_SYSTEM_APK:
+                case GroupNode.GROUP_SYSTEM_PRIV_APK:
+                case GroupNode.GROUP_DATA_APP:
+                    if (Preferences.IsFromLollipop) {
+                        addFolderNode(groupNode, f);
+                    } else {
+                        addFileNode(groupNode, f);
+                    }
+                    break;
+                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
+                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
+                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
+                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+                    addFileNode(groupNode, f);
+                    break;
+                case GroupNode.GROUP_SYSTEM_FONTS:
+                case GroupNode.GROUP_DATA_LOCAL:
+                case GroupNode.GROUP_SYSTEM_MEDIA:
+                    addSubGroupNode(groupNode, f);
+                    break;
+            }
+        }
+    }
+
+    public void addDataToNode(SubGroupNode sgNode, List data) {
+        Iterator i = data.iterator();
+        while (i.hasNext()) {
+            File f = (File) i.next();
+            p(f.getPath());
+            if (f.isFile() && acceptFile(f, sgNode.extension)) {
+                sgNode.addChild(new FileNode(f.getPath(), sgNode));
+            }else{
+                JOptionPane.showMessageDialog(null, f.getName() + " cannot be added to this sub group!");
+            }
+        }
+    }
+
+    public void addDataToNode(FolderNode folderNode, List data) throws UnsupportedFlavorException, IOException, ParserConfigurationException, TransformerException, SAXException, InterruptedException {
+        Iterator i = data.iterator();
+        while (i.hasNext()) {
+            File f = (File) i.next();
+            p(f.getPath());
+            addFolderNode(folderNode, f);
+        }
+    }
+
+    public void addFolderNode(FolderNode folderNode, File fPath) {
+        if (fPath.isDirectory()) {
+            FolderNode fNode = (FolderNode) folderNode.addChild(new FolderNode(fPath.getName(), folderNode));
+            for (String fileName : fPath.list()) {
+                String filePath = fPath + File.separator + fileName;
+                File f = new File(filePath);
+                if (f.isDirectory()) {
+                    addFolderNode(fNode, f);
+                } else if (f.isFile()) {
+                    fNode.addChild(new FileNode(filePath, fNode));
+                }
+            }
+        } else {
+            folderNode.addChild(new FileNode(fPath.getPath(), folderNode));
+        }
+    }
+
+    public void addFolderNode(GroupNode groupNode, File fPath) {
+        if (fPath.isDirectory()) {
+            FolderNode folderNode = (FolderNode) groupNode.addChild(new FolderNode(fPath.getName(), groupNode));
+            for (String fileName : fPath.list()) {
+                String filePath = fPath + File.separator + fileName;
+                File f = new File(filePath);
+                if (f.isDirectory()) {
+                    addFolderNode(folderNode, f);
+                } else if (f.isFile() && fileName.endsWith(groupNode.extension)) {
+                    folderNode.addChild(new FileNode(filePath, folderNode));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Incompatible file found! Skipping it!");
+                }
+            }
+        } else if (fPath.isFile()) {
+            String folderName = fPath.getName().replaceFirst("[.][^.]+$", "");
+            if (groupNode.groupType == GroupNode.GROUP_DATA_APP) {
+                folderName = fPath.getName().replaceFirst("[.][^.]+$", "") + "-1";
+            }
+            FolderNode folderNode = new FolderNode(folderName, groupNode);
+            folderNode.addChild(new FileNode(fPath.getPath(), folderNode));
+            groupNode.addChild(folderNode);
+        }
+    }
+
+    public void addSubGroupNode(GroupNode groupNode, File fPath) {
+        if (fPath.isDirectory()) {
+            SubGroupNode sgNode = (SubGroupNode) groupNode.addChild(new SubGroupNode(fPath.getName(), groupNode.groupType, groupNode));
+            for (String fileName : fPath.list()) {
+                if (fileName.endsWith(groupNode.extension)) {
+                    sgNode.addChild(new FileNode(fPath + File.separator + fileName, sgNode));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Incompatible file found! Skipping it!");
+                }
+            }
+            if (sgNode.children.isEmpty()) {
+                sgNode.removeMe();
+            }
+        } else if (fPath.isFile()) {
+            JOptionPane.showMessageDialog(null, "Cannot add files to Group " + groupNode.title + ", Add " + fPath.getName() + " to SubGroup");
+        }
+    }
+
+    public void addFileNode(GroupNode groupNode, File fPath) {
+        if (fPath.isFile() && acceptFile(fPath, groupNode.extension)) {
+            groupNode.addChild(new FileNode(fPath.getPath(), groupNode));
+        } else {
+            JOptionPane.showMessageDialog(null, "Cannot add " + fPath.getName() + " to Group.");
+        }
+    }
+
+    public boolean acceptFile(File file, String extn) {
+        String extension = getExtension(file);
+        if (extension.equals(extn)) {
+            return true;
+        } else if (extn.equals("audio") && (extension.equals("aac")
+                || extension.equals("mp3")
+                || extension.equals("m4a")
+                || extension.equals("ogg")
+                || extension.equals("wav"))) {
+            return true;
+        }
+        return false;
+    }
+
+    public String getExtension(File f) {
+        String ext = null;
+        String s = f.getName();
+        int i = s.lastIndexOf('.');
+
+        if (i > 0 && i < s.length() - 1) {
+            ext = s.substring(i + 1).toLowerCase();
+        }
+        return ext;
+    }
+
 }

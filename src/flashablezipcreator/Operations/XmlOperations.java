@@ -304,6 +304,7 @@ public class XmlOperations {
                                                 case "FileData":
                                                     FileNode file = to.getFileNode(subGroupChildName, folders, subGroupName, groupName, projectName);
                                                     file.description = ((Element) subGroupChildNode).getElementsByTagName("description").item(0).getTextContent();
+                                                    System.out.println("xmlOperations: " + file.fileSourcePath);
                                                     break;
                                             }
                                         }
@@ -318,6 +319,7 @@ public class XmlOperations {
                                 case "FileData":
                                     FileNode file = to.getFileNode(groupChildName, folders, subGroupName, groupName, projectName);
                                     file.description = ((Element) groupChildNode).getElementsByTagName("description").item(0).getTextContent();
+                                    System.out.println("xmlOperations: " + file.fileSourcePath);
                                     break;
                             }
                         }
@@ -341,8 +343,8 @@ public class XmlOperations {
                             break;
                         case "FileData":
                             FileNode file = to.getFileNode(folderChildName, folders, SubGroupName, GroupName, ProjectName);
-                            System.out.println("working for: " + file.title);
                             file.description = ((Element) folderChildNode).getElementsByTagName("description").item(0).getTextContent();
+                            System.out.println("xmlOperations: " + file.fileSourcePath);
                             break;
                     }
                 }

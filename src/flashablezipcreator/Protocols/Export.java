@@ -82,7 +82,8 @@ public class Export implements Runnable {
                         for (ProjectItemNode node : ((GroupNode) groupNode).children) {
                             if (node.type == ProjectItemNode.NODE_SUBGROUP) {
                                 for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
-                                    if (((FileNode) fileNode).title.equals("DroidSans.ttf")) {
+                                    if (((FileNode) fileNode).title.equals("DroidSans.ttf")
+                                            || ((FileNode) fileNode).title.equals("Roboto-Regular.ttf")) {
                                         increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
                                         fileIndex++;
                                         wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).title + ".ttf");

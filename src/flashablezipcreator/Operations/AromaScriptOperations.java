@@ -163,7 +163,8 @@ public class AromaScriptOperations {
                 str += "if prop(\"" + node.prop + "\", \"selected.0\")==\"" + (i + 2) + "\" then\n";
                 for (int j = 0; j < sgnode.getChildCount(); j++) {
                     FileNode fnode = (FileNode) sgnode.getChildAt(j);
-                    if (((FileNode) fnode).title.equals("DroidSans.ttf")) {
+                    if (((FileNode) fnode).title.equals("DroidSans.ttf")
+                            || ((FileNode) fnode).title.equals("Roboto-Regular.ttf")) {
                         str += "fontresload(\"0\", \"ttf/" + sgnode.toString() + ".ttf;\", \"15\");\n";
                     }
                 }
