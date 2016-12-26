@@ -322,7 +322,7 @@ public class UpdaterScriptOperations {
     }
 
     public String getPackageExtractDirString(FileNode file) {
-        String str = addPrintString("Extracting afzc_temp to " + file.groupLocation);
+        String str = addPrintString("Extracting required files to " + file.groupLocation);
         String extractZipPath = file.extractZipPath;
         extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(file.groupLocation));
         if (file.groupLocation.contains("/system")) {
@@ -334,7 +334,7 @@ public class UpdaterScriptOperations {
     }
     
     public String getPackageExtractDirString(GroupNode group) {
-        String str = addPrintString("Extracting afzc_temp to " + group.location);
+        String str = addPrintString("Extracting required files to " + group.location);
         String extractZipPath = (group.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
         extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(group.location));
         if (group.location.contains("/system")) {

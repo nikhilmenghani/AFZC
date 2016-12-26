@@ -7,6 +7,7 @@ package flashablezipcreator.Core;
 
 import static flashablezipcreator.MyTree.model;
 import static flashablezipcreator.MyTree.tree;
+import java.awt.Font;
 import java.io.IOException;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -29,12 +30,17 @@ public class ProjectTreeBuilder {
         tree.setInvokesStopCellEditing(true);
         tree.setShowsRootHandles(true);
         tree.setTransferHandler(new MyTransferHandler(rootNode, (DefaultTreeModel) ProjectTreeBuilder.tree.getModel()));
+        Font currentFont = tree.getFont();
+        Font bigFont = new Font(currentFont.getName(), currentFont.getStyle(), currentFont.getSize() + 1);
+        tree.setFont(bigFont);
+        tree.setRowHeight(21);
+        tree.setVisibleRowCount(18);
         //mouse click configurations
         ProjectMouseAdapter ma = new ProjectMouseAdapter();
         tree.addMouseListener(ma);
         return tree;
     }
-    
+
     public static DefaultTreeModel buildModel() {
         DefaultTreeModel model = (DefaultTreeModel) ProjectTreeBuilder.tree.getModel();
         model.addTreeModelListener(new MyTreeModelListener());
