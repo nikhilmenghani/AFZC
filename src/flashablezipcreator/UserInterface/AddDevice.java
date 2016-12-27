@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -196,6 +197,7 @@ public class AddDevice extends javax.swing.JFrame {
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
+                JOptionPane.showMessageDialog(null, "Default Device (Redmi Note 3) Selected!");
                 dialog.dispose();
             }
         });

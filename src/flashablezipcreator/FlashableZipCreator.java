@@ -71,17 +71,18 @@ public class FlashableZipCreator {
             java.util.logging.Logger.getLogger(JTreeDemo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         try {
             if (Jar.isExecutingThrough()) {
                 JarOperations.setJarFileList();
                 Device.loadDeviceList();
                 String configString = "";
-                File f = new File(Xml.device_config_path);
-                if (f.exists()) {
+                if ((new File(Xml.device_config_path).exists())) {
                     Read r = new Read();
                     configString = r.getFileString(Xml.device_config_path);
                     Device.selected = Xml.getDeviceName(configString);
+                } else if ((new File("update-binary").exists())) {
+                    Device.binary = (new Read()).getFileBytes("update-binary");
                 } else {
                     AddDevice ad = new AddDevice();
                 }

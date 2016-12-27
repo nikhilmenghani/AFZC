@@ -80,33 +80,36 @@ public class Export implements Runnable {
                             continue;
                         }
                         for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                            if (node.type == ProjectItemNode.NODE_SUBGROUP) {
-                                for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
-                                    if (((FileNode) fileNode).title.equals("DroidSans.ttf")
-                                            || ((FileNode) fileNode).title.equals("Roboto-Regular.ttf")) {
+                            switch (node.type) {
+                                case ProjectItemNode.NODE_SUBGROUP:
+                                    for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
+                                        if (((FileNode) fileNode).title.equals("DroidSans.ttf")
+                                                || ((FileNode) fileNode).title.equals("Roboto-Regular.ttf")) {
+                                            increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
+                                            fileIndex++;
+                                            wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).title + ".ttf");
+                                        }
                                         increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
                                         fileIndex++;
-                                        wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).title + ".ttf");
-                                    }
-                                    increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
+                                        wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, ((FileNode) fileNode).fileZipPath);
+                                        tempPaths.add(((FileNode) fileNode).extractZipPath);
+                                    }   break;
+                                case ProjectItemNode.NODE_FILE:
+                                    increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
+                                    tempPaths.add(((FileNode) node).extractZipPath);
                                     fileIndex++;
-                                    wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, ((FileNode) fileNode).fileZipPath);
-                                    tempPaths.add(((FileNode) fileNode).extractZipPath);
-                                }
-                            } else if (node.type == ProjectItemNode.NODE_FILE) {
-                                increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
-                                tempPaths.add(((FileNode) node).extractZipPath);
-                                fileIndex++;
-                                wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
-                            } else if (node.type == ProjectItemNode.NODE_FOLDER) {
-                                ArrayList<FileNode> files = new ArrayList<FileNode>();
-                                for (FileNode file : getFilesOfFolder((FolderNode) node, files)) {
-                                    increaseProgressBar(fileIndex, file.fileSourcePath);
-                                    fileIndex++;
-                                    wz.writeFileToZip(file.fileSourcePath, file.fileZipPath);
-                                    tempPaths.add(file.extractZipPath);
-                                }
-
+                                    wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
+                                    break;
+                                case ProjectItemNode.NODE_FOLDER:
+                                    ArrayList<FileNode> files = new ArrayList<FileNode>();
+                                    for (FileNode file : getFilesOfFolder((FolderNode) node, files)) {
+                                        increaseProgressBar(fileIndex, file.fileSourcePath);
+                                        fileIndex++;
+                                        wz.writeFileToZip(file.fileSourcePath, file.fileZipPath);
+                                        tempPaths.add(file.extractZipPath);
+                                    }   break;
+                                default:
+                                    break;
                             }
                         }
                         if (((GroupNode) groupNode).groupType == GroupNode.GROUP_CUSTOM) {

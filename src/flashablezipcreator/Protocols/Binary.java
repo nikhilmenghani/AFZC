@@ -7,7 +7,9 @@ package flashablezipcreator.Protocols;
 
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
+import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.Operations.JarOperations;
+import java.io.File;
 import java.io.IOException;
 import javax.swing.JOptionPane;
 
@@ -25,10 +27,10 @@ public class Binary {
 //            case ProjectNode.PROJECT_ROM:
 //            case ProjectNode.PROJECT_GAPPS:
 //            case ProjectNode.PROJECT_AROMA:
-                if(!Device.isNeonCompatible()){
-                    return JarOperations.non_neon_binary;
-                }
-                return JarOperations.neon_binary;
+        if (!Device.isNeonCompatible()) {
+            return JarOperations.non_neon_binary;
+        }
+        return JarOperations.neon_binary;
 //            case ProjectNode.PROJECT_NORMAL:
 //                return Device.getBinary();
 //        }
@@ -36,33 +38,6 @@ public class Binary {
     }
 
     public static byte[] getInstallerBinary(ProjectItemNode rootNode) throws IOException {
-//        switch (Project.returnMainProject(rootNode)) {
-//            case ProjectNode.PROJECT_ROM:
-//                for (ProjectItemNode project : rootNode.children) {
-//                    if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
-//                        if (((ProjectNode) project).projectType == ProjectNode.PROJECT_ROM) {
-//                            if (((ProjectNode) project).update_binary_installer != null) {
-//                                return ((ProjectNode) project).update_binary_installer;
-//                            } else {
-//                                return ((ProjectNode) project).update_binary;
-//                            }
-//                        }
-//                    }
-//                }
-//            case ProjectNode.PROJECT_GAPPS:
-//                for (ProjectItemNode project : rootNode.children) {
-//                    if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
-//                        if (((ProjectNode) project).update_binary_installer != null) {
-//                            return ((ProjectNode) project).update_binary_installer;
-//                        } else {
-//                            return ((ProjectNode) project).update_binary;
-//                        }
-//                    }
-//                }
-//            case ProjectNode.PROJECT_AROMA:
-                //JOptionPane.showMessageDialog(null, "returning Installer Binary");
-                return Device.getBinary();
-//        }
-//        return null;
+        return Device.getBinary();
     }
 }

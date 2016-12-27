@@ -20,7 +20,7 @@ public class Device {
 
     static Read r = new Read();
     //public static String selected = null;
-    public static String selected = "";//"Samsung Galaxy R (i9103)";
+    public static String selected = "Redmi Note 3 (kenzo)";//"Samsung Galaxy R (i9103)";
     public static final int CodeName = 1;
     public static final int NeonCompatibility = 2;
     public static final int MountPoint = 3;
@@ -49,12 +49,12 @@ public class Device {
             deviceList.add(list);
         }
     }
-    
+
     public static int getSelectedDeviceIndex() {
         int index = 0;
         Collections.sort(deviceList);
         for (String deviceName : deviceList) {
-            if(deviceName.contains(Device.selected)){
+            if (deviceName.contains(Device.selected)) {
                 return index;
             }
             index++;
@@ -119,10 +119,14 @@ public class Device {
     }
 
     public static byte[] getBinary() throws IOException {
-        String codeName = Device.getCodeName();
-        for (String path : Jar.getBinaryList()) {
-            if (path.contains(codeName)) {
-                return r.getBytesFromFile(JarOperations.getInputStream(path));
+        if (Device.binary != null) {
+            return Device.binary;
+        } else {
+            String codeName = Device.getCodeName();
+            for (String path : Jar.getBinaryList()) {
+                if (path.contains(codeName)) {
+                    return r.getBytesFromFile(JarOperations.getInputStream(path));
+                }
             }
         }
         return null;
