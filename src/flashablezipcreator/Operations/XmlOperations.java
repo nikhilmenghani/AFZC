@@ -50,6 +50,110 @@ public class XmlOperations {
     public Element rootFolder;
     TreeOperations to = new TreeOperations();
 
+    public void createConfigurationConfig(String aromaVersion, boolean androidVersionAboveLP, boolean quickProjectSetup, ArrayList<String> themes) throws ParserConfigurationException {
+        documentFactory = DocumentBuilderFactory.newInstance();
+        documentBuilder = documentFactory.newDocumentBuilder();
+        document = documentBuilder.newDocument();
+        root = document.createElement("Configuration");
+        document.appendChild(root);
+        Element aromaVersionElem = document.createElement("AromaVersion");
+        aromaVersionElem.setTextContent(aromaVersion);
+        Element androidVersionElem = document.createElement("AboveLollipop");
+        androidVersionElem.setTextContent(String.valueOf(androidVersionAboveLP));
+        Element quickProjectSetupElem = document.createElement("QuickProjectSetup");
+        quickProjectSetupElem.setTextContent(String.valueOf(quickProjectSetup));
+        Element themesElem = document.createElement("Themes");
+        for (String theme : themes) {
+            Element themeElem = document.createElement("Theme");
+            themeElem.setTextContent(theme);
+            themesElem.appendChild(themeElem);
+        }
+        root.appendChild(aromaVersionElem);
+        root.appendChild(androidVersionElem);
+        root.appendChild(quickProjectSetupElem);
+        root.appendChild(themesElem);
+    }
+
+    public String getAromaVersion(String configData) throws ParserConfigurationException, SAXException, IOException {
+        String aromaVersion = null;
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        try {
+            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
+            NodeList nameList = genDoc.getElementsByTagName("AromaVersion");
+            for (int i = 0; i < nameList.getLength(); i++) {
+                Node nameNode = nameList.item(i);
+                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) nameNode;
+                    aromaVersion = element.getTextContent();
+                }
+            }
+        } catch (SAXParseException ex) {
+            System.out.println("Theme Details Empty");
+        }
+        return aromaVersion;
+    }
+
+    public boolean getAndroidVersionDetail(String configData) throws ParserConfigurationException, SAXException, IOException {
+        boolean androidVersionAboveLP = false;
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        try {
+            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
+            NodeList nameList = genDoc.getElementsByTagName("AboveLollipop");
+            for (int i = 0; i < nameList.getLength(); i++) {
+                Node nameNode = nameList.item(i);
+                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) nameNode;
+                    androidVersionAboveLP = element.getTextContent().equals("true");
+                }
+            }
+        } catch (SAXParseException ex) {
+            System.out.println("Theme Details Empty");
+        }
+        return androidVersionAboveLP;
+    }
+
+    public boolean getQuickProjectSetup(String configData) throws ParserConfigurationException, SAXException, IOException {
+        boolean quickProjectSetup = false;
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        try {
+            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
+            NodeList nameList = genDoc.getElementsByTagName("QuickProjectSetup");
+            for (int i = 0; i < nameList.getLength(); i++) {
+                Node nameNode = nameList.item(i);
+                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) nameNode;
+                    quickProjectSetup = element.getTextContent().equals("true");
+                }
+            }
+        } catch (SAXParseException ex) {
+            System.out.println("Theme Details Empty");
+        }
+        return quickProjectSetup;
+    }
+
+    public ArrayList<String> getThemes(String configData) throws ParserConfigurationException, SAXException, IOException {
+        ArrayList<String> themes = new ArrayList<>();
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        try {
+            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
+            NodeList nameList = genDoc.getElementsByTagName("Theme");
+            for (int i = 0; i < nameList.getLength(); i++) {
+                Node nameNode = nameList.item(i);
+                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) nameNode;
+                    themes.add(element.getTextContent());
+                }
+            }
+        } catch (SAXParseException ex) {
+            System.out.println("Theme Details Empty");
+        }
+        return themes;
+    }
+
     public void createDeviceConfig(String deviceName) throws ParserConfigurationException {
         documentFactory = DocumentBuilderFactory.newInstance();
         documentBuilder = documentFactory.newDocumentBuilder();

@@ -14,6 +14,7 @@ import flashablezipcreator.MyTree;
 import flashablezipcreator.Operations.XmlOperations;
 import static flashablezipcreator.Protocols.Export.to;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.ParserConfigurationException;
@@ -38,17 +39,17 @@ public class Xml {
     static String deleteData = "";
     public static String fileDetailsData = "";
 
-    public static String makeString() throws ParserConfigurationException, TransformerException{
+    public static String makeString() throws ParserConfigurationException, TransformerException {
         xo = new XmlOperations();
         xo.createXML();
         for (ProjectItemNode project : to.getProjectsSorted(MyTree.rootNode)) {
             if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
-                xo.addProjectNode((ProjectNode)project);
+                xo.addProjectNode((ProjectNode) project);
             }
         }
         return xo.getXML();
     }
-    
+
     public static void parseXml(int type) throws ParserConfigurationException, SAXException, IOException {
         ProjectItemNode rootNode = MyTree.rootNode;
         switch (type) {
@@ -79,15 +80,41 @@ public class Xml {
         xo = new XmlOperations();
         xo.initializeProjectData(data);
     }
-    
-    public static String getDeviceConfigString() throws ParserConfigurationException, TransformerException{
+
+    public static String getDeviceConfigString() throws ParserConfigurationException, TransformerException {
         xo = new XmlOperations();
         xo.createDeviceConfig(Device.selected);
         return xo.getXML();
     }
-    
-    public static String getDeviceName(String configXml) throws ParserConfigurationException, SAXException, IOException{
+
+    public static String getDeviceName(String configXml) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
         return xo.getDeviceName(configXml);
+    }
+
+    public static String getPreferenceConfigString(String aromaVersion, boolean androidVersionAboveLP, boolean quickProjectSetup, ArrayList<String> themes) throws ParserConfigurationException, TransformerException {
+        xo = new XmlOperations();
+        xo.createConfigurationConfig(aromaVersion, androidVersionAboveLP, quickProjectSetup, themes);
+        return xo.getXML();
+    }
+    
+    public static String getAromaVersion(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getAromaVersion(configData);
+    }
+
+    public static boolean getAndroidVersionDetail(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getAndroidVersionDetail(configData);
+    }
+
+    public static boolean getQuickProjectSetup(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getQuickProjectSetup(configData);
+    }
+
+    public static ArrayList<String> getThemes(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getThemes(configData);
     }
 }

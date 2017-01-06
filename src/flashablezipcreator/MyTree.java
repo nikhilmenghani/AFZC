@@ -6,6 +6,7 @@
 package flashablezipcreator;
 
 import flashablezipcreator.Core.ProjectItemNode;
+import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.ProjectTreeBuilder;
 import flashablezipcreator.Operations.ProjectOperations;
 import flashablezipcreator.Operations.TreeOperations;
@@ -14,6 +15,9 @@ import flashablezipcreator.Operations.UpdaterScriptOperations;
 import flashablezipcreator.Protocols.Export;
 import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Jar;
+import flashablezipcreator.Protocols.Project;
+import flashablezipcreator.UserInterface.AddName;
+import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -268,7 +272,15 @@ public class MyTree extends JFrame {
         menuItemPreferences.setText("Preferences");
         menuItemPreferences.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemPreferencesActionPerformed(evt);
+                try {
+                    menuItemPreferencesActionPerformed(evt);
+                } catch (ParserConfigurationException ex) {
+                    Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SAXException ex) {
+                    Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         menuFile.add(menuItemPreferences);
@@ -284,7 +296,7 @@ public class MyTree extends JFrame {
         menuBar.add(menuFile);
 
         menuAbout.setText("About");
-        
+
         menuAboutTool.setText("Tool");
         menuAboutTool.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -326,13 +338,13 @@ public class MyTree extends JFrame {
         System.out.println("Window Closing..");
         System.exit(0);
     }
-    
+
     private void aboutMenuItemActionPerformed() {
         JOptionPane.showMessageDialog(this, "About");
     }
 
-    private void menuItemPreferencesActionPerformed(java.awt.event.ActionEvent evt) {
-        JOptionPane.showMessageDialog(this, "Preferences");
+    private void menuItemPreferencesActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, SAXException, IOException {
+        new Preferences().setVisible(true);
     }
 
     private void menuItemExitActionPerformed(java.awt.event.ActionEvent evt) {
@@ -368,8 +380,11 @@ public class MyTree extends JFrame {
 
     private void btnCreateZipActionPerformed(java.awt.event.ActionEvent evt) throws IOException, ParserConfigurationException, TransformerException {
         try {
-            Thread exportZip = new Thread(new Export(), "ExportZip");
-            exportZip.start();
+            Project.outputPath = MyFileFilter.browseZipDestination();
+            if (!Project.outputPath.equals("")) {
+                Thread exportZip = new Thread(new Export(), "ExportZip");
+                exportZip.start();
+            }
         } catch (NullPointerException npe) {
         }
 //        Export.zip();

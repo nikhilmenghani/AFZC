@@ -7,7 +7,7 @@ package flashablezipcreator.Core;
 
 import static flashablezipcreator.AFZC.Protocols.p;
 import flashablezipcreator.Protocols.Import;
-import flashablezipcreator.Protocols.Preferences;
+import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;

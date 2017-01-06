@@ -5,15 +5,20 @@
  */
 package flashablezipcreator;
 
+import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.ReadZip;
+import static flashablezipcreator.MyTree.rootNode;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.AddDevice;
+import flashablezipcreator.UserInterface.AddName;
+import flashablezipcreator.UserInterface.Preferences;
+import static flashablezipcreator.UserInterface.Preferences.preferencesConfig;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -95,8 +100,23 @@ public class FlashableZipCreator {
                 Xml.fileDetailsData = r.getFileString(Xml.file_details_path);
                 Xml.initializeProjectDetails(Xml.fileDetailsData);
             }
+            f = new File("Preferences.config");
+            if (f.exists()) {
+                Preferences.preferencesFilePresent = true;
+                Preferences.preferencesConfig = r.getFileString("Preferences.config");
+                Preferences.themes = Xml.getThemes(preferencesConfig);
+                Preferences.aromaVersion = Xml.getAromaVersion(preferencesConfig);
+                Preferences.IsFromLollipop = Xml.getAndroidVersionDetail(preferencesConfig);
+                Preferences.IsQuickSetup = Xml.getQuickProjectSetup(preferencesConfig);
+            }
+            if (Preferences.themes.isEmpty()) {
+                Preferences.themes.add("Nikhil");
+            }
             //if(!Device.selected.equals("")){
             new MyTree().setVisible(true);
+            if (Preferences.IsQuickSetup) {
+                new AddName("Project", ProjectNode.PROJECT_AROMA, MyTree.rootNode);
+            }
             //}
         } catch (IOException ex) {
             Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);

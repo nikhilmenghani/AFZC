@@ -45,7 +45,7 @@ public class AddDevice extends javax.swing.JFrame {
         JSPList = new javax.swing.JScrollPane();
         DefaultListModel listModel = new DefaultListModel();
         listDevice = new javax.swing.JList(listModel);
-
+        cboxRemember.setSelected(true);
         ArrayList<String> arrayList = new ArrayList<String>();
 
         for (String deviceName : Device.deviceList) {

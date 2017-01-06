@@ -14,7 +14,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.tree.TreePath;
 import static flashablezipcreator.AFZC.Protocols.show;
 import flashablezipcreator.Operations.MyFileFilter;
-import flashablezipcreator.Protocols.Preferences;
+import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.UserInterface.AddName;
 import java.io.File;
 import javax.swing.JMenu;

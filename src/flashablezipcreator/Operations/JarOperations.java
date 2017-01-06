@@ -30,8 +30,9 @@ public class JarOperations {
     public static ArrayList<String> themesFileList = new ArrayList<>();//list of files in theme
     public static ArrayList<String> otherList = new ArrayList<>();
     public static ArrayList<String> binaryList = new ArrayList<>();
-    public static byte[] neon_binary = null;
-    public static byte[] non_neon_binary = null;
+    public static byte[] binary_MELATI = null;
+    public static byte[] binary_FLAMBOYAN = null;
+    public static byte[] binary_EDELWEIS = null;
     public static String supported_devices = null;
 
     public static InputStream getInputStream(String path) {
@@ -61,10 +62,12 @@ public class JarOperations {
                             } else if (s.endsWith(".ttf") || s.endsWith(".png") || s.endsWith(".lang") || s.endsWith(".txt")
                                     || s.endsWith(".edify") || s.endsWith(".sh") || s.contains("displaycapture") || s.contains("sleep")) {
                                 otherList.add(s);
-                            } else if (s.equals("META-INF/com/google/android/neon")) {
-                                neon_binary = r.getBytesFromFile(getInputStream(s));
-                            } else if (s.equals("META-INF/com/google/android/nonneon")) {
-                                non_neon_binary = r.getBytesFromFile(getInputStream(s));
+                            } else if (s.equals("META-INF/com/google/android/MELATI")) {
+                                binary_MELATI = r.getBytesFromFile(getInputStream(s));
+                            } else if (s.equals("META-INF/com/google/android/FLAMBOYAN")) {
+                                binary_FLAMBOYAN = r.getBytesFromFile(getInputStream(s));
+                            } else if (s.equals("META-INF/com/google/android/EDELWEIS")) {
+                                binary_EDELWEIS = r.getBytesFromFile(getInputStream(s));
                             } else if (s.endsWith("Supported Devices")) {
                                 supported_devices = r.getStringFromFile(getInputStream(s));
                             } else if (s.startsWith("META-INF/com/google/android/binary-files/")){

@@ -23,18 +23,7 @@ public class Binary {
     public static String updateBinaryPath = "META-INF/com/google/android/update-binary";
 
     public static byte[] getUpdateBinary(ProjectItemNode rootNode) throws IOException {
-//        switch (Project.returnMainProject(rootNode)) {
-//            case ProjectNode.PROJECT_ROM:
-//            case ProjectNode.PROJECT_GAPPS:
-//            case ProjectNode.PROJECT_AROMA:
-        if (!Device.isNeonCompatible()) {
-            return JarOperations.non_neon_binary;
-        }
-        return JarOperations.neon_binary;
-//            case ProjectNode.PROJECT_NORMAL:
-//                return Device.getBinary();
-//        }
-//        return null;
+        return Jar.getAromaBinary();
     }
 
     public static byte[] getInstallerBinary(ProjectItemNode rootNode) throws IOException {

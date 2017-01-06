@@ -11,7 +11,7 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
-import flashablezipcreator.Protocols.Preferences;
+import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
 import javax.swing.JOptionPane;
 
