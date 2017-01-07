@@ -35,7 +35,7 @@ public class ProjectMouseAdapter extends MouseAdapter {
 
     public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger()) {
-            //myPopupEvent(e);
+            myPopupEvent(e);
         }
     }
 

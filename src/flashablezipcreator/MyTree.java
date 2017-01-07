@@ -297,20 +297,15 @@ public class MyTree extends JFrame {
 
         menuAbout.setText("About");
 
-        menuAboutTool.setText("Tool");
+        menuAboutTool.setText("Me & My Tool");
         menuAboutTool.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutMenuItemActionPerformed();
+                aboutToolMenuItemActionPerformed();
             }
         });
-        menuAboutDeveloper.setText("Developer");
-        menuAboutDeveloper.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aboutMenuItemActionPerformed();
-            }
-        });
+        
         menuAbout.add(menuAboutTool);
-        menuAbout.add(menuAboutDeveloper);
         menuBar.add(menuAbout);
 
         setJMenuBar(menuBar);
@@ -331,15 +326,16 @@ public class MyTree extends JFrame {
     }// </editor-fold>     
 
     private void exitMenuItemActionPerformed() {
-        File f = new File("Temp");
+        File f = new File("AFZC Projects");
         if (f.isDirectory() && f.exists()) {
             //op.deleteDirectories("Temp");
+            f.delete();
         }
         System.out.println("Window Closing..");
         System.exit(0);
     }
 
-    private void aboutMenuItemActionPerformed() {
+    private void aboutToolMenuItemActionPerformed() {
         JOptionPane.showMessageDialog(this, "About");
     }
 
