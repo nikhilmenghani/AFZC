@@ -64,7 +64,7 @@ public class AddDevice extends javax.swing.JFrame {
         panelButton = new javax.swing.JPanel();
         btnDone = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         panelMain.setBackground(new java.awt.Color(255, 255, 255));
 

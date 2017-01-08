@@ -167,6 +167,7 @@ public class Preferences extends javax.swing.JFrame {
 
         cbAromaVersion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Version 3.00b1 - MELATI", "Version 2.70 RC2 - FLAMBOYAN", "Version 2.56 - EDELWEIS"}));
         cbAromaVersion.setOpaque(false);
+        cbAromaVersion.setToolTipText("Choose which Aroma Binary to use.");
 
         if (preferencesFilePresent) {
             String av = Xml.getAromaVersion(preferencesConfig);
@@ -186,6 +187,7 @@ public class Preferences extends javax.swing.JFrame {
             IsQuickSetup = true;
         }
         cbProjectSetup.setText("Open dialog box automatically");
+        cbProjectSetup.setToolTipText("Enabling this will Open Add Project Dialog Box on Start up for quick project creation.");
 
         javax.swing.GroupLayout panelGeneralLayout = new javax.swing.GroupLayout(panelGeneral);
         panelGeneral.setLayout(panelGeneralLayout);

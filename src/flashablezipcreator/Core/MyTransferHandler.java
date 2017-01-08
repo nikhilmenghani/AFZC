@@ -155,6 +155,8 @@ public class MyTransferHandler extends TransferHandler {
                 case GroupNode.GROUP_SYSTEM_MEDIA:
                     addSubGroupNode(groupNode, f);
                     break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Cannot Add Files in this Group");
             }
         }
     }

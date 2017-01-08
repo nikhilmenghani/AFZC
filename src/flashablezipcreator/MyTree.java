@@ -16,6 +16,7 @@ import flashablezipcreator.Protocols.Export;
 import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Project;
+import flashablezipcreator.UserInterface.About;
 import flashablezipcreator.UserInterface.AddName;
 import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
@@ -336,7 +337,7 @@ public class MyTree extends JFrame {
     }
 
     private void aboutToolMenuItemActionPerformed() {
-        JOptionPane.showMessageDialog(this, "About");
+        new About().setVisible(true);
     }
 
     private void menuItemPreferencesActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, SAXException, IOException {

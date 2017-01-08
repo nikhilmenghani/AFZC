@@ -309,6 +309,7 @@
                             <StringItem index="2" value="Version 2.56 - EDELWEIS"/>
                           </StringArray>
                         </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="Choose which Aroma Binary to use."/>
                         <Property name="opaque" type="boolean" value="false"/>
                       </Properties>
                       <AuxValues>
@@ -330,6 +331,7 @@
                         </Property>
                         <Property name="selected" type="boolean" value="true"/>
                         <Property name="text" type="java.lang.String" value="Open dialog box automatically"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Enabling this will Open Add Project Dialog Box on Start up for quick project creation."/>
                       </Properties>
                     </Component>
                   </SubComponents>
