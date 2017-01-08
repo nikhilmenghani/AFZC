@@ -97,9 +97,12 @@ public class Import implements Runnable {
                 int subGroupType = groupType; //Groups that have subGroups have same type.
                 String fileName = (new File(filePath)).getName();
 
-                FileNode file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, projectType);
-                file.fileSourcePath = file.path;
-                rz.writeFileFromZip(in, file.fileSourcePath);
+                FileNode file = to.getFileNode(fileName, folderList, subGroupName, groupName, projectName);
+                if (file == null) {
+                    file = to.addFileToTree(fileName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, projectType);
+                    file.fileSourcePath = file.path;
+                    rz.writeFileFromZip(in, file.fileSourcePath);
+                }
             }
 
             //adding nodes to tree should be done here.
