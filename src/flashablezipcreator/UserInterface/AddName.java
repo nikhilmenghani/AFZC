@@ -506,24 +506,24 @@ public class AddName extends javax.swing.JFrame {
         String projectName = txtProjectName.getText();
         if (!projectName.equals("")) {
             if (this.rNode != null) {
-                rNode.addChild(new ProjectNode(projectName, this.projectType, rNode));
+                rNode.addChild(new ProjectNode(projectName, this.projectType, rNode), false);
             } else if (this.gNode != null) {
-                gNode.addChild(new FolderNode(projectName, gNode));
+                gNode.addChild(new FolderNode(projectName, gNode), false);
             } else if (this.sNode != null) {
-                sNode.addChild(new FolderNode(projectName, sNode));
+                sNode.addChild(new FolderNode(projectName, sNode), false);
             } else if (this.fNode != null) {
-                fNode.addChild(new FolderNode(projectName, fNode));
+                fNode.addChild(new FolderNode(projectName, fNode), false);
             }
             dialog.dispose();
         } else if (!name.equals("")) {
             if (this.gNode != null) {
-                gNode.addChild(new SubGroupNode(name, this.subGroupType, gNode));
+                gNode.addChild(new SubGroupNode(name, this.subGroupType, gNode), false);
             } else if (this.pNode != null) {
-                pNode.addChild(new GroupNode(name, this.groupType, pNode));
+                pNode.addChild(new GroupNode(name, this.groupType, pNode), false);
             } else if (this.rNode != null) {
-                rNode.addChild(new ProjectNode(projectName, this.projectType, rNode));
+                rNode.addChild(new ProjectNode(projectName, this.projectType, rNode), false);
             } else if (this.fNode != null) {
-                fNode.addChild(new FolderNode(name, fNode));
+                fNode.addChild(new FolderNode(name, fNode), false);
             }
             dialog.dispose();
         } else {

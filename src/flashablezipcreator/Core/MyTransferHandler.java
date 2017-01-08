@@ -167,8 +167,8 @@ public class MyTransferHandler extends TransferHandler {
             File f = (File) i.next();
             p(f.getPath());
             if (f.isFile() && acceptFile(f, sgNode.extension)) {
-                sgNode.addChild(new FileNode(f.getPath(), sgNode));
-            }else{
+                sgNode.addChild(new FileNode(f.getPath(), sgNode), true);
+            } else {
                 JOptionPane.showMessageDialog(null, f.getName() + " cannot be added to this sub group!");
             }
         }
@@ -185,31 +185,31 @@ public class MyTransferHandler extends TransferHandler {
 
     public void addFolderNode(FolderNode folderNode, File fPath) {
         if (fPath.isDirectory()) {
-            FolderNode fNode = (FolderNode) folderNode.addChild(new FolderNode(fPath.getName(), folderNode));
+            FolderNode fNode = (FolderNode) folderNode.addChild(new FolderNode(fPath.getName(), folderNode), false);
             for (String fileName : fPath.list()) {
                 String filePath = fPath + File.separator + fileName;
                 File f = new File(filePath);
                 if (f.isDirectory()) {
                     addFolderNode(fNode, f);
                 } else if (f.isFile()) {
-                    fNode.addChild(new FileNode(filePath, fNode));
+                    fNode.addChild(new FileNode(filePath, fNode), true);
                 }
             }
         } else {
-            folderNode.addChild(new FileNode(fPath.getPath(), folderNode));
+            folderNode.addChild(new FileNode(fPath.getPath(), folderNode), true);
         }
     }
 
     public void addFolderNode(GroupNode groupNode, File fPath) {
         if (fPath.isDirectory()) {
-            FolderNode folderNode = (FolderNode) groupNode.addChild(new FolderNode(fPath.getName(), groupNode));
+            FolderNode folderNode = (FolderNode) groupNode.addChild(new FolderNode(fPath.getName(), groupNode), false);
             for (String fileName : fPath.list()) {
                 String filePath = fPath + File.separator + fileName;
                 File f = new File(filePath);
                 if (f.isDirectory()) {
                     addFolderNode(folderNode, f);
                 } else if (f.isFile() && fileName.endsWith(groupNode.extension)) {
-                    folderNode.addChild(new FileNode(filePath, folderNode));
+                    folderNode.addChild(new FileNode(filePath, folderNode), true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Incompatible file found! Skipping it!");
                 }
@@ -220,17 +220,17 @@ public class MyTransferHandler extends TransferHandler {
                 folderName = fPath.getName().replaceFirst("[.][^.]+$", "") + "-1";
             }
             FolderNode folderNode = new FolderNode(folderName, groupNode);
-            folderNode.addChild(new FileNode(fPath.getPath(), folderNode));
-            groupNode.addChild(folderNode);
+            folderNode.addChild(new FileNode(fPath.getPath(), folderNode), true);
+            groupNode.addChild(folderNode, false);
         }
     }
 
     public void addSubGroupNode(GroupNode groupNode, File fPath) {
         if (fPath.isDirectory()) {
-            SubGroupNode sgNode = (SubGroupNode) groupNode.addChild(new SubGroupNode(fPath.getName(), groupNode.groupType, groupNode));
+            SubGroupNode sgNode = (SubGroupNode) groupNode.addChild(new SubGroupNode(fPath.getName(), groupNode.groupType, groupNode), false);
             for (String fileName : fPath.list()) {
                 if (fileName.endsWith(groupNode.extension)) {
-                    sgNode.addChild(new FileNode(fPath + File.separator + fileName, sgNode));
+                    sgNode.addChild(new FileNode(fPath + File.separator + fileName, sgNode), true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Incompatible file found! Skipping it!");
                 }
@@ -245,7 +245,7 @@ public class MyTransferHandler extends TransferHandler {
 
     public void addFileNode(GroupNode groupNode, File fPath) {
         if (fPath.isFile() && acceptFile(fPath, groupNode.extension)) {
-            groupNode.addChild(new FileNode(fPath.getPath(), groupNode));
+            groupNode.addChild(new FileNode(fPath.getPath(), groupNode), true);
         } else {
             JOptionPane.showMessageDialog(null, "Cannot add " + fPath.getName() + " to Group.");
         }

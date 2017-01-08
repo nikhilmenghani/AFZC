@@ -43,6 +43,10 @@ public class PreferencesUI extends javax.swing.JFrame {
         cbAromaVersion = new javax.swing.JComboBox<>();
         lblProjectSetup = new javax.swing.JLabel();
         cbProjectSetup = new javax.swing.JCheckBox();
+        lblZipCreatorName = new javax.swing.JLabel();
+        txtZipCreatorName = new javax.swing.JTextField();
+        lblZipVersion = new javax.swing.JLabel();
+        txtZipVersion = new javax.swing.JTextField();
         panelThemes = new javax.swing.JPanel();
         lblThemesOptions = new javax.swing.JLabel();
         lblThemesHeading = new javax.swing.JLabel();
@@ -126,6 +130,16 @@ public class PreferencesUI extends javax.swing.JFrame {
         cbProjectSetup.setText("Open dialog box automatically");
         cbProjectSetup.setToolTipText("Enabling this will Open Add Project Dialog Box on Start up for quick project creation.");
 
+        lblZipCreatorName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblZipCreatorName.setText("Zip Creator Name");
+
+        txtZipCreatorName.setToolTipText("This Name will reflect in Aroma as Zip Creator");
+
+        lblZipVersion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblZipVersion.setText("Release Version");
+
+        txtZipVersion.setToolTipText("This Version will reflect in Aroma as Release Version");
+
         javax.swing.GroupLayout panelGeneralLayout = new javax.swing.GroupLayout(panelGeneral);
         panelGeneral.setLayout(panelGeneralLayout);
         panelGeneralLayout.setHorizontalGroup(
@@ -142,7 +156,12 @@ public class PreferencesUI extends javax.swing.JFrame {
                             .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbProjectSetup)))
+                            .addComponent(lblZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtZipCreatorName, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cbProjectSetup, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblZipVersion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtZipVersion, javax.swing.GroupLayout.Alignment.LEADING))))
                     .addGroup(panelGeneralLayout.createSequentialGroup()
                         .addGap(79, 79, 79)
                         .addComponent(lblGeneralOptions)))
@@ -155,24 +174,33 @@ public class PreferencesUI extends javax.swing.JFrame {
                 .addComponent(lblGeneralOptions)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblHoverInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(6, 6, 6)
                 .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(6, 6, 6)
                 .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(6, 6, 6)
                 .addComponent(cbAndroidVersion)
-                .addGap(13, 13, 13)
+                .addGap(16, 16, 16)
                 .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbProjectSetup)
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addGap(16, 16, 16)
+                .addComponent(lblZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(lblZipVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtZipVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
 
         panelThemes.setBackground(new java.awt.Color(255, 255, 255));
+        panelThemes.setPreferredSize(new java.awt.Dimension(385, 415));
 
         lblThemesOptions.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblThemesOptions.setText("Themes Options");
@@ -416,11 +444,15 @@ public class PreferencesUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblProjectSetup;
     private javax.swing.JLabel lblThemesHeading;
     private javax.swing.JLabel lblThemesOptions;
+    private javax.swing.JLabel lblZipCreatorName;
+    private javax.swing.JLabel lblZipVersion;
     private javax.swing.JList<String> listPreferences;
     private javax.swing.JLayeredPane paneGeneral;
     private javax.swing.JPanel panelGeneral;
     private javax.swing.JPanel panelPreferenceOptions;
     private javax.swing.JPanel panelPreferencesDetails;
     private javax.swing.JPanel panelThemes;
+    private javax.swing.JTextField txtZipCreatorName;
+    private javax.swing.JTextField txtZipVersion;
     // End of variables declaration//GEN-END:variables
 }

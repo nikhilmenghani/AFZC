@@ -65,8 +65,23 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
 //    public void addChild(ProjectItemNode child) {
 //        children.add(child);
 //    }
-    public ProjectItemNode addChild(ProjectItemNode child) {
-        children.add(child);
+    public ProjectItemNode addChild(ProjectItemNode child, boolean overwrite) {
+        boolean childExists = false;
+        for (ProjectItemNode childNode : children) {
+            if (childNode.title.equals(child.title)) {
+                childExists = true;
+                child = childNode;
+            }
+        }
+        if (overwrite) {
+            if (childExists) {
+                children.remove(child);
+            }
+            children.add(child);
+        } else if (!childExists) {
+            children.add(child);
+        }
+
         MyTree.model.reload(this);
         return child;
     }

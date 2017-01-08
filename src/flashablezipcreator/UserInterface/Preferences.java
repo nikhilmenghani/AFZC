@@ -14,6 +14,7 @@ import flashablezipcreator.MyTree;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Protocols.Jar;
+import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Xml;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,6 +61,10 @@ public class Preferences extends javax.swing.JFrame {
         cbAromaVersion = new javax.swing.JComboBox<>();
         lblProjectSetup = new javax.swing.JLabel();
         cbProjectSetup = new javax.swing.JCheckBox();
+        lblZipCreatorName = new javax.swing.JLabel();
+        txtZipCreatorName = new javax.swing.JTextField();
+        lblZipVersion = new javax.swing.JLabel();
+        txtZipVersion = new javax.swing.JTextField();
         panelThemes = new javax.swing.JPanel();
         lblThemesOptions = new javax.swing.JLabel();
         lblThemesHeading = new javax.swing.JLabel();
@@ -189,53 +194,89 @@ public class Preferences extends javax.swing.JFrame {
         cbProjectSetup.setText("Open dialog box automatically");
         cbProjectSetup.setToolTipText("Enabling this will Open Add Project Dialog Box on Start up for quick project creation.");
 
+        lblZipCreatorName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblZipCreatorName.setText("Zip Creator Name");
+
+        txtZipCreatorName.setToolTipText("This Name will reflect in Aroma as Zip Creator");
+        if(preferencesFilePresent){
+            txtZipCreatorName.setText(Xml.getZipCreatorName(preferencesConfig));
+            zipCreatorName = txtZipCreatorName.getText();
+        }else{
+            txtZipCreatorName.setText(zipCreatorName);
+        }
+
+        lblZipVersion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblZipVersion.setText("Release Version");
+
+        txtZipVersion.setToolTipText("This Version will reflect in Aroma as Release Version");
+        if(preferencesFilePresent){
+            txtZipVersion.setText(Xml.getZipVersion(preferencesConfig));
+            zipVersion = txtZipVersion.getText();
+        }else{
+            txtZipVersion.setText(zipVersion);
+        }
+        
         javax.swing.GroupLayout panelGeneralLayout = new javax.swing.GroupLayout(panelGeneral);
         panelGeneral.setLayout(panelGeneralLayout);
         panelGeneralLayout.setHorizontalGroup(
-                panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelGeneralLayout.createSequentialGroup()
+            panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelGeneralLayout.createSequentialGroup()
+                .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelGeneralLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
                         .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(panelGeneralLayout.createSequentialGroup()
-                                        .addGap(36, 36, 36)
-                                        .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(lblHoverInformation)
-                                                .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(cbAndroidVersion)
-                                                .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(cbProjectSetup)))
-                                .addGroup(panelGeneralLayout.createSequentialGroup()
-                                        .addGap(79, 79, 79)
-                                        .addComponent(lblGeneralOptions)))
-                        .addContainerGap(45, Short.MAX_VALUE))
+                            .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblHoverInformation)
+                            .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbAndroidVersion)
+                            .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtZipCreatorName, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cbProjectSetup, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblZipVersion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtZipVersion, javax.swing.GroupLayout.Alignment.LEADING))))
+                    .addGroup(panelGeneralLayout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(lblGeneralOptions)))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         panelGeneralLayout.setVerticalGroup(
-                panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelGeneralLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblGeneralOptions)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblHoverInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbAndroidVersion)
-                        .addGap(13, 13, 13)
-                        .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbProjectSetup)
-                        .addContainerGap(139, Short.MAX_VALUE))
+            panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelGeneralLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblGeneralOptions)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblHoverInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6)
+                .addComponent(cbAndroidVersion)
+                .addGap(16, 16, 16)
+                .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbProjectSetup)
+                .addGap(16, 16, 16)
+                .addComponent(lblZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(lblZipVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtZipVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
         );
 
         panelThemes.setBackground(new java.awt.Color(255, 255, 255));
+        panelThemes.setPreferredSize(new java.awt.Dimension(385, 415));
         themes = new ArrayList<>();
         if (preferencesFilePresent) {
             themes = Xml.getThemes(preferencesConfig);
@@ -502,7 +543,11 @@ public class Preferences extends javax.swing.JFrame {
         aromaVersion = cbAromaVersion.getSelectedItem().toString();
         IsFromLollipop = cbAndroidVersion.isSelected();
         IsQuickSetup = cbProjectSetup.isSelected();
-        xml = Xml.getPreferenceConfigString(aromaVersion, IsFromLollipop, IsQuickSetup, themes);
+        zipCreatorName = txtZipCreatorName.getText();
+        Project.zipCreator = zipCreatorName;
+        zipVersion = txtZipVersion.getText();
+        Project.releaseVersion = zipVersion;
+        xml = Xml.getPreferenceConfigString(aromaVersion, IsFromLollipop, IsQuickSetup, themes, zipCreatorName, zipVersion);
         Write w = new Write();
         w.writeStringToFile(xml, "Preferences.config");
         this.dispose();
@@ -567,18 +612,24 @@ public class Preferences extends javax.swing.JFrame {
     private javax.swing.JLabel lblProjectSetup;
     private javax.swing.JLabel lblThemesHeading;
     private javax.swing.JLabel lblThemesOptions;
+    private javax.swing.JLabel lblZipCreatorName;
+    private javax.swing.JLabel lblZipVersion;
     private javax.swing.JList<String> listPreferences;
     private javax.swing.JLayeredPane paneGeneral;
     private javax.swing.JPanel panelGeneral;
     private javax.swing.JPanel panelPreferenceOptions;
     private javax.swing.JPanel panelPreferencesDetails;
     private javax.swing.JPanel panelThemes;
+    private javax.swing.JTextField txtZipCreatorName;
+    private javax.swing.JTextField txtZipVersion;
     public static String preferencesConfig;
     public static boolean IsFromLollipop = true;
     public static boolean IsQuickSetup = true;
     public static String aromaVersion = "Version 3.00b1 - MELATI";
     public static ArrayList<String> themes = new ArrayList<>();
     public static boolean preferencesFilePresent = false;
+    public static String zipCreatorName = "Nikhil";
+    public static String zipVersion = "1.0";
     Write w;
     Read r;
     // End of variables declaration                   

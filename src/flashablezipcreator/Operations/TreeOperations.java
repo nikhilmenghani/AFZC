@@ -15,6 +15,7 @@ import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.MyTree;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -40,106 +41,21 @@ public class TreeOperations {
         this.model = MyTree.model;
     }
 
-    public ProjectItemNode addChildTo(ProjectItemNode parent, String childTitle, int childType) {
-
-        switch (parent.type) {
-            case ProjectItemNode.NODE_ROOT:
-                return parent.addChild(new ProjectNode(childTitle, childType, parent));
-            case ProjectItemNode.NODE_PROJECT:
-                return parent.addChild(new GroupNode(childTitle, childType, (ProjectNode) parent));
-            case ProjectItemNode.NODE_GROUP:
-                switch (((GroupNode) parent).groupType) {
-                    //Group of predefined locations
-                    case GroupNode.GROUP_SYSTEM_APK:
-                    case GroupNode.GROUP_SYSTEM_PRIV_APK:
-                    case GroupNode.GROUP_DATA_APP:
-                    case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                    case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                    case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                    case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-                    case GroupNode.GROUP_OTHER:
-                    case GroupNode.GROUP_AROMA_THEMES:
-                    case GroupNode.GROUP_DELETE_FILES:
-                    case GroupNode.GROUP_SCRIPT:
-                        switch (childType) {
-                            case ProjectItemNode.NODE_FILE:
-                                return parent.addChild(new FileNode(childTitle, (GroupNode) parent));
-                            case ProjectItemNode.NODE_FOLDER:
-                                return parent.addChild(new FolderNode(childTitle, (GroupNode) parent));
-                            default:
-                                System.out.println("You cannot add subgroup for this type..!!");
-                                break;
-                        }
-                        break;
-                    //Group of predefined locations that need subgroups
-                    case GroupNode.GROUP_SYSTEM_FONTS:
-                    case GroupNode.GROUP_DATA_LOCAL:
-                    case GroupNode.GROUP_SYSTEM_MEDIA:
-                        switch (childType) {
-                            case SubGroupNode.TYPE_SYSTEM_FONTS:
-                            case SubGroupNode.TYPE_SYSTEM_MEDIA:
-                            case SubGroupNode.TYPE_DATA_LOCAL:
-                                return parent.addChild(new SubGroupNode(childTitle, childType, (GroupNode) parent));
-                            case ProjectItemNode.NODE_FILE:
-                                System.out.println("You cannot add files for this type..!!\nadd a subgroup and then files to it..!!");
-                                break;
-                        }
-                        break;
-                    //Group of custom location.
-                    case GroupNode.GROUP_CUSTOM:
-                        if (childType == SubGroupNode.TYPE_CUSTOM) {
-                            return parent.addChild(new SubGroupNode(childTitle, childType, (GroupNode) parent));
-                        }
-                        break;
-                    //here File Node can also act as child but due to different requirements of parameters,
-                    //explicit call to another addChildTo function is required.
-                }
-                break;
-            case ProjectItemNode.NODE_SUBGROUP:
-                System.out.println(parent.title);
-                System.out.println(parent.type);
-                switch (((SubGroupNode) parent).subGroupType) {
-                    case SubGroupNode.TYPE_SYSTEM_FONTS:
-                    case SubGroupNode.TYPE_SYSTEM_MEDIA:
-                    case SubGroupNode.TYPE_DATA_LOCAL:
-                        return parent.addChild(new FileNode(childTitle, (SubGroupNode) parent));
-                }
-            case ProjectItemNode.NODE_FOLDER:
-                switch (childType) {
-                    case ProjectItemNode.NODE_FOLDER:
-                        return parent.addChild(new FolderNode(childTitle, (FolderNode) parent));
-                    case ProjectItemNode.NODE_FILE:
-                        return parent.addChild(new FileNode(childTitle, (FolderNode) parent));
-                }
-
-            default:
-                System.out.println("Entered Default.");
-        }
-        return null;
-    }
-
     public void renameNode(ProjectItemNode node, String newName) throws IOException {
         String oldName = "";
         switch (node.type) {
             case ProjectItemNode.NODE_ROOT:
                 break;
             case ProjectItemNode.NODE_PROJECT:
-                oldName = ((ProjectNode) node).path;
                 ((ProjectNode) node).renameMe(newName);
-                //w.rename(oldName, newName);
                 break;
             case ProjectItemNode.NODE_GROUP:
-                oldName = ((GroupNode) node).path;
                 ((GroupNode) node).renameMe(newName);
-                //w.rename(oldName, newName);
                 break;
             case ProjectItemNode.NODE_SUBGROUP:
-                oldName = ((SubGroupNode) node).path;
                 ((SubGroupNode) node).renameMe(newName);
-                //w.rename(oldName, newName);
                 break;
             case ProjectItemNode.NODE_FOLDER:
-                oldName = ((FolderNode) node).path;
                 ((FolderNode) node).renameMe(newName);
                 break;
             case ProjectItemNode.NODE_FILE:
@@ -155,36 +71,28 @@ public class TreeOperations {
     }
 
     public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, ArrayList<String> folders, String projectName, int projectType) {
-        ProjectNode pNode = getProjectNode(projectName, projectType);
-        if (pNode == null) {
-            pNode = (ProjectNode) addChildTo(rootNode, projectName, projectType);
-            System.out.println("Added project " + projectName + " project type " + projectType);
-        }
-        GroupNode gNode = getGroupNode(groupName, groupType, projectName);
-        if (gNode == null) {
-            gNode = (GroupNode) addChildTo(pNode, groupName, groupType);
-        }
+        ProjectNode pNode = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, rootNode), false);
+        System.out.println("Added project " + projectName + " project type " + projectType);
+        GroupNode gNode = (GroupNode) pNode.addChild(new GroupNode(groupName, groupType, pNode), false);
         SubGroupNode sgNode = null;
         if (!subGroupName.equals("")) {
-            sgNode = getSubGroupNode(subGroupName, groupType, groupName, projectName);
-            if (sgNode == null) {
-                sgNode = (SubGroupNode) addChildTo(gNode, subGroupName, subGroupType);
-            }
+            sgNode = (SubGroupNode) gNode.addChild(new SubGroupNode(subGroupName, subGroupType, gNode), false);
         }
         FolderNode folNode = null;
         if (folders.size() > 0) {
             int count = 1;
             for (String folder : folders) {
                 FolderNode fNode = null;
-                fNode = getFolderNode(folders, folder, groupName, groupType, subGroupName, subGroupType, projectName);
-                if (count++ == 1 && fNode == null) {
+                if (count++ == 1) {
                     if (sgNode != null) {
-                        fNode = (FolderNode) addChildTo(sgNode, folder, ProjectItemNode.NODE_FOLDER);
+                        fNode = (FolderNode) sgNode.addChild(new FolderNode(folder, sgNode), false);
                     } else {
-                        fNode = (FolderNode) addChildTo(gNode, folder, ProjectItemNode.NODE_FOLDER);
+                        fNode = (FolderNode) gNode.addChild(new FolderNode(folder, gNode), false);
                     }
-                } else if (fNode == null) {
-                    fNode = (FolderNode) addChildTo(folNode, folder, ProjectItemNode.NODE_FOLDER);
+                } else if (folNode != null) {
+                    fNode = (FolderNode) folNode.addChild(new FolderNode(folder, folNode), false);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Something went wrong!");
                 }
                 folNode = fNode;
             }
@@ -192,12 +100,12 @@ public class TreeOperations {
         FileNode fileNode = null;
         if (folNode == null) {
             if (sgNode != null) {
-                fileNode = (FileNode) addChildTo(sgNode, fileName, ProjectItemNode.NODE_FILE);
+                fileNode = (FileNode) sgNode.addChild(new FileNode(fileName, sgNode), true);
             } else {
-                fileNode = (FileNode) addChildTo(gNode, fileName, ProjectItemNode.NODE_FILE);
+                fileNode = (FileNode) (FileNode) gNode.addChild(new FileNode(fileName, gNode), true);
             }
         } else {
-            fileNode = (FileNode) addChildTo(folNode, fileName, ProjectItemNode.NODE_FILE);
+            fileNode = (FileNode) (FileNode) folNode.addChild(new FileNode(fileName, folNode), true);
         }
         return fileNode;
     }

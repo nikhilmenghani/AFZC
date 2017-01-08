@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Protocols;
 
+import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
@@ -32,18 +33,15 @@ public class Jar {
         TreeOperations to = new TreeOperations();
         String projectName = "Themes";
         int projectType = ProjectNode.PROJECT_THEMES;
-        ProjectNode themesProject = to.getProjectNode(projectName, projectType);
-        if (themesProject == null) {
-            themesProject = (ProjectNode) to.addChildTo(rootNode, projectName, projectType);
-        }
+        ProjectNode themesProject = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, rootNode), true);
         themesProject.children = new Vector<>();
         for (String theme : JarOperations.themesList) {
             if (Preferences.themes.contains(theme)) {
-                to.addChildTo(themesProject, theme, GroupNode.GROUP_AROMA_THEMES);
+                GroupNode themeGroup = (GroupNode) themesProject.addChild(new GroupNode(theme,GroupNode.GROUP_AROMA_THEMES, themesProject), true);
                 String themePath = "META-INF/com/google/android/aroma/themes/" + theme + "/";
                 for (String themesPath : JarOperations.themesFileList) {
                     if (themesPath.contains(themePath)) {
-                        to.addChildTo(to.getGroupNode(theme, GroupNode.GROUP_AROMA_THEMES, projectName), themesPath, ProjectItemNode.NODE_FILE);
+                        themeGroup.addChild(new FileNode(themesPath,themeGroup), true);
                     }
                 }
             }

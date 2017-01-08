@@ -50,7 +50,8 @@ public class XmlOperations {
     public Element rootFolder;
     TreeOperations to = new TreeOperations();
 
-    public void createConfigurationConfig(String aromaVersion, boolean androidVersionAboveLP, boolean quickProjectSetup, ArrayList<String> themes) throws ParserConfigurationException {
+    public void createConfigurationConfig(String aromaVersion, boolean androidVersionAboveLP, boolean quickProjectSetup,
+            ArrayList<String> themes, String zipCreatorName, String zipVersion) throws ParserConfigurationException {
         documentFactory = DocumentBuilderFactory.newInstance();
         documentBuilder = documentFactory.newDocumentBuilder();
         document = documentBuilder.newDocument();
@@ -68,70 +69,56 @@ public class XmlOperations {
             themeElem.setTextContent(theme);
             themesElem.appendChild(themeElem);
         }
+        Element zipCreatorNameElem = document.createElement("zipCreatorName");
+        zipCreatorNameElem.setTextContent(zipCreatorName);
+        Element zipVersionElem = document.createElement("zipVersion");
+        zipVersionElem.setTextContent(zipVersion);
         root.appendChild(aromaVersionElem);
         root.appendChild(androidVersionElem);
         root.appendChild(quickProjectSetupElem);
         root.appendChild(themesElem);
+        root.appendChild(zipCreatorNameElem);
+        root.appendChild(zipVersionElem);
     }
 
-    public String getAromaVersion(String configData) throws ParserConfigurationException, SAXException, IOException {
-        String aromaVersion = null;
+    public String getStringConfigValue(String configData, String elementName) throws ParserConfigurationException, SAXException, IOException {
+        String configValue = null;
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         try {
             Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
-            NodeList nameList = genDoc.getElementsByTagName("AromaVersion");
+            NodeList nameList = genDoc.getElementsByTagName(elementName);
             for (int i = 0; i < nameList.getLength(); i++) {
                 Node nameNode = nameList.item(i);
                 if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) nameNode;
-                    aromaVersion = element.getTextContent();
+                    configValue = element.getTextContent();
                 }
             }
         } catch (SAXParseException ex) {
-            System.out.println("Theme Details Empty");
+            System.out.println(elementName + " Details Empty");
         }
-        return aromaVersion;
+        return configValue;
     }
 
-    public boolean getAndroidVersionDetail(String configData) throws ParserConfigurationException, SAXException, IOException {
-        boolean androidVersionAboveLP = false;
+    public boolean getBoolConfigValue(String configData, String elementName) throws ParserConfigurationException, SAXException, IOException {
+        boolean configValue = false;
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         try {
             Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
-            NodeList nameList = genDoc.getElementsByTagName("AboveLollipop");
+            NodeList nameList = genDoc.getElementsByTagName(elementName);
             for (int i = 0; i < nameList.getLength(); i++) {
                 Node nameNode = nameList.item(i);
                 if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) nameNode;
-                    androidVersionAboveLP = element.getTextContent().equals("true");
+                    configValue = element.getTextContent().equals("true");
                 }
             }
         } catch (SAXParseException ex) {
-            System.out.println("Theme Details Empty");
+            System.out.println(elementName + " Details Empty");
         }
-        return androidVersionAboveLP;
-    }
-
-    public boolean getQuickProjectSetup(String configData) throws ParserConfigurationException, SAXException, IOException {
-        boolean quickProjectSetup = false;
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        try {
-            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
-            NodeList nameList = genDoc.getElementsByTagName("QuickProjectSetup");
-            for (int i = 0; i < nameList.getLength(); i++) {
-                Node nameNode = nameList.item(i);
-                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) nameNode;
-                    quickProjectSetup = element.getTextContent().equals("true");
-                }
-            }
-        } catch (SAXParseException ex) {
-            System.out.println("Theme Details Empty");
-        }
-        return quickProjectSetup;
+        return configValue;
     }
 
     public ArrayList<String> getThemes(String configData) throws ParserConfigurationException, SAXException, IOException {
@@ -163,26 +150,6 @@ public class XmlOperations {
         Element name = document.createElement("Name");
         name.setTextContent(deviceName);
         root.appendChild(name);
-    }
-
-    public String getDeviceName(String configData) throws ParserConfigurationException, SAXException, IOException {
-        String deviceName = "";
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        try {
-            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
-            NodeList nameList = genDoc.getElementsByTagName("Device");
-            for (int i = 0; i < nameList.getLength(); i++) {
-                Node nameNode = nameList.item(i);
-                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) nameNode;
-                    deviceName = element.getElementsByTagName("Name").item(0).getTextContent();
-                }
-            }
-        } catch (SAXParseException ex) {
-            System.out.println("Device Details Empty");
-        }
-        return deviceName;
     }
 
     public void createXML() throws ParserConfigurationException {
@@ -299,31 +266,6 @@ public class XmlOperations {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         try {
             Document genDoc = dBuilder.parse(new InputSource(new StringReader(data)));
-//            NodeList romList = genDoc.getElementsByTagName("Rom");
-//            for (int i = 0; i < romList.getLength(); i++) {
-//                Node romNode = romList.item(i);
-//                if (romNode.getNodeType() == Node.ELEMENT_NODE) {
-//                    Element element = (Element) romNode;
-//                    Project.romName = element.getElementsByTagName("RName").item(0).getTextContent();
-//                    Project.romVersion = element.getElementsByTagName("RVersion").item(0).getTextContent();
-//                    Project.romAuthor = element.getElementsByTagName("RAuthor").item(0).getTextContent();
-//                    Project.romDevice = element.getElementsByTagName("RDevice").item(0).getTextContent();
-//                    Project.romDate = element.getElementsByTagName("RDate").item(0).getTextContent();
-//                }
-//            }
-//
-//            NodeList gappsList = genDoc.getElementsByTagName("Gapps");
-//            for (int i = 0; i < gappsList.getLength(); i++) {
-//                Node gappsNode = gappsList.item(i);
-//                if (gappsNode.getNodeType() == Node.ELEMENT_NODE) {
-//                    Element element = (Element) gappsNode;
-//                    Project.gappsName = element.getElementsByTagName("GName").item(0).getTextContent();
-//                    Project.gappsType = element.getElementsByTagName("GType").item(0).getTextContent();
-//                    Project.gappsDate = element.getElementsByTagName("GDate").item(0).getTextContent();
-//                    Project.androidVersion = element.getElementsByTagName("GAndroidVersion").item(0).getTextContent();
-//                }
-//            }
-
             NodeList modList = genDoc.getElementsByTagName("Mod");
             for (int i = 0; i < modList.getLength(); i++) {
                 Node modNode = modList.item(i);

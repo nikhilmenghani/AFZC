@@ -66,6 +66,7 @@ public class FolderNode extends ProjectItemNode {
         super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
         super.location = parent.location;
         this.folderLocation = parent.folderLocation + File.separator + title;
+        super.extractZipPath = parent.extractZipPath;
         this.permission = parent.permission;
         this.originalParent = parent.originalParent;
         this.projectName = parent.projectName;

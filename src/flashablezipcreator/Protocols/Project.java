@@ -8,6 +8,7 @@ package flashablezipcreator.Protocols;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Operations.TreeOperations;
+import flashablezipcreator.UserInterface.Preferences;
 import java.util.ArrayList;
 
 /**
@@ -30,8 +31,8 @@ public class Project {
     public static String androidVersion = "5.x+";
 //    public static String gappsType = "I Don't Know Type";
 //    public static String gappsDate = "I Don't Know Date";
-    public static String releaseVersion = "1.0";
-    public static String zipCreator = "Nikhil";
+    public static String releaseVersion = Preferences.zipVersion;
+    public static String zipCreator = Preferences.zipCreatorName;
     public static boolean LStructure = true;
 
     static TreeOperations to;

@@ -112,7 +112,7 @@ public class MyTree extends JFrame {
         this.addWindowListener(new java.awt.event.WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent e) {
-                System.exit(0);
+                exitMenuItemActionPerformed();
             }
         });
 
@@ -305,7 +305,7 @@ public class MyTree extends JFrame {
                 aboutToolMenuItemActionPerformed();
             }
         });
-        
+
         menuAbout.add(menuAboutTool);
         menuBar.add(menuAbout);
 
@@ -327,13 +327,33 @@ public class MyTree extends JFrame {
     }// </editor-fold>     
 
     private void exitMenuItemActionPerformed() {
-        File f = new File("AFZC Projects");
-        if (f.isDirectory() && f.exists()) {
-            //op.deleteDirectories("Temp");
-            f.delete();
+        try {
+            int dialogResult = JOptionPane.showConfirmDialog(this, "Do you want to delete temporary files?", "", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                String dir = "AFZC Projects";
+                deleteDirectory(new File(dir));
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Something Went Wrong!\nCouldn't delete Temp files!");
         }
         System.out.println("Window Closing..");
         System.exit(0);
+    }
+
+    public boolean deleteDirectory(File directory) {
+        if (directory.exists()) {
+            File[] files = directory.listFiles();
+            if (null != files) {
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].isDirectory()) {
+                        deleteDirectory(files[i]);
+                    } else {
+                        files[i].delete();
+                    }
+                }
+            }
+        }
+        return (directory.delete());
     }
 
     private void aboutToolMenuItemActionPerformed() {

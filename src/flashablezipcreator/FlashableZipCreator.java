@@ -108,6 +108,8 @@ public class FlashableZipCreator {
                 Preferences.aromaVersion = Xml.getAromaVersion(preferencesConfig);
                 Preferences.IsFromLollipop = Xml.getAndroidVersionDetail(preferencesConfig);
                 Preferences.IsQuickSetup = Xml.getQuickProjectSetup(preferencesConfig);
+                Preferences.zipCreatorName = Xml.getZipCreatorName(preferencesConfig);
+                Preferences.zipVersion = Xml.getZipVersion(preferencesConfig);
             }
             if (Preferences.themes.isEmpty()) {
                 Preferences.themes.add("Nikhil");

@@ -350,16 +350,16 @@ public class MyPopup {
                                 }
                                 FolderNode folderNode = new FolderNode(folderName, gNode);
                                 fnode = new FileNode(tempFile.getAbsolutePath(), folderNode);
-                                folderNode.addChild(fnode);
-                                gNode.addChild(folderNode);
+                                folderNode.addChild(fnode, true);
+                                gNode.addChild(folderNode, false);
                                 break;
                             default:
                                 fnode = new FileNode(tempFile.getAbsolutePath(), gNode);
-                                gNode.addChild(fnode);
+                                gNode.addChild(fnode, true);
                         }
                     } else {
                         fnode = new FileNode(tempFile.getAbsolutePath(), gNode);
-                        gNode.addChild(fnode);
+                        gNode.addChild(fnode, true);
                     }
                 }
                 break;
@@ -367,13 +367,13 @@ public class MyPopup {
                 for (File tempFile : MyFileFilter.getSelectedFiles(((SubGroupNode) nodeList.get(0)).extension)) {
                     FileNode fnode = new FileNode(tempFile.getAbsolutePath(), (SubGroupNode) nodeList.get(0));
                     //fnode.fileSourcePath = tempFile.getAbsolutePath();
-                    ((SubGroupNode) nodeList.get(0)).addChild(fnode);
+                    ((SubGroupNode) nodeList.get(0)).addChild(fnode, true);
                 }
                 break;
             case ProjectNode.NODE_FOLDER:
                 for (File tempFile : MyFileFilter.getSelectedFiles("folder")) {
                     FileNode fnode = new FileNode(tempFile.getAbsolutePath(), (FolderNode) nodeList.get(0));
-                    ((FolderNode) nodeList.get(0)).addChild(fnode);
+                    ((FolderNode) nodeList.get(0)).addChild(fnode, true);
                 }
                 break;
         }

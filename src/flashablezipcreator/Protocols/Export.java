@@ -144,7 +144,8 @@ public class Export implements Runnable {
             wz.writeStringToZip(AromaConfig.build(rootNode), AromaConfig.aromaConfigPath);
             increaseProgressBar(fileIndex, "Updater-Script");
             fileIndex++;
-            wz.writeStringToZip(UpdaterScript.build(rootNode), UpdaterScript.updaterScriptPath);
+            String us = UpdaterScript.build(rootNode);
+            wz.writeStringToZip(us, UpdaterScript.updaterScriptPath);
             try {
                 increaseProgressBar(fileIndex, "Update Binary Installer");
                 fileIndex++;

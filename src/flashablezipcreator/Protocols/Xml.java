@@ -87,34 +87,46 @@ public class Xml {
         return xo.getXML();
     }
 
-    public static String getDeviceName(String configXml) throws ParserConfigurationException, SAXException, IOException {
+    public static String getDeviceName(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
-        return xo.getDeviceName(configXml);
+        return xo.getStringConfigValue(configData, "Name");
     }
 
-    public static String getPreferenceConfigString(String aromaVersion, boolean androidVersionAboveLP, boolean quickProjectSetup, ArrayList<String> themes) throws ParserConfigurationException, TransformerException {
+    public static String getPreferenceConfigString(String aromaVersion, boolean androidVersionAboveLP,
+            boolean quickProjectSetup, ArrayList<String> themes, String zipCreatorName, String ZipVersion)
+            throws ParserConfigurationException, TransformerException {
         xo = new XmlOperations();
-        xo.createConfigurationConfig(aromaVersion, androidVersionAboveLP, quickProjectSetup, themes);
+        xo.createConfigurationConfig(aromaVersion, androidVersionAboveLP, quickProjectSetup, themes, zipCreatorName, ZipVersion);
         return xo.getXML();
     }
-    
+
     public static String getAromaVersion(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
-        return xo.getAromaVersion(configData);
+        return xo.getStringConfigValue(configData,"AromaVersion");
     }
 
     public static boolean getAndroidVersionDetail(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
-        return xo.getAndroidVersionDetail(configData);
+        return xo.getBoolConfigValue(configData, "AboveLollipop");
     }
 
     public static boolean getQuickProjectSetup(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
-        return xo.getQuickProjectSetup(configData);
+        return xo.getBoolConfigValue(configData, "QuickProjectSetup");
     }
 
     public static ArrayList<String> getThemes(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
         return xo.getThemes(configData);
+    }
+
+    public static String getZipCreatorName(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getStringConfigValue(configData, "zipCreatorName");
+    }
+
+    public static String getZipVersion(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getStringConfigValue(configData, "zipVersion");
     }
 }

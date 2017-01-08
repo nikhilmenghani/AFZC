@@ -6,6 +6,7 @@
 package flashablezipcreator.Core;
 
 import flashablezipcreator.Protocols.Project;
+import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 
 /**
@@ -46,6 +47,7 @@ public class ProjectNode extends ProjectItemNode {
         this.projectType = projectType;
         super.path = parent + File.separator + title;
         super.zipPath = parent.zipPath + "/" + zipPathPrefix + title;
+        this.androidVersion = Preferences.IsFromLollipop ? "5.x+" : "4.x+";
     }
 
     public void renameMe(String newName) {
@@ -60,11 +62,11 @@ public class ProjectNode extends ProjectItemNode {
     public void updateChildrenPath() {
         super.updateChildrenPath();
     }
-    
-    public void updateChildrenZipPath(){
-        for(ProjectItemNode node : children){
-            ((GroupNode)node).updateZipPath(); //casting to group node as project node cannot have child of any other type.
-            ((GroupNode)node).updateChildrenZipPath();
+
+    public void updateChildrenZipPath() {
+        for (ProjectItemNode node : children) {
+            ((GroupNode) node).updateZipPath(); //casting to group node as project node cannot have child of any other type.
+            ((GroupNode) node).updateChildrenZipPath();
         }
     }
 }

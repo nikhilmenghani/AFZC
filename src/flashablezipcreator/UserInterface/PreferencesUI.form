@@ -211,7 +211,13 @@
                                           <Component id="lblAromaVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
                                           <Component id="cbAromaVersion" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="lblProjectSetup" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
-                                          <Component id="cbProjectSetup" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblZipCreatorName" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="txtZipCreatorName" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="cbProjectSetup" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="lblZipVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                              <Component id="txtZipVersion" alignment="0" max="32767" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
@@ -230,21 +236,29 @@
                               <Component id="lblGeneralOptions" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="lblHoverInformation" min="-2" pref="20" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Component id="lblGeneralHeading" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Component id="lblAndroidVersion" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Component id="cbAndroidVersion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                               <Component id="lblAromaVersion" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="cbAromaVersion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <EmptySpace pref="16" max="32767" attributes="0"/>
                               <Component id="lblProjectSetup" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="cbProjectSetup" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="139" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                              <Component id="lblZipCreatorName" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtZipCreatorName" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                              <Component id="lblZipVersion" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtZipVersion" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -334,12 +348,41 @@
                         <Property name="toolTipText" type="java.lang.String" value="Enabling this will Open Add Project Dialog Box on Start up for quick project creation."/>
                       </Properties>
                     </Component>
+                    <Component class="javax.swing.JLabel" name="lblZipCreatorName">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Tahoma" size="11" style="1"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Zip Creator Name"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="txtZipCreatorName">
+                      <Properties>
+                        <Property name="toolTipText" type="java.lang.String" value="This Name will reflect in Aroma as Zip Creator"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="lblZipVersion">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Tahoma" size="11" style="1"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Release Version"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JTextField" name="txtZipVersion">
+                      <Properties>
+                        <Property name="toolTipText" type="java.lang.String" value="This Version will reflect in Aroma as Release Version"/>
+                      </Properties>
+                    </Component>
                   </SubComponents>
                 </Container>
                 <Container class="javax.swing.JPanel" name="panelThemes">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[385, 415]"/>
                     </Property>
                   </Properties>
 
