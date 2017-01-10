@@ -81,6 +81,7 @@ public class UpdaterScriptOperations {
             } else if (child.type == ProjectItemNode.NODE_FILE) {
                 FileNode file = (FileNode) child;
                 str += getPackageExtractDirString(file);
+                str += addPrintString(file.title, installString);
                 str += "package_extract_file(\"" + file.fileZipPath + "\", \"" + file.installLocation + "/" + file.title + "\");\n";
                 str += "set_perm(" + file.filePermission + ");\n";
             }
@@ -322,7 +323,7 @@ public class UpdaterScriptOperations {
     }
 
     public String getPackageExtractDirString(FileNode file) {
-        String str = addPrintString("Extracting required files to " + file.groupLocation);
+        String str = addPrintString("Creating folder in " + file.groupLocation);
         String extractZipPath = file.extractZipPath;
         extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(file.groupLocation));
         if (file.groupLocation.contains("/system")) {
@@ -334,7 +335,7 @@ public class UpdaterScriptOperations {
     }
     
     public String getPackageExtractDirString(GroupNode group) {
-        String str = addPrintString("Extracting required files to " + group.location);
+        String str = addPrintString("Creating folder in " + group.location);
         String extractZipPath = (group.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
         extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(group.location));
         if (group.location.contains("/system")) {
