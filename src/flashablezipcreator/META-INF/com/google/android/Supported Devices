@@ -26,6 +26,7 @@ Samsung Galaxy S 5 (G-900F)_900F_xxx_neon
 Samsung Galaxy Nexus (GSM)_maguro_/dev/block/platform/omap/omap_hsmmc.0/by-name/boot_neon
 Samsung Infuse (i997)_i997_xxx_neon
 Nexus 4 (e960)_e960_/dev/block/mmcblk0p6_neon
+Nexus 5X (bullhead)_bullhead_xxx_neon
 Nexus 7 (2012 version)_grouper_/dev/block/platform/sdhci-tegra.3/by-name/LNX_neon
 Samsung Galaxy Note II (N7100)_N7100_/dev/block/mmcblk0p8_neon
 Samsung Galaxy Note III (hltetmo)_hltetmo_/dev/block/platform/msm_sdcc.1/by-name/boot_neon

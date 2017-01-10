@@ -328,16 +328,21 @@ public class MyTree extends JFrame {
 
     private void exitMenuItemActionPerformed() {
         try {
-            int dialogResult = JOptionPane.showConfirmDialog(this, "Do you want to delete temporary files?", "", JOptionPane.YES_NO_OPTION);
-            if (dialogResult == JOptionPane.YES_OPTION) {
-                String dir = "AFZC Projects";
-                deleteDirectory(new File(dir));
+            String dir = "AFZC Projects";
+            if ((new File(dir).exists())) {
+                int dialogResult = JOptionPane.showConfirmDialog(this, "Do you want to delete temporary files?", "", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    deleteDirectory(new File(dir));
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Something Went Wrong!\nCouldn't delete Temp files!");
         }
-        System.out.println("Window Closing..");
-        System.exit(0);
+
+        System.out.println(
+                "Window Closing..");
+        System.exit(
+                0);
     }
 
     public boolean deleteDirectory(File directory) {
