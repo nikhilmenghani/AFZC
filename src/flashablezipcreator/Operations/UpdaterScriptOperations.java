@@ -81,7 +81,11 @@ public class UpdaterScriptOperations {
             } else if (child.type == ProjectItemNode.NODE_FILE) {
                 FileNode file = (FileNode) child;
                 str += getPackageExtractDirString(file);
-                str += addPrintString(file.title, installString);
+                if (file.title.endsWith("apk")) {
+                    str += addPrintString(file.title, installString);
+                } else {
+                    str += addPrintString("Copying " + file.title);
+                }
                 str += "package_extract_file(\"" + file.fileZipPath + "\", \"" + file.installLocation + "/" + file.title + "\");\n";
                 str += "set_perm(" + file.filePermission + ");\n";
             }
@@ -333,7 +337,7 @@ public class UpdaterScriptOperations {
         }
         return "";
     }
-    
+
     public String getPackageExtractDirString(GroupNode group) {
         String str = addPrintString("Creating folder in " + group.location);
         String extractZipPath = (group.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");

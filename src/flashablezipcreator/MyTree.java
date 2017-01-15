@@ -56,7 +56,7 @@ public class MyTree extends JFrame {
     public static int progressBarFlag = 0;
     TreeOperations to;
     UpdaterScriptOperations uso;
-    ProjectOperations po = new ProjectOperations();
+    //ProjectOperations po = new ProjectOperations();
 
     MyFileFilter uio = new MyFileFilter();
 

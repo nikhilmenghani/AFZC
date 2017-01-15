@@ -39,7 +39,7 @@ public class Xml {
     static String deleteData = "";
     public static String fileDetailsData = "";
 
-    public static String makeString() throws ParserConfigurationException, TransformerException {
+    public static String generateFileDataXml() throws ParserConfigurationException, TransformerException {
         xo = new XmlOperations();
         xo.createXML();
         for (ProjectItemNode project : to.getProjectsSorted(MyTree.rootNode)) {
@@ -47,7 +47,7 @@ public class Xml {
                 xo.addProjectNode((ProjectNode) project);
             }
         }
-        return xo.getXML();
+        return xo.getCleanXML();
     }
 
     public static void parseXml(int type) throws ParserConfigurationException, SAXException, IOException {

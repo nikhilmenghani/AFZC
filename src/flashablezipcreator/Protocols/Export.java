@@ -20,6 +20,7 @@ import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
 import static flashablezipcreator.Protocols.Import.setCardLayout;
 import java.awt.CardLayout;
+import java.awt.HeadlessException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,22 +65,13 @@ public class Export implements Runnable {
             for (ProjectItemNode project : projectNodeList) {
                 if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
                     for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
-                        if (((GroupNode) groupNode).groupType == GroupNode.GROUP_DELETE_FILES) {
-                            isDeleteGroupPresent = true;
-                            continue;
-                        }
-                        if (((GroupNode) groupNode).groupType == GroupNode.GROUP_SCRIPT) {
-                            for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                                if (node.type == ProjectItemNode.NODE_FILE) {
-                                    //not yet tested this
-                                    increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
-                                    fileIndex++;
-                                    wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
-                                }
-                            }
-                            continue;
+                        if(groupNode.children.isEmpty()){
+                            groupNode.removeMe();
                         }
                         for (ProjectItemNode node : ((GroupNode) groupNode).children) {
+                            if(node.children.isEmpty()){
+                                node.removeMe();
+                            }
                             switch (node.type) {
                                 case ProjectItemNode.NODE_SUBGROUP:
                                     for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
@@ -138,7 +130,7 @@ public class Export implements Runnable {
             }
             increaseProgressBar(fileIndex, "Zip Data");
             fileIndex++;
-            wz.writeStringToZip(Xml.makeString(), Xml.data_path);
+            wz.writeStringToZip(Xml.generateFileDataXml(), Xml.data_path);
             increaseProgressBar(fileIndex, "Aroma Config");
             fileIndex++;
             wz.writeStringToZip(AromaConfig.build(rootNode), AromaConfig.aromaConfigPath);
@@ -169,7 +161,7 @@ public class Export implements Runnable {
             progressBarImportExport.setString("0%");
             progressBarImportExport.setValue(0);
             progressBarFlag = 0;
-        } catch (Exception e) {
+        } catch (IOException | ParserConfigurationException | TransformerException | HeadlessException e) {
             JOptionPane.showMessageDialog(null, "Something Went Wrong!\nTry Again!");
             setCardLayout(1);
         }

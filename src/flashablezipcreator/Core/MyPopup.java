@@ -345,6 +345,7 @@ public class MyPopup {
                             case GroupNode.GROUP_SYSTEM_PRIV_APK:
                             case GroupNode.GROUP_DATA_APP:
                                 String folderName = tempFile.getName().replaceFirst("[.][^.]+$", "");
+                                //it is okay to remove following condition as this is handled directly while creating folder node
                                 if (gNode.groupType == GroupNode.GROUP_DATA_APP) {
                                     folderName = tempFile.getName().replaceFirst("[.][^.]+$", "") + "-1";
                                 }

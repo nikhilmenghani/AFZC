@@ -248,6 +248,23 @@ public class XmlOperations {
         return groupElem;
     }
 
+    public String getCleanXML() throws TransformerException {
+        removeNodes((Node) document);
+        return getXML();
+    }
+
+    public void removeNodes(Node node) {
+        NodeList list = node.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++) {
+            removeNodes(list.item(i));
+        }
+        boolean emptyElement = node.getNodeType() == Node.ELEMENT_NODE
+                && node.getChildNodes().getLength() == 0 && "FolderData".equals(node.getNodeName());
+        if (emptyElement) {
+            node.getParentNode().removeChild(node);
+        }
+    }
+
     //this will return string form of xml document which we can use to write it to a file
     public String getXML() throws TransformerConfigurationException, TransformerException {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -384,8 +401,11 @@ public class XmlOperations {
                     String folderChildName = ((Element) folderChildNode).getAttribute("name");
                     switch (folderChildNode.getNodeName()) {
                         case "FolderData":
-                            folders.add(folderChildName);
+                            if (folderChildNode.hasChildNodes()) {
+                                folders.add(folderChildName);
+                            }
                             HandleFolderData(ProjectName, GroupName, SubGroupName, folderChildNode, folders);
+                            folders.remove(folderChildName);
                             break;
                         case "FileData":
                             FileNode file = to.getFileNode(folderChildName, folders, SubGroupName, GroupName, ProjectName);

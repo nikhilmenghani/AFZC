@@ -33,6 +33,10 @@ public class FolderNode extends ProjectItemNode {
 
     public FolderNode(String title, GroupNode parent) {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
+        if (!title.endsWith("-1") && parent.groupType == GroupNode.GROUP_DATA_APP) {
+            title += "-1";
+            super.title = title;
+        }
         this.folderName = title;
         super.path = parent.path + File.separator + title;
         super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
@@ -47,6 +51,10 @@ public class FolderNode extends ProjectItemNode {
 
     public FolderNode(String title, SubGroupNode parent) {
         super(title, ProjectItemNode.NODE_FOLDER, parent);
+        if (!title.endsWith("-1")) {
+            title += "-1";
+            super.title = title;
+        }
         this.folderName = title;
         super.path = parent.path + File.separator + title;
         super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
@@ -66,7 +74,7 @@ public class FolderNode extends ProjectItemNode {
         super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
         super.location = parent.location;
         this.folderLocation = parent.folderLocation + File.separator + title;
-        super.extractZipPath = parent.extractZipPath;
+        super.extractZipPath = parent.extractZipPath + File.separator + title;
         this.permission = parent.permission;
         this.originalParent = parent.originalParent;
         this.projectName = parent.projectName;
