@@ -82,7 +82,7 @@ public class UpdaterScriptOperations {
                 FileNode file = (FileNode) child;
                 str += getPackageExtractDirString(file);
                 if (file.title.endsWith("apk")) {
-                    str += addPrintString(file.title, installString);
+                    str += addPrintString(file.parent.title, installString);
                 } else {
                     str += addPrintString("Copying " + file.title);
                 }

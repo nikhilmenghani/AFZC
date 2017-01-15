@@ -13,13 +13,10 @@ import flashablezipcreator.FlashableZipCreator;
 import flashablezipcreator.MyTree;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
-import static flashablezipcreator.Protocols.Import.to;
 import flashablezipcreator.UserInterface.Preferences;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
@@ -61,13 +58,14 @@ public class Jar {
     }
 
     public static byte[] getAromaBinary() {
+        Logs.write("Aroma Binary Selected: " + Preferences.aromaVersion);
         switch(Preferences.aromaVersion){
             case "Version 3.00b1 - MELATI":
                 return JarOperations.binary_MELATI;
             case "Version 2.70 RC2 - FLAMBOYAN":
                 return JarOperations.binary_FLAMBOYAN;
             case "Version 2.56 - EDELWEIS":
-                return JarOperations.binary_MELATI;
+                return JarOperations.binary_EDELWEIS;
         }
         return JarOperations.binary_MELATI;
     }
