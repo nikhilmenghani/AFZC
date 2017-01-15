@@ -13,7 +13,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.TreePath;
-import static flashablezipcreator.AFZC.Protocols.show;
 import javax.swing.tree.DefaultTreeModel;
 
 /**

@@ -72,7 +72,7 @@ public class TreeOperations {
 
     public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, ArrayList<String> folders, String projectName, int projectType) {
         ProjectNode pNode = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, rootNode), false);
-        System.out.println("Added project " + projectName + " project type " + projectType);
+        
         GroupNode gNode = (GroupNode) pNode.addChild(new GroupNode(groupName, groupType, pNode), false);
         SubGroupNode sgNode = null;
         if (!subGroupName.equals("")) {
@@ -153,10 +153,7 @@ public class TreeOperations {
 
     public ArrayList<ProjectItemNode> getProjectsSorted(ProjectItemNode rootNode) {
         ArrayList<ProjectItemNode> projects = new ArrayList<>();
-//        ArrayList<ProjectItemNode> projectRom = new ArrayList<>();
-//        ArrayList<ProjectItemNode> projectGapps = new ArrayList<>();
         ArrayList<ProjectItemNode> projectAroma = new ArrayList<>();
-//        ArrayList<ProjectItemNode> projectNormal = new ArrayList<>();
         ArrayList<ProjectItemNode> projectThemes = new ArrayList<>();
 
         for (ProjectItemNode project : getNodeList(ProjectItemNode.NODE_PROJECT)) {
@@ -169,45 +166,13 @@ public class TreeOperations {
                     break;
             }
         }
-
-//        projectRom.stream().forEach((node) -> {
-//            projects.add(node);
-//        });
-//        projectGapps.stream().forEach((node) -> {
-//            projects.add(node);
-//        });
         projectAroma.stream().forEach((node) -> {
             projects.add(node);
         });
-
-//        projectNormal.stream().forEach((node) -> {
-//            projects.add(node);
-//        });
         projectThemes.stream().forEach((node) -> {
             projects.add(node);
         });
         return projects;
-    }
-
-    public ProjectNode getProjectNode(String name, int projectType) {
-        for (ProjectItemNode node : getNodeList(ProjectItemNode.NODE_PROJECT)) {
-            if (node.title.equals(name) && ((ProjectNode) node).projectType == projectType) {
-                return (ProjectNode) node;
-            }
-        }
-        System.out.println("Returning null in search for " + name);
-        return null;
-    }
-
-    public GroupNode getGroupNode(String name, int groupType, String projectName) {
-        for (ProjectItemNode node : getNodeList(ProjectItemNode.NODE_GROUP)) {
-            //System.out.println(projectName + ".. " + node.parent + " .. " + node.parent.title.equals(projectName));
-            if (node.title.equals(name) && ((GroupNode) node).groupType == groupType && node.parent.title.equals(projectName)) {
-                return (GroupNode) node;
-            }
-        }
-        System.out.println("Returning null in search for " + name);
-        return null;
     }
 
     public FolderNode getFolderNode(ArrayList<String> folders, String folderName, String groupName, int groupType, String subGroupName, int subGroupType, String projectName) {
@@ -271,16 +236,6 @@ public class TreeOperations {
                 break;
             }
         }
-        return null;
-    }
-
-    public SubGroupNode getSubGroupNode(String name, int subGroupType, String groupName, String projectName) {
-        for (ProjectItemNode node : getNodeList(ProjectItemNode.NODE_SUBGROUP)) {
-            if (node.title.equals(name) && ((SubGroupNode) node).subGroupType == subGroupType && node.parent.title.equals(groupName) && node.parent.parent.title.equals(projectName)) {
-                return (SubGroupNode) node;
-            }
-        }
-        System.out.println("Returning null in search for " + name);
         return null;
     }
 

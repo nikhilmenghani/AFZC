@@ -5,13 +5,11 @@
  */
 package flashablezipcreator.Core;
 
-import static flashablezipcreator.AFZC.Protocols.p;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
-import static flashablezipcreator.AFZC.Protocols.show;
 import flashablezipcreator.MyTree;
 import java.io.File;
 

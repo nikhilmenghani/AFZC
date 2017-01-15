@@ -5,10 +5,10 @@
  */
 package flashablezipcreator.Operations;
 
-import static flashablezipcreator.AFZC.Protocols.show;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.FlashableZipCreator;
 import flashablezipcreator.Protocols.Jar;
+import flashablezipcreator.Protocols.Logs;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -77,6 +77,7 @@ public class JarOperations {
                     }
                 }
             } catch (IOException e) {
+                Logs.write(Logs.getExceptionTrace(e));
                 System.err.println("Error: " + e.getMessage());
             }
         } else {

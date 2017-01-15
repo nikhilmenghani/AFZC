@@ -9,11 +9,10 @@ import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.ReadZip;
-import static flashablezipcreator.MyTree.rootNode;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
-import flashablezipcreator.Protocols.Project;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.AddDevice;
 import flashablezipcreator.UserInterface.AddName;
@@ -78,16 +77,21 @@ public class FlashableZipCreator {
         //</editor-fold>
 
         try {
+            Logs.logFile = "Logs_" + Logs.getTime() + ".log";
+            Logs.write("Created Logs File..");
             if (Jar.isExecutingThrough()) {
                 JarOperations.setJarFileList();
                 Device.loadDeviceList();
+                Logs.write("Device List Loaded");
                 String configString = "";
                 if ((new File(Xml.device_config_path).exists())) {
                     Read r = new Read();
                     configString = r.getFileString(Xml.device_config_path);
                     Device.selected = Xml.getDeviceName(configString);
+                    Logs.write("Selected Device from Config: " + Device.selected);
                 } else if ((new File("update-binary").exists())) {
                     Device.binary = (new Read()).getFileBytes("update-binary");
+                    Logs.write("update-binary Found");
                 } else {
                     AddDevice ad = new AddDevice();
                 }
@@ -102,6 +106,7 @@ public class FlashableZipCreator {
             }
             f = new File("Preferences.config");
             if (f.exists()) {
+                Logs.write("Preferences.config Found");
                 Preferences.preferencesFilePresent = true;
                 Preferences.preferencesConfig = r.getFileString("Preferences.config");
                 Preferences.themes = Xml.getThemes(preferencesConfig);
@@ -110,6 +115,7 @@ public class FlashableZipCreator {
                 Preferences.IsQuickSetup = Xml.getQuickProjectSetup(preferencesConfig);
                 Preferences.zipCreatorName = Xml.getZipCreatorName(preferencesConfig);
                 Preferences.zipVersion = Xml.getZipVersion(preferencesConfig);
+                Logs.write("Preferences Loaded");
             }
             if (Preferences.themes.isEmpty()) {
                 Preferences.themes.add("Nikhil");

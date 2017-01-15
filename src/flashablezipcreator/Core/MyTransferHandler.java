@@ -5,10 +5,9 @@
  */
 package flashablezipcreator.Core;
 
-import static flashablezipcreator.AFZC.Protocols.p;
 import flashablezipcreator.Protocols.Import;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.UserInterface.Preferences;
-import flashablezipcreator.Protocols.Project;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -22,7 +21,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.xml.parsers.ParserConfigurationException;
@@ -60,7 +58,7 @@ public class MyTransferHandler extends TransferHandler {
             if (!canImport(support)) {
                 return false;
             }
-
+            Logs.write("File Importing via Drag and Drop..");
             GroupNode groupNode = null;
             SubGroupNode subGroupNode = null;
             FolderNode folderNode = null;
@@ -79,6 +77,7 @@ public class MyTransferHandler extends TransferHandler {
             if (data.size() == 1) {
                 File f = (File) data.get(0);
                 if (f.getAbsoluteFile().toString().endsWith(".zip") && parentNode == null) {
+                    Logs.write("Importing zip: " + f.getAbsolutePath());
                     Thread importZip = new Thread(new Import(f.getAbsolutePath()), "ImportZip");
                     importZip.start();
                     return true;
@@ -92,14 +91,17 @@ public class MyTransferHandler extends TransferHandler {
                         break;
                     case ProjectItemNode.NODE_GROUP:
                         groupNode = (GroupNode) parentNode;
+                        Logs.write("Dropping on Group: " + groupNode.title);
                         addDataToNode(groupNode, data);
                         break;
                     case ProjectItemNode.NODE_SUBGROUP:
                         subGroupNode = (SubGroupNode) parentNode;
+                        Logs.write("Dropping on SubGroup: " + subGroupNode.title);
                         addDataToNode(subGroupNode, data);
                         break;
                     case ProjectItemNode.NODE_FOLDER:
                         folderNode = (FolderNode) parentNode;
+                        Logs.write("Dropping on Folder: " + folderNode.title);
                         addDataToNode(folderNode, data);
                         break;
                     case ProjectItemNode.NODE_FILE:
@@ -133,7 +135,6 @@ public class MyTransferHandler extends TransferHandler {
         Iterator i = data.iterator();
         while (i.hasNext()) {
             File f = (File) i.next();
-            p(f.getPath());
             switch (groupNode.groupType) {
                 case GroupNode.GROUP_SYSTEM_APK:
                 case GroupNode.GROUP_SYSTEM_PRIV_APK:
@@ -165,8 +166,8 @@ public class MyTransferHandler extends TransferHandler {
         Iterator i = data.iterator();
         while (i.hasNext()) {
             File f = (File) i.next();
-            p(f.getPath());
             if (f.isFile() && acceptFile(f, sgNode.extension)) {
+                Logs.write("Adding File " + f + " to SubGroup: " + sgNode.title);
                 sgNode.addChild(new FileNode(f.getPath(), sgNode), true);
             } else {
                 JOptionPane.showMessageDialog(null, f.getName() + " cannot be added to this sub group!");
@@ -178,7 +179,6 @@ public class MyTransferHandler extends TransferHandler {
         Iterator i = data.iterator();
         while (i.hasNext()) {
             File f = (File) i.next();
-            p(f.getPath());
             addFolderNode(folderNode, f);
         }
     }
@@ -192,10 +192,12 @@ public class MyTransferHandler extends TransferHandler {
                 if (f.isDirectory()) {
                     addFolderNode(fNode, f);
                 } else if (f.isFile()) {
+                    Logs.write("Adding File " + f + " to Folder: " + fNode.title);
                     fNode.addChild(new FileNode(filePath, fNode), true);
                 }
             }
         } else {
+            Logs.write("Adding File " + fPath + " to Folder: " + folderNode.title);
             folderNode.addChild(new FileNode(fPath.getPath(), folderNode), true);
         }
     }
@@ -209,6 +211,7 @@ public class MyTransferHandler extends TransferHandler {
                 if (f.isDirectory()) {
                     addFolderNode(folderNode, f);
                 } else if (f.isFile() && fileName.endsWith(groupNode.extension)) {
+                    Logs.write("Adding File " + f + " to Folder: " + folderNode.title);
                     folderNode.addChild(new FileNode(filePath, folderNode), true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Incompatible file found! Skipping it!");
@@ -220,6 +223,7 @@ public class MyTransferHandler extends TransferHandler {
                 folderName = fPath.getName().replaceFirst("[.][^.]+$", "") + "-1";
             }
             FolderNode folderNode = new FolderNode(folderName, groupNode);
+            Logs.write("Adding File " + fPath + " to Folder: " + folderNode.title);
             folderNode.addChild(new FileNode(fPath.getPath(), folderNode), true);
             groupNode.addChild(folderNode, false);
         }
@@ -230,8 +234,10 @@ public class MyTransferHandler extends TransferHandler {
             SubGroupNode sgNode = (SubGroupNode) groupNode.addChild(new SubGroupNode(fPath.getName(), groupNode.groupType, groupNode), false);
             for (String fileName : fPath.list()) {
                 if (fileName.endsWith(groupNode.extension)) {
+                    Logs.write("Adding File " + fPath + " to Group: " + sgNode.title);
                     sgNode.addChild(new FileNode(fPath + File.separator + fileName, sgNode), true);
                 } else {
+                    Logs.write("Incompatible file " + fPath + " found! Skipping it!");
                     JOptionPane.showMessageDialog(null, "Incompatible file found! Skipping it!");
                 }
             }
@@ -245,8 +251,10 @@ public class MyTransferHandler extends TransferHandler {
 
     public void addFileNode(GroupNode groupNode, File fPath) {
         if (fPath.isFile() && acceptFile(fPath, groupNode.extension)) {
+            Logs.write("Adding File " + fPath + " to Group: " + groupNode.title);
             groupNode.addChild(new FileNode(fPath.getPath(), groupNode), true);
         } else {
+            Logs.write("Cannot add " + fPath.getName() + " to Group " + groupNode.title);
             JOptionPane.showMessageDialog(null, "Cannot add " + fPath.getName() + " to Group.");
         }
     }

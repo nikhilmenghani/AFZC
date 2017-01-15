@@ -5,18 +5,14 @@
  */
 package flashablezipcreator.Protocols;
 
-import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
-import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.MyTree;
 import flashablezipcreator.Operations.XmlOperations;
 import static flashablezipcreator.Protocols.Export.to;
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;

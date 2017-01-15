@@ -5,12 +5,8 @@
  */
 package flashablezipcreator.Protocols;
 
-import static flashablezipcreator.AFZC.Protocols.p;
 import flashablezipcreator.Core.FileNode;
-import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
-import flashablezipcreator.Core.ProjectNode;
-import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.MyTree;
 import static flashablezipcreator.MyTree.panelLower;
@@ -18,6 +14,7 @@ import static flashablezipcreator.MyTree.progressBarFlag;
 import static flashablezipcreator.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.TreeOperations;
 import java.awt.CardLayout;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +25,6 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -59,6 +55,7 @@ public class Import implements Runnable {
     }
 
     public static void fromTheZip(String path) throws ParserConfigurationException, TransformerException, IOException, SAXException {
+        Logs.write("Trying to import from path: " + path);
         progressValue = 0;
         boolean containsDataXml = false;
         Xml.initialize();
@@ -66,27 +63,28 @@ public class Import implements Runnable {
         to = new TreeOperations();
         int maxSize = rz.filesCount;
         fileIndex = 0;
+        Logs.write("Reading Zip...");
         try {
             for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
                 ZipEntry ze = e.nextElement();
                 String name = ze.getName();
+                Logs.write("Reading: " + name);
                 progressValue = (fileIndex * 100) / maxSize;
                 progressBarImportExport.setValue(progressValue);
                 setProgressBar("Importing " + (new File(name)).getName() + "");
                 if (name.endsWith("/") || Project.getTempFilesList().contains(name)
                         || name.startsWith("META-INF")
                         || name.contains("Extract_")) {
-                    System.out.println("Skipping " + name);
+                    Logs.write("Skipping " + name);
                     continue;
                 }
                 InputStream in = rz.zf.getInputStream(ze);
                 if (name.equals(Xml.data_path)) {
                     Xml.fileData = rz.getStringFromFile(in);
                     containsDataXml = true;
-                    System.out.println("Skipping " + name);
+                    Logs.write("Skipping " + name);
                     continue;
                 }
-                p("\ncurrent file " + name + "\n");
                 String filePath = name;
                 String projectName = Identify.getProjectName(name);
                 int projectType = Identify.getProjectType(filePath);
@@ -95,29 +93,34 @@ public class Import implements Runnable {
                 ArrayList<String> folderList = Identify.getFolderNames(filePath);
                 String subGroupName = Identify.getSubGroupName(groupName, filePath);
                 int subGroupType = groupType; //Groups that have subGroups have same type.
-                String fName = (new File(filePath)).getName();  
+                String fName = (new File(filePath)).getName();
 
                 FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, projectType);
                 file.fileSourcePath = file.path;
                 rz.writeFileFromZip(in, file.fileSourcePath);
+                Logs.write("Written File: " + fName);
             }
 
             //adding nodes to tree should be done here.
-            System.out.println("Terminating afzc.xml");
             Xml.terminate();
+
             if (containsDataXml) {
                 setProgressBar("Setting file details..");
+                Logs.write("Parsing file_data.xml");
                 Xml.parseXml(0); //this is to set additional details like description to nodes
+                Logs.write("Xml Parsing Successful");
                 setProgressBar("Setting file details done.");
+
             }
             progressBarImportExport.setString("Successfully Imported");
             progressBarImportExport.setValue(100);
+            Logs.write("File Imported Successfully");
             JOptionPane.showMessageDialog(null, "Successfully Imported");
             progressBarImportExport.setString("0%");
             progressBarImportExport.setValue(0);
             progressBarFlag = 0;
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Something Went Wrong!\nTry Again!");
+        } catch (IOException | TransformerException | ParserConfigurationException | SAXException | HeadlessException e) {
+            JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n");
             setCardLayout(1);
         }
     }

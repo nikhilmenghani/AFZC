@@ -6,18 +6,16 @@
 package flashablezipcreator;
 
 import flashablezipcreator.Core.ProjectItemNode;
-import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.ProjectTreeBuilder;
-import flashablezipcreator.Operations.ProjectOperations;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Operations.MyFileFilter;
 import flashablezipcreator.Operations.UpdaterScriptOperations;
 import flashablezipcreator.Protocols.Export;
 import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Jar;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.UserInterface.About;
-import flashablezipcreator.UserInterface.AddName;
 import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 import java.io.IOException;
@@ -336,13 +334,13 @@ public class MyTree extends JFrame {
                 }
             }
         } catch (Exception e) {
+            Logs.write("Deleting Temporary Files");
+            Logs.write(Logs.getExceptionTrace(e));
             JOptionPane.showMessageDialog(this, "Something Went Wrong!\nCouldn't delete Temp files!");
         }
 
-        System.out.println(
-                "Window Closing..");
-        System.exit(
-                0);
+        System.out.println("Window Closing..");
+        System.exit(0);
     }
 
     public boolean deleteDirectory(File directory) {

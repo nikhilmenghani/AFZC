@@ -18,7 +18,6 @@ import static flashablezipcreator.MyTree.progressBarFlag;
 import static flashablezipcreator.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
-import static flashablezipcreator.Protocols.Import.setCardLayout;
 import java.awt.CardLayout;
 import java.awt.HeadlessException;
 import java.io.IOException;
@@ -46,12 +45,12 @@ public class Export implements Runnable {
         for (ProjectItemNode node : fileNode) {
             //this will simply take each file from source and create the same file in zip at specified destination path.
             wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
-            //wz.writeByteToFile(to.getProjectNode(projectName, projectType).update_binary,"Temp" + File.separator + projectName + File.separator + "update-binary");
         }
         wz.close();
     }
 
     public static void zip() throws IOException, ParserConfigurationException, TransformerException {
+        Logs.write("Trying to export zip to path: " + Project.outputPath);
         ProjectItemNode rootNode = MyTree.rootNode;
         wz = new WriteZip(Project.outputPath);
         to = new TreeOperations();
@@ -65,11 +64,11 @@ public class Export implements Runnable {
             for (ProjectItemNode project : projectNodeList) {
                 if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
                     for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
-                        if(groupNode.children.isEmpty()){
+                        if (groupNode.children.isEmpty()) {
                             groupNode.removeMe();
                         }
                         for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                            if(node.children.isEmpty()){
+                            if (node.children.isEmpty()) {
                                 node.removeMe();
                             }
                             switch (node.type) {
@@ -85,7 +84,8 @@ public class Export implements Runnable {
                                         fileIndex++;
                                         wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, ((FileNode) fileNode).fileZipPath);
                                         tempPaths.add(((FileNode) fileNode).extractZipPath);
-                                    }   break;
+                                    }
+                                    break;
                                 case ProjectItemNode.NODE_FILE:
                                     increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
                                     tempPaths.add(((FileNode) node).extractZipPath);
@@ -99,7 +99,8 @@ public class Export implements Runnable {
                                         fileIndex++;
                                         wz.writeFileToZip(file.fileSourcePath, file.fileZipPath);
                                         tempPaths.add(file.extractZipPath);
-                                    }   break;
+                                    }
+                                    break;
                                 default:
                                     break;
                             }
@@ -118,36 +119,36 @@ public class Export implements Runnable {
                     }
                 }
             }
-            if (isCustomGroupPresent) {
-                increaseProgressBar(fileIndex, "Custom Group Data");
-                fileIndex++;
-                //wz.writeStringToZip(Xml.getString(GroupNode.GROUP_CUSTOM, rootNode), Xml.custom_path);
-            }
-            if (isDeleteGroupPresent) {
-                increaseProgressBar(fileIndex, "Delete Group Data");
-                fileIndex++;
-                //wz.writeStringToZip(Xml.getString(GroupNode.GROUP_DELETE_FILES, rootNode), Xml.delete_path);
-            }
             increaseProgressBar(fileIndex, "Zip Data");
             fileIndex++;
+            Logs.write("Writing zip data to " + Xml.data_path);
             wz.writeStringToZip(Xml.generateFileDataXml(), Xml.data_path);
             increaseProgressBar(fileIndex, "Aroma Config");
             fileIndex++;
-            wz.writeStringToZip(AromaConfig.build(rootNode), AromaConfig.aromaConfigPath);
+            Logs.write("Building Aroma.config");
+            String ac = AromaConfig.build(rootNode);
+            Logs.write("Writing Aroma.config");
+            wz.writeStringToZip(ac, AromaConfig.aromaConfigPath);
             increaseProgressBar(fileIndex, "Updater-Script");
             fileIndex++;
+            Logs.write("Building updater-script");
             String us = UpdaterScript.build(rootNode);
+            Logs.write("Writing updater-script");
             wz.writeStringToZip(us, UpdaterScript.updaterScriptPath);
             try {
                 increaseProgressBar(fileIndex, "Update Binary Installer");
                 fileIndex++;
+                Logs.write("Writing update-binary-installer");
                 wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath);
                 increaseProgressBar(fileIndex, "Update Binary");
                 fileIndex++;
+                Logs.write("Writing update-binary");
                 wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
                 increaseProgressBar(fileIndex, "Jar Items");
                 fileIndex++;
+                Logs.write("Writing Extract Files");
                 writeTempFiles(tempPaths);
+                Logs.write("Writing Rest of Jar Files");
                 for (String file : Jar.getOtherFileList()) {
                     wz.writeFileToZip(JarOperations.getInputStream(file), file);
                 }
@@ -155,6 +156,7 @@ public class Export implements Runnable {
                 System.out.println("Executing through Netbeans hence skipping Jar Operations");
             }
             wz.close();
+            Logs.write("Zip Created Successfully..");
             progressBarImportExport.setValue(100);
             progressBarImportExport.setString("Zip Created Successfully..!!");
             JOptionPane.showMessageDialog(null, "Zip Created Successfully..!!");
@@ -162,7 +164,7 @@ public class Export implements Runnable {
             progressBarImportExport.setValue(0);
             progressBarFlag = 0;
         } catch (IOException | ParserConfigurationException | TransformerException | HeadlessException e) {
-            JOptionPane.showMessageDialog(null, "Something Went Wrong!\nTry Again!");
+            JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n" + Logs.getExceptionTrace(e));
             setCardLayout(1);
         }
     }
@@ -201,6 +203,9 @@ public class Export implements Runnable {
 
     public static void increaseProgressBar(int fileIndex, String fileName) {
         progressValue = (fileIndex * 100) / maxSize;
+        if (progressValue > 99) {
+            progressValue = 99;
+        }
         progressBarImportExport.setValue(progressValue);
         switch (MyTree.progressBarFlag) {
             case 0:
@@ -217,9 +222,6 @@ public class Export implements Runnable {
 
     //this is required to fix status 7 error while installing Rom
     public static void writeTempFiles(ArrayList<String> tempFiles) throws IOException {
-//        for (String path : Project.getTempFilesList()) {
-//            wz.writeStringToZip("delete this file", path);
-//        }
         for (String path : tempFiles) {
             wz.writeStringToZip("delete this file", path);
         }

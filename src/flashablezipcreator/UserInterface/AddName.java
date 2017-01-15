@@ -529,7 +529,6 @@ public class AddName extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Name cannot be empty..!!");
         }
-
     }
 
     /**

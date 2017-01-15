@@ -12,7 +12,6 @@ import java.util.Set;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.TreePath;
-import static flashablezipcreator.AFZC.Protocols.show;
 import flashablezipcreator.Operations.MyFileFilter;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.UserInterface.AddName;
@@ -20,7 +19,6 @@ import java.io.File;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
@@ -30,8 +28,7 @@ public class MyPopup {
 
     static JPopupMenu popup;
     static AddName addGNUI;
-    //static TreeOperations to = new TreeOperations(ProjectTreeBuilder.rootNode);
-
+    
     public static JPopupMenu getPopup(TreePath[] paths, JTree myTree) {
         popup = new JPopupMenu();
         ArrayList<ProjectItemNode> nodeList = new ArrayList<>();
@@ -41,7 +38,7 @@ public class MyPopup {
             typeList.add(((ProjectItemNode) path.getLastPathComponent()).type);
         }
         if (typeList.size() > 1) {
-            show("You cannot select nodes of different types.");
+            JOptionPane.showMessageDialog(null, "You cannot select nodes of different types.");
         } else {
             switch (nodeList.get(0).type) {
                 case ProjectItemNode.NODE_ROOT:
@@ -72,13 +69,8 @@ public class MyPopup {
         mitemAddProject.addActionListener((ActionEvent ae) -> {
             addName("Project", "", nodeList.get(0));
         });
-//        JMenuItem mitemAddThemes = new JMenuItem("Add Themes");
-//        mitemAddThemes.addActionListener((ActionEvent ae) -> {
-//            addName("Theme", "", nodeList.get(0));
-//        });
         popup = new JPopupMenu();
         popup.add(mitemAddProject);
-        //popup.add(mitemAddThemes);
         return popup;
     }
 
@@ -91,22 +83,6 @@ public class MyPopup {
         mitemPrivApp.addActionListener((ActionEvent ae) -> {
             addName("Group", "system/priv-app", nodeList.get(0));
         });
-//        JMenuItem mitemSystemLib = new JMenuItem("system/lib");
-//        mitemSystemLib.addActionListener((ActionEvent ae) -> {
-//            addName("Group", "system/lib", nodeList.get(0));
-//        });
-//        JMenuItem mitemSystemEtc = new JMenuItem("system/etc");
-//        mitemSystemEtc.addActionListener((ActionEvent ae) -> {
-//            addName("Group", "system/etc", nodeList.get(0));
-//        });
-//        JMenuItem mitemPreloadSymlink = new JMenuItem("preload/symlink/system/app");
-//        mitemPreloadSymlink.addActionListener((ActionEvent ae) -> {
-//            addName("Group", "preload/symlink/system/app", nodeList.get(0));
-//        });
-//        JMenuItem mitemSystemCsc = new JMenuItem("system/csc");
-//        mitemSystemCsc.addActionListener((ActionEvent ae) -> {
-//            addName("Group", "system/csc", nodeList.get(0));
-//        });
         JMenuItem mitemDataApp = new JMenuItem("data/app");
         mitemDataApp.addActionListener((ActionEvent ae) -> {
             addName("Group", "data/app", nodeList.get(0));
@@ -139,16 +115,6 @@ public class MyPopup {
         mitemBootAnimLocal.addActionListener((ActionEvent ae) -> {
             addName("Group", "data/local", nodeList.get(0));
         });
-//        JMenuItem mitemSystemFramework = new JMenuItem("system/framework");
-//        mitemSystemFramework.addActionListener((ActionEvent ae) -> {
-//            addName("Group", "system/framework", nodeList.get(0));
-//        });
-//        
-//        JMenuItem mitemAddKernel = new JMenuItem("Kernel Group");
-//        mitemAddKernel.addActionListener((ActionEvent ae) -> {
-//            addName("Group", "kernel", nodeList.get(0));
-//        });
-
         JMenuItem mitemDeleteProject = new JMenuItem("Delete Project");
         mitemDeleteProject.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList);
@@ -167,11 +133,6 @@ public class MyPopup {
                 JMenu addSystemGroupMenu = new JMenu("System Group");
                 addSystemGroupMenu.add(mitemSystemApp);
                 addSystemGroupMenu.add(mitemPrivApp);
-//                addSystemGroupMenu.add(mitemSystemLib);
-//                addSystemGroupMenu.add(mitemSystemFramework);
-//                addSystemGroupMenu.add(mitemSystemEtc);
-//                addSystemGroupMenu.add(mitemSystemCsc);
-//                addSystemGroupMenu.add(mitemPreloadSymlink);
                 JMenu addDataGroupMenu = new JMenu("Data Group");
                 addDataGroupMenu.add(mitemDataApp);
                 JMenu addFontsGroupMenu = new JMenu("Fonts Group");
@@ -190,8 +151,6 @@ public class MyPopup {
                 addGroupMenu.add(addFontsGroupMenu);
                 addGroupMenu.add(addTonesGroupMenu);
                 addGroupMenu.add(addBootAnimationGroupMenu);
-                //a condition is required to be added here. only for supported devices.
-//                addGroupMenu.add(mitemAddKernel);
                 popup.add(addGroupMenu);
             }
         }

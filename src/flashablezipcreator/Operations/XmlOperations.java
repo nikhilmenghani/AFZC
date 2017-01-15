@@ -11,6 +11,7 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
 import java.io.IOException;
 import java.io.StringReader;
@@ -365,9 +366,9 @@ public class XmlOperations {
                                                     HandleFolderData(projectName, groupName, subGroupName, subGroupChildNode, folders);
                                                     break;
                                                 case "FileData":
+                                                    Logs.write("Working for file(inside subgroup " + subGroupName + " ): " + subGroupChildName);
                                                     FileNode file = to.getFileNode(subGroupChildName, folders, subGroupName, groupName, projectName);
                                                     file.description = ((Element) subGroupChildNode).getElementsByTagName("description").item(0).getTextContent();
-                                                    System.out.println("xmlOperations: " + file.fileSourcePath);
                                                     break;
                                             }
                                         }
@@ -380,9 +381,9 @@ public class XmlOperations {
                                     HandleFolderData(projectName, groupName, subGroupName, groupChildNode, folders);
                                     break;
                                 case "FileData":
+                                    Logs.write("Working for file(inside group " + groupName + " ): " + groupChildName);
                                     FileNode file = to.getFileNode(groupChildName, folders, subGroupName, groupName, projectName);
                                     file.description = ((Element) groupChildNode).getElementsByTagName("description").item(0).getTextContent();
-                                    System.out.println("xmlOperations: " + file.fileSourcePath);
                                     break;
                             }
                         }
@@ -408,9 +409,9 @@ public class XmlOperations {
                             folders.remove(folderChildName);
                             break;
                         case "FileData":
+                            Logs.write("Working for file(inside folder " + folders.get(folders.size()-1) + " ): " + folderChildName);
                             FileNode file = to.getFileNode(folderChildName, folders, SubGroupName, GroupName, ProjectName);
                             file.description = ((Element) folderChildNode).getElementsByTagName("description").item(0).getTextContent();
-                            System.out.println("xmlOperations: " + file.fileSourcePath);
                             break;
                     }
                 }

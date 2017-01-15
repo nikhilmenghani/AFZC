@@ -5,7 +5,6 @@
  */
 package flashablezipcreator.Core;
 
-import static flashablezipcreator.AFZC.Protocols.p;
 import java.io.File;
 import java.io.IOException;
 
