@@ -8,6 +8,7 @@ package flashablezipcreator.Protocols;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Operations.TreeOperations;
+import flashablezipcreator.UserInterface.Preferences;
 import java.util.ArrayList;
 
 /**
@@ -20,18 +21,19 @@ public class Project {
     public static int gappsCount = 0;
     public static int aromaCount = 0;
     public static int normalCount = 0;
-    public static String outputPath = "Output.zip";
-    public static String romName = "I Don't Know Rom";
-    public static String romVersion = "I Don't Know Version";
-    public static String romAuthor = "I Don't Know Developer";
-    public static String romDevice = "I Don't Know Device";
-    public static String romDate = "I Don't Know Date";
-    public static String gappsName = "I Don't Know Name";
-    public static String androidVersion = "I Don't Know Version";
-    public static String gappsType = "I Don't Know Type";
-    public static String gappsDate = "I Don't Know Date";
-    public static String releaseVersion = "I Don't Know Version";
-    public static String zipCreator = "Nikhil";
+    public static String outputPath = "After Flash.zip";
+//    public static String romName = "I Don't Know Rom";
+//    public static String romVersion = "I Don't Know Version";
+//    public static String romAuthor = "I Don't Know Developer";
+//    public static String romDevice = "I Don't Know Device";
+//    public static String romDate = "I Don't Know Date";
+//    public static String gappsName = "I Don't Know Name";
+    public static String androidVersion = "5.x+";
+//    public static String gappsType = "I Don't Know Type";
+//    public static String gappsDate = "I Don't Know Date";
+    public static String releaseVersion = Preferences.zipVersion;
+    public static String zipCreator = Preferences.zipCreatorName;
+    public static boolean LStructure = true;
 
     static TreeOperations to;
 
@@ -49,41 +51,41 @@ public class Project {
         return tempArray;
     }
     
-    public static void countProjects(ProjectItemNode rootNode) {
-        romCount = 0;
-        gappsCount = 0;
-        aromaCount = 0;
-        normalCount = 0;
-        to = new TreeOperations(rootNode);
-        for (ProjectItemNode project : to.getNodeList(ProjectItemNode.NODE_PROJECT)) {
-            switch (((ProjectNode) project).projectType) {
-                case ProjectNode.PROJECT_ROM:
-                    romCount++;
-                    break;
-                case ProjectNode.PROJECT_GAPPS:
-                    gappsCount++;
-                    break;
-                case ProjectNode.PROJECT_AROMA:
-                    aromaCount++;
-                    break;
-                case ProjectNode.PROJECT_NORMAL:
-                    normalCount++;
-                    break;
-            }
-        }
-    }
+//    public static void countProjects(ProjectItemNode rootNode) {
+//        romCount = 0;
+//        gappsCount = 0;
+//        aromaCount = 0;
+//        normalCount = 0;
+//        to = new TreeOperations(rootNode);
+//        for (ProjectItemNode project : to.getNodeList(ProjectItemNode.NODE_PROJECT)) {
+//            switch (((ProjectNode) project).projectType) {
+//                case ProjectNode.PROJECT_ROM:
+//                    romCount++;
+//                    break;
+//                case ProjectNode.PROJECT_GAPPS:
+//                    gappsCount++;
+//                    break;
+//                case ProjectNode.PROJECT_AROMA:
+//                    aromaCount++;
+//                    break;
+//                case ProjectNode.PROJECT_NORMAL:
+//                    normalCount++;
+//                    break;
+//            }
+//        }
+//    }
 
-    public static int returnMainProject(ProjectItemNode rootNode) {
-        countProjects(rootNode);
-        if (romCount > 0) {
-            return ProjectNode.PROJECT_ROM;
-        } else if (gappsCount > 0) {
-            return ProjectNode.PROJECT_GAPPS;
-        } else if (aromaCount > 0) {
-            return ProjectNode.PROJECT_AROMA;
-        } else if (normalCount > 0) {
-            return ProjectNode.PROJECT_NORMAL;
-        }
-        return -1;
-    }
+//    public static int returnMainProject(ProjectItemNode rootNode) {
+//        countProjects(rootNode);
+//        if (romCount > 0) {
+//            return ProjectNode.PROJECT_ROM;
+//        } else if (gappsCount > 0) {
+//            return ProjectNode.PROJECT_GAPPS;
+//        } else if (aromaCount > 0) {
+//            return ProjectNode.PROJECT_AROMA;
+//        } else if (normalCount > 0) {
+//            return ProjectNode.PROJECT_NORMAL;
+//        }
+//        return -1;
+//    }
 }

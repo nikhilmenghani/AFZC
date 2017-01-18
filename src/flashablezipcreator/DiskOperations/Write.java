@@ -5,7 +5,7 @@
  */
 package flashablezipcreator.DiskOperations;
 
-import flashablezipcreator.AFZC.Protocols;
+import flashablezipcreator.Protocols.Logs;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,14 +17,34 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Nikhil
  */
-public class Write extends Protocols {
+public class Write {
 
     static String path = "";
+
+    public void appendStringToFile(String strToWrite, String filePath) {
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter(filePath, true); //the true will append the new data
+            fw.write(strToWrite);//appends the string to the file
+            fw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Write.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                fw.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Write.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     //this function is used when a file is required to be created with string data in it.
     public void writeStringToFile(String strToWrite, String filePath) throws IOException {
@@ -52,12 +72,12 @@ public class Write extends Protocols {
     public void writeByteToFile(byte buffer[], String filePath) throws IOException {
         File file = new File(filePath);
         System.out.println(file.getAbsolutePath());
-        if(filePath.contains(File.separator)){
+        if (filePath.contains(File.separator)) {
             String str = filePath.substring(0, filePath.lastIndexOf(File.separator));
             System.out.println(str);
             (new File(filePath.substring(0, filePath.lastIndexOf(File.separator)))).mkdirs();
         }
-        if(!file.exists()){ 
+        if (!file.exists()) {
             file.createNewFile();
         }
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
@@ -126,8 +146,8 @@ public class Write extends Protocols {
             System.out.println("File is deleted : " + file.getAbsolutePath());
         }
     }
-    
-    public void rename(String oldName,String newName) throws IOException{
+
+    public void rename(String oldName, String newName) throws IOException {
         File f = new File(oldName);
         Path p = FileSystems.getDefault().getPath(f.getAbsolutePath());
         Files.move(p, p.resolveSibling(newName), REPLACE_EXISTING);

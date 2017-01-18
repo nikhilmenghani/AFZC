@@ -18,7 +18,7 @@ import javax.swing.event.TreeModelListener;
  */
 public class MyTreeModelListener implements TreeModelListener {
 
-    TreeOperations to = new TreeOperations(ProjectTreeBuilder.rootNode);
+    TreeOperations to = new TreeOperations();
     public void treeNodesChanged(TreeModelEvent e) {
         ProjectItemNode node = (ProjectItemNode) (e.getTreePath().getLastPathComponent());
         

@@ -5,16 +5,14 @@
  */
 package flashablezipcreator.Protocols;
 
-import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
-import flashablezipcreator.Core.SubGroupNode;
+import flashablezipcreator.MyTree;
 import flashablezipcreator.Operations.XmlOperations;
 import static flashablezipcreator.Protocols.Export.to;
 import java.io.IOException;
-import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultTreeModel;
+import java.util.ArrayList;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
@@ -37,66 +35,28 @@ public class Xml {
     static String deleteData = "";
     public static String fileDetailsData = "";
 
-    public static String getString(int type, ProjectItemNode rootNode) throws ParserConfigurationException, TransformerException {
+    public static String generateFileDataXml() throws ParserConfigurationException, TransformerException {
         xo = new XmlOperations();
         xo.createXML();
-        for (ProjectItemNode project : to.getProjectsSorted(rootNode)) {
+        for (ProjectItemNode project : to.getProjectsSorted(MyTree.rootNode)) {
             if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
-                for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
-                    for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                        switch (type) {
-                            case GroupNode.GROUP_CUSTOM:
-                                if (node.type == ProjectItemNode.NODE_SUBGROUP) {
-                                    for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
-                                        if (((SubGroupNode) fileNode.parent).subGroupType == SubGroupNode.TYPE_CUSTOM) {
-                                            xo.addFileNode((FileNode) fileNode, xo.rootSubGroup);
-                                        }
-                                    }
-                                } else if (node.type == ProjectItemNode.NODE_FILE) {
-                                    if (((GroupNode) node.parent).groupType == GroupNode.GROUP_CUSTOM) {
-                                        xo.addFileNode((FileNode) node, xo.rootGroup);
-                                    }
-                                }
-                                break;
-                            case GroupNode.GROUP_OTHER:
-                                break;
-                            case GroupNode.GROUP_DELETE_FILES:
-                                if (node.type == ProjectItemNode.NODE_FILE && ((GroupNode) node.parent).groupType == GroupNode.GROUP_DELETE_FILES) {
-                                    xo.addFileNode((FileNode) node, xo.rootGroup);
-                                }
-                                break;
-                            default:
-                                if (node.type == ProjectItemNode.NODE_SUBGROUP) {
-                                    for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
-                                        if (((SubGroupNode) fileNode.parent).subGroupType != SubGroupNode.TYPE_CUSTOM) {
-                                            xo.addFileNode((FileNode) fileNode, xo.rootSubGroup);
-                                        }
-                                    }
-                                } else if (node.type == ProjectItemNode.NODE_FILE) {
-                                    if (((GroupNode) node.parent).groupType != GroupNode.GROUP_CUSTOM
-                                            && ((GroupNode) node.parent).groupType != GroupNode.GROUP_DELETE_FILES
-                                            && ((GroupNode) node.parent).groupType != GroupNode.GROUP_OTHER) {
-                                        xo.addFileNode((FileNode) node, xo.rootGroup);
-                                    }
-                                }
-                        }
-                    }
-                }
+                xo.addProjectNode((ProjectNode) project);
             }
         }
-        return xo.getXML();
+        return xo.getCleanXML();
     }
 
-    public static void parseXml(int type, ProjectItemNode rootNode, DefaultTreeModel model) throws ParserConfigurationException, SAXException, IOException {
+    public static void parseXml(int type) throws ParserConfigurationException, SAXException, IOException {
+        ProjectItemNode rootNode = MyTree.rootNode;
         switch (type) {
             case GroupNode.GROUP_CUSTOM:
                 xo.parseGeneratedXML(rootNode, generatedData, originalData);//generatedData and OriginalData are modified in Import.java.
                 break;
             case GroupNode.GROUP_DELETE_FILES:
-                xo.parseXML(deleteData, rootNode, model);
+                xo.parseXML(deleteData);
                 break;
             default:
-                xo.parseDataXML(rootNode, fileData);//this is for setting description of files.
+                xo.parseDataXML(fileData);//this is for setting description of files.
         }
 
     }
@@ -105,14 +65,6 @@ public class Xml {
     public static void initialize() throws ParserConfigurationException {
         xo = new XmlOperations();
         xo.createXML();
-    }
-
-    public static void addFileDataToGroup(FileNode file) {
-        xo.addFileNode(file, xo.rootGroup);
-    }
-
-    public static void addFileDataToSubGroup(FileNode file) {
-        xo.addFileNode(file, xo.rootSubGroup);
     }
 
     public static void terminate() throws TransformerException {
@@ -124,15 +76,53 @@ public class Xml {
         xo = new XmlOperations();
         xo.initializeProjectData(data);
     }
-    
-    public static String getDeviceConfigString() throws ParserConfigurationException, TransformerException{
+
+    public static String getDeviceConfigString() throws ParserConfigurationException, TransformerException {
         xo = new XmlOperations();
         xo.createDeviceConfig(Device.selected);
         return xo.getXML();
     }
-    
-    public static String getDeviceName(String configXml) throws ParserConfigurationException, SAXException, IOException{
+
+    public static String getDeviceName(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
-        return xo.getDeviceName(configXml);
+        return xo.getStringConfigValue(configData, "Name");
+    }
+
+    public static String getPreferenceConfigString(String aromaVersion, boolean androidVersionAboveLP,
+            boolean quickProjectSetup, ArrayList<String> themes, String zipCreatorName, String ZipVersion)
+            throws ParserConfigurationException, TransformerException {
+        xo = new XmlOperations();
+        xo.createConfigurationConfig(aromaVersion, androidVersionAboveLP, quickProjectSetup, themes, zipCreatorName, ZipVersion);
+        return xo.getXML();
+    }
+
+    public static String getAromaVersion(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getStringConfigValue(configData,"AromaVersion");
+    }
+
+    public static boolean getAndroidVersionDetail(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getBoolConfigValue(configData, "AboveLollipop");
+    }
+
+    public static boolean getQuickProjectSetup(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getBoolConfigValue(configData, "QuickProjectSetup");
+    }
+
+    public static ArrayList<String> getThemes(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getThemes(configData);
+    }
+
+    public static String getZipCreatorName(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getStringConfigValue(configData, "zipCreatorName");
+    }
+
+    public static String getZipVersion(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getStringConfigValue(configData, "zipVersion");
     }
 }

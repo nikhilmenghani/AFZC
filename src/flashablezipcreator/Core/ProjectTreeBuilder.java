@@ -5,13 +5,10 @@
  */
 package flashablezipcreator.Core;
 
-import flashablezipcreator.FlashableZipCreator;
-import flashablezipcreator.Operations.TreeOperations;
-import java.io.File;
+import static flashablezipcreator.MyTree.model;
+import static flashablezipcreator.MyTree.tree;
+import java.awt.Font;
 import java.io.IOException;
-import java.util.Vector;
-import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 
 /**
@@ -26,81 +23,28 @@ public class ProjectTreeBuilder {
 
     public static javax.swing.JTree buildTree() throws IOException {
         rootNode = new ProjectItemNode("AFZC Projects", ProjectItemNode.NODE_ROOT);
-
-        ProjectNode projectNode = new ProjectNode("Normal Aroma Zip", ProjectNode.PROJECT_AROMA, rootNode);
-
-        GroupNode groupNode1 = new GroupNode("Launcher", GroupNode.GROUP_CUSTOM, projectNode);
-
-        SubGroupNode subGroupNode1 = new SubGroupNode("S4 Launcher", SubGroupNode.TYPE_CUSTOM, groupNode1);
-
-        Vector<GroupNode> groupVec = new Vector<GroupNode>();
-
-        //groupVec.add(new GroupNode("Launcher", ProjectItemNode.NODE_GROUP));
-        Vector<SubGroupNode> subGroupVec = new Vector<SubGroupNode>();
-
-        //subGroupVec.add(new SubGroupNode("S4 Launcher", ProjectItemNode.NODE_SUBGROUP));
-        Vector<FileNode> fileVec = new Vector<FileNode>();
-
-        //fileVec.add(new FileNode("home.apk", ProjectItemNode.NODE_FILE));
-        //fileVec.add(new FileNode("home.so", ProjectItemNode.NODE_FILE));
-        //fileVec.add(new FileNode("Xperia.apk", ProjectItemNode.NODE_FILE));
-//        for(GroupNode node : groupVec){
-//            for(SubGroupNode subNode : subGroupVec){
-//                for(FileNode fileNode : fileVec){
-//                    subNode.addChild(fileNode);
-//                }
-//                node.addChild(subNode);
-//            }
-//            projectNode.addChild(node);
-//        }
-        //rootNode.addChild(projectNode);
-        //System.out.println(projectNode.getParent().toString() + "Nikhil");
-        FileNode file1 = new FileNode("Flash" + File.separator + "Data" + File.separator + "Data Apps" + File.separator + "pl.solidexplorer-2.apk", "0, 0, /system/etc",
-                "0, 0, \"/system/etc/pl.solidexplorer-2.apk\"", subGroupNode1);
-        FileNode file2 = new FileNode("Flash" + File.separator + "Data" + File.separator + "Data Apps" + File.separator + "pl.solidexplorer.unlocker-1.apk", "/system/etc", "rwrr", subGroupNode1);
-        FileNode file3 = new FileNode("Flash" + File.separator + "System" + File.separator + "System App" + File.separator + "MIUIMusic.apk", groupNode1);
-
-//        for(ProjectItemNode obj : vec){
-//            switch(obj.type){
-//                case ProjectItemNode.NODE_FILE:
-//                    subGroupNode1.addChild(obj);
-//                    break;
-//                case ProjectItemNode.NODE_SUBGROUP:
-//                    
-//            }
-//            
-//        }
-        subGroupNode1.addChild(file1);
-        subGroupNode1.addChild(file2);
-
-        groupNode1.addChild(subGroupNode1);
-        groupNode1.addChild(file3);
-
-        projectNode.addChild(groupNode1);
-
-        GroupNode groupNode2 = new GroupNode("Google Launcher", GroupNode.GROUP_SYSTEM_APK, projectNode);
-
-        FileNode file4 = new FileNode("Flash" + File.separator + "System" + File.separator + "System App" + File.separator + "CMFileManager.apk", "/system/etc", "rwrr", groupNode2);
-
-        groupNode2.addChild(file4);
-
-        projectNode.addChild(groupNode2);
-
-        //rootNode.addChild(projectNode);
-        //createNode("Normal Aroma Zip", ProjectItemNode.NODE_PROJECT).addChild(createNode("Ringtones", ProjectItemNode.NODE_GROUP));
-        //rootNode.addChild(createNode("Normal Aroma Zip", ProjectItemNode.NODE_PROJECT));
-        //System.out.println(rootNode.children);
-        TreeOperations to = new TreeOperations(rootNode);
-        to.buildDirectory(rootNode);
-
         tree = new javax.swing.JTree(rootNode);
         tree.setCellRenderer(new NodeRenderer());
-        //tree.setCellRenderer(new DefaultTreeCellRenderer());
+        tree.setDragEnabled(true);
+        tree.setEditable(true);
+        tree.setInvokesStopCellEditing(true);
+        tree.setShowsRootHandles(true);
+        tree.setTransferHandler(new MyTransferHandler(rootNode, (DefaultTreeModel) ProjectTreeBuilder.tree.getModel()));
+        Font currentFont = tree.getFont();
+        Font bigFont = new Font(currentFont.getName(), currentFont.getStyle(), currentFont.getSize() + 1);
+        tree.setFont(bigFont);
+        tree.setRowHeight(21);
+        tree.setVisibleRowCount(18);
+        //mouse click configurations
+        ProjectMouseAdapter ma = new ProjectMouseAdapter();
+        tree.addMouseListener(ma);
         return tree;
     }
 
     public static DefaultTreeModel buildModel() {
-        return (DefaultTreeModel) ProjectTreeBuilder.tree.getModel();
+        DefaultTreeModel model = (DefaultTreeModel) ProjectTreeBuilder.tree.getModel();
+        model.addTreeModelListener(new MyTreeModelListener());
+        return model;
     }
 
     public static javax.swing.JScrollPane buildScrollPane() {

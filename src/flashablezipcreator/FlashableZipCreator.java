@@ -5,18 +5,28 @@
  */
 package flashablezipcreator;
 
+import flashablezipcreator.Core.ProjectNode;
+import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
+import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.AddDevice;
+import flashablezipcreator.UserInterface.AddName;
+import flashablezipcreator.UserInterface.Preferences;
+import static flashablezipcreator.UserInterface.Preferences.preferencesConfig;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
 import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -30,101 +40,13 @@ public class FlashableZipCreator {
 
     /**
      * @param args the command line arguments
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
+     * @throws java.io.FileNotFoundException
+     * @throws javax.xml.parsers.ParserConfigurationException
+     * @throws org.xml.sax.SAXException
      */
     public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException {
-//        QueryDB qdb = new QueryDB("afzc");
-//        p("qdb initialized");
-////        QueryDB qdb1 = new QueryDB("afzc");
-////        p("started");
-//        try{
-//            qdb.createTable("create table package(group_name varchar(40), location varchar(60), file_name varchar(120))");
-//        }catch (SQLException sqle){
-//            p("Table Already Exists");
-//        }
-//        p("table created");
-//        qdb.insert("package", "'System', 'system/app', 'abc.apk'");
-//        qdb.insert("package", "'System', 'data/app', 'data.apk'");
-//        ResultSet results = qdb.select("file_name", "package", "group_name IS NOT NULL");
-//        while(results.next())
-//        p(results.getString(1));
-//        qdb.update("package", "location = '/system/app'", "group_name = 'System'");
-//        results = qdb.select("*", "package", "group_name IS NOT NULL");
-//        while(results.next()){
-//            p("Column 1");
-//            p(results.getString(1));
-//            p("Column 2");
-//            p(results.getString(2));
-//            p("Column 3");
-//            p(results.getString(3));
-//        }
-//        qdb.delete("package", "file_name = 'data.apk'");
-//        results = qdb.select("file_name", "package", "group_name IS NOT NULL");
-//        while(results.next())
-//        p(results.getString(1));
-//        p("record successfully updated");
-
-//        Read r = new Read();
-//        String str = r.getFileString("src" + File.separator + "flashablezipcreator" + File.separator + "Supported Devices");
-//        System.out.println(str);
-        //Write w = new Write();
-        //w.writeStringToFile(r.getFileString("src\\flashablezipcreator\\Supported Devices"), "S D");
-//        File fXmlFile = new File("test.xml");
-//        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-//	DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-//        
-//	Document doc = dBuilder.parse(fXmlFile);
-//        doc.getDocumentElement().normalize();
-//        JOptionPane.showMessageDialog(null, doc.getDocumentElement().getNodeName());
-//        ZipFile zf;
-//        XmlOperations xo = new XmlOperations();
-//        try {
-//            zf = new ZipFile("test.zip");
-//            for (Enumeration<? extends ZipEntry> e = zf.entries();
-//                    e.hasMoreElements();) {
-//                ZipEntry ze = e.nextElement();
-//                String name = ze.getName();
-//                if (name.endsWith(".xml")) {
-//                    InputStream in = zf.getInputStream(ze);
-//                    xo.readXMLFromZip(in);
-//                }
-//            }
-//        } catch (IOException e1) {
-//            System.out.println("Sorry we couldn't find the file");
-//            e1.printStackTrace();
-//        }
-        //ReadZip rz = new ReadZip("test.zip");
-        //XmlOperations xo = new XmlOperations();
-//        while(rz.ze!=null){
-//            p(rz.ze.getName());
-//            
-//            if(rz.ze.getName().endsWith(".xml")){
-//                InputStream in = rz.zis;
-//                xo.readXMLFromZip(in);
-//            }
-//            rz.ze = rz.zis.getNextEntry();
-//        }
-//        rz.close();
-//        WriteZip wz = new WriteZip("test.zip");
-//        wz.writeStringToZip("Nikhil \nMenghani", "customize");
-//        wz.writeFileToZip("src\\flashablezipcreator\\Supported Devices", "src/flashablezipcreator/Supported Devices");
-//        wz.close();
-//        ReadZip rz = new ReadZip("test.zip");
-//        while(rz.ze != null){
-//            p(rz.ze.getName());
-        //File file = new File(rz.ze.getName());
-        //if(!file.isDirectory()){
-        //p(rz.getStringFromFile(rz.zis));
-        //}
-//                File outputFile = new File("Temp" + File.separator + rz.ze.getName());
-//                
-//                rz.writeFileFromZip(rz.zis, outputFile);
-//                rz.ze = rz.zis.getNextEntry();
-//        }
-//        rz.close();
-//        Write w = new Write();
-//        w.writeFile("src/flashablezipcreator/AFZC.png", "AFZC1.png");
-//        JTree jt = new JTree();
-//        jt.setVisible(true);
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -154,38 +76,92 @@ public class FlashableZipCreator {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    if (Jar.isExecutingThrough()) {
-                        JarOperations.setJarFileList();
-                        Device.loadDeviceList();
-                        String configString = "";
-                        File f = new File(Xml.device_config_path);
-                        if(f.exists()){
-                            Read r = new Read();
-                            configString = r.getFileString(Xml.device_config_path);
-                            Device.selected = Xml.getDeviceName(configString);
-                        }else{
-                            AddDevice ad = new AddDevice();
-                        }
-                    } else {
-                        Xml.file_details_path = "dist/" + Xml.file_details_path;
-                    }
-                    if(!Device.selected.equals("")){
-                        new JTree().setVisible(true);
-                    }
-                } catch (IOException ex) {
-                    Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ParserConfigurationException ex) {
-                    Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (TransformerException ex) {
-                    Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SAXException ex) {
-                    Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            Logs.logFile = "Logs_" + Logs.getTime() + ".log";
+            Logs.write("Created Logs File..");
+            if (Jar.isExecutingThrough()) {
+                JarOperations.setJarFileList();
+                Device.loadDeviceList();
+                Logs.write("Device List Loaded");
+                String configString = "";
+                if ((new File(Xml.device_config_path).exists())) {
+                    Read r = new Read();
+                    configString = r.getFileString(Xml.device_config_path);
+                    Device.selected = Xml.getDeviceName(configString);
+                    Logs.write("Selected Device from Config: " + Device.selected);
+                } else if ((new File("update-binary").exists())) {
+                    Device.binary = (new Read()).getFileBytes("update-binary");
+                    Logs.write("update-binary Found");
+                } else {
+                    AddDevice ad = new AddDevice();
                 }
+            } else {
+                Xml.file_details_path = "dist/" + Xml.file_details_path;
             }
-        });
+            File f = new File(Xml.file_details_path);
+            Read r = new Read();
+            if (f.exists()) {
+                Xml.fileDetailsData = r.getFileString(Xml.file_details_path);
+                Xml.initializeProjectDetails(Xml.fileDetailsData);
+            }
+            f = new File("Preferences.config");
+            if (f.exists()) {
+                Logs.write("Preferences.config Found");
+                Preferences.preferencesFilePresent = true;
+                Preferences.preferencesConfig = r.getFileString("Preferences.config");
+                Preferences.themes = Xml.getThemes(preferencesConfig);
+                Preferences.aromaVersion = Xml.getAromaVersion(preferencesConfig);
+                Preferences.IsFromLollipop = Xml.getAndroidVersionDetail(preferencesConfig);
+                Preferences.IsQuickSetup = Xml.getQuickProjectSetup(preferencesConfig);
+                Preferences.zipCreatorName = Xml.getZipCreatorName(preferencesConfig);
+                Preferences.zipVersion = Xml.getZipVersion(preferencesConfig);
+                Logs.write("Preferences Loaded");
+            }
+            if (Preferences.themes.isEmpty()) {
+                Preferences.themes.add("Nikhil");
+            }
+            //if(!Device.selected.equals("")){
+            new MyTree().setVisible(true);
+            if (Preferences.IsQuickSetup) {
+                new AddName("Project", ProjectNode.PROJECT_AROMA, MyTree.rootNode);
+            }
+            //}
+        } catch (IOException ex) {
+            Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (TransformerException ex) {
+            Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SAXException ex) {
+            Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void extractZip() throws IOException {
+        String dirPath = "C:\\Users\\Nikhil\\Documents\\NetBeansProjects\\FlashableZipCreator\\Fonts";
+        File folder = new File(dirPath);
+        for (File file : folder.listFiles()) {
+            ReadZip rz = new ReadZip(file.getAbsolutePath());
+            String fileName = file.getName().replace("Font_", "");
+            if (fileName.indexOf(".") > 0) {
+                fileName = fileName.substring(0, fileName.lastIndexOf("."));
+            }
+            for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
+                ZipEntry ze = e.nextElement();
+                String name = ze.getName();
+                if (name.startsWith("META-INF")) {
+                    continue;
+                }
+                File f = new File(name);
+
+                String parent = f.getParent();
+                String fName = f.getName();
+                String writeToPath = "My Fonts" + File.separator + parent + File.separator + fileName + File.separator + fName;
+                InputStream in = rz.zf.getInputStream(ze);
+                rz.writeFileFromZip(in, writeToPath);
+                System.out.println(writeToPath);
+            }
+            System.out.println();
+        }
     }
 }

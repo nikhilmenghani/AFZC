@@ -6,10 +6,12 @@
 package flashablezipcreator.Operations;
 
 import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.Protocols.Device;
+import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
 import static flashablezipcreator.Protocols.UpdaterScript.symlinkScriptPath;
 
@@ -72,18 +74,61 @@ public class UpdaterScriptOperations {
         return "";
     }
 
+    public String getFolderScript(String str, ProjectItemNode parent) {
+        for (ProjectItemNode child : parent.children) {
+            if (child.type == ProjectItemNode.NODE_FOLDER) {
+                str = getFolderScript(str, child);
+            } else if (child.type == ProjectItemNode.NODE_FILE) {
+                FileNode file = (FileNode) child;
+                str += getPackageExtractDirString(file);
+                if (file.title.endsWith("apk")) {
+                    str += addPrintString(file.parent.title, installString);
+                } else {
+                    str += addPrintString("Copying " + file.title);
+                }
+                str += "package_extract_file(\"" + file.fileZipPath + "\", \"" + file.installLocation + "/" + file.title + "\");\n";
+                str += "set_perm(" + file.filePermission + ");\n";
+            }
+        }
+        return str;
+    }
+
+    public String predefinedFolderGroupScript(GroupNode node) {
+        String str = "";
+        if (node.isCheckBox()) {
+            int count = 1;
+            if (Preferences.IsFromLollipop) {
+                str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
+                for (ProjectItemNode folder : node.children) {
+                    str = getFolderScript(str, folder);
+                }
+                str += "endif;\n";
+                for (ProjectItemNode folder : node.children) {
+                    str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
+                    str = getFolderScript(str, folder);
+                    str += "endif;\n";
+                }
+            } else {
+                str = predefinedGroupScript(node);
+            }
+        }
+        return str;
+    }
+
     public String predefinedGroupScript(GroupNode node) {
         String str = "";
         if (node.isCheckBox()) {
             int count = 1;
+            str += getPackageExtractDirString(node);
             str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
-            for (ProjectItemNode file : node.children) {
+            for (ProjectItemNode fnode : node.children) {
+                FileNode file = (FileNode) fnode;
                 if (node.groupType == GroupNode.GROUP_DELETE_FILES) {
                     str += addPrintString(((FileNode) file).title, deleteString);
                     str += "delete(\"/" + ((FileNode) file).getDeleteLocation() + "\");\n";
                 } else {
-                    str += addPrintString(((FileNode) file).title, installString);
-                    str += "package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
+                    str += addPrintString(file.title, installString);
+                    str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
                     str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
                 }
             }
@@ -95,7 +140,7 @@ public class UpdaterScriptOperations {
                     str += "delete(\"/" + ((FileNode) file).getDeleteLocation() + "\");\n";
                 } else {
                     str += addPrintString(((FileNode) file).title, installString);
-                    str += "package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
+                    str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
                     str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
                 }
                 str += "endif;\n";
@@ -105,14 +150,14 @@ public class UpdaterScriptOperations {
             for (ProjectItemNode file : node.children) {
                 str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"selected.1\")==\"" + count++ + "\") then \n";
                 str += addPrintString("@Running script : " + ((FileNode) file).title);
-                str += "package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"/tmp/script\");\n"
+                str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"/tmp/script\");\n"
                         + "set_perm(0, 0, 0777, \"/tmp/script\");\n"
                         + "run_program(\"/tmp/script\");\n"
                         + "delete(\"/tmp/script\");\n";
                 str += "endif;\n";
             }
         } else {
-            System.out.println("This Group not support");
+            System.out.println("This Group is not supported");
         }
         return str;
     }
@@ -129,6 +174,7 @@ public class UpdaterScriptOperations {
         String str = "";
         if (node.isSelectBox()) {
             int count = 2;
+            str += getPackageExtractDirString(node);
             for (ProjectItemNode subGroup : node.children) {
                 if (node.groupType == GroupNode.GROUP_SYSTEM_FONTS) {
                     str += "if (file_getprop(\"/tmp/aroma/" + node.prop.replace(".prop", "_temp.prop") + "\", \"" + subGroup.toString() + "\")==\"" + "yes" + "\") then \n";
@@ -139,17 +185,14 @@ public class UpdaterScriptOperations {
                 for (ProjectItemNode file : subGroup.children) {
                     switch (node.groupType) {
                         case GroupNode.GROUP_SYSTEM_FONTS:
-                            str += "package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
+                            str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
                             str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
                             break;
                         case GroupNode.GROUP_DATA_LOCAL:
                         case GroupNode.GROUP_SYSTEM_MEDIA:
                             //this will rename any zip package to bootamination.zip allowing users to add bootanimation.zip with custom names.
-                            str += "package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"" + ((FileNode) file).installLocation + "/" + "bootanimation.zip" + "\");\n";
+                            str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + "bootanimation.zip" + "\");\n";
                             str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
-                            break;
-                        case GroupNode.GROUP_AROMA_KERNEL:
-                            str += "assert(package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"" + Device.getMountPoint() + "\"));\n";
                             break;
                     }
                 }
@@ -169,13 +212,13 @@ public class UpdaterScriptOperations {
                     case ProjectItemNode.NODE_SUBGROUP:
                         str += addPrintString(((SubGroupNode) tempNode).title, installString);
                         for (ProjectItemNode file : tempNode.children) {
-                            str += "package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
+                            str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
                             str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
                         }
                         break;
                     case ProjectItemNode.NODE_FILE:
                         str += addPrintString(((FileNode) tempNode).title, installString);
-                        str += "package_extract_file(\"" + ((FileNode) tempNode).getZipPath() + "\", \"" + ((FileNode) tempNode).installLocation + "/" + ((FileNode) tempNode).title + "\");\n";
+                        str += "package_extract_file(\"" + ((FileNode) tempNode).fileZipPath + "\", \"" + ((FileNode) tempNode).installLocation + "/" + ((FileNode) tempNode).title + "\");\n";
                         str += "set_perm(" + ((FileNode) tempNode).filePermission + ");\n";
                 }
             }
@@ -186,7 +229,7 @@ public class UpdaterScriptOperations {
                         str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
                         str += addPrintString(((SubGroupNode) tempNode).title, installString);
                         for (ProjectItemNode file : tempNode.children) {
-                            str += "package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
+                            str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
                             str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
                         }
                         str += "endif;\n";
@@ -194,7 +237,7 @@ public class UpdaterScriptOperations {
                     case ProjectItemNode.NODE_FILE:
                         str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
                         str += addPrintString(((FileNode) tempNode).title, installString);
-                        str += "package_extract_file(\"" + ((FileNode) tempNode).getZipPath() + "\", \"" + ((FileNode) tempNode).installLocation + "/" + ((FileNode) tempNode).title + "\");\n";
+                        str += "package_extract_file(\"" + ((FileNode) tempNode).fileZipPath + "\", \"" + ((FileNode) tempNode).installLocation + "/" + ((FileNode) tempNode).title + "\");\n";
                         str += "set_perm(" + ((FileNode) tempNode).filePermission + ");\n";
                         str += "endif;\n";
                 }
@@ -207,7 +250,7 @@ public class UpdaterScriptOperations {
                         str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"selected.1\")==\"" + count++ + "\") then \n";
                         str += addPrintString(((SubGroupNode) tempNode).title, installString);
                         for (ProjectItemNode file : tempNode.children) {
-                            str += "package_extract_file(\"" + ((FileNode) file).getZipPath() + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
+                            str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
                             str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
                         }
                         str += "endif;\n";
@@ -215,7 +258,7 @@ public class UpdaterScriptOperations {
                     case ProjectItemNode.NODE_FILE:
                         str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"selected.1\")==\"" + count++ + "\") then \n";
                         str += addPrintString(((FileNode) tempNode).title, installString);
-                        str += "package_extract_file(\"" + ((FileNode) tempNode).getZipPath() + "\", \"" + ((FileNode) tempNode).installLocation + "/" + ((FileNode) tempNode).title + "\");\n";
+                        str += "package_extract_file(\"" + ((FileNode) tempNode).fileZipPath + "\", \"" + ((FileNode) tempNode).installLocation + "/" + ((FileNode) tempNode).title + "\");\n";
                         str += "set_perm(" + ((FileNode) tempNode).filePermission + ");\n";
                         str += "endif;\n";
                 }
@@ -230,16 +273,12 @@ public class UpdaterScriptOperations {
             //Group of predefined locations
             case GroupNode.GROUP_SYSTEM_APK:
             case GroupNode.GROUP_SYSTEM_PRIV_APK:
-            case GroupNode.GROUP_SYSTEM_CSC:
-            case GroupNode.GROUP_SYSTEM_ETC:
-            case GroupNode.GROUP_SYSTEM_LIB:
+            case GroupNode.GROUP_DATA_APP:
+                return predefinedFolderGroupScript(node);
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
             case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-            case GroupNode.GROUP_DATA_APP:
-            case GroupNode.GROUP_PRELOAD_SYMLINK_SYSTEM_APP:
-            case GroupNode.GROUP_SYSTEM_FRAMEWORK:
             case GroupNode.GROUP_DELETE_FILES:
             case GroupNode.GROUP_SCRIPT:
                 return predefinedGroupScript(node);
@@ -247,7 +286,6 @@ public class UpdaterScriptOperations {
             case GroupNode.GROUP_SYSTEM_FONTS:
             case GroupNode.GROUP_DATA_LOCAL:
             case GroupNode.GROUP_SYSTEM_MEDIA:
-            case GroupNode.GROUP_AROMA_KERNEL:
                 return predefinedSubGroupsScript(node);
             //Group of custom location.
             case GroupNode.GROUP_CUSTOM:
@@ -286,5 +324,29 @@ public class UpdaterScriptOperations {
         return "package_extract_dir(\"data\", \"/data\");\n"
                 + "set_perm(2000, 2000, 0771, \"/data/local\");\n"
                 + "set_perm_recursive(1000, 1000, 0771, 0644, \"/data/app\");\n";
+    }
+
+    public String getPackageExtractDirString(FileNode file) {
+        String str = addPrintString("Creating folder in " + file.groupLocation);
+        String extractZipPath = file.extractZipPath;
+        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(file.groupLocation));
+        if (file.groupLocation.contains("/system")) {
+            return str += "package_extract_dir(\"" + extractZipPath + "/system" + "\",\"/system\");\n";
+        } else if (file.groupLocation.contains("/data")) {
+            return str += "package_extract_dir(\"" + extractZipPath + "/data" + "\",\"/data\");\n";
+        }
+        return "";
+    }
+
+    public String getPackageExtractDirString(GroupNode group) {
+        String str = addPrintString("Creating folder in " + group.location);
+        String extractZipPath = (group.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(group.location));
+        if (group.location.contains("/system")) {
+            return str += "package_extract_dir(\"" + extractZipPath + "/system" + "\",\"/system\");\n";
+        } else if (group.location.contains("/data")) {
+            return str += "package_extract_dir(\"" + extractZipPath + "/data" + "\",\"/data\");\n";
+        }
+        return "";
     }
 }

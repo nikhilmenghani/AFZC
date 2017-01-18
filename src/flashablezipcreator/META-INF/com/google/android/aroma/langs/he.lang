@@ -24,8 +24,8 @@
 #--- COMMON SYSTEM STRING RESOURCE
 #
 text_ok=אישור
-text_next=הבא >
-text_back=< הקודם
+text_next=הבא
+text_back=הקודם
 text_yes=כן
 text_no=לא
 text_about=אודות

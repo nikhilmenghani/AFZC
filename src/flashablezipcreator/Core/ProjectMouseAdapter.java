@@ -13,7 +13,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.TreePath;
-import static flashablezipcreator.AFZC.Protocols.show;
 import javax.swing.tree.DefaultTreeModel;
 
 /**
@@ -27,18 +26,10 @@ public class ProjectMouseAdapter extends MouseAdapter {
         javax.swing.JTree myTree = (javax.swing.JTree) e.getSource();
 
         TreePath[] paths = myTree.getSelectionPaths();
-        //myTree.setCellEditor(new MyCellEditor());
-        //for (TreePath path : paths) {
-            //show("You've selected: " + path.getLastPathComponent());
-        //}
-
-        popup = MyPopup.getPopup(paths, myTree, (DefaultTreeModel) myTree.getModel());
-
-//        ProjectItemNode node = (ProjectItemNode) myTree.getLastSelectedPathComponent();
-//        if (node == null) {
-//            return;
-//        }
-        popup.show(myTree, e.getX(), e.getY());
+        if (paths != null) {
+            popup = MyPopup.getPopup(paths, myTree);
+            popup.show(myTree, e.getX(), e.getY());
+        }
     }
 
     public void mousePressed(MouseEvent e) {

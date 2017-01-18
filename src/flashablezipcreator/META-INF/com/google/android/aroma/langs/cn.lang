@@ -24,8 +24,8 @@
 #--- COMMON SYSTEM STRING RESOURCE
 #
 text_ok=确定
-text_next=下一步 >
-text_back=< 返回
+text_next=下一步
+text_back=返回
 text_yes=同意
 text_no=放弃
 text_about=关于

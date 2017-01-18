@@ -6,18 +6,17 @@
 package flashablezipcreator.Operations;
 
 import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultTreeModel;
+import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -49,8 +48,101 @@ public class XmlOperations {
     public Element root;
     public Element rootGroup;
     public Element rootSubGroup;
-    
-    public void createDeviceConfig(String deviceName) throws ParserConfigurationException{
+    public Element rootFolder;
+    TreeOperations to = new TreeOperations();
+
+    public void createConfigurationConfig(String aromaVersion, boolean androidVersionAboveLP, boolean quickProjectSetup,
+            ArrayList<String> themes, String zipCreatorName, String zipVersion) throws ParserConfigurationException {
+        documentFactory = DocumentBuilderFactory.newInstance();
+        documentBuilder = documentFactory.newDocumentBuilder();
+        document = documentBuilder.newDocument();
+        root = document.createElement("Configuration");
+        document.appendChild(root);
+        Element aromaVersionElem = document.createElement("AromaVersion");
+        aromaVersionElem.setTextContent(aromaVersion);
+        Element androidVersionElem = document.createElement("AboveLollipop");
+        androidVersionElem.setTextContent(String.valueOf(androidVersionAboveLP));
+        Element quickProjectSetupElem = document.createElement("QuickProjectSetup");
+        quickProjectSetupElem.setTextContent(String.valueOf(quickProjectSetup));
+        Element themesElem = document.createElement("Themes");
+        for (String theme : themes) {
+            Element themeElem = document.createElement("Theme");
+            themeElem.setTextContent(theme);
+            themesElem.appendChild(themeElem);
+        }
+        Element zipCreatorNameElem = document.createElement("zipCreatorName");
+        zipCreatorNameElem.setTextContent(zipCreatorName);
+        Element zipVersionElem = document.createElement("zipVersion");
+        zipVersionElem.setTextContent(zipVersion);
+        root.appendChild(aromaVersionElem);
+        root.appendChild(androidVersionElem);
+        root.appendChild(quickProjectSetupElem);
+        root.appendChild(themesElem);
+        root.appendChild(zipCreatorNameElem);
+        root.appendChild(zipVersionElem);
+    }
+
+    public String getStringConfigValue(String configData, String elementName) throws ParserConfigurationException, SAXException, IOException {
+        String configValue = null;
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        try {
+            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
+            NodeList nameList = genDoc.getElementsByTagName(elementName);
+            for (int i = 0; i < nameList.getLength(); i++) {
+                Node nameNode = nameList.item(i);
+                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) nameNode;
+                    configValue = element.getTextContent();
+                }
+            }
+        } catch (SAXParseException ex) {
+            System.out.println(elementName + " Details Empty");
+        }
+        return configValue;
+    }
+
+    public boolean getBoolConfigValue(String configData, String elementName) throws ParserConfigurationException, SAXException, IOException {
+        boolean configValue = false;
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        try {
+            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
+            NodeList nameList = genDoc.getElementsByTagName(elementName);
+            for (int i = 0; i < nameList.getLength(); i++) {
+                Node nameNode = nameList.item(i);
+                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) nameNode;
+                    configValue = element.getTextContent().equals("true");
+                }
+            }
+        } catch (SAXParseException ex) {
+            System.out.println(elementName + " Details Empty");
+        }
+        return configValue;
+    }
+
+    public ArrayList<String> getThemes(String configData) throws ParserConfigurationException, SAXException, IOException {
+        ArrayList<String> themes = new ArrayList<>();
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        try {
+            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
+            NodeList nameList = genDoc.getElementsByTagName("Theme");
+            for (int i = 0; i < nameList.getLength(); i++) {
+                Node nameNode = nameList.item(i);
+                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) nameNode;
+                    themes.add(element.getTextContent());
+                }
+            }
+        } catch (SAXParseException ex) {
+            System.out.println("Theme Details Empty");
+        }
+        return themes;
+    }
+
+    public void createDeviceConfig(String deviceName) throws ParserConfigurationException {
         documentFactory = DocumentBuilderFactory.newInstance();
         documentBuilder = documentFactory.newDocumentBuilder();
         document = documentBuilder.newDocument();
@@ -60,26 +152,6 @@ public class XmlOperations {
         name.setTextContent(deviceName);
         root.appendChild(name);
     }
-    
-    public String getDeviceName(String configData) throws ParserConfigurationException, SAXException, IOException{
-        String deviceName = "";
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-        try {
-            Document genDoc = dBuilder.parse(new InputSource(new StringReader(configData)));
-            NodeList nameList = genDoc.getElementsByTagName("Device");
-            for (int i = 0; i < nameList.getLength(); i++) {
-                Node nameNode = nameList.item(i);
-                if (nameNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) nameNode;
-                    deviceName = element.getElementsByTagName("Name").item(0).getTextContent();
-                }
-            }
-        } catch (SAXParseException ex) {
-            System.out.println("Device Details Empty");
-        }
-        return deviceName;
-    }
 
     public void createXML() throws ParserConfigurationException {
         documentFactory = DocumentBuilderFactory.newInstance();
@@ -87,57 +159,111 @@ public class XmlOperations {
         document = documentBuilder.newDocument();
         root = document.createElement("Root");
         document.appendChild(root);
-        rootGroup = document.createElement("GroupData");
-        addGroupNode(root, rootGroup);
-        rootSubGroup = document.createElement("SubGroupData");
-        addSubGroupNode(root, rootSubGroup);
     }
 
-    public void addGroupNode(Element root, Element group) {
-        root.appendChild(group);
-    }
-
-    public void addSubGroupNode(Element root, Element subGroup) {
-        root.appendChild(subGroup);
-    }
-
-    public void addFileNode(FileNode fileNode, Element parent) {
-        Element file = document.createElement("FileData");
-        parent.appendChild(file);
-        Attr attribute = document.createAttribute("name");
-        attribute.setValue(fileNode.title);
-        file.setAttributeNode(attribute);
-        document.getDocumentElement().normalize();
-        switch (fileNode.parent.type) {
-            case ProjectItemNode.NODE_GROUP:
-                addChildNode("ProjectName", fileNode.parent.parent.title, file);
-                addChildNode("ProjectType", ((ProjectNode) fileNode.parent.parent).projectType + "", file);
-                addChildNode("GroupName", fileNode.parent.title, file);
-                addChildNode("GroupType", ((GroupNode) fileNode.parent).groupType + "", file);
-                addChildNode("Description", fileNode.description, file);
-                addChildNode("InstallLocation", fileNode.installLocation, file);
-                addChildNode("Permissions", fileNode.filePermission, file);
-                addChildNode("ZipPath", fileNode.fileZipPath, file);
-                break;
-            case ProjectItemNode.NODE_SUBGROUP:
-                addChildNode("ProjectName", fileNode.parent.parent.parent.title, file);
-                addChildNode("ProjectType", ((ProjectNode) fileNode.parent.parent.parent).projectType + "", file);
-                addChildNode("GroupName", fileNode.parent.parent.title, file);
-                addChildNode("GroupType", ((GroupNode) fileNode.parent.parent).groupType + "", file);
-                addChildNode("SubGroupName", fileNode.parent.title, file);
-                addChildNode("SubGroupType", ((SubGroupNode) fileNode.parent).subGroupType + "", file);
-                addChildNode("Description", ((SubGroupNode) fileNode.parent).description, file);
-                addChildNode("InstallLocation", fileNode.installLocation, file);
-                addChildNode("Permissions", fileNode.filePermission, file);
-                addChildNode("ZipPath", fileNode.fileZipPath, file);
-                break;
+    public void addProjectNode(ProjectNode project) {
+        Element projectElem = document.createElement("ProjectData");
+        Attr attrPName = document.createAttribute("name");
+        attrPName.setValue(project.title);
+        Attr attrPType = document.createAttribute("type");
+        attrPType.setValue(Integer.toString(project.projectType));
+        projectElem.setAttributeNode(attrPName);
+        projectElem.setAttributeNode(attrPType);
+        for (ProjectItemNode projectChild : project.children) {
+            projectElem.appendChild(addGroupNode((GroupNode) projectChild));
         }
+        root.appendChild(projectElem);
     }
 
-    public void addChildNode(String childName, String childValue, Element parent) {
-        Element child = document.createElement(childName);
-        child.appendChild(document.createTextNode(childValue));
-        parent.appendChild(child);
+    public Element addFolderNode(FolderNode folder) {
+        Element folderElem = document.createElement("FolderData");
+        Attr attrFolName = document.createAttribute("name");
+        attrFolName.setValue(folder.title);
+        folderElem.setAttributeNode(attrFolName);
+        for (ProjectItemNode folderChild : folder.children) {
+            switch (folderChild.type) {
+                case ProjectItemNode.NODE_FOLDER:
+                    folderElem.appendChild(addFolderNode((FolderNode) folderChild));
+                    break;
+                case ProjectItemNode.NODE_FILE:
+                    folderElem.appendChild(addFileNode((FileNode) folderChild));
+                    break;
+            }
+        }
+        return folderElem;
+    }
+
+    public Element addFileNode(FileNode file) {
+        Element fileElem = document.createElement("FileData");
+        Attr attrFName = document.createAttribute("name");
+        attrFName.setValue(file.title);
+        fileElem.setAttributeNode(attrFName);
+        Element description = document.createElement("description");
+        description.appendChild(document.createTextNode(file.description));
+        fileElem.appendChild(description);
+        return fileElem;
+    }
+
+    public Element addSubGroupNode(SubGroupNode sgNode) {
+        Element subGroupElem = document.createElement("SubGroupData");
+        Attr attrSGName = document.createAttribute("name");
+        attrSGName.setValue(sgNode.title);
+        Attr attrSGType = document.createAttribute("type");
+        attrSGType.setValue(Integer.toString(sgNode.subGroupType));
+        subGroupElem.setAttributeNode(attrSGName);
+        subGroupElem.setAttributeNode(attrSGType);
+        for (ProjectItemNode subGroupChild : sgNode.children) {
+            switch (subGroupChild.type) {
+                case ProjectItemNode.NODE_FOLDER:
+                    subGroupElem.appendChild(addFolderNode((FolderNode) subGroupChild));
+                    break;
+                case ProjectItemNode.NODE_FILE:
+                    subGroupElem.appendChild(addFileNode((FileNode) subGroupChild));
+                    break;
+            }
+        }
+        return subGroupElem;
+    }
+
+    public Element addGroupNode(GroupNode gNode) {
+        Element groupElem = document.createElement("GroupData");
+        Attr attrGName = document.createAttribute("name");
+        attrGName.setValue(gNode.title);
+        Attr attrGType = document.createAttribute("type");
+        attrGType.setValue(Integer.toString(gNode.groupType));
+        groupElem.setAttributeNode(attrGName);
+        groupElem.setAttributeNode(attrGType);
+        for (ProjectItemNode groupChild : gNode.children) {
+            switch (groupChild.type) {
+                case ProjectItemNode.NODE_SUBGROUP:
+                    groupElem.appendChild(addSubGroupNode((SubGroupNode) groupChild));
+                    break;
+                case ProjectItemNode.NODE_FOLDER:
+                    groupElem.appendChild(addFolderNode((FolderNode) groupChild));
+                    break;
+                case ProjectItemNode.NODE_FILE:
+                    groupElem.appendChild(addFileNode((FileNode) groupChild));
+                    break;
+            }
+        }
+        return groupElem;
+    }
+
+    public String getCleanXML() throws TransformerException {
+        removeNodes((Node) document);
+        return getXML();
+    }
+
+    public void removeNodes(Node node) {
+        NodeList list = node.getChildNodes();
+        for (int i = 0; i < list.getLength(); i++) {
+            removeNodes(list.item(i));
+        }
+        boolean emptyElement = node.getNodeType() == Node.ELEMENT_NODE
+                && node.getChildNodes().getLength() == 0 && "FolderData".equals(node.getNodeName());
+        if (emptyElement) {
+            node.getParentNode().removeChild(node);
+        }
     }
 
     //this will return string form of xml document which we can use to write it to a file
@@ -145,6 +271,7 @@ public class XmlOperations {
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
         transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
         StringWriter writer = new StringWriter();
         transformer.transform(new DOMSource(document), new StreamResult(writer));
@@ -157,31 +284,6 @@ public class XmlOperations {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         try {
             Document genDoc = dBuilder.parse(new InputSource(new StringReader(data)));
-            NodeList romList = genDoc.getElementsByTagName("Rom");
-            for (int i = 0; i < romList.getLength(); i++) {
-                Node romNode = romList.item(i);
-                if (romNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) romNode;
-                    Project.romName = element.getElementsByTagName("RName").item(0).getTextContent();
-                    Project.romVersion = element.getElementsByTagName("RVersion").item(0).getTextContent();
-                    Project.romAuthor = element.getElementsByTagName("RAuthor").item(0).getTextContent();
-                    Project.romDevice = element.getElementsByTagName("RDevice").item(0).getTextContent();
-                    Project.romDate = element.getElementsByTagName("RDate").item(0).getTextContent();
-                }
-            }
-
-            NodeList gappsList = genDoc.getElementsByTagName("Gapps");
-            for (int i = 0; i < gappsList.getLength(); i++) {
-                Node gappsNode = gappsList.item(i);
-                if (gappsNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) gappsNode;
-                    Project.gappsName = element.getElementsByTagName("GName").item(0).getTextContent();
-                    Project.gappsType = element.getElementsByTagName("GType").item(0).getTextContent();
-                    Project.gappsDate = element.getElementsByTagName("GDate").item(0).getTextContent();
-                    Project.androidVersion = element.getElementsByTagName("GAndroidVersion").item(0).getTextContent();
-                }
-            }
-
             NodeList modList = genDoc.getElementsByTagName("Mod");
             for (int i = 0; i < modList.getLength(); i++) {
                 Node modNode = modList.item(i);
@@ -205,8 +307,8 @@ public class XmlOperations {
     }
 
     //following will create file objects of delete file group.
-    public void parseXML(String original, ProjectItemNode rootNode, DefaultTreeModel model) throws ParserConfigurationException, SAXException, IOException {
-        TreeOperations to = new TreeOperations(rootNode);
+    public void parseXML(String original) throws ParserConfigurationException, SAXException, IOException {
+        TreeOperations to = new TreeOperations();
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document genDoc = dBuilder.parse(new InputSource(new StringReader(original)));
@@ -216,41 +318,102 @@ public class XmlOperations {
             if (fileNode.getParentNode().getNodeName().equals("GroupData")) {
                 if (fileNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element element = (Element) fileNode;
-                    to.addFileToTree(element.getAttribute("name"),
-                            element.getElementsByTagName("GroupName").item(0).getTextContent(),
-                            Integer.parseInt(element.getElementsByTagName("GroupType").item(0).getTextContent()),
-                            element.getElementsByTagName("ProjectName").item(0).getTextContent(),
-                            Integer.parseInt(element.getElementsByTagName("ProjectType").item(0).getTextContent()), rootNode, model);
+//                    to.addFileToTree(element.getAttribute("name"),
+//                            element.getElementsByTagName("GroupName").item(0).getTextContent(),
+//                            Integer.parseInt(element.getElementsByTagName("GroupType").item(0).getTextContent()),
+//                            element.getElementsByTagName("ProjectName").item(0).getTextContent(),
+//                            Integer.parseInt(element.getElementsByTagName("ProjectType").item(0).getTextContent()));
                 }
             }
         }
     }
 
-    //following is to set description of files.
-    public void parseDataXML(ProjectItemNode rootNode, String data) throws SAXException, IOException, ParserConfigurationException {
-        TreeOperations to = new TreeOperations(rootNode);
+    public void parseDataXML(String data) throws ParserConfigurationException, SAXException, IOException {
+        TreeOperations to = new TreeOperations();
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document genDoc = dBuilder.parse(new InputSource(new StringReader(data)));
-        NodeList fileList = genDoc.getElementsByTagName("FileData");
-        for (int j = 0; j < fileList.getLength(); j++) {
-            Node fileNode = fileList.item(j);
-            if (fileNode.getParentNode().getNodeName().equals("GroupData")) {
-                if (fileNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) fileNode;
-                    FileNode file = to.getFileNode(element.getAttribute("name"),
-                            element.getElementsByTagName("GroupName").item(0).getTextContent(),
-                            element.getElementsByTagName("ProjectName").item(0).getTextContent());
-                    setFileValues(file, element);
+        NodeList projectList = genDoc.getElementsByTagName("ProjectData");
+        for (int p = 0; p < projectList.getLength(); p++) {
+            Node projectNode = projectList.item(p);
+            String projectName = ((Element) projectNode).getAttribute("name");
+            NodeList groupList = projectNode.getChildNodes();
+            for (int g = 0; g < groupList.getLength(); g++) {
+                Node groupNode = groupList.item(g);
+                if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
+                    String groupName = ((Element) groupNode).getAttribute("name");
+                    NodeList groupChildList = groupNode.getChildNodes();
+                    for (int gc = 0; gc < groupChildList.getLength(); gc++) {
+                        Node groupChildNode = groupChildList.item(gc);
+                        String subGroupName = "";
+                        String folderName = "";
+                        ArrayList<String> folders = new ArrayList<>();
+                        if (groupChildNode.getNodeType() == Node.ELEMENT_NODE) {
+                            String groupChildName = ((Element) groupChildNode).getAttribute("name");
+                            switch (groupChildNode.getNodeName()) {
+                                case "SubGroupData":
+                                    subGroupName = groupChildName;
+                                    NodeList subGroupChildNodeList = groupChildNode.getChildNodes();
+                                    for (int sgc = 0; sgc < subGroupChildNodeList.getLength(); sgc++) {
+                                        Node subGroupChildNode = subGroupChildNodeList.item(sgc);
+                                        if (subGroupChildNode.getNodeType() == Node.ELEMENT_NODE) {
+                                            String subGroupChildName = ((Element) subGroupChildNode).getAttribute("name");
+                                            switch (subGroupChildNode.getNodeName()) {
+                                                case "FolderData":
+                                                    folders = new ArrayList<>();
+                                                    folderName = subGroupChildName;
+                                                    folders.add(folderName);
+                                                    HandleFolderData(projectName, groupName, subGroupName, subGroupChildNode, folders);
+                                                    break;
+                                                case "FileData":
+                                                    Logs.write("Working for file(inside subgroup " + subGroupName + " ): " + subGroupChildName);
+                                                    FileNode file = to.getFileNode(subGroupChildName, folders, subGroupName, groupName, projectName);
+                                                    file.description = ((Element) subGroupChildNode).getElementsByTagName("description").item(0).getTextContent();
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "FolderData":
+                                    folders = new ArrayList<>();
+                                    folderName = groupChildName;
+                                    folders.add(folderName);
+                                    HandleFolderData(projectName, groupName, subGroupName, groupChildNode, folders);
+                                    break;
+                                case "FileData":
+                                    Logs.write("Working for file(inside group " + groupName + " ): " + groupChildName);
+                                    FileNode file = to.getFileNode(groupChildName, folders, subGroupName, groupName, projectName);
+                                    file.description = ((Element) groupChildNode).getElementsByTagName("description").item(0).getTextContent();
+                                    break;
+                            }
+                        }
+                    }
                 }
-            } else if (fileNode.getParentNode().getNodeName().equals("SubGroupData")) {
-                if (fileNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) fileNode;
-                    FileNode file = to.getFileNode(element.getAttribute("name"),
-                            element.getElementsByTagName("SubGroupName").item(0).getTextContent(),
-                            element.getElementsByTagName("GroupName").item(0).getTextContent(),
-                            element.getElementsByTagName("ProjectName").item(0).getTextContent());
-                    setFileValues(file, element);
+            }
+        }
+    }
+
+    public void HandleFolderData(String ProjectName, String GroupName, String SubGroupName, Node folder, ArrayList<String> folders) {
+        if (folder.hasChildNodes()) {
+            NodeList folderChildList = folder.getChildNodes();
+            for (int fc = 0; fc < folderChildList.getLength(); fc++) {
+                Node folderChildNode = folderChildList.item(fc);
+                if (folderChildNode.getNodeType() == Node.ELEMENT_NODE) {
+                    String folderChildName = ((Element) folderChildNode).getAttribute("name");
+                    switch (folderChildNode.getNodeName()) {
+                        case "FolderData":
+                            if (folderChildNode.hasChildNodes()) {
+                                folders.add(folderChildName);
+                            }
+                            HandleFolderData(ProjectName, GroupName, SubGroupName, folderChildNode, folders);
+                            folders.remove(folderChildName);
+                            break;
+                        case "FileData":
+                            Logs.write("Working for file(inside folder " + folders.get(folders.size()-1) + " ): " + folderChildName);
+                            FileNode file = to.getFileNode(folderChildName, folders, SubGroupName, GroupName, ProjectName);
+                            file.description = ((Element) folderChildNode).getElementsByTagName("description").item(0).getTextContent();
+                            break;
+                    }
                 }
             }
         }
@@ -258,7 +421,7 @@ public class XmlOperations {
 
     //following is to set values of custom group.
     public void parseGeneratedXML(ProjectItemNode rootNode, String generated, String original) throws ParserConfigurationException, SAXException, IOException {
-        TreeOperations to = new TreeOperations(rootNode);
+        TreeOperations to = new TreeOperations();
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document genDoc = dBuilder.parse(new InputSource(new StringReader(generated)));

@@ -6,6 +6,7 @@
 package flashablezipcreator.DiskOperations;
 
 import flashablezipcreator.Operations.XmlOperations;
+import flashablezipcreator.Protocols.Logs;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -17,12 +18,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -35,17 +33,17 @@ public final class ReadZip {
     public ZipFile zf;
     public ZipEntry ze = null;
     public XmlOperations xo;
+    public int filesCount = 0;
 
     public ReadZip(String filePath) throws FileNotFoundException, IOException {
         xo = new XmlOperations();
         try {
             zf = new ZipFile((new File(filePath)).getAbsoluteFile());
+            filesCount = zf.size();
         } catch (IOException e1) {
             System.out.println("Sorry we couldn't find the file at path : " + (new File(filePath)).getAbsoluteFile());
             e1.printStackTrace();
         }
-//        this.zis = getZip(filePath);
-//        this.ze = this.zis.getNextEntry();
     }
 
     public ZipInputStream getZip(String filePath) throws FileNotFoundException {
@@ -153,7 +151,7 @@ public final class ReadZip {
         if (!file.exists()) {
             file.mkdirs();
         }
-        System.out.println("Path of file to be written from is : " + outFile.getAbsolutePath());
+        Logs.write("Path of file to be written from is : " + outFile.getAbsolutePath());
         try {
             FileOutputStream fos = new FileOutputStream(outFile);
             int len;
@@ -162,10 +160,10 @@ public final class ReadZip {
                 fos.write(buffer, 0, len);
             }
             in.close();
-            System.out.println("File Written..!!");
+            Logs.write("File Written..!!");
             fos.close();
         } catch (FileNotFoundException fnfe) {
-            System.out.println(outFile.getName() + " File not found..!!");
+            Logs.write(outFile.getName() + " File not found..!!");
         }
     }
     

@@ -24,8 +24,8 @@
 #--- COMMON SYSTEM STRING RESOURCE
 #
 text_ok=OK
-text_next=Next >
-text_back=< Back
+text_next=Next
+text_back=Back
 text_yes=Yes
 text_no=No
 text_about=About

@@ -5,7 +5,7 @@
  */
 package flashablezipcreator.DiskOperations;
 
-import static flashablezipcreator.AFZC.Protocols.p;
+import flashablezipcreator.Protocols.Logs;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,9 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,7 +32,7 @@ public final class WriteZip extends Write {
     //constructor overloading
     public WriteZip(String filePath) throws FileNotFoundException, IOException {
         this.zos = createZOS(filePath);
-        p("Zip created at " + filePath);
+        System.out.println("Zip created at " + filePath);
     }
 
     //this will create a zip outputstream
@@ -63,10 +61,11 @@ public final class WriteZip extends Write {
     }
 
     //this will be used to write binaries to zip.
+    @Override
     public void writeByteToFile(byte buffer[], String filePath) throws IOException {
         writeFileToZip(new ByteArrayInputStream(buffer), filePath);
     }
-    
+
     //this function is simple to use, source and destination path will do the work.
     public void writeFileToZip(String filePath, String writeAt) throws IOException {
         System.out.println("Looking for file path " + filePath);
@@ -75,8 +74,7 @@ public final class WriteZip extends Write {
 
     //this function is used to write file to zip for any zos.
     public void writeFileToZip(InputStream in, ZipOutputStream zos, String writeAt) throws IOException {
-        p("File Writing at " + writeAt);
-        //JOptionPane.showMessageDialog(null, "writing at " + writeAt);
+        Logs.write("File Writing at " + writeAt);
         byte[] buffer = new byte[1024];
         ZipEntry ze = new ZipEntry(writeAt);
         try {
@@ -85,14 +83,14 @@ public final class WriteZip extends Write {
             while ((len = in.read(buffer)) > 0) {
                 zos.write(buffer, 0, len);
             }
-            p("File Written..");
+            Logs.write("File Written..");
         } catch (ZipException e) {
-            System.out.println("Skipping Duplicate Entry : " + ze.getName());
+            Logs.write("Skipping Duplicate Entry : " + ze.getName());
         }
         in.close();
     }
-    
-    public void createFolderInZip(String path) throws IOException{
+
+    public void createFolderInZip(String path) throws IOException {
         ZipEntry ze = new ZipEntry(path);
         this.zos.putNextEntry(ze);
     }

@@ -24,7 +24,7 @@ public class AromaConfig {
 
     public static String build(ProjectItemNode rootNode) {
         aromaConfig = "";
-        to = new TreeOperations(rootNode);
+        to = new TreeOperations();
         aromaConfig += op.addSplashString();
         aromaConfig += op.addFontsString();
         aromaConfig += op.addThemesString(rootNode);
@@ -32,18 +32,18 @@ public class AromaConfig {
         for (ProjectItemNode project : to.getProjectsSorted(rootNode)) {
             if (((ProjectNode) project).createZip) {
                 switch (((ProjectNode) project).projectType) {
-                    case ProjectNode.PROJECT_ROM:
-                        aromaConfig += buildAdvancedScript((ProjectNode) project);
-                        break;
-                    case ProjectNode.PROJECT_GAPPS:
-                        aromaConfig += buildAdvancedScript((ProjectNode) project);
-                        break;
+//                    case ProjectNode.PROJECT_ROM:
+//                        aromaConfig += buildAdvancedScript((ProjectNode) project);
+//                        break;
+//                    case ProjectNode.PROJECT_GAPPS:
+//                        aromaConfig += buildAdvancedScript((ProjectNode) project);
+//                        break;
                     case ProjectNode.PROJECT_AROMA:
                         aromaConfig += buildAromaScript((ProjectNode) project);
                         break;
                     //following is not needed. added just in case.
-                    case ProjectNode.PROJECT_ADVANCED:
-                        break;
+//                    case ProjectNode.PROJECT_ADVANCED:
+//                        break;
                 }
             }
         }
@@ -75,38 +75,38 @@ public class AromaConfig {
         return str;
     }
 
-    public static String buildAdvancedScript(ProjectNode project) {
-        String str = "";
-        switch (project.projectType) {
-            case ProjectNode.PROJECT_ROM:
-                str += op.addMenuBox(project);
-                str += "if prop(\"" + project.title + ".prop\",\"selected\")==\"1\" then\n";
-                break;
-            case ProjectNode.PROJECT_GAPPS:
-                str += op.addMenuBox(project);
-                str += "if prop(\"" + project.title + ".prop\",\"selected\")==\"1\" then\n";
-                break;
-        }
-        str += op.addInitString(project);
-        str += op.addWelcomeString(project);
-        for (ProjectItemNode group : to.getNodeList(ProjectItemNode.NODE_GROUP)) {
-            if (((ProjectNode) group.parent).projectType == project.projectType
-                    && ((ProjectNode) group.parent).title.equals(project.title)) {
-                str += op.addCheckBox((GroupNode) group);
-                str += op.addSelectBox((GroupNode) group);
-            }
-        }
-        str += "endif;\n";
-        switch (project.projectType) {
-            case ProjectNode.PROJECT_ROM:
-                str += "if prop(\"" + project.title + ".prop\",\"selected\")==\"2\" then\n";
-                break;
-            case ProjectNode.PROJECT_GAPPS:
-                str += "if prop(\"" + project.title + ".prop\",\"selected\")==\"2\" then\n";
-                break;
-        }
-        str += "writetmpfile(\"" + project.title + ".prop\",\"init=no\\n\");\n";
-        str += "endif;\n";
-        return str;
-    }
+//    public static String buildAdvancedScript(ProjectNode project) {
+//        String str = "";
+//        switch (project.projectType) {
+//            case ProjectNode.PROJECT_ROM:
+//                str += op.addMenuBox(project);
+//                str += "if prop(\"" + project.title + ".prop\",\"selected\")==\"1\" then\n";
+//                break;
+//            case ProjectNode.PROJECT_GAPPS:
+//                str += op.addMenuBox(project);
+//                str += "if prop(\"" + project.title + ".prop\",\"selected\")==\"1\" then\n";
+//                break;
+//        }
+//        str += op.addInitString(project);
+//        str += op.addWelcomeString(project);
+//        for (ProjectItemNode group : to.getNodeList(ProjectItemNode.NODE_GROUP)) {
+//            if (((ProjectNode) group.parent).projectType == project.projectType
+//                    && ((ProjectNode) group.parent).title.equals(project.title)) {
+//                str += op.addCheckBox((GroupNode) group);
+//                str += op.addSelectBox((GroupNode) group);
+//            }
+//        }
+//        str += "endif;\n";
+//        switch (project.projectType) {
+//            case ProjectNode.PROJECT_ROM:
+//                str += "if prop(\"" + project.title + ".prop\",\"selected\")==\"2\" then\n";
+//                break;
+//            case ProjectNode.PROJECT_GAPPS:
+//                str += "if prop(\"" + project.title + ".prop\",\"selected\")==\"2\" then\n";
+//                break;
+//        }
+//        str += "writetmpfile(\"" + project.title + ".prop\",\"init=no\\n\");\n";
+//        str += "endif;\n";
+//        return str;
+//    }
 }

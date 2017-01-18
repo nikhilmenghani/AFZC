@@ -7,6 +7,7 @@ package flashablezipcreator.UserInterface;
 
 import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.Protocols.Device;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Xml;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -17,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -44,7 +46,7 @@ public class AddDevice extends javax.swing.JFrame {
         JSPList = new javax.swing.JScrollPane();
         DefaultListModel listModel = new DefaultListModel();
         listDevice = new javax.swing.JList(listModel);
-
+        cboxRemember.setSelected(true);
         ArrayList<String> arrayList = new ArrayList<String>();
 
         for (String deviceName : Device.deviceList) {
@@ -63,7 +65,7 @@ public class AddDevice extends javax.swing.JFrame {
         panelButton = new javax.swing.JPanel();
         btnDone = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         panelMain.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -80,7 +82,7 @@ public class AddDevice extends javax.swing.JFrame {
                 .addGroup(panelHeaderLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(89, Short.MAX_VALUE))
         );
         panelHeaderLayout.setVerticalGroup(
                 panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -104,7 +106,7 @@ public class AddDevice extends javax.swing.JFrame {
         panelListLayout.setVerticalGroup(
                 panelListLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panelListLayout.createSequentialGroup()
-                        .addComponent(JSPList, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(JSPList, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -118,17 +120,13 @@ public class AddDevice extends javax.swing.JFrame {
         btnDone.addActionListener((java.awt.event.ActionEvent evt) -> {
             try {
                 Device.selected = listDevice.getSelectedValue().toString();
+                Logs.write("Selected Device: " + Device.selected);
                 if (cboxRemember.isSelected()) {
                     Write w = new Write();
                     w.writeStringToFile(Xml.getDeviceConfigString(), Xml.device_config_path);
                 }
 
-            } catch (NullPointerException npe) {
-            } catch (ParserConfigurationException ex) {
-                Logger.getLogger(AddDevice.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (TransformerException ex) {
-                Logger.getLogger(AddDevice.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
+            } catch (NullPointerException | ParserConfigurationException | TransformerException | IOException ex) {
                 Logger.getLogger(AddDevice.class.getName()).log(Level.SEVERE, null, ex);
             }
             dialog.dispose();
@@ -138,17 +136,17 @@ public class AddDevice extends javax.swing.JFrame {
         panelButton.setLayout(panelButtonLayout);
         panelButtonLayout.setHorizontalGroup(
                 panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelButtonLayout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(btnDone, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                        .addGap(0, 0, 0))
+                .addComponent(btnDone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
         );
         panelButtonLayout.setVerticalGroup(
                 panelButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(btnDone, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelButtonLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnDone, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         cboxRemember.setBackground(new java.awt.Color(255, 255, 255));
+        cboxRemember.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cboxRemember.setText(" Remember for next time");
 
         javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
@@ -157,10 +155,10 @@ public class AddDevice extends javax.swing.JFrame {
                 panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(panelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelList, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMainLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(cboxRemember)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelMainLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(cboxRemember, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(panelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
         );
@@ -170,7 +168,7 @@ public class AddDevice extends javax.swing.JFrame {
                         .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
                         .addComponent(panelList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(panelButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(cboxRemember, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -181,13 +179,11 @@ public class AddDevice extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -196,6 +192,8 @@ public class AddDevice extends javax.swing.JFrame {
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent we) {
+                JOptionPane.showMessageDialog(null, "Default Device (Redmi Note 3) Selected!");
+                Logs.write("Default Device Selected: " + Device.selected);
                 dialog.dispose();
             }
         });
