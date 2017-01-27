@@ -72,16 +72,21 @@ public class UpdateBinaryOperations {
         switch (type) {
             case 1:
                 return addPrintString("@Mounting Partitions...")
-						+ "mount /system\n"
-						+ "mount /data\n"
-						+ "mount -o rw,remount /system\n"
-						+ "mount -o rw,remount /system /system\n"
-						+ "mount -o rw,remount /\n"
-						+ "mount -o rw,remount / /\n"
-						+ addPrintString("Extracting zip contents to /tmp")
-						+ "cd /tmp\n"
-						+ "mkdir zipContent\n"
-						+ "cd zipContent\n";
+                        + "mount /system\n"
+                        + "mount /data\n"
+                        + "if [ $(is_mounted /data) == 1 ]; then\n"
+                        + addPrintString("/data already mounted. Remounting...")
+                        + "umount /data\n"
+                        + "mount /data\n"
+                        + "fi;\n"
+                        + "mount -o rw,remount /system\n"
+                        + "mount -o rw,remount /system /system\n"
+                        + "mount -o rw,remount /\n"
+                        + "mount -o rw,remount / /\n"
+                        + addPrintString("Extracting zip contents to /tmp")
+                        + "cd /tmp\n"
+                        + "mkdir zipContent\n"
+                        + "cd zipContent\n";
             case 2:
                 //future aspect
                 break;
