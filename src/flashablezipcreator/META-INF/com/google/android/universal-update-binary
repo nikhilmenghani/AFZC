@@ -53,7 +53,16 @@ write_raw_image() { dd if=$1 of=$2; }
 # package_extract_file <file> <destination_file>
 package_extract_file() { unzip -o "$ZIPFILE" "$1" -p > "$2"; }
 # package_extract_dir <dir> <destination_dir>
-package_extract_dir() { unzip -o "$ZIPFILE" "$1/*" -d "$2"; }
+package_extract_dir() { 
+	unzip -o "$ZIPFILE";
+	cd $1;
+	find . -mindepth 1 -maxdepth 1 -type d | while read -r dir
+	do
+		cp -r $dir $2/
+	done;
+	rm -rf *;
+	cd /tmp/zipContent
+}
 
 # rename <file> <destination_file>
 rename() { mv -f $1 $2; }

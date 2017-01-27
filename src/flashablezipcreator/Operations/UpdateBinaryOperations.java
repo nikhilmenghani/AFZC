@@ -59,7 +59,7 @@ public class UpdateBinaryOperations {
 
     public String addWipeDalvikCacheString() {
         String str = "";
-        str += "mount /data\n";
+        str += "mount -o rw,remount,rw /data\n";
         str += "if [ $(file_getprop /tmp/aroma/dalvik_choices.prop true) ==  yes ]; then\n"
                 + "ui_print \"@Wiping dalvik-cache\"\n"
                 + "delete_recursive /data/dalvik-cache\n"
@@ -72,8 +72,16 @@ public class UpdateBinaryOperations {
         switch (type) {
             case 1:
                 return addPrintString("@Mounting Partitions...")
-                        + "mount /system\n"
-                        + "mount /data\n";
+						+ "mount /system\n"
+						+ "mount /data\n"
+						+ "mount -o rw,remount /system\n"
+						+ "mount -o rw,remount /system /system\n"
+						+ "mount -o rw,remount /\n"
+						+ "mount -o rw,remount / /\n"
+						+ addPrintString("Extracting zip contents to /tmp")
+						+ "cd /tmp\n"
+						+ "mkdir zipContent\n"
+						+ "cd zipContent\n";
             case 2:
                 //future aspect
                 break;
