@@ -360,7 +360,7 @@ public class UpdateBinaryOperations {
 
     public String getPackageExtractDirString(GroupNode group) {
         String str = addPrintString("Creating folder in " + group.location);
-        String extractZipPath = (group.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        String extractZipPath = (group.extractZipPath + "/" ).replaceAll("\\\\", "/"); // + "afzc_temp"
         extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(group.location));
         if (group.location.contains("/system")) {
             return str += "package_extract_dir " + extractZipPath + "/system" + " /system\n";
