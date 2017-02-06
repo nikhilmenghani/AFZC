@@ -17,6 +17,7 @@ import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.UserInterface.About;
 import flashablezipcreator.UserInterface.Preferences;
+import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -394,7 +395,9 @@ public class MyTree extends JFrame {
                 Thread importZip = new Thread(new Import(importFrom), "ImportZip");
                 importZip.start();
             }
-        } catch (NullPointerException npe) {
+        } catch (Exception e) {
+            Logs.write(e.getMessage());
+            setCardLayout(1);
         }
     }
 
@@ -405,11 +408,18 @@ public class MyTree extends JFrame {
                 Thread exportZip = new Thread(new Export(), "ExportZip");
                 exportZip.start();
             }
-        } catch (NullPointerException npe) {
+        } catch (Exception e) {
+            Logs.write(e.getMessage());
+            setCardLayout(1);
         }
 //        Export.zip();
     }
 
+    public static void setCardLayout(int cardNo) {
+        CardLayout cardLayout = (CardLayout) panelLower.getLayout();
+        cardLayout.show(panelLower, "card" + Integer.toString(cardNo));
+    }
+    
     private javax.swing.JButton btnCreateZip;
     private javax.swing.JButton btnImportZip;
     private javax.swing.JScrollPane SP_tree;

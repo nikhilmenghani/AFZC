@@ -119,8 +119,9 @@ public class Import implements Runnable {
             progressBarImportExport.setString("0%");
             progressBarImportExport.setValue(0);
             progressBarFlag = 0;
-        } catch (IOException | TransformerException | ParserConfigurationException | SAXException | HeadlessException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n");
+            Logs.write(Logs.getExceptionTrace(e));
             setCardLayout(1);
         }
     }
@@ -151,8 +152,9 @@ public class Import implements Runnable {
             setCardLayout(2);
             fromTheZip(path);
             setCardLayout(1);
-        } catch (IOException | ParserConfigurationException | TransformerException | SAXException ex) {
-            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, e);
+            Logs.write(Logs.getExceptionTrace(e));
         }
     }
 }

@@ -89,10 +89,10 @@ public class Xml {
     }
 
     public static String getPreferenceConfigString(String aromaVersion, boolean androidVersionAboveLP,
-            boolean quickProjectSetup, ArrayList<String> themes, String zipCreatorName, String ZipVersion)
+            boolean quickProjectSetup, ArrayList<String> themes, String zipCreatorName, String ZipVersion, boolean saveLogs)
             throws ParserConfigurationException, TransformerException {
         xo = new XmlOperations();
-        xo.createConfigurationConfig(aromaVersion, androidVersionAboveLP, quickProjectSetup, themes, zipCreatorName, ZipVersion);
+        xo.createConfigurationConfig(aromaVersion, androidVersionAboveLP, quickProjectSetup, themes, zipCreatorName, ZipVersion, saveLogs);
         return xo.getXML();
     }
 
@@ -124,5 +124,10 @@ public class Xml {
     public static String getZipVersion(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
         return xo.getStringConfigValue(configData, "zipVersion");
+    }
+    
+    public static boolean getLogsIndicator(String configData) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getBoolConfigValue(configData, "saveLogs");
     }
 }

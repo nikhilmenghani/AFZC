@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Core;
 
+import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -69,6 +70,8 @@ public final class FileNode extends ProjectItemNode {
         parent.description = this.description;
         if (parent.isBootAnimationGroup) {
             setPermissions(parent.permission, "bootanimation.zip");
+        } else if (((GroupNode) parent.originalParent).groupType == GroupNode.GROUP_DATA_APP && Preferences.IsFromLollipop) {
+            setPermissions(parent.permission, "base.apk");
         } else {
             setPermissions(parent.permission, title);
         }
