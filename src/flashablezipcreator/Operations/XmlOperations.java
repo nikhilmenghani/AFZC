@@ -52,7 +52,7 @@ public class XmlOperations {
     TreeOperations to = new TreeOperations();
 
     public void createConfigurationConfig(String aromaVersion, boolean androidVersionAboveLP, boolean quickProjectSetup,
-            ArrayList<String> themes, String zipCreatorName, String zipVersion) throws ParserConfigurationException {
+            ArrayList<String> themes, String zipCreatorName, String zipVersion, boolean saveLogs) throws ParserConfigurationException {
         documentFactory = DocumentBuilderFactory.newInstance();
         documentBuilder = documentFactory.newDocumentBuilder();
         document = documentBuilder.newDocument();
@@ -74,12 +74,15 @@ public class XmlOperations {
         zipCreatorNameElem.setTextContent(zipCreatorName);
         Element zipVersionElem = document.createElement("zipVersion");
         zipVersionElem.setTextContent(zipVersion);
+        Element saveLogsElem = document.createElement("saveLogs");
+        saveLogsElem.setTextContent(String.valueOf(saveLogs));
         root.appendChild(aromaVersionElem);
         root.appendChild(androidVersionElem);
         root.appendChild(quickProjectSetupElem);
         root.appendChild(themesElem);
         root.appendChild(zipCreatorNameElem);
         root.appendChild(zipVersionElem);
+        root.appendChild(saveLogsElem);
     }
 
     public String getStringConfigValue(String configData, String elementName) throws ParserConfigurationException, SAXException, IOException {

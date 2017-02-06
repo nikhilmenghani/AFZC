@@ -183,8 +183,8 @@ public class AromaScriptOperations {
         switch (project.projectType) {
             case ProjectNode.PROJECT_AROMA:
                 str += "\nmenubox(\"" + "Menu" + " List\",\"Select from " + "following" + "\",\"@installmods\",\"" + project.title + ".prop" + "\",\n"
-                        + "\"Install\", \"Install Mods\", \"@install\"";
-                str += ",\n\"" + "Skip" + "\", \"Do Not Install Mods\", \"@apps\"";
+                        + "\"Open " + project.title + "\", \"Install files from " + project.title + "\", \"@install\"";
+                str += ",\n\"" + "Skip" + "\", \"Do Not Install files from " + project.title + "\", \"@apps\"";
                 str += ");\n";
                 str += "writetmpfile(\"" + project.title + ".prop" + "\",readtmpfile(\"" + project.title + ".prop" + "\"));\n";
                 break;

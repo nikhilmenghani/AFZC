@@ -52,8 +52,10 @@ public class FlashableZipCreator {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
+        String OS = "Windows";
         try {
-            if (JarOperations.getSystemOS().equals("Windows")) {
+            OS = JarOperations.getSystemOS();
+            if (OS.equals("Windows")) {
                 for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                     if ("Windows".equals(info.getName())) {
                         javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -77,15 +79,34 @@ public class FlashableZipCreator {
         //</editor-fold>
 
         try {
+            File f = new File("Preferences.config");
+            Read r = new Read();
             Logs.logFile = "Logs_" + Logs.getTime() + ".log";
-            Logs.write("Created Logs File..");
+            if (f.exists()) {
+                Preferences.preferencesFilePresent = true;
+                Preferences.preferencesConfig = r.getFileString("Preferences.config");
+                Preferences.themes = Xml.getThemes(preferencesConfig);
+                Preferences.aromaVersion = Xml.getAromaVersion(preferencesConfig);
+                Preferences.IsFromLollipop = Xml.getAndroidVersionDetail(preferencesConfig);
+                Preferences.IsQuickSetup = Xml.getQuickProjectSetup(preferencesConfig);
+                Preferences.zipCreatorName = Xml.getZipCreatorName(preferencesConfig);
+                Preferences.zipVersion = Xml.getZipVersion(preferencesConfig);
+                Preferences.saveLogs = Xml.getLogsIndicator(preferencesConfig);
+                Logs.write("Created Logs File..");
+                Logs.write(OS + " Operating System Found..!!");
+                Logs.write("Preferences.config Found");
+                Logs.write("Preferences Loaded");
+            }
+            if (Preferences.themes.isEmpty()) {
+                Preferences.themes.add("Nikhil");
+            }
+            
             if (Jar.isExecutingThrough()) {
                 JarOperations.setJarFileList();
                 Device.loadDeviceList();
                 Logs.write("Device List Loaded");
                 String configString = "";
                 if ((new File(Xml.device_config_path).exists())) {
-                    Read r = new Read();
                     configString = r.getFileString(Xml.device_config_path);
                     Device.selected = Xml.getDeviceName(configString);
                     Logs.write("Selected Device from Config: " + Device.selected);
@@ -98,28 +119,12 @@ public class FlashableZipCreator {
             } else {
                 Xml.file_details_path = "dist/" + Xml.file_details_path;
             }
-            File f = new File(Xml.file_details_path);
-            Read r = new Read();
+            f = new File(Xml.file_details_path);
             if (f.exists()) {
                 Xml.fileDetailsData = r.getFileString(Xml.file_details_path);
                 Xml.initializeProjectDetails(Xml.fileDetailsData);
             }
-            f = new File("Preferences.config");
-            if (f.exists()) {
-                Logs.write("Preferences.config Found");
-                Preferences.preferencesFilePresent = true;
-                Preferences.preferencesConfig = r.getFileString("Preferences.config");
-                Preferences.themes = Xml.getThemes(preferencesConfig);
-                Preferences.aromaVersion = Xml.getAromaVersion(preferencesConfig);
-                Preferences.IsFromLollipop = Xml.getAndroidVersionDetail(preferencesConfig);
-                Preferences.IsQuickSetup = Xml.getQuickProjectSetup(preferencesConfig);
-                Preferences.zipCreatorName = Xml.getZipCreatorName(preferencesConfig);
-                Preferences.zipVersion = Xml.getZipVersion(preferencesConfig);
-                Logs.write("Preferences Loaded");
-            }
-            if (Preferences.themes.isEmpty()) {
-                Preferences.themes.add("Nikhil");
-            }
+            
             //if(!Device.selected.equals("")){
             new MyTree().setVisible(true);
             if (Preferences.IsQuickSetup) {

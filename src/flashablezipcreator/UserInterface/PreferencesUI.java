@@ -47,6 +47,8 @@ public class PreferencesUI extends javax.swing.JFrame {
         txtZipCreatorName = new javax.swing.JTextField();
         lblZipVersion = new javax.swing.JLabel();
         txtZipVersion = new javax.swing.JTextField();
+        lblLogging = new javax.swing.JLabel();
+        cbSaveLogs = new javax.swing.JCheckBox();
         panelThemes = new javax.swing.JPanel();
         lblThemesOptions = new javax.swing.JLabel();
         lblThemesHeading = new javax.swing.JLabel();
@@ -140,6 +142,14 @@ public class PreferencesUI extends javax.swing.JFrame {
 
         txtZipVersion.setToolTipText("This Version will reflect in Aroma as Release Version");
 
+        lblLogging.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblLogging.setText("Logging");
+
+        cbSaveLogs.setBackground(new java.awt.Color(255, 255, 255));
+        cbSaveLogs.setSelected(true);
+        cbSaveLogs.setText("Save Logs");
+        cbSaveLogs.setToolTipText("Enabling this will save a log file every time you use this tool");
+
         javax.swing.GroupLayout panelGeneralLayout = new javax.swing.GroupLayout(panelGeneral);
         panelGeneral.setLayout(panelGeneralLayout);
         panelGeneralLayout.setHorizontalGroup(
@@ -151,8 +161,6 @@ public class PreferencesUI extends javax.swing.JFrame {
                         .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblHoverInformation)
-                            .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbAndroidVersion)
                             .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -161,11 +169,19 @@ public class PreferencesUI extends javax.swing.JFrame {
                                 .addComponent(txtZipCreatorName, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(cbProjectSetup, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(lblZipVersion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtZipVersion, javax.swing.GroupLayout.Alignment.LEADING))))
+                                .addComponent(txtZipVersion, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGroup(panelGeneralLayout.createSequentialGroup()
+                                .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbAndroidVersion))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                                .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblLogging, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbSaveLogs)))))
                     .addGroup(panelGeneralLayout.createSequentialGroup()
                         .addGap(79, 79, 79)
                         .addComponent(lblGeneralOptions)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelGeneralLayout.setVerticalGroup(
             panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,9 +193,15 @@ public class PreferencesUI extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
-                .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(cbAndroidVersion)
+                .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelGeneralLayout.createSequentialGroup()
+                        .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(cbAndroidVersion))
+                    .addGroup(panelGeneralLayout.createSequentialGroup()
+                        .addComponent(lblLogging, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(cbSaveLogs)))
                 .addGap(16, 16, 16)
                 .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -428,6 +450,7 @@ public class PreferencesUI extends javax.swing.JFrame {
     private javax.swing.JCheckBox cbAndroidVersion;
     private javax.swing.JComboBox<String> cbAromaVersion;
     private javax.swing.JCheckBox cbProjectSetup;
+    private javax.swing.JCheckBox cbSaveLogs;
     private javax.swing.JCheckBox cbThemeDefault;
     private javax.swing.JCheckBox cbThemeFranzyroy;
     private javax.swing.JCheckBox cbThemeIcs;
@@ -441,6 +464,7 @@ public class PreferencesUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblGeneralHeading;
     private javax.swing.JLabel lblGeneralOptions;
     private javax.swing.JLabel lblHoverInformation;
+    private javax.swing.JLabel lblLogging;
     private javax.swing.JLabel lblProjectSetup;
     private javax.swing.JLabel lblThemesHeading;
     private javax.swing.JLabel lblThemesOptions;

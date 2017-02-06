@@ -68,7 +68,6 @@ public final class WriteZip extends Write {
 
     //this function is simple to use, source and destination path will do the work.
     public void writeFileToZip(String filePath, String writeAt) throws IOException {
-        System.out.println("Looking for file path " + filePath);
         writeFileToZip(new FileInputStream(new File(filePath)), writeAt);
     }
 

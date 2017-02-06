@@ -49,10 +49,10 @@ public class AromaConfig {
         }
         aromaConfig += op.setNextText("Install");
         aromaConfig += op.addCheckViewBox();
-        aromaConfig += op.setNextText("Next");
-        aromaConfig += op.addInstallString();
         aromaConfig += op.setNextText("Finish");
-        aromaConfig += op.addRebootString();
+        aromaConfig += op.addInstallString();
+//        aromaConfig += op.setNextText("Finish");
+//        aromaConfig += op.addRebootString();
         return aromaConfig;
     }
 

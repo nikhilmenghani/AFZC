@@ -206,8 +206,6 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="lblGeneralHeading" min="-2" pref="304" max="-2" attributes="0"/>
                                           <Component id="lblHoverInformation" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblAndroidVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
-                                          <Component id="cbAndroidVersion" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="lblAromaVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
                                           <Component id="cbAromaVersion" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="lblProjectSetup" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
@@ -218,6 +216,17 @@
                                               <Component id="lblZipVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
                                               <Component id="txtZipVersion" alignment="0" max="32767" attributes="0"/>
                                           </Group>
+                                          <Group type="102" attributes="0">
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="lblAndroidVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                                  <Component id="cbAndroidVersion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace pref="47" max="32767" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="lblLogging" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                                  <Component id="cbSaveLogs" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                          </Group>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
@@ -225,7 +234,7 @@
                                       <Component id="lblGeneralOptions" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="45" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -239,9 +248,18 @@
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Component id="lblGeneralHeading" min="-2" pref="22" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                              <Component id="lblAndroidVersion" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                              <Component id="cbAndroidVersion" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="lblAndroidVersion" min="-2" pref="22" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                      <Component id="cbAndroidVersion" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" attributes="0">
+                                      <Component id="lblLogging" min="-2" pref="22" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                                      <Component id="cbSaveLogs" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
                               <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                               <Component id="lblAromaVersion" min="-2" pref="22" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -372,6 +390,24 @@
                     <Component class="javax.swing.JTextField" name="txtZipVersion">
                       <Properties>
                         <Property name="toolTipText" type="java.lang.String" value="This Version will reflect in Aroma as Release Version"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="lblLogging">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Tahoma" size="11" style="1"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Logging"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JCheckBox" name="cbSaveLogs">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="selected" type="boolean" value="true"/>
+                        <Property name="text" type="java.lang.String" value="Save Logs"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Enabling this will save a log file every time you use this tool"/>
                       </Properties>
                     </Component>
                   </SubComponents>

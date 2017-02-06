@@ -10,10 +10,8 @@ import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
-import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
-import static flashablezipcreator.Protocols.UpdaterScript.symlinkScriptPath;
 
 /**
  *
@@ -65,8 +63,10 @@ public class UpdaterScriptOperations {
         switch (type) {
             case 1:
                 return addPrintString("@Mounting Partitions...")
-                        + "run_program(\"/sbin/busybox\",\"mount\", \"/system\");\n"
-                        + "run_program(\"/sbin/busybox\",\"mount\", \"/data\");\n";
+                        + "run_program(\"/sbin/busybox\", \"mount\", \"/system\");\n"
+                        + "run_program(\"/sbin/busybox\", \"mount\", \"/data\");\n"
+                        + createDirectory("/system/app")
+                        + createDirectory("/data/app") + "\n";
             case 2:
                 //future aspect
                 break;
@@ -80,17 +80,24 @@ public class UpdaterScriptOperations {
                 str = getFolderScript(str, child);
             } else if (child.type == ProjectItemNode.NODE_FILE) {
                 FileNode file = (FileNode) child;
-                str += getPackageExtractDirString(file);
+                str += createDirectory(file.installLocation);
                 if (file.title.endsWith("apk")) {
                     str += addPrintString(file.parent.title, installString);
+                    FolderNode folder = (FolderNode) (file.parent);
+                    GroupNode group = (GroupNode) (folder.originalParent);
+                    if (group.groupType == GroupNode.GROUP_DATA_APP) {
+                        str += "package_extract_file(\"" + file.fileZipPath + "\", \"" + file.installLocation + "/" + "base.apk" + "\");\n";
+                    } else {
+                        str += "package_extract_file(\"" + file.fileZipPath + "\", \"" + file.installLocation + "/" + file.title + "\");\n";
+                    }
                 } else {
                     str += addPrintString("Copying " + file.title);
+                    str += "package_extract_file(\"" + file.fileZipPath + "\", \"" + file.installLocation + "/" + file.title + "\");\n";
                 }
-                str += "package_extract_file(\"" + file.fileZipPath + "\", \"" + file.installLocation + "/" + file.title + "\");\n";
-                str += "set_perm(" + file.filePermission + ");\n";
+                str += "set_perm(" + file.filePermission + ");\n\n";
             }
         }
-        return str;
+        return str + "\n";
     }
 
     public String predefinedFolderGroupScript(GroupNode node) {
@@ -102,24 +109,24 @@ public class UpdaterScriptOperations {
                 for (ProjectItemNode folder : node.children) {
                     str = getFolderScript(str, folder);
                 }
-                str += "endif;\n";
+                str += "endif;\n\n";
                 for (ProjectItemNode folder : node.children) {
                     str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
                     str = getFolderScript(str, folder);
-                    str += "endif;\n";
+                    str += "endif;\n\n";
                 }
             } else {
                 str = predefinedGroupScript(node);
             }
         }
-        return str;
+        return str + "\n";
     }
 
     public String predefinedGroupScript(GroupNode node) {
         String str = "";
         if (node.isCheckBox()) {
             int count = 1;
-            str += getPackageExtractDirString(node);
+//            str += getPackageExtractDirString(node);
             str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
             for (ProjectItemNode fnode : node.children) {
                 FileNode file = (FileNode) fnode;
@@ -159,7 +166,7 @@ public class UpdaterScriptOperations {
         } else {
             System.out.println("This Group is not supported");
         }
-        return str;
+        return str + "\n";
     }
 
     public String deleteTempFiles() {
@@ -174,7 +181,7 @@ public class UpdaterScriptOperations {
         String str = "";
         if (node.isSelectBox()) {
             int count = 2;
-            str += getPackageExtractDirString(node);
+//            str += getPackageExtractDirString(node);
             for (ProjectItemNode subGroup : node.children) {
                 if (node.groupType == GroupNode.GROUP_SYSTEM_FONTS) {
                     str += "if (file_getprop(\"/tmp/aroma/" + node.prop.replace(".prop", "_temp.prop") + "\", \"" + subGroup.toString() + "\")==\"" + "yes" + "\") then \n";
@@ -186,20 +193,20 @@ public class UpdaterScriptOperations {
                     switch (node.groupType) {
                         case GroupNode.GROUP_SYSTEM_FONTS:
                             str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
-                            str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
+                            str += "set_perm(" + ((FileNode) file).filePermission + ");\n\n";
                             break;
                         case GroupNode.GROUP_DATA_LOCAL:
                         case GroupNode.GROUP_SYSTEM_MEDIA:
                             //this will rename any zip package to bootamination.zip allowing users to add bootanimation.zip with custom names.
                             str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + "bootanimation.zip" + "\");\n";
-                            str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
+                            str += "set_perm(" + ((FileNode) file).filePermission + ");\n\n";
                             break;
                     }
                 }
                 str += "endif;\n";
             }
         }
-        return str;
+        return str + "\n";
     }
 
     public String customGroupScript(GroupNode node) {
@@ -326,27 +333,31 @@ public class UpdaterScriptOperations {
                 + "set_perm_recursive(1000, 1000, 0771, 0644, \"/data/app\");\n";
     }
 
-    public String getPackageExtractDirString(FileNode file) {
-        String str = addPrintString("Creating folder in " + file.groupLocation);
-        String extractZipPath = file.extractZipPath;
-        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(file.groupLocation));
-        if (file.groupLocation.contains("/system")) {
-            return str += "package_extract_dir(\"" + extractZipPath + "/system" + "\",\"/system\");\n";
-        } else if (file.groupLocation.contains("/data")) {
-            return str += "package_extract_dir(\"" + extractZipPath + "/data" + "\",\"/data\");\n";
-        }
-        return "";
+    public String createDirectory(String dir) {
+        return "run_program(\"/sbin/busybox\", \"mkdir\", \"-p\", \"" + dir + "\");\n";
     }
 
-    public String getPackageExtractDirString(GroupNode group) {
-        String str = addPrintString("Creating folder in " + group.location);
-        String extractZipPath = (group.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
-        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(group.location));
-        if (group.location.contains("/system")) {
-            return str += "package_extract_dir(\"" + extractZipPath + "/system" + "\",\"/system\");\n";
-        } else if (group.location.contains("/data")) {
-            return str += "package_extract_dir(\"" + extractZipPath + "/data" + "\",\"/data\");\n";
-        }
-        return "";
-    }
+//    public String getPackageExtractDirString(FileNode file) {
+//        String str = addPrintString("Creating folder in " + file.groupLocation);
+//        String extractZipPath = file.extractZipPath;
+//        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(file.groupLocation));
+//        if (file.groupLocation.contains("/system")) {
+//            return str += "package_extract_dir(\"" + extractZipPath + "/system" + "\",\"/system\");\n";
+//        } else if (file.groupLocation.contains("/data")) {
+//            return str += "package_extract_dir(\"" + extractZipPath + "/data" + "\",\"/data\");\n";
+//        }
+//        return "";
+//    }
+//
+//    public String getPackageExtractDirString(GroupNode group) {
+//        String str = addPrintString("Creating folder in " + group.location);
+//        String extractZipPath = (group.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+//        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(group.location));
+//        if (group.location.contains("/system")) {
+//            return str += "package_extract_dir(\"" + extractZipPath + "/system" + "\",\"/system\");\n";
+//        } else if (group.location.contains("/data")) {
+//            return str += "package_extract_dir(\"" + extractZipPath + "/data" + "\",\"/data\");\n";
+//        }
+//        return "";
+//    }
 }

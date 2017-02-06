@@ -70,7 +70,7 @@ public class JarOperations {
                                 binary_EDELWEIS = r.getBytesFromFile(getInputStream(s));
                             } else if (s.endsWith("Supported Devices")) {
                                 supported_devices = r.getStringFromFile(getInputStream(s));
-                            } else if (s.startsWith("META-INF/com/google/android/binary-files/")){
+                            } else if (s.startsWith("META-INF/com/google/android/binary-files/")) {
                                 binaryList.add(s);
                             }
                         }
@@ -104,6 +104,7 @@ public class JarOperations {
             }
         }
         System.out.println(OS + " Operating System Found..!!");
+        Logs.newLine = OS.equals("Windows") ? System.getProperty("line.separator") : "\n";
         return OS;
     }
 

@@ -1,0 +1,68 @@
+img.background        = bg
+img.titlebar          = titlebar.9
+img.navbar            = nav.9
+img.dialog            = dialog.9
+img.dialog.titlebar   = dialog_titlebar.9
+img.progress          = button.9
+img.prograss.fill     = button_focus.9
+img.selection         = select.9
+img.selection.push    = select_push.9
+img.button            = button.9
+img.button.focus      = button_focus.9
+img.button.push       = button_press.9
+img.checkbox          = cb
+img.checkbox.focus    = cb_focus
+img.checkbox.push     = cb_push
+img.checkbox.on       = cb_on
+img.checkbox.on.focus = cb_on_focus
+img.checkbox.on.push  = cb_on_push
+img.radio             = radio
+img.radio.focus       = radio_focus
+img.radio.push        = radio_push
+img.radio.on          = radio_on
+img.radio.on.focus    = radio_on_focus
+img.radio.on.push     = radio_on_push
+
+
+color.winbg           = #efefef
+color.winbg_g         = #e6e6e6
+color.winfg           = #000000
+color.winfg_gray      = #666666
+color.dialogbg        = #efefef
+color.dialogbg_g      = #e6e6e6
+color.dialogfg        = #000000
+color.textbg          = #ffffff
+color.textfg          = #000000
+color.textfg_gray     = #666666
+color.controlbg       = #ececec
+color.controlbg_g     = #bdbdbd
+color.controlfg       = #222222
+color.selectbg        = #007fff
+color.selectbg_g      = #0000ff
+color.selectfg        = #ffffff
+color.titlebg         = #3b3b3b
+color.titlebg_g       = #1a1a1a
+color.titlefg         = #ffffff
+color.dlgtitlebg      = #3b3b3b
+color.dlgtitlebg_g    = #1a1a1a
+color.dlgtitlefg      = #ffffff
+color.scrollbar       = #89cff0
+color.navbg           = #e6e6e6
+color.navbg_g         = #c5c5c5
+color.border          = #dddddd
+color.border_g        = #cccccc
+color.progressglow    = #33b5e5
+
+
+config.roundsize             = 2
+config.button_roundsize      = 2
+config.window_roundsize      = 2
+config.transition_frame      = 6
+
+font.small            = font.roboto.small
+font.big              = font.roboto.big
+
+
+info.themename        = Nikhil Theme
+info.description      = Aroma Flashable Zip Creator Theme for AROMA Installer
+info.author           = Nikhil / MIUI / DemonWav & amarullz & Happy / NExtGen

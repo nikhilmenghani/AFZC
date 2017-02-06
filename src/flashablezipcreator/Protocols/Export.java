@@ -57,7 +57,7 @@ public class Export implements Runnable {
         boolean isCustomGroupPresent = false;
         boolean isDeleteGroupPresent = false;
         int fileIndex = 0;
-        ArrayList<String> tempPaths = new ArrayList<>();
+//        ArrayList<String> tempPaths = new ArrayList<>();
         List<ProjectItemNode> projectNodeList = to.getProjectsSorted(rootNode);
         maxSize = getNodeCount(to.getNodeList(ProjectItemNode.NODE_FILE)) + 10; //10 because we write more files than node count
         try {
@@ -65,10 +65,12 @@ public class Export implements Runnable {
                 if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
                     for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
                         if (groupNode.children.isEmpty()) {
+                            Logs.write("Removing " + groupNode.title + " as it is empty");
                             groupNode.removeMe();
                         }
                         for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                            if (node.children.isEmpty()) {
+                            if (node.children.isEmpty() && node.type != ProjectItemNode.NODE_FILE) {
+                                Logs.write("Removing " + node.title + " as it is empty");
                                 node.removeMe();
                             }
                             switch (node.type) {
@@ -83,12 +85,10 @@ public class Export implements Runnable {
                                         increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
                                         fileIndex++;
                                         wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, ((FileNode) fileNode).fileZipPath);
-                                        tempPaths.add(((FileNode) fileNode).extractZipPath);
                                     }
                                     break;
                                 case ProjectItemNode.NODE_FILE:
                                     increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
-                                    tempPaths.add(((FileNode) node).extractZipPath);
                                     fileIndex++;
                                     wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
                                     break;
@@ -98,7 +98,6 @@ public class Export implements Runnable {
                                         increaseProgressBar(fileIndex, file.fileSourcePath);
                                         fileIndex++;
                                         wz.writeFileToZip(file.fileSourcePath, file.fileZipPath);
-                                        tempPaths.add(file.extractZipPath);
                                     }
                                     break;
                                 default:
@@ -146,8 +145,6 @@ public class Export implements Runnable {
                 wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
                 increaseProgressBar(fileIndex, "Jar Items");
                 fileIndex++;
-                Logs.write("Writing Extract Files");
-                writeTempFiles(tempPaths);
                 Logs.write("Writing Rest of Jar Files");
                 for (String file : Jar.getOtherFileList()) {
                     wz.writeFileToZip(JarOperations.getInputStream(file), file);
@@ -163,8 +160,9 @@ public class Export implements Runnable {
             progressBarImportExport.setString("0%");
             progressBarImportExport.setValue(0);
             progressBarFlag = 0;
-        } catch (IOException | ParserConfigurationException | TransformerException | HeadlessException e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n" + Logs.getExceptionTrace(e));
+            Logs.write(Logs.getExceptionTrace(e));
             setCardLayout(1);
         }
     }
