@@ -53,7 +53,7 @@ public class UpdaterScript {
 
     public static String buildAromaScript(ProjectNode project) {
         String str = "";
-        str += "if [ $(file_getprop /tmp/aroma/" + project.title + ".prop selected ) == 1 ]; then\n";
+        str += "if [ $(file_getprop \"/tmp/aroma/" + project.title + ".prop\" selected) == 1 ]; then\n";
         str += op.getMountMethod(1);
         //str += op.getExtractDataString();
         str += "set_progress 0\n";
