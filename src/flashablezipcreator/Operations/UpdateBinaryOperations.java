@@ -100,13 +100,20 @@ public class UpdateBinaryOperations {
                 str = getFolderScript(str, child);
             } else if (child.type == ProjectItemNode.NODE_FILE) {
                 FileNode file = (FileNode) child;
-                str += getPackageExtractDirString(file);
+                str += createDirectory(file.installLocation);
                 if (file.title.endsWith("apk")) {
                     str += addPrintString(file.parent.title, installString);
+                    FolderNode folder = (FolderNode) (file.parent);
+                    GroupNode group = (GroupNode) (folder.originalParent);
+                    if (group.groupType == GroupNode.GROUP_DATA_APP) {
+                        str += "package_extract_file " + file.fileZipPath + " " + file.installLocation + "/" + "base.apk" + "\n";
+                    } else {
+                        str += "package_extract_file " + file.fileZipPath + " " + file.installLocation + "/" + file.title + "\n";
+                    }
                 } else {
                     str += addPrintString("Copying " + file.title);
+                    str += "package_extract_file " + file.fileZipPath + " " + file.installLocation + "/" + file.title + "\n";
                 }
-                str += "package_extract_file " + file.fileZipPath + " " + file.installLocation + "/" + file.title + "\n";
                 str += "set_perm " + file.filePermission + "\n";  //TODO: Inspect filePermission for removal of commas
             }
         }
@@ -139,7 +146,7 @@ public class UpdateBinaryOperations {
         String str = "";
         if (node.isCheckBox()) {
             int count = 1;
-            str += getPackageExtractDirString(node);
+//            str += getPackageExtractDirString(node);
             str += "if [ $(file_getprop /tmp/aroma/" + node.prop + " item.1." + count++ + ") == 1 ]; then\n";
             for (ProjectItemNode fnode : node.children) {
                 FileNode file = (FileNode) fnode;
@@ -194,7 +201,7 @@ public class UpdateBinaryOperations {
         String str = "";
         if (node.isSelectBox()) {
             int count = 2;
-            str += getPackageExtractDirString(node);
+//            str += getPackageExtractDirString(node);
             for (ProjectItemNode subGroup : node.children) {
                 if (node.groupType == GroupNode.GROUP_SYSTEM_FONTS) {
                     str += "if [ $(file_getprop /tmp/aroma/" + node.prop.replace(".prop", "_temp.prop") + " " + subGroup.toString() + ") == \"" + "yes" + "\" ]; then\n";
@@ -345,28 +352,32 @@ public class UpdateBinaryOperations {
                 + "set_perm 2000 2000 0771 /data/local\n"
                 + "set_perm_recursive 1000 1000 0771 0644 /data/app\n";
     }
-
-    public String getPackageExtractDirString(FileNode file) {
-        String str = addPrintString("Creating folder in " + file.groupLocation);
-        String extractZipPath = file.extractZipPath;
-        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(file.groupLocation));
-        if (file.groupLocation.contains("/system")) {
-            return str += "package_extract_dir " + extractZipPath + "/system" + " /system\n";
-        } else if (file.groupLocation.contains("/data")) {
-            return str += "package_extract_dir " + extractZipPath + "/data" + " /data\n";
-        }
-        return "";
+    
+    public String createDirectory(String dir) {
+        return "mkdir -p " + dir + "\n";
     }
 
-    public String getPackageExtractDirString(GroupNode group) {
-        String str = addPrintString("Creating folder in " + group.location);
-        String extractZipPath = (group.extractZipPath + "/" ).replaceAll("\\\\", "/"); // + "afzc_temp"
-        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(group.location));
-        if (group.location.contains("/system")) {
-            return str += "package_extract_dir " + extractZipPath + "/system" + " /system\n";
-        } else if (group.location.contains("/data")) {
-            return str += "package_extract_dir " + extractZipPath + "/data" + " /data\n";
-        }
-        return "";
-    }
+//    public String getPackageExtractDirString(FileNode file) {
+//        String str = addPrintString("Creating folder in " + file.groupLocation);
+//        String extractZipPath = file.extractZipPath;
+//        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(file.groupLocation));
+//        if (file.groupLocation.contains("/system")) {
+//            return str += "package_extract_dir " + extractZipPath + "/system" + " /system\n";
+//        } else if (file.groupLocation.contains("/data")) {
+//            return str += "package_extract_dir " + extractZipPath + "/data" + " /data\n";
+//        }
+//        return "";
+//    }
+//
+//    public String getPackageExtractDirString(GroupNode group) {
+//        String str = addPrintString("Creating folder in " + group.location);
+//        String extractZipPath = (group.extractZipPath + "/" ).replaceAll("\\\\", "/"); // + "afzc_temp"
+//        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(group.location));
+//        if (group.location.contains("/system")) {
+//            return str += "package_extract_dir " + extractZipPath + "/system" + " /system\n";
+//        } else if (group.location.contains("/data")) {
+//            return str += "package_extract_dir " + extractZipPath + "/data" + " /data\n";
+//        }
+//        return "";
+//    }
 }
