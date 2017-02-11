@@ -33,6 +33,9 @@ public class AboutUI extends javax.swing.JFrame {
         lblAboutMe = new javax.swing.JLabel();
         jspInstructions = new javax.swing.JScrollPane();
         jepInstructions = new javax.swing.JEditorPane();
+        lblAboutMe1 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblMyImage1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,10 +43,10 @@ public class AboutUI extends javax.swing.JFrame {
 
         panelHeader.setBackground(new java.awt.Color(255, 255, 255));
 
-        lblMyImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/flashablezipcreator/1549450_687091887991785_1258867375_n.jpg"))); // NOI18N
+        lblMyImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/flashablezipcreator/2359723.jpg"))); // NOI18N
 
         lblAboutMe.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        lblAboutMe.setText("<HTML> <CENTER><B>About Me</B></CENTER>  <br> I am <a href=\"https://forum.xda-developers.com/member.php?u=4867515\">Nikhil Menghani</a>, creator of this tool, xda senior member, programming enthusiast, a software developer, chess player, cricket lover. I try to ease my life by creating utilities.<br>  What you are using is one of my utilities, it will get you a flashable zip which you can directly flash in your phone, saving your time in writing flawless aroma script, updater script and of course putting all the files at right place.<br>  Happy flashing! </HTML>");
+        lblAboutMe.setText("<HTML> <RIGHT><B>Rajat Patel</B></RIGHT>  <br> I am <a href=\"https://forum.xda-developers.com/member.php?u=4867515\">Nikhil Menghani</a>, creator of this tool, xda senior member, programming enthusiast, a software developer, chess player, cricket lover. I try to ease my life by creating utilities.<br>  What you are using is one of my utilities, it will get you a flashable zip which you can directly flash in your phone, saving your time in writing flawless aroma script, updater script and of course putting all the files at right place.<br>  Happy flashing! </HTML>");
 
         jepInstructions.setEditable(false);
         jepInstructions.setContentType("text/html"); // NOI18N
@@ -54,25 +57,52 @@ public class AboutUI extends javax.swing.JFrame {
         jspInstructions.setViewportView(jepInstructions);
         jepInstructions.getAccessibleContext().setAccessibleName("");
 
+        lblAboutMe1.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        lblAboutMe1.setText("<HTML> <B>Nikhil Menghani</B>  <br> I am <a href=\"https://forum.xda-developers.com/member.php?u=4867515\">Nikhil Menghani</a>, creator of this tool, xda senior member, programming enthusiast, a software developer, chess player, cricket lover. I try to ease my life by creating utilities.<br>  What you are using is one of my utilities, it will get you a flashable zip which you can directly flash in your phone, saving your time in writing flawless aroma script, updater script and of course putting all the files at right place.<br>  Happy flashing! </HTML>");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("About Us");
+
+        lblMyImage1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/flashablezipcreator/1549450_687091887991785_1258867375_n.jpg"))); // NOI18N
+
         javax.swing.GroupLayout panelHeaderLayout = new javax.swing.GroupLayout(panelHeader);
         panelHeader.setLayout(panelHeaderLayout);
         panelHeaderLayout.setHorizontalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelHeaderLayout.createSequentialGroup()
-                .addComponent(lblMyImage)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblAboutMe, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jspInstructions, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(panelHeaderLayout.createSequentialGroup()
+                .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelHeaderLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblAboutMe, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblMyImage))
+                    .addGroup(panelHeaderLayout.createSequentialGroup()
+                        .addGap(246, 246, 246)
+                        .addComponent(jLabel1)
+                        .addGap(0, 264, Short.MAX_VALUE))
+                    .addGroup(panelHeaderLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblMyImage1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblAboutMe1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panelHeaderLayout.setVerticalGroup(
             panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelHeaderLayout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblMyImage)
+                    .addComponent(lblMyImage1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblAboutMe1, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblMyImage, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(lblAboutMe, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jspInstructions, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE))
+                .addComponent(jspInstructions, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
@@ -136,10 +166,13 @@ public class AboutUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JEditorPane jepInstructions;
     private javax.swing.JScrollPane jspInstructions;
     private javax.swing.JLabel lblAboutMe;
+    private javax.swing.JLabel lblAboutMe1;
     private javax.swing.JLabel lblMyImage;
+    private javax.swing.JLabel lblMyImage1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel panelHeader;
     // End of variables declaration//GEN-END:variables
