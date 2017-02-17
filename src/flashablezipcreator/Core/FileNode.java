@@ -41,7 +41,7 @@ public final class FileNode extends ProjectItemNode {
         if (parent.groupType == GroupNode.GROUP_AROMA_THEMES) {
             fileZipPath = super.path.replaceAll("\\\\", "/");
         }
-        super.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        super.extractZipPath = (parent.extractZipPath + "/" ).replaceAll("\\\\", "/"); // 
         this.groupLocation = parent.location;
     }
 
@@ -59,7 +59,7 @@ public final class FileNode extends ProjectItemNode {
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
         fileZipPath = parent.zipPath + "/" + title;
-        super.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        super.extractZipPath = (parent.extractZipPath + "/").replaceAll("\\\\", "/"); //  + "afzc_temp"
         this.groupLocation = parent.location;
     }
 
@@ -79,7 +79,7 @@ public final class FileNode extends ProjectItemNode {
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
         fileZipPath = parent.zipPath + "/" + title;
-        super.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        super.extractZipPath = (parent.extractZipPath + "/").replaceAll("\\\\", "/"); //  + "afzc_temp"
         this.groupLocation = parent.location;
     }
 
@@ -90,7 +90,7 @@ public final class FileNode extends ProjectItemNode {
 
     public void updateZipPath() {
         fileZipPath = parent.zipPath + "/" + title;
-        super.extractZipPath = (parent.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
+        super.extractZipPath = (parent.extractZipPath + "/").replaceAll("\\\\", "/"); //  + "afzc_temp"
     }
 
     public void updateInstallLocation() {

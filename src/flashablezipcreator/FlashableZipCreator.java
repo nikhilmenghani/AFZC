@@ -103,6 +103,7 @@ public class FlashableZipCreator {
             
             if (Jar.isExecutingThrough()) {
                 JarOperations.setJarFileList();
+                /* No need to select device since we are using universal update binary
                 Device.loadDeviceList();
                 Logs.write("Device List Loaded");
                 String configString = "";
@@ -115,7 +116,7 @@ public class FlashableZipCreator {
                     Logs.write("update-binary Found");
                 } else {
                     AddDevice ad = new AddDevice();
-                }
+                } */
             } else {
                 Xml.file_details_path = "dist/" + Xml.file_details_path;
             }

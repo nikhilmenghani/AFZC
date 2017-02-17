@@ -297,7 +297,7 @@ public class MyTree extends JFrame {
 
         menuAbout.setText("About");
 
-        menuAboutTool.setText("Me & My Tool");
+        menuAboutTool.setText("We & Our Tool");
         menuAboutTool.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -63,24 +63,47 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="lblMyImage" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="lblAboutMe" min="-2" pref="402" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
                   <Component id="jspInstructions" alignment="0" pref="0" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblAboutMe" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblMyImage" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="246" max="-2" attributes="0"/>
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="264" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblMyImage1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="lblAboutMe1" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblMyImage" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblMyImage1" min="-2" pref="165" max="-2" attributes="0"/>
+                          <Component id="lblAboutMe1" min="-2" pref="169" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="lblMyImage" pref="0" max="32767" attributes="0"/>
                           <Component id="lblAboutMe" min="-2" pref="191" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jspInstructions" pref="308" max="32767" attributes="0"/>
+                      <Component id="jspInstructions" pref="199" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -89,7 +112,7 @@
             <Component class="javax.swing.JLabel" name="lblMyImage">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/flashablezipcreator/1549450_687091887991785_1258867375_n.jpg"/>
+                  <Image iconType="3" name="/flashablezipcreator/2359723.jpg"/>
                 </Property>
               </Properties>
             </Component>
@@ -98,7 +121,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="13" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&lt;HTML&gt; &lt;CENTER&gt;&lt;B&gt;About Me&lt;/B&gt;&lt;/CENTER&gt;  &lt;br&gt; I am &lt;a href=&quot;https://forum.xda-developers.com/member.php?u=4867515&quot;&gt;Nikhil Menghani&lt;/a&gt;, creator of this tool, xda senior member, programming enthusiast, a software developer, chess player, cricket lover. I try to ease my life by creating utilities.&lt;br&gt;  What you are using is one of my utilities, it will get you a flashable zip which you can directly flash in your phone, saving your time in writing flawless aroma script, updater script and of course putting all the files at right place.&lt;br&gt;  Happy flashing! &lt;/HTML&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;HTML&gt; &lt;RIGHT&gt;&lt;B&gt;Rajat Patel&lt;/B&gt;&lt;/RIGHT&gt;  &lt;br&gt; I am &lt;a href=&quot;https://forum.xda-developers.com/member.php?u=4867515&quot;&gt;Nikhil Menghani&lt;/a&gt;, creator of this tool, xda senior member, programming enthusiast, a software developer, chess player, cricket lover. I try to ease my life by creating utilities.&lt;br&gt;  What you are using is one of my utilities, it will get you a flashable zip which you can directly flash in your phone, saving your time in writing flawless aroma script, updater script and of course putting all the files at right place.&lt;br&gt;  Happy flashing! &lt;/HTML&gt;"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jspInstructions">
@@ -127,6 +150,30 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JLabel" name="lblAboutMe1">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="13" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&lt;HTML&gt; &lt;B&gt;Nikhil Menghani&lt;/B&gt;  &lt;br&gt; I am &lt;a href=&quot;https://forum.xda-developers.com/member.php?u=4867515&quot;&gt;Nikhil Menghani&lt;/a&gt;, creator of this tool, xda senior member, programming enthusiast, a software developer, chess player, cricket lover. I try to ease my life by creating utilities.&lt;br&gt;  What you are using is one of my utilities, it will get you a flashable zip which you can directly flash in your phone, saving your time in writing flawless aroma script, updater script and of course putting all the files at right place.&lt;br&gt;  Happy flashing! &lt;/HTML&gt;"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel1">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="18" style="1"/>
+                </Property>
+                <Property name="horizontalAlignment" type="int" value="0"/>
+                <Property name="text" type="java.lang.String" value="About Us"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="lblMyImage1">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/flashablezipcreator/1549450_687091887991785_1258867375_n.jpg"/>
+                </Property>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>
