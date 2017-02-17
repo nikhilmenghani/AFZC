@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.8" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -63,25 +63,24 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jspInstructions" alignment="0" pref="0" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblAboutMe" pref="0" max="32767" attributes="0"/>
+                              <Component id="lblAboutRajat" pref="0" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblMyImage" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblRajatImage" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="246" max="-2" attributes="0"/>
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAboutUs" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="264" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblMyImage1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblNikhilImage" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="lblAboutMe1" pref="0" max="32767" attributes="0"/>
+                              <Component id="lblAboutNikhil" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -91,66 +90,39 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblAboutUs" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblMyImage1" min="-2" pref="165" max="-2" attributes="0"/>
-                          <Component id="lblAboutMe1" min="-2" pref="169" max="-2" attributes="0"/>
+                          <Component id="lblNikhilImage" min="-2" pref="165" max="-2" attributes="0"/>
+                          <Component id="lblAboutNikhil" min="-2" pref="169" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="lblMyImage" pref="0" max="32767" attributes="0"/>
-                          <Component id="lblAboutMe" min="-2" pref="191" max="-2" attributes="0"/>
+                          <Component id="lblRajatImage" pref="0" max="32767" attributes="0"/>
+                          <Component id="lblAboutRajat" min="-2" pref="191" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jspInstructions" pref="199" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="lblMyImage">
+            <Component class="javax.swing.JLabel" name="lblRajatImage">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/flashablezipcreator/2359723.jpg"/>
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblAboutMe">
+            <Component class="javax.swing.JLabel" name="lblAboutRajat">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="13" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&lt;HTML&gt; &lt;RIGHT&gt;&lt;B&gt;Rajat Patel&lt;/B&gt;&lt;/RIGHT&gt;  &lt;br&gt; I am &lt;a href=&quot;https://forum.xda-developers.com/member.php?u=4867515&quot;&gt;Nikhil Menghani&lt;/a&gt;, creator of this tool, xda senior member, programming enthusiast, a software developer, chess player, cricket lover. I try to ease my life by creating utilities.&lt;br&gt;  What you are using is one of my utilities, it will get you a flashable zip which you can directly flash in your phone, saving your time in writing flawless aroma script, updater script and of course putting all the files at right place.&lt;br&gt;  Happy flashing! &lt;/HTML&gt;"/>
+                <Property name="text" type="java.lang.String" value="&lt;HTML&gt; &lt;RIGHT&gt;&lt;B&gt;Rajat Patel&lt;/B&gt;&lt;/RIGHT&gt;  &lt;br&gt; I am &lt;a href=\u005c&quot;https://forum.xda-developers.com/member.php?u=1852653\u005c&quot;&gt;Rajat Patel&lt;/a&gt;, contributor to the development of this tool, xda senior member, geek by heart, Business Analyst by Profession, football lover &amp; Chelsea fan.&lt;br&gt;  Foreseen by Nikhil and coded by me and him together is this tool, saving your time in creating flashable zips for Android Recovery and lets you concentrate more on the actual work than creating a flashable!&lt;br&gt;  Happy flashing! &lt;/HTML&gt;" containsInvalidXMLChars="true"/>
               </Properties>
             </Component>
-            <Container class="javax.swing.JScrollPane" name="jspInstructions">
-              <AuxValues>
-                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-              </AuxValues>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-              <SubComponents>
-                <Component class="javax.swing.JEditorPane" name="jepInstructions">
-                  <Properties>
-                    <Property name="editable" type="boolean" value="false"/>
-                    <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="12" style="0"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;CENTER&gt;&lt;B&gt;&lt;h3&gt;Instructions&lt;/h3&gt;&lt;/B&gt;&lt;/CENTER&gt; &lt;B&gt;&lt;h4&gt;Steps to Create a Flashable Zip&lt;/h4&gt;&lt;/B&gt;  &lt;br&gt;0. Select your device if listed in Devices List, If not listed, place update-binary of your device in the directory of jar file. &lt;br&gt;&lt;br&gt;1. Add a Project, give it a name.(A project can have multiple groups) &lt;br&gt;A popup appears on start up, you can change the settings in File-&gt;Preferences. &lt;br&gt;&lt;br&gt;2. Add a Group. (A group will contain specific type of files in it) &lt;br&gt;For eg. you create a group (say xyz) with install location (system/app), then xyz group will include all the apk files that needs to be pushed to system/app &lt;br&gt;&lt;br&gt;3. Add a Subgroup if required (When you need furthur grouping. It is required for bootanimations and fonts) &lt;br&gt;For eg. 2 Boot Animations will have their own bootanimation.zip. You cannot add file with same name twice. Hence you need subgroup to further distinguish the file. &lt;br&gt;&lt;br&gt;4. Add a Folder. (From android 5.x+, we have apk files placed in folder which contains optional lib files as well with it. To build the same directory structure, you need to add folders) &lt;br&gt;&lt;br&gt;5. Add Files to Groups/Subgroups/Folders. &lt;br&gt;&lt;br&gt;6. Click on Export Zip to choose the destination and Click OK to generate zip.  &lt;br&gt;&lt;br&gt;&lt;B&gt;&lt;h4&gt;How to add objects&lt;/h4&gt;&lt;/B&gt;  &lt;br&gt;1. To add a Project &lt;br&gt;&lt;br&gt;-&gt; Right Click on AFZC Projects &lt;br&gt;-&gt; Give a unique name to project &lt;br&gt;-&gt; Click on Add.  &lt;br&gt;&lt;br&gt;2. To add a Group &lt;br&gt;&lt;br&gt;-&gt; Right Click on the Project that you want your group to be added in &lt;br&gt;-&gt; Hover on Add group and proceed ahead with selecting location to which you want to push your files to &lt;br&gt;-&gt; Give a unique name &lt;br&gt;-&gt; Click on Add  &lt;br&gt;&lt;br&gt;3. To add a SubGroup &lt;br&gt;&lt;br&gt;-&gt; Right Click on Group &lt;br&gt;-&gt; Click on Add SubGroup &lt;br&gt;-&gt; Give a unique name &lt;br&gt;-&gt; Click on Add. &lt;U&gt;&lt;br&gt;&lt;br&gt;Note: You will get an option to add subgroup only for Boot Animation and Fonts group as only they require it.&lt;/U&gt;  &lt;br&gt;&lt;br&gt;4. To add a Folder &lt;br&gt;&lt;br&gt;-&gt; Right Click on Group &lt;br&gt;-&gt; Click on Add Folder &lt;br&gt;-&gt; Give a unique name &lt;br&gt;-&gt; Click on Add. &lt;br&gt;&lt;br&gt;-&gt; Right Click on Folder &lt;br&gt;-&gt; Click on Add Folder to further add folder &lt;br&gt;-&gt; Give an appropriate name &lt;br&gt;-&gt; Click on Add.  &lt;U&gt;&lt;br&gt;&lt;br&gt;Tip: You can also drag and drop folders from your drive to the group. All the sub folders (if any) and files will be added automatically.&lt;/U&gt;  &lt;br&gt;&lt;br&gt;5. To add a File &lt;br&gt;&lt;br&gt;-&gt; Right Click on Group/Folder/SubGroup &lt;br&gt;-&gt; Click on Add Files &lt;br&gt;-&gt; Import the files.  &lt;U&gt;&lt;br&gt;&lt;br&gt;Tip: You can also drag and drop files from your drive to the Group/SubGroup/Folder. All the files will be imported.&lt;/U&gt;  &lt;br&gt;&lt;br&gt;6. To add a Theme &lt;br&gt;&lt;br&gt;-&gt; Right on Themes Project &lt;br&gt;-&gt; Add Theme &lt;br&gt;-&gt; Give appropriate name &lt;br&gt;-&gt; Add required files to it  &lt;br&gt;&lt;br&gt;&lt;B&gt;&lt;h4&gt;How to rename objects&lt;/h4&gt;&lt;/B&gt;   &lt;br&gt;-&gt; To rename a Project/Group/SubGroup/Folder/File, triple click on the object and change the name.  &lt;br&gt;&lt;br&gt;&lt;B&gt;&lt;h4&gt;Finding it tedious to create again and again?&lt;/h4&gt;&lt;/B&gt;  &lt;br&gt;Don&apos;t worry, once you create a zip, you can import the created zip to make further changes to existing zip file. &lt;br&gt;&lt;br&gt;To do so, use Import Zip button to add an already created zip OR drag the zip and add it to the tool. &lt;br&gt;&lt;br&gt; &lt;B&gt;&lt;h4&gt;Explore yourself to identify more hidden features.&lt;/h4&gt;&lt;/B&gt;&lt;br&gt; &lt;/html&gt;"/>
-                    <Property name="autoscrolls" type="boolean" value="false"/>
-                    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-                      <Color id="Text Cursor"/>
-                    </Property>
-                  </Properties>
-                  <AccessibilityProperties>
-                    <Property name="AccessibleContext.accessibleName" type="java.lang.String" value=""/>
-                  </AccessibilityProperties>
-                </Component>
-              </SubComponents>
-            </Container>
-            <Component class="javax.swing.JLabel" name="lblAboutMe1">
+            <Component class="javax.swing.JLabel" name="lblAboutNikhil">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="13" style="0"/>
@@ -158,7 +130,7 @@
                 <Property name="text" type="java.lang.String" value="&lt;HTML&gt; &lt;B&gt;Nikhil Menghani&lt;/B&gt;  &lt;br&gt; I am &lt;a href=&quot;https://forum.xda-developers.com/member.php?u=4867515&quot;&gt;Nikhil Menghani&lt;/a&gt;, creator of this tool, xda senior member, programming enthusiast, a software developer, chess player, cricket lover. I try to ease my life by creating utilities.&lt;br&gt;  What you are using is one of my utilities, it will get you a flashable zip which you can directly flash in your phone, saving your time in writing flawless aroma script, updater script and of course putting all the files at right place.&lt;br&gt;  Happy flashing! &lt;/HTML&gt;"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="jLabel1">
+            <Component class="javax.swing.JLabel" name="lblAboutUs">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="18" style="1"/>
@@ -167,7 +139,7 @@
                 <Property name="text" type="java.lang.String" value="About Us"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblMyImage1">
+            <Component class="javax.swing.JLabel" name="lblNikhilImage">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                   <Image iconType="3" name="/flashablezipcreator/1549450_687091887991785_1258867375_n.jpg"/>

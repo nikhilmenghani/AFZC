@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="panelMain" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="panelMain" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JPanel" name="panelMain">
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="jspInstructions" alignment="0" pref="749" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Component id="jspInstructions" alignment="0" pref="497" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Container class="javax.swing.JScrollPane" name="jspInstructions">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JEditorPane" name="jepInstructions">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="contentType" type="java.lang.String" value="text/html" noResource="true"/>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Trebuchet MS" size="12" style="0"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt; &lt;CENTER&gt;&lt;B&gt;&lt;h2&gt;Instructions&lt;/h2&gt;&lt;/B&gt;&lt;/CENTER&gt; &lt;B&gt;&lt;h3&gt;Steps to Create a Flashable Zip&lt;/h3&gt;&lt;/B&gt;  &lt;br&gt;0. Select your device if listed in Devices List, If not listed, place update-binary of your device in the directory of jar file. &lt;br&gt;&lt;br&gt;1. Add a Project, give it a name.(A project can have multiple groups) &lt;br&gt;A popup appears on start up, you can change the settings in File-&gt;Preferences. &lt;br&gt;&lt;br&gt;2. Add a Group. (A group will contain specific type of files in it) &lt;br&gt;For eg. you create a group (say xyz) with install location (system/app), then xyz group will include all the apk files that needs to be pushed to system/app &lt;br&gt;&lt;br&gt;3. Add a Subgroup if required (When you need furthur grouping. It is required for bootanimations and fonts) &lt;br&gt;For eg. 2 Boot Animations will have their own bootanimation.zip. You cannot add file with same name twice. Hence you need subgroup to further distinguish the file. &lt;br&gt;&lt;br&gt;4. Add a Folder. (From android 5.x+, we have apk files placed in folder which contains optional lib files as well with it. To build the same directory structure, you need to add folders) &lt;br&gt;&lt;br&gt;5. Add Files to Groups/Subgroups/Folders. &lt;br&gt;&lt;br&gt;6. Click on Export Zip to choose the destination and Click OK to generate zip.  &lt;br&gt;&lt;br&gt;&lt;B&gt;&lt;h3&gt;How to add objects&lt;/h3&gt;&lt;/B&gt;  &lt;br&gt;1. To add a Project &lt;br&gt;&lt;br&gt;-&gt; Right Click on AFZC Projects &lt;br&gt;-&gt; Give a unique name to project &lt;br&gt;-&gt; Click on Add.  &lt;br&gt;&lt;br&gt;2. To add a Group &lt;br&gt;&lt;br&gt;-&gt; Right Click on the Project that you want your group to be added in &lt;br&gt;-&gt; Hover on Add group and proceed ahead with selecting location to which you want to push your files to &lt;br&gt;-&gt; Give a unique name &lt;br&gt;-&gt; Click on Add  &lt;br&gt;&lt;br&gt;3. To add a SubGroup &lt;br&gt;&lt;br&gt;-&gt; Right Click on Group &lt;br&gt;-&gt; Click on Add SubGroup &lt;br&gt;-&gt; Give a unique name &lt;br&gt;-&gt; Click on Add. &lt;U&gt;&lt;br&gt;&lt;br&gt;Note: You will get an option to add subgroup only for Boot Animation and Fonts group as only they require it.&lt;/U&gt;  &lt;br&gt;&lt;br&gt;4. To add a Folder &lt;br&gt;&lt;br&gt;-&gt; Right Click on Group &lt;br&gt;-&gt; Click on Add Folder &lt;br&gt;-&gt; Give a unique name &lt;br&gt;-&gt; Click on Add. &lt;br&gt;&lt;br&gt;-&gt; Right Click on Folder &lt;br&gt;-&gt; Click on Add Folder to further add folder &lt;br&gt;-&gt; Give an appropriate name &lt;br&gt;-&gt; Click on Add.  &lt;U&gt;&lt;br&gt;&lt;br&gt;Tip: You can also drag and drop folders from your drive to the group. All the sub folders (if any) and files will be added automatically.&lt;/U&gt;  &lt;br&gt;&lt;br&gt;5. To add a File &lt;br&gt;&lt;br&gt;-&gt; Right Click on Group/Folder/SubGroup &lt;br&gt;-&gt; Click on Add Files &lt;br&gt;-&gt; Import the files.  &lt;U&gt;&lt;br&gt;&lt;br&gt;Tip: You can also drag and drop files from your drive to the Group/SubGroup/Folder. All the files will be imported.&lt;/U&gt;  &lt;br&gt;&lt;br&gt;6. To add a Theme &lt;br&gt;&lt;br&gt;-&gt; Right on Themes Project &lt;br&gt;-&gt; Add Theme &lt;br&gt;-&gt; Give appropriate name &lt;br&gt;-&gt; Add required files to it  &lt;br&gt;&lt;br&gt;&lt;B&gt;&lt;h3&gt;How to rename objects&lt;/h3&gt;&lt;/B&gt;   &lt;br&gt;-&gt; To rename a Project/Group/SubGroup/Folder/File, triple click on the object and change the name. Alternatively you can use F2 key to edit the object name.  &lt;br&gt;&lt;br&gt;&lt;B&gt;&lt;h3&gt;Finding it tedious to create again and again?&lt;/h3&gt;&lt;/B&gt;  &lt;br&gt;Don&apos;t worry, once you create a zip, you can import the created zip to make further changes to existing zip file. &lt;br&gt;&lt;br&gt;To do so, use Import Zip button to add an already created zip OR drag the zip and add it to the tool. &lt;br&gt;&lt;br&gt; &lt;B&gt;&lt;h3&gt;Explore yourself to identify more hidden features.&lt;/h3&gt;&lt;/B&gt;&lt;br&gt; &lt;/html&gt;"/>
+                <Property name="autoscrolls" type="boolean" value="false"/>
+                <Property name="caretPosition" type="int" value="0"/>
+                <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+                  <Color id="Text Cursor"/>
+                </Property>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

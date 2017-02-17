@@ -16,6 +16,7 @@ import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.UserInterface.About;
+import flashablezipcreator.UserInterface.Instructions;
 import flashablezipcreator.UserInterface.Preferences;
 import java.awt.CardLayout;
 import java.io.File;
@@ -297,15 +298,26 @@ public class MyTree extends JFrame {
 
         menuAbout.setText("About");
 
-        menuAboutTool.setText("We & Our Tool");
+        menuAboutTool.setText("Instructions");
         menuAboutTool.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 aboutToolMenuItemActionPerformed();
             }
         });
+        
+        menuAbout.setText("About");
+
+        menuAboutDeveloper.setText("Developers");
+        menuAboutDeveloper.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutDeveloperMenuItemActionPerformed();
+            }
+        });
 
         menuAbout.add(menuAboutTool);
+        menuAbout.add(menuAboutDeveloper);
         menuBar.add(menuAbout);
 
         setJMenuBar(menuBar);
@@ -361,6 +373,10 @@ public class MyTree extends JFrame {
     }
 
     private void aboutToolMenuItemActionPerformed() {
+        new Instructions().setVisible(true);
+    }
+    
+    private void aboutDeveloperMenuItemActionPerformed(){
         new About().setVisible(true);
     }
 

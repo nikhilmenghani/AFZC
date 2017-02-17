@@ -343,28 +343,5 @@ public class UpdaterScriptOperations {
     public String createDirectory(String dir) {
         return "run_program(\"/sbin/busybox\", \"mkdir\", \"-p\", \"" + dir + "\");\n";
     }
-
-//    public String getPackageExtractDirString(FileNode file) {
-//        String str = addPrintString("Creating folder in " + file.groupLocation);
-//        String extractZipPath = file.extractZipPath;
-//        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(file.groupLocation));
-//        if (file.groupLocation.contains("/system")) {
-//            return str += "package_extract_dir(\"" + extractZipPath + "/system" + "\",\"/system\");\n";
-//        } else if (file.groupLocation.contains("/data")) {
-//            return str += "package_extract_dir(\"" + extractZipPath + "/data" + "\",\"/data\");\n";
-//        }
-//        return "";
-//    }
-//
-//    public String getPackageExtractDirString(GroupNode group) {
-//        String str = addPrintString("Creating folder in " + group.location);
-//        String extractZipPath = (group.extractZipPath + "/" + "afzc_temp").replaceAll("\\\\", "/");
-//        extractZipPath = extractZipPath.substring(0, extractZipPath.indexOf(group.location));
-//        if (group.location.contains("/system")) {
-//            return str += "package_extract_dir(\"" + extractZipPath + "/system" + "\",\"/system\");\n";
-//        } else if (group.location.contains("/data")) {
-//            return str += "package_extract_dir(\"" + extractZipPath + "/data" + "\",\"/data\");\n";
-//        }
-//        return "";
-//    }
+    
 }
