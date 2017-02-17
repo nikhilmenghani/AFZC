@@ -28,6 +28,7 @@ public class UpdateBinaryOperations {
     public static final int installString = 1;
     public static final int deleteString = 2;
     public static final int normalString = 3;
+    public static final int copyString = 4;
     public static final String universalUpdateBinaryFilePath = "/flashablezipcreator/META-INF/com/google/android/universal-update-binary"; //Add universal binary to this path
 
     public String addPrintString(String str, int type) {
@@ -36,6 +37,8 @@ public class UpdateBinaryOperations {
                 return "ui_print \"@Installing " + str + "\"\n";
             case deleteString:
                 return "ui_print \"@Deleting " + str + "\"\n";
+            case copyString:
+                return "ui_print \"@Copying " + str +"\"\n";
         }
         return "ui_print \"" + str + "\"\n";
     }
@@ -154,7 +157,7 @@ public class UpdateBinaryOperations {
                     str += addPrintString(((FileNode) file).title, deleteString);
                     str += "delete /" + ((FileNode) file).getDeleteLocation() + "\n";
                 } else {
-                    str += addPrintString(file.title, installString);
+                    str += addPrintString(file.title, copyString);
                     str += "package_extract_file \"" + ((FileNode) file).fileZipPath + "\" \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\"\n";
                     str += "set_perm " + ((FileNode) file).filePermission + "\n";
                 }
@@ -166,7 +169,7 @@ public class UpdateBinaryOperations {
                     str += addPrintString(((FileNode) file).title, deleteString);
                     str += "delete /" + ((FileNode) file).getDeleteLocation() + "\n";
                 } else {
-                    str += addPrintString(((FileNode) file).title, installString);
+                    str += addPrintString(((FileNode) file).title, copyString);
                     str += "package_extract_file \"" + ((FileNode) file).fileZipPath + "\" \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\"\n";
                     str += "set_perm " + ((FileNode) file).filePermission + "\n";
                 }
