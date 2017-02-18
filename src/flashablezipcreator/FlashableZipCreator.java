@@ -13,6 +13,7 @@ import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
+import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.AddDevice;
 import flashablezipcreator.UserInterface.AddName;
@@ -22,8 +23,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -46,7 +52,7 @@ public class FlashableZipCreator {
      * @throws javax.xml.parsers.ParserConfigurationException
      * @throws org.xml.sax.SAXException
      */
-    public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException {
+    public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException, URISyntaxException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

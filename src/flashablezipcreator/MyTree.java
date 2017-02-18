@@ -15,12 +15,14 @@ import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
+import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.UserInterface.About;
 import flashablezipcreator.UserInterface.Instructions;
 import flashablezipcreator.UserInterface.Preferences;
 import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -96,7 +98,11 @@ public class MyTree extends JFrame {
         menuItemExit = new javax.swing.JMenuItem();
         menuAboutTool = new javax.swing.JMenuItem();
         menuAboutDeveloper = new javax.swing.JMenuItem();
+        menuUpdateStable = new javax.swing.JMenuItem();
+        menuUpdateBeta = new javax.swing.JMenuItem();
+        menuUpcomingFeatures = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenu();
+        menuUpdate = new javax.swing.JMenu();
         SP_tree = ProjectTreeBuilder.buildScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -305,8 +311,6 @@ public class MyTree extends JFrame {
                 aboutToolMenuItemActionPerformed();
             }
         });
-        
-        menuAbout.setText("About");
 
         menuAboutDeveloper.setText("Developers");
         menuAboutDeveloper.addActionListener(new java.awt.event.ActionListener() {
@@ -319,6 +323,40 @@ public class MyTree extends JFrame {
         menuAbout.add(menuAboutTool);
         menuAbout.add(menuAboutDeveloper);
         menuBar.add(menuAbout);
+
+        menuUpdate.setText("Check Update");
+        menuUpdateBeta.setText("Beta Version");
+        menuUpdateBeta.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutUpdateBetaMenuItemActionPerformed();
+            }
+        });
+
+        menuUpdateStable.setText("Stable Version");
+        menuUpdateStable.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                try {
+                    aboutUpdateStableMenuItemActionPerformed();
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+        menuUpcomingFeatures.setText("Upcoming Features");
+        menuUpcomingFeatures.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutUpdateUpcomingFeaturesMenuItemActionPerformed();
+            }
+        });
+
+        menuUpdate.add(menuUpdateBeta);
+        menuUpdate.add(menuUpdateStable);
+        menuUpdate.add(menuUpcomingFeatures);
+        menuBar.add(menuUpdate);
 
         setJMenuBar(menuBar);
 
@@ -372,11 +410,91 @@ public class MyTree extends JFrame {
         return (directory.delete());
     }
 
+    private void aboutUpdateStableMenuItemActionPerformed() throws URISyntaxException {
+        Logs.write("Checking if internet is available!");
+        if (Update.netIsAvailable()) {
+            try {
+                Logs.write("Running update check!");
+                Update.runUpdateCheck();
+                Logs.write("Checking if Stable update is available!");
+                if (Update.isStableUpdateAvailable) {
+                    String changelog = Update.getStableChangelog();
+                    Logs.write("Changelog: " + changelog);
+                    String message = "A new update is available with following changelog\n" + changelog;
+                    if (!changelog.equals("")) {
+                        int dialogResult = JOptionPane.showConfirmDialog(this, message, "Stable Update Changelog", JOptionPane.YES_NO_OPTION);
+                        if (dialogResult == JOptionPane.YES_OPTION) {
+                            Update.downloadStableVersion();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Logs.write(Logs.getExceptionTrace(e));
+                JOptionPane.showMessageDialog(this, "Something went wrong!\n" + Logs.getExceptionTrace(e));
+            }
+        } else {
+            Logs.write("Internet not available!");
+            JOptionPane.showMessageDialog(this, "Please check your internet connection!");
+        }
+    }
+
+    private void aboutUpdateUpcomingFeaturesMenuItemActionPerformed() {
+        Logs.write("Checking if internet is available!");
+        if (Update.netIsAvailable()) {
+            try {
+                Logs.write("Running update check!");
+                Update.runUpdateCheck();
+                String upcomingFeatures = Update.getUpcomingFeatures();
+                Logs.write("Upcoming Features: " + upcomingFeatures);
+                String message = "These are the features that you will see in future builds\n" + upcomingFeatures;
+                if (!upcomingFeatures.equals("")) {
+                    JOptionPane.showMessageDialog(this, message, "Upcoming Features", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No New Features Planned as of now, Please come back later and share if you have any suggestion on thread!");
+                }
+            } catch (Exception e) {
+                Logs.write(Logs.getExceptionTrace(e));
+                JOptionPane.showMessageDialog(this, "Something went wrong!\n" + Logs.getExceptionTrace(e));
+            }
+        } else {
+            Logs.write("Internet not available!");
+            JOptionPane.showMessageDialog(this, "Please check your internet connection!");
+        }
+    }
+
+    private void aboutUpdateBetaMenuItemActionPerformed() {
+        Logs.write("Checking if internet is available!");
+        if (Update.netIsAvailable()) {
+            try {
+                Logs.write("Running update check!");
+                Update.runUpdateCheck();
+                Logs.write("Checking if Beta update is available!");
+                if (Update.isBetaUpdateAvailable) {
+                    String changelog = Update.getBetaChangelog();
+                    Logs.write("Changelog: " + changelog);
+                    String message = "A new update is available with following changelog\n" + changelog;
+                    if (!changelog.equals("")) {
+                        int dialogResult = JOptionPane.showConfirmDialog(this, message, "Beta Update Changelog", JOptionPane.YES_NO_OPTION);
+                        if (dialogResult == JOptionPane.YES_OPTION) {
+                            Update.downloadBetaVersion();
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Logs.write(Logs.getExceptionTrace(e));
+                JOptionPane.showMessageDialog(this, "Something went wrong!\n" + Logs.getExceptionTrace(e));
+            }
+        } else {
+            Logs.write("Internet not available!");
+            JOptionPane.showMessageDialog(this, "Please check your internet connection!");
+        }
+    }
+
     private void aboutToolMenuItemActionPerformed() {
         new Instructions().setVisible(true);
     }
-    
-    private void aboutDeveloperMenuItemActionPerformed(){
+
+    private void aboutDeveloperMenuItemActionPerformed() {
         new About().setVisible(true);
     }
 
@@ -435,18 +553,22 @@ public class MyTree extends JFrame {
         CardLayout cardLayout = (CardLayout) panelLower.getLayout();
         cardLayout.show(panelLower, "card" + Integer.toString(cardNo));
     }
-    
+
     private javax.swing.JButton btnCreateZip;
     private javax.swing.JButton btnImportZip;
     private javax.swing.JScrollPane SP_tree;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JPanel panel_logo;
     private javax.swing.JMenu menuAbout;
+    private javax.swing.JMenu menuUpdate;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemPreferences;
     private javax.swing.JMenuItem menuAboutTool;
     private javax.swing.JMenuItem menuAboutDeveloper;
+    private javax.swing.JMenuItem menuUpdateBeta;
+    private javax.swing.JMenuItem menuUpdateStable;
+    private javax.swing.JMenuItem menuUpcomingFeatures;
     private javax.swing.JMenu menuFile;
     private javax.swing.JLayeredPane layeredPaneButtons;
     private javax.swing.JLayeredPane layeredPaneProgressBar;
