@@ -6,8 +6,6 @@
 package flashablezipcreator.Protocols;
 
 import java.awt.Desktop;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -30,8 +28,8 @@ public class Update {
     public static String RawChangeLogBeta = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/ChangeLogBeta";
     public static String RawChangeLogStable = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/ChangeLogStable";
     public static String RawUpcomingFeatures = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/UpcomingFeatures";
-    public static float CurrentStableVersion = 3.0F;
-    public static float CurrentBetaVersion = 3.9F;
+    public static float CurrentVersion = 3.1F;
+    public static String CurrentVersionType = "Stable";
     public static boolean isBetaUpdateAvailable = false;
     public static boolean isStableUpdateAvailable = false;
     public static String betaDownloadLink = "";
@@ -39,14 +37,14 @@ public class Update {
 
     public static void runUpdateCheck() {
         if (Update.netIsAvailable()) {
-            Logs.write("Beta update status: " + Update.isBetaUpdateAvailable());
-            Logs.write("Stable update status: " + Update.isStableUpdateAvailable());
             if (Update.isStableUpdateAvailable()) {
-                isBetaUpdateAvailable = true;
-            }
-            if (Update.isBetaUpdateAvailable()) {
                 isStableUpdateAvailable = true;
             }
+            if (Update.isBetaUpdateAvailable()) {
+                isBetaUpdateAvailable = true;
+            }
+            Logs.write("Beta update status: " + Update.isBetaUpdateAvailable);
+            Logs.write("Stable update status: " + Update.isStableUpdateAvailable);
         }
     }
 
@@ -105,7 +103,7 @@ public class Update {
     public static boolean isBetaUpdateAvailable() {
         boolean updateStatus = false;
         float betaVersion = Float.valueOf(getBetaVersion());
-        if (CurrentBetaVersion < betaVersion) {
+        if (CurrentVersion < betaVersion) {
             updateStatus = true;
         }
         return updateStatus;
@@ -114,7 +112,7 @@ public class Update {
     public static boolean isStableUpdateAvailable() {
         boolean updateStatus = false;
         float stableVersion = Float.valueOf(getStableVersion());
-        if (CurrentStableVersion < stableVersion) {
+        if (CurrentVersion < stableVersion) {
             updateStatus = true;
         }
         return updateStatus;
@@ -122,7 +120,7 @@ public class Update {
 
     public static void openURL(String url) throws InterruptedException {
         StringBuilder sb = new StringBuilder();
-        if (System.getProperty("os.name").indexOf("Windows") > -1) {
+        if (System.getProperty("os.name").contains("Windows")) {
             String command = null;
             String urlLC = url.toLowerCase();
             if (urlLC.startsWith("https")) {
@@ -133,7 +131,7 @@ public class Update {
             if (command == null) {
                 command = WindowsCommandRetriever.commandForExtension(".html");
             }
-            if (command.indexOf("%1") > -1) {
+            if (command.contains("%1")) {
                 sb.append(command.substring(0, command.indexOf("%1")));
                 sb.append(url);
                 sb.append(command.substring(command.indexOf("%1") + "%1".length()));
@@ -153,7 +151,6 @@ public class Update {
             // Here you have the process. You can destroy it if you want
             // You need to figure out how you are going to handle this here.
         } catch (IOException e1) {
-            e1.printStackTrace();
             System.err.println("Error while executing " + sb.toString());
         }
     }
@@ -175,7 +172,6 @@ public class Update {
         try {
             openWebpage(url.toURI());
         } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
     }
 

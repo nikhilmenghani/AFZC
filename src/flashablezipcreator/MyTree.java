@@ -427,6 +427,8 @@ public class MyTree extends JFrame {
                             Update.downloadStableVersion();
                         }
                     }
+                }else{
+                    JOptionPane.showMessageDialog(this, "Your version is uptodate");
                 }
             } catch (Exception e) {
                 Logs.write(Logs.getExceptionTrace(e));
@@ -479,6 +481,8 @@ public class MyTree extends JFrame {
                             Update.downloadBetaVersion();
                         }
                     }
+                }else{
+                    JOptionPane.showMessageDialog(this, "Your version is uptodate");
                 }
             } catch (Exception e) {
                 Logs.write(Logs.getExceptionTrace(e));
