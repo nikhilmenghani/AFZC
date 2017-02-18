@@ -88,6 +88,8 @@ public class JarOperations {
     //this will be shifted to appropriate class later.
     public static String getSystemOS() {
         String OS = "";
+        //Alternative way of identifying OS
+        //System.getProperty("os.name").indexOf("Windows")>-1
         if (Jar.isExecutingThrough()) {
             String path[] = FlashableZipCreator.class.getResource("META-INF/com/google/android/Supported Devices").getPath().split("!");
             if (path[0].startsWith("file:/home") || path[0].startsWith("file:/media")) {
