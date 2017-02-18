@@ -100,8 +100,21 @@ public class AddName extends javax.swing.JFrame {
                 this.groupType = type;
                 break;
             case ProjectItemNode.NODE_GROUP:
-                lblHeader.setText("   Add SubGroup");
-                lblGroupName.setText("SubGroup Name");
+                String headerText = "";
+                String subGroupName = "";
+                switch(type){
+                    case GroupNode.GROUP_DATA_LOCAL:
+                    case GroupNode.GROUP_SYSTEM_MEDIA:
+                        headerText = "   Add Boot Animation";
+                        subGroupName = "Boot Animation Name";
+                        break;
+                    case GroupNode.GROUP_SYSTEM_FONTS:
+                        headerText = "   Add Font";
+                        subGroupName = "Font Name";
+                        break;
+                }
+                lblHeader.setText(headerText);
+                lblGroupName.setText(subGroupName);
                 this.subGroupType = type;
                 this.gNode = (GroupNode) parent;
                 panelHeader.setBackground(new java.awt.Color(96, 125, 139));

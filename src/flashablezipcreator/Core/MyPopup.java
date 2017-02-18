@@ -28,7 +28,7 @@ public class MyPopup {
 
     static JPopupMenu popup;
     static AddName addGNUI;
-    
+
     public static JPopupMenu getPopup(TreePath[] paths, JTree myTree) {
         popup = new JPopupMenu();
         ArrayList<ProjectItemNode> nodeList = new ArrayList<>();
@@ -159,10 +159,24 @@ public class MyPopup {
     }
 
     public static JPopupMenu getGroupMenu(ArrayList<ProjectItemNode> nodeList, JTree myTree) {
-        JMenuItem mitemAddSubGroup = new JMenuItem("Add SubGroup");
+        JMenuItem mitemAddSubGroup = null;
+        int groupType = ((GroupNode) nodeList.get(0)).groupType;
+        switch (groupType) {
+            case GroupNode.GROUP_SYSTEM_FONTS:
+                mitemAddSubGroup = new JMenuItem("Add Fonts");
+                break;
+            case GroupNode.GROUP_DATA_LOCAL:
+                mitemAddSubGroup = new JMenuItem("Add Boot Animations");
+                break;
+            case GroupNode.GROUP_SYSTEM_MEDIA:
+                mitemAddSubGroup = new JMenuItem("Add Boot Animations");
+                break;
+            default:
+                mitemAddSubGroup = new JMenuItem("Add SubGroup");
+        }
         mitemAddSubGroup.addActionListener(
                 (ActionEvent ae) -> {
-                    switch (((GroupNode) nodeList.get(0)).groupType) {
+                    switch (groupType) {
                         case GroupNode.GROUP_SYSTEM_FONTS:
                             addName("SubGroup", "system/fonts", nodeList.get(0));
                             break;
