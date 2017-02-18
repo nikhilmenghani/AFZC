@@ -40,12 +40,6 @@ public class Device {
     //needs to be executed at the start of the program
     public static void loadDeviceList() {
         for (String list : JarOperations.supported_devices.split("\n")) {
-            if (list.contains("xxx")) {
-                deviceBlackList.add(list.substring(0, list.indexOf("_")));
-            } else {
-                deviceWhiteList.add(list.substring(0, list.indexOf("_")));
-            }
-            list = list.substring(0, list.indexOf("_"));
             deviceList.add(list);
         }
     }
@@ -62,38 +56,8 @@ public class Device {
         return -1;
     }
 
-    public static boolean isInBlackList() {
-        if (deviceBlackList.contains(selected)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean isInWhiteList() {
-        return !isInBlackList();
-    }
-
-    public static String getMountPoint() {
-        return get(MountPoint);
-    }
-
     public static String getCodeName() {
         return get(CodeName);
-    }
-
-    public static String getType() {
-        return get(NeonCompatibility);
-    }
-
-    public static boolean isNeonCompatible() {
-        switch (Device.getType()) {
-            case "nonneon":
-                return false;
-            case "neon":
-                return true;
-        }
-        return true;
     }
 
     public static String get(int type) {
@@ -101,17 +65,9 @@ public class Device {
             if (list.contains(selected)) {
                 switch (type) {
                     case CodeName:
-                        return list.substring(list.indexOf("_") + 1, list.indexOf("_", list.indexOf("_") + 1));
-                    case NeonCompatibility:
-                        //.equals method strangely not working.
-                        String temp[] = list.split("_");
-                        if ((temp[temp.length - 1].indexOf("neon") == 3)) {
-                            return "nonneon";
-                        } else {
-                            return "neon";
-                        }
-                    case MountPoint:
-                        return list.substring(list.indexOf("_", list.indexOf("_") + 1) + 1, list.indexOf("_", list.indexOf("_", list.indexOf("_") + 1) + 1));
+                        String codeName = list.substring(list.indexOf("(") + 1, list.indexOf(")"));
+                        Logs.write("CodeName: " + codeName);
+                        return codeName;
                 }
             }
         }

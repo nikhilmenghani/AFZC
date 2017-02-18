@@ -10,6 +10,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Operations.UpdateBinaryOperations;
+import flashablezipcreator.Operations.UpdaterScriptOperations;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -23,15 +24,16 @@ public class UpdaterScript {
 
     public static String updaterScript = "";
     public static TreeOperations to;
-    public static UpdateBinaryOperations op = new UpdateBinaryOperations();
+    public static UpdateBinaryOperations obo = new UpdateBinaryOperations();
+    public static UpdaterScriptOperations uso = new UpdaterScriptOperations();
     public static String updaterScriptPath = "META-INF/com/google/android/updater-script";
     public static String symlinkScriptPath = "META-INF/com/google/android/symlink-script";
-    public static String symlinkScript = op.getSymlinkScript();
+    public static String symlinkScript = uso.getSymlinkScript();
 
     public static String build(ProjectItemNode rootNode) throws FileNotFoundException, IOException {
         updaterScript = "";
         to = new TreeOperations();
-        updaterScript += op.initiateUpdaterScript();
+        updaterScript += uso.initiateUpdaterScript();
         for (ProjectItemNode project : to.getProjectsSorted(rootNode)) {
             if (((ProjectNode) project).createZip) {
                 switch (((ProjectNode) project).projectType) {
@@ -41,8 +43,8 @@ public class UpdaterScript {
                 }
             }
         }
-        updaterScript += op.addWipeDalvikCacheString();
-        updaterScript += op.addPrintString("@Finished Install");
+        updaterScript += uso.addWipeDalvikCacheString();
+        updaterScript += uso.addPrintString("@Finished Install");
         return updaterScript;
     }
 
@@ -54,20 +56,20 @@ public class UpdaterScript {
     public static String buildAromaScript(ProjectNode project) {
         String str = "";
         str += "if [ $(file_getprop \"/tmp/aroma/" + project.title + ".prop\" selected) == 1 ]; then\n";
-        str += op.getMountMethod(1);
-        //str += op.getExtractDataString();
+        str += uso.getMountMethod(1);
+        //str += uso.getExtractDataString();
         str += "set_progress 0\n";
         for (ProjectItemNode group : to.getNodeList(ProjectItemNode.NODE_GROUP)) {
             if (((ProjectNode) group.parent).projectType == project.projectType && ((ProjectNode) group.parent).title.equals(project.title)) {
-                str += op.generateUpdaterScript((GroupNode) group);
+                str += uso.generateUpdaterScript((GroupNode) group);
             }
         }
         str += "set_progress 1\n";
-        str += op.terminateUpdaterScript();
+        str += uso.terminateUpdaterScript();
         return str += "fi;\n";
     }
 
     public static String getDpiScript(String dpi) {
-        return op.getDpiScript(dpi);
+        return uso.getDpiScript(dpi);
     }
 }

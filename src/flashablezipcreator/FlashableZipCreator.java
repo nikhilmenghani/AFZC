@@ -100,23 +100,24 @@ public class FlashableZipCreator {
             if (Preferences.themes.isEmpty()) {
                 Preferences.themes.add("Nikhil");
             }
-            
+
             if (Jar.isExecutingThrough()) {
                 JarOperations.setJarFileList();
-                /* No need to select device since we are using universal update binary
-                Device.loadDeviceList();
-                Logs.write("Device List Loaded");
-                String configString = "";
-                if ((new File(Xml.device_config_path).exists())) {
-                    configString = r.getFileString(Xml.device_config_path);
-                    Device.selected = Xml.getDeviceName(configString);
-                    Logs.write("Selected Device from Config: " + Device.selected);
-                } else if ((new File("update-binary").exists())) {
-                    Device.binary = (new Read()).getFileBytes("update-binary");
-                    Logs.write("update-binary Found");
-                } else {
-                    AddDevice ad = new AddDevice();
-                } */
+                if (!Preferences.useUniversalBinary) {
+                    Device.loadDeviceList();
+                    Logs.write("Device List Loaded");
+                    String configString = "";
+                    if ((new File(Xml.device_config_path).exists())) {
+                        configString = r.getFileString(Xml.device_config_path);
+                        Device.selected = Xml.getDeviceName(configString);
+                        Logs.write("Selected Device from Config: " + Device.selected);
+                    } else if ((new File("update-binary").exists())) {
+                        Device.binary = (new Read()).getFileBytes("update-binary");
+                        Logs.write("update-binary Found");
+                    } else {
+                        AddDevice ad = new AddDevice();
+                    }
+                }
             } else {
                 Xml.file_details_path = "dist/" + Xml.file_details_path;
             }
@@ -125,7 +126,7 @@ public class FlashableZipCreator {
                 Xml.fileDetailsData = r.getFileString(Xml.file_details_path);
                 Xml.initializeProjectDetails(Xml.fileDetailsData);
             }
-            
+
             //if(!Device.selected.equals("")){
             new MyTree().setVisible(true);
             if (Preferences.IsQuickSetup) {
