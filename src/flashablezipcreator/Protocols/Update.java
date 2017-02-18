@@ -28,8 +28,8 @@ public class Update {
     public static String RawChangeLogBeta = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/ChangeLogBeta";
     public static String RawChangeLogStable = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/ChangeLogStable";
     public static String RawUpcomingFeatures = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/UpcomingFeatures";
-    public static float CurrentVersion = 3.1F;
-    public static String CurrentVersionType = "Stable";
+    public static float CurrentVersion = 4.0F;
+    public static String CurrentVersionType = "Beta";
     public static boolean isBetaUpdateAvailable = false;
     public static boolean isStableUpdateAvailable = false;
     public static String betaDownloadLink = "";

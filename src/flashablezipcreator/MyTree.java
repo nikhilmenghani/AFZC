@@ -324,7 +324,7 @@ public class MyTree extends JFrame {
         menuAbout.add(menuAboutDeveloper);
         menuBar.add(menuAbout);
 
-        menuUpdate.setText("Check Update");
+        menuUpdate.setText("Check For Update");
         menuUpdateBeta.setText("Beta Version");
         menuUpdateBeta.addActionListener(new java.awt.event.ActionListener() {
             @Override

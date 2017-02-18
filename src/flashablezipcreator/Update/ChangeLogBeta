@@ -1,5 +1,6 @@
 
 v4.0 b1
--Added universal-update-binary
+-Removed Device Check
+-Added universal-update-binary (Support for all the devices)
 -Added a new menu for Instructions
 -Added OTA updates for tool
