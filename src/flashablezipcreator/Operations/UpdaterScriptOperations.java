@@ -3,13 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-/*
-    THIS CLASS IS DEPRECATED DUE TO INTRODUCTION OF UNIVERSAL-UPDATE-BINARY
-    If you want to modify script operations, then head over to UpdateBinaryOperations class,
-    which is essentially a copy of this class with additional modifications to make it emit shell script rather than Edify
-*/
-
 package flashablezipcreator.Operations;
 
 import flashablezipcreator.Core.FileNode;

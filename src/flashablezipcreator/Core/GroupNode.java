@@ -168,7 +168,7 @@ public final class GroupNode extends ProjectItemNode {
     }
 
     public String setPermissions(String i, String j, String k) {
-        this.permission = i + " " + j + " " + k + " ";
+        this.permission = i + ", " + j + ", " + k + ", ";
         return this.permission;
     }
 

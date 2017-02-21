@@ -131,28 +131,13 @@ public class Export implements Runnable {
             wz.writeStringToZip(ac, AromaConfig.aromaConfigPath);
             increaseProgressBar(fileIndex, "Updater-Script");
             fileIndex++;
+            Logs.write("Building updater-script");
+            String us = UpdaterScript.build(rootNode);
+            Logs.write("Writing updater-script");
+            wz.writeStringToZip(us, UpdaterScript.updaterScriptPath);
             try {
-                if (Preferences.useUniversalBinary) {
-                    Logs.write("Writing updater-script");
-                    wz.writeStringToZip("# This is a dummy file. Magic happens in binary file", UpdaterScript.updaterScriptPath);  //Second argument was UpdaterScript.updaterScriptPath
-                    Logs.write("Building update-binary-installer");
-                    String ubi = UpdateBinary.build(rootNode);
-                    increaseProgressBar(fileIndex, "Update Binary Installer");
-                    fileIndex++;
-                    Logs.write("Writing update-binary-installer");
-                    wz.writeStringToZip(ubi, Binary.updateBinaryInstallerPath); //wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath);
-                } else {
-                    Logs.write("Building updater-script");
-                    String us = UpdaterScript.build(rootNode);
-                    Logs.write("Writing updater-script");
-                    wz.writeStringToZip(us, UpdaterScript.updaterScriptPath);
-                    increaseProgressBar(fileIndex, "Update Binary Installer");
-                    fileIndex++;
-                    Logs.write("Writing update-binary-installer");
-                    wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath);
-                }
-                increaseProgressBar(fileIndex, "Update Binary Installer");
-                fileIndex++;
+                Logs.write("Writing update-binary-installer");
+                wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath);
                 increaseProgressBar(fileIndex, "Update Binary");
                 fileIndex++;
                 Logs.write("Writing update-binary");
