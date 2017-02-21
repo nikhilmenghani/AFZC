@@ -24,6 +24,7 @@ import flashablezipcreator.Protocols.Project;
  *
  * @author Nikhil
  */
+@Deprecated
 public class UpdaterScriptOperations {
 
     public static final int installString = 1;

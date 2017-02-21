@@ -1,56 +1,47 @@
-Asus Zenfone 2 Deluxe (Z00A)
-Redmi Note 3 (kenzo)
-Redmi 1S (armani)
-OnePlus 3T (A3003)
-HTC One S C2 (ville c2)
-HTC One mini (M4)
-HTC One (M8)
-HTC Sensation (pyramid)
-HTC desire X (protou)
-HTC Desire Z (vision)
-Huawei honor (u8860)
-Lenovo (K910)
-LG G3 Sprint (LS990)
-LG Optimus L5 (e610)
-LG Optimus L9 (p769)
-LG Optimus L90 (D415)
-LG Optimus 4X HD (p880)
-LG Nexus 4 (mako)
-LG Nexus 5 (hammerhead)
-Lg L3 II (E430)
-Lg G4 (h811)
-Galaxy Ace 3 LTE (s7275r)
-Samsung Galaxy Fame (s6812)
-Samsung Galaxy Grand Duos (i9082)
-Samsung Galaxy R (i9103)
-Samsung Galaxy S Advance (i9070)
-Samsung Galaxy S 2 (i9100)
-Samsung Galaxy S 3 (i9300)
-Samsung Galaxy S 4 (i9500)
-Samsung Galaxy S4 mini LTE (i9195)
-Samsung Galaxy S 5 (900F)
-Samsung Galaxy Nexus GSM (maguro)
-Samsung Infuse (i997)
-Nexus 4 (e960)
-Nexus 5X (bullhead)
-Nexus 6P (Angler)
-Nexus 7 (grouper)
-Samsung Galaxy Note II (N7100)
-Samsung Galaxy Note III (hltetmo)
-Samsung Galaxy Note III (n900)
-Xperia Go (st27i)
-Xperia Z1 Compact (xperiaZ1)
-LG G2 At&T (D800)
-LG G2 (D802)
-Motorola RAZR Maxx (XT912)
-Motorola Defy (mb525)
-Moto G 2013 (falcon)
-Motorola Moto E 2 (surnia)
-Samsung Galaxy Note (N7000)
-Samsung Galaxy Note II AT&T (i317)
-Samsung Galaxy Note III (N9002)
-Samsung Galaxy S IV (i9505)
-Samsung Galaxy Pocket (s5300)
-Xperia Ion (LT28x)
-Xperia Z3 Compact (D5803)
-ZTE Axon 7 (a2017u)
+Redmi Note 3 (kenzo)_kenzo_xxx_nonneon
+HTC One S C2 (ville c2)_ville c2_/dev/block/mmcblk0p20_neon
+HTC One mini (M4)_M4_/dev/block/mmcblk0p31_neon
+HTC Sensation (pyramid)_pyramid_/dev/block/mmcblk0p20_neon
+HTC desire X (protou)_protou_/dev/block/mmcblk0p27_neon
+HTC Desire Z (vision)_vision_xxx_neon
+Huawei honor (U8860)_u8860_/dev/block/mmcblk0p1_neon
+Lenovo (K910)_K910_xxx_neon
+LG G3 Sprint (LS990)_LS990_/dev/block/platform/msm_sdcc.1/by-name/boot_neon
+LG Optimus L5 (e610)_e610_/dev/block/platform/msm_sdcc.3/by-num/p9_neon
+LG Optimus L9 (p769)_p769_/dev/block/platform/omap/omap_hsmmc.1/by-name/boot_neon
+LG Optimus L90 (D415)_D415_xxx_neon
+LG Optimus 4X HD (p880)_p880_/dev/block/platform/sdhci-tegra.3/by-name/LNX_neon
+LG Nexus 5 (mako)_mako_xxx_neon
+Lg L3 II (E430)_E430_xxx_neon
+Galaxy Ace 3 LTE (GT-S7275R)_s7275r_/dev/block/platform/msm_sdcc.1/by-name/boot_neon
+Samsung Galaxy Fame (s6812)_s6812_/dev/block/mmcblk0p5_neon
+Samsung Galaxy Grand Duos (i9082)_i9082_/dev/block/mmcblk0p5_neon
+Samsung Galaxy R (i9103)_i9103_/dev/block/mmcblk0p9_nonneon
+Samsung Galaxy S (i9070)Advance_i9070_/dev/block/mmcblk0p15_neon
+Samsung Galaxy S 2 (i9100)_i9100_/dev/block/mmcblk0p5_neon
+Samsung Galaxy S 3 (i9300)_i9300_/dev/block/mmcblk0p5_neon
+Samsung Galaxy S 4 (i9500)_i9500_/dev/block/mmcblk0p9_neon
+Samsung Galaxy S4 mini LTE (I9195)_i9195_/dev/block/platform/msm_sdcc.1/by-name/boot_neon
+Samsung Galaxy S 5 (G-900F)_900F_xxx_neon
+Samsung Galaxy Nexus (GSM)_maguro_/dev/block/platform/omap/omap_hsmmc.0/by-name/boot_neon
+Samsung Infuse (i997)_i997_xxx_neon
+Nexus 4 (e960)_e960_/dev/block/mmcblk0p6_neon
+Nexus 5X (bullhead)_bullhead_xxx_neon
+Nexus 7 (2012 version)_grouper_/dev/block/platform/sdhci-tegra.3/by-name/LNX_neon
+Samsung Galaxy Note II (N7100)_N7100_/dev/block/mmcblk0p8_neon
+Samsung Galaxy Note III (hltetmo)_hltetmo_/dev/block/platform/msm_sdcc.1/by-name/boot_neon
+Samsung Galaxy Note III (n900)_n900_xxx_neon
+Xperia Go (st27i)_st27i_/dev/block/mmcblk0p9_neon
+Xperia Z1 Compact_xperiaZ1_xxx_neon
+LG G2 At&T (D800)_d800_xxx_neon
+LG G2 (D802)_d802_xxx_neon
+Motorola RAZR Maxx_XT912_xxx_neon
+Motorola Defy_mb525_xxx_neon
+Samsung Galaxy Note (N7000)_N7000_xxx_neon
+Samsung Galaxy Note II AT&T (i317)_i317_xxx_neon
+Samsung Galaxy Note III (N9002)_N9002_xxx_neon
+Samsung Galaxy S IV (i9505)_i9505_xxx_neon
+Samsung Galaxy Pocket (s5300)_s5300_xxx_neon
+Xperia Ion (LT28x)_LT28x_xxx_neon
+Neon_generic_nomountpoint_neon
+NonNeon_generic_nomountpoint_nonneon
