@@ -27,12 +27,12 @@ public class UpdaterScript {
     public static UpdaterScriptOperations op = new UpdaterScriptOperations();
     public static String updaterScriptPath = "META-INF/com/google/android/updater-script";
     public static String symlinkScriptPath = "META-INF/com/google/android/symlink-script";
-    public static String symlinkScript = uso.getSymlinkScript();
+    public static String symlinkScript = op.getSymlinkScript();
 
     public static String build(ProjectItemNode rootNode) {
         updaterScript = "";
         to = new TreeOperations();
-        updaterScript += uso.initiateUpdaterScript();
+        updaterScript += op.initiateUpdaterScript();
         for (ProjectItemNode project : to.getProjectsSorted(rootNode)) {
             if (((ProjectNode) project).createZip) {
                 switch (((ProjectNode) project).projectType) {
@@ -42,8 +42,8 @@ public class UpdaterScript {
                 }
             }
         }
-        updaterScript += uso.addWipeDalvikCacheString();
-        updaterScript += uso.addPrintString("@Finished Install");
+        updaterScript += op.addWipeDalvikCacheString();
+        updaterScript += op.addPrintString("@Finished Install");
         return updaterScript;
     }
 
@@ -60,15 +60,15 @@ public class UpdaterScript {
         str += "set_progress(0);\n";
         for (ProjectItemNode group : to.getNodeList(ProjectItemNode.NODE_GROUP)) {
             if (((ProjectNode) group.parent).projectType == project.projectType && ((ProjectNode) group.parent).title.equals(project.title)) {
-                str += uso.generateUpdaterScript((GroupNode) group);
+                str += op.generateUpdaterScript((GroupNode) group);
             }
         }
         str += "set_progress(1);\n";
-        str += uso.terminateUpdaterScript();
+        str += op.terminateUpdaterScript();
         return str += "endif;\n";
     }
 
     public static String getDpiScript(String dpi) {
-        return uso.getDpiScript(dpi);
+        return op.getDpiScript(dpi);
     }
 }
