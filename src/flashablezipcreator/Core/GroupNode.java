@@ -25,7 +25,6 @@ public final class GroupNode extends ProjectItemNode {
     public String originalGroupType;
     String zipPathPrefix = "Group_";
     String typePrefix = "Type_";
-    String extractPathPrefix = "Extract_";
 
     public static final int GROUP_SYSTEM_APK = 1;
     public static final int GROUP_SYSTEM_PRIV_APK = 2;
@@ -164,7 +163,6 @@ public final class GroupNode extends ProjectItemNode {
                 break;
         }
         super.zipPath = parent.zipPath + "/" + this.originalGroupType + "/" + zipPathPrefix + title;
-        super.extractZipPath = super.zipPath + "/" + extractPathPrefix + title + super.location;
     }
 
     public String setPermissions(String i, String j, String k) {
@@ -190,7 +188,6 @@ public final class GroupNode extends ProjectItemNode {
 
     public void updateZipPath() {
         super.zipPath = parent.zipPath + "/" + this.originalGroupType + "/" + zipPathPrefix + title;
-        super.extractZipPath = super.zipPath + "/" + extractPathPrefix + title + super.location;
     }
 
     public void renameMe(String newName) throws IOException {

@@ -22,7 +22,6 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
     public String title;
     public String path = "AFZC Projects";
     public String zipPath = "customize/aroma";
-    public String extractZipPath = "";
     public String location = "";
 
     public int type; //helpful in setting appropriate icon for the node

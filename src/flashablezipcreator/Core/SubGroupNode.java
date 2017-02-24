@@ -24,7 +24,6 @@ public class SubGroupNode extends ProjectItemNode {
     public String projectName;
     public String originalGroupType;
     String zipPathPrefix = "SubGroup_";
-    String extractPathPrefix = "Extract_";
 
     public static final int TYPE_SYSTEM_FONTS = GroupNode.GROUP_SYSTEM_FONTS;
     public static final int TYPE_SYSTEM_MEDIA = GroupNode.GROUP_SYSTEM_MEDIA;
@@ -39,7 +38,6 @@ public class SubGroupNode extends ProjectItemNode {
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
         super.location = parent.location;
-        super.extractZipPath = parent.extractZipPath;
         //System.out.println("SubGroup Path is : " + path);
         switch (type) {
             case TYPE_SYSTEM_FONTS:
@@ -76,7 +74,6 @@ public class SubGroupNode extends ProjectItemNode {
     
     public void updateZipPath(){
         super.zipPath = parent.zipPath + "/" + zipPathPrefix + title;
-        super.extractZipPath = parent.extractZipPath;
     }
 
     public void updateChildrenZipPath(){
