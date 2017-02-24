@@ -10,12 +10,10 @@ import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
-import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.FlashableZipCreator;
-import static flashablezipcreator.Protocols.UpdaterScript.symlinkScriptPath;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 

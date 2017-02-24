@@ -77,17 +77,6 @@ public class Xml {
         xo.initializeProjectData(data);
     }
 
-    public static String getDeviceConfigString() throws ParserConfigurationException, TransformerException {
-        xo = new XmlOperations();
-        xo.createDeviceConfig(Device.selected);
-        return xo.getXML();
-    }
-
-    public static String getDeviceName(String configData) throws ParserConfigurationException, SAXException, IOException {
-        xo = new XmlOperations();
-        return xo.getStringConfigValue(configData, "Name");
-    }
-
     public static String getPreferenceConfigString(String aromaVersion, boolean androidVersionAboveLP,
             boolean quickProjectSetup, ArrayList<String> themes, String zipCreatorName, String ZipVersion, boolean saveLogs)
             throws ParserConfigurationException, TransformerException {

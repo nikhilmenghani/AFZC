@@ -10,12 +10,9 @@ import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.Operations.JarOperations;
-import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
-import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.Protocols.Xml;
-import flashablezipcreator.UserInterface.AddDevice;
 import flashablezipcreator.UserInterface.AddName;
 import flashablezipcreator.UserInterface.Preferences;
 import static flashablezipcreator.UserInterface.Preferences.preferencesConfig;
@@ -23,13 +20,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.sql.SQLException;
 import java.util.Enumeration;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -109,20 +102,6 @@ public class FlashableZipCreator {
             
             if (Jar.isExecutingThrough()) {
                 JarOperations.setJarFileList();
-                /* No need to select device since we are using universal update binary
-                Device.loadDeviceList();
-                Logs.write("Device List Loaded");
-                String configString = "";
-                if ((new File(Xml.device_config_path).exists())) {
-                    configString = r.getFileString(Xml.device_config_path);
-                    Device.selected = Xml.getDeviceName(configString);
-                    Logs.write("Selected Device from Config: " + Device.selected);
-                } else if ((new File("update-binary").exists())) {
-                    Device.binary = (new Read()).getFileBytes("update-binary");
-                    Logs.write("update-binary Found");
-                } else {
-                    AddDevice ad = new AddDevice();
-                } */
             } else {
                 Xml.file_details_path = "dist/" + Xml.file_details_path;
             }
@@ -138,13 +117,7 @@ public class FlashableZipCreator {
                 new AddName("Project", ProjectNode.PROJECT_AROMA, MyTree.rootNode);
             }
             //}
-        } catch (IOException ex) {
-            Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TransformerException ex) {
-            Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SAXException ex) {
+        } catch (IOException | ParserConfigurationException | TransformerException | SAXException ex) {
             Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
