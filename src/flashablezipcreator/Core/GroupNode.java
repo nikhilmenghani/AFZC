@@ -37,7 +37,7 @@ public final class GroupNode extends ProjectItemNode {
     public static final int GROUP_DATA_APP = 14;
     public static final int GROUP_DATA_LOCAL = 15;
     public static final int GROUP_CUSTOM = 16;
-    public static final int GROUP_OTHER = 17;
+    public static final int GROUP_MOD = 17;
     public static final int GROUP_AROMA_THEMES = 18;
     public static final int GROUP_DELETE_FILES = 20;
     public static final int GROUP_SCRIPT = 21;
@@ -133,7 +133,7 @@ public final class GroupNode extends ProjectItemNode {
                 this.isSelectBox = false;
                 this.originalGroupType = this.typePrefix + "custom";
                 break;
-            case GROUP_OTHER:
+            case GROUP_MOD:
 //                super.location = "";
 //                this.permissions = "";
                 //following properties not needed but added.

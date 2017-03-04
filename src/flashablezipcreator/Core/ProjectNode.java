@@ -36,8 +36,8 @@ public class ProjectNode extends ProjectItemNode {
 
     //public static final int PROJECT_NORMAL = 1;
     public static final int PROJECT_AROMA = 2;
-    //public static final int PROJECT_GAPPS = 3;
-    //public static final int PROJECT_ROM = 4;
+    public static final int PROJECT_CUSTOM = 3;
+    public static final int PROJECT_MOD = 4;
     public static final int PROJECT_THEMES = 5;
     //public static final int PROJECT_ADVANCED = 6;
 
