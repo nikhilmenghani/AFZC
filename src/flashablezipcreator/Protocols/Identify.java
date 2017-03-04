@@ -135,13 +135,25 @@ public class Identify {
         return false;
     }
 
-    public static ArrayList<String> getFolderNames(String path) {
+    public static ArrayList<String> getFolderNames(String path, int projectType) {
         ArrayList<String> fList = new ArrayList<>();
-        while (path.contains(folderSeparator)) {
-            path = path.substring(path.indexOf(folderSeparator) + folderSeparator.length(), path.length());
-            String folderName = path.substring(0, path.indexOf("/"));
-            fList.add(folderName);
-            path = path.substring(path.indexOf("/") + 1, path.length());
+        switch (projectType) {
+            case ProjectNode.PROJECT_AROMA:
+            case ProjectNode.PROJECT_CUSTOM:
+                while (path.contains(folderSeparator)) {
+                    path = path.substring(path.indexOf(folderSeparator) + folderSeparator.length(), path.length());
+                    String folderName = path.substring(0, path.indexOf("/"));
+                    fList.add(folderName);
+                    path = path.substring(path.indexOf("/") + 1, path.length());
+                }
+                return fList;
+            case ProjectNode.PROJECT_MOD:
+                while(path.contains("/")){
+                    String folderName = path.substring(0, path.indexOf("/"));
+                    fList.add(folderName);
+                    path = path.substring(path.indexOf("/") + 1, path.length());
+                }
+                return fList;
         }
         return fList;
     }
@@ -195,10 +207,10 @@ public class Identify {
                 return GroupNode.GROUP_DATA_LOCAL;
             case "custom":
                 return GroupNode.GROUP_CUSTOM;
-            case "Other":
-                return GroupNode.GROUP_OTHER;
+            case "mod":
+                return GroupNode.GROUP_MOD;
             default:
-                return GroupNode.GROUP_OTHER;
+                return GroupNode.GROUP_CUSTOM;
         }
     }
 
@@ -212,6 +224,17 @@ public class Identify {
     }
 
     public static int getProjectType(String path) throws IOException {
-        return ProjectNode.PROJECT_AROMA;
+        if (path.startsWith("customize")) {
+            path = path.substring(path.indexOf("/") + 1, path.indexOf("/", path.indexOf("/") + 1));
+        }
+        switch (path) {
+            case "aroma":
+                return ProjectNode.PROJECT_AROMA;
+            case "custom":
+                return ProjectNode.PROJECT_CUSTOM;
+            case "mod":
+                return ProjectNode.PROJECT_MOD;
+        }
+        return ProjectNode.PROJECT_MOD;
     }
 }

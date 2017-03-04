@@ -6,7 +6,9 @@
 package flashablezipcreator.Protocols;
 
 import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
+import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.MyTree;
 import static flashablezipcreator.MyTree.panelLower;
@@ -63,6 +65,8 @@ public class Import implements Runnable {
         to = new TreeOperations();
         int maxSize = rz.filesCount;
         fileIndex = 0;
+        Identify.fileName = (new File(path)).getName().replaceFirst("[.][^.]+$", "");
+        int modType = Mod.getModType(rz);
         Logs.write("Reading Zip...");
         try {
             for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
@@ -88,17 +92,17 @@ public class Import implements Runnable {
                 String filePath = name;
                 String projectName = Identify.getProjectName(name);
                 int projectType = Identify.getProjectType(filePath);
-                String groupName = Identify.getGroupName(filePath);
-                int groupType = Identify.getGroupType(filePath);
-                ArrayList<String> folderList = Identify.getFolderNames(filePath);
-                String subGroupName = Identify.getSubGroupName(groupName, filePath);
-                int subGroupType = groupType; //Groups that have subGroups have same type.
-                String fName = (new File(filePath)).getName();
-
-                FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, projectType);
-                file.fileSourcePath = file.path;
-                rz.writeFileFromZip(in, file.fileSourcePath);
-                Logs.write("Written File: " + fName);
+                switch (projectType) {
+                    case ProjectNode.PROJECT_AROMA:
+                        importAromaZip(filePath, projectName, in);
+                        break;
+                    case ProjectNode.PROJECT_MOD:
+                        importModZip(filePath, projectName, in, modType);
+                        break;
+                    case ProjectNode.PROJECT_CUSTOM:
+                        importCustomZip(filePath, projectName, in);
+                        break;
+                }
             }
 
             //adding nodes to tree should be done here.
@@ -124,6 +128,50 @@ public class Import implements Runnable {
             Logs.write(Logs.getExceptionTrace(e));
             setCardLayout(1);
         }
+    }
+
+    public static void importModZip(String filePath, String projectName, InputStream in, int modType) throws IOException {
+        String fName = (new File(filePath)).getName();
+        switch (modType) {
+            case Mod.TITANIUM_BACKUP:
+                String groupName = "Titanium Backup Apps";
+                int groupType = GroupNode.GROUP_DATA_APP;
+                String folderName = fName.contains("-") ? fName.substring(0, fName.indexOf("-")) : fName;
+                ArrayList<String> folderList = new ArrayList<>();
+                folderList.add(folderName);
+                fName = folderName + ".apk";
+                FileNode file = to.addFileToTree(fName, "", -1, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_MOD);
+                file.fileSourcePath = file.path;
+                rz.writeFileFromZip(in, file.fileSourcePath);
+                Logs.write("Written File: " + fName);
+                break;
+        }
+    }
+
+    public static void importCustomZip(String filePath, String projectName, InputStream in) throws IOException {
+        String groupName = Identify.getGroupName(filePath);
+        int groupType = Identify.getGroupType(filePath);
+        ArrayList<String> folderList = Identify.getFolderNames(filePath, ProjectNode.PROJECT_CUSTOM);
+        String subGroupName = Identify.getSubGroupName(groupName, filePath);
+        int subGroupType = groupType; //Groups that have subGroups have same type.
+        String fName = (new File(filePath)).getName();
+        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_CUSTOM);
+        file.fileSourcePath = file.path;
+        rz.writeFileFromZip(in, file.fileSourcePath);
+        Logs.write("Written File: " + fName);
+    }
+
+    public static void importAromaZip(String filePath, String projectName, InputStream in) throws IOException {
+        String groupName = Identify.getGroupName(filePath);
+        int groupType = Identify.getGroupType(filePath);
+        ArrayList<String> folderList = Identify.getFolderNames(filePath, ProjectNode.PROJECT_AROMA);
+        String subGroupName = Identify.getSubGroupName(groupName, filePath);
+        int subGroupType = groupType; //Groups that have subGroups have same type.
+        String fName = (new File(filePath)).getName();
+        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_AROMA);
+        file.fileSourcePath = file.path;
+        rz.writeFileFromZip(in, file.fileSourcePath);
+        Logs.write("Written File: " + fName);
     }
 
     public static void setProgressBar(String value) {
