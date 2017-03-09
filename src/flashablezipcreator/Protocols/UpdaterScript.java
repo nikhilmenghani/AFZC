@@ -36,6 +36,8 @@ public class UpdaterScript {
             if (((ProjectNode) project).createZip) {
                 switch (((ProjectNode) project).projectType) {
                     case ProjectNode.PROJECT_AROMA:
+                    case ProjectNode.PROJECT_CUSTOM:
+                    case ProjectNode.PROJECT_MOD:
                         updaterScript += buildAromaScript((ProjectNode) project);
                         break;
                 }

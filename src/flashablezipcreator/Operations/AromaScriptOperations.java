@@ -182,6 +182,8 @@ public class AromaScriptOperations {
         String str = "";
         switch (project.projectType) {
             case ProjectNode.PROJECT_AROMA:
+            case ProjectNode.PROJECT_CUSTOM:
+            case ProjectNode.PROJECT_MOD:
                 str += "\nmenubox(\"" + "Menu" + " List\",\"Select from " + "following" + "\",\"@installmods\",\"" + project.title + ".prop" + "\",\n"
                         + "\"Open " + project.title + "\", \"Install files from " + project.title + "\", \"@install\"";
                 str += ",\n\"" + "Skip" + "\", \"Do Not Install files from " + project.title + "\", \"@apps\"";
@@ -196,6 +198,8 @@ public class AromaScriptOperations {
         String str = "";
         switch (project.projectType) {
             case ProjectNode.PROJECT_AROMA:
+            case ProjectNode.PROJECT_CUSTOM:
+            case ProjectNode.PROJECT_MOD:
                 str += "setvar(\"release_version\",\"" + project.releaseVersion + "\");\n"
                         + "setvar(\"android_version\",\"" + project.androidVersion + "\");\n"
                         + "setvar(\"file_creator\",\"" + Project.zipCreator + "\");\n";
@@ -208,6 +212,8 @@ public class AromaScriptOperations {
         String str = "";
         switch (project.projectType) {
             case ProjectNode.PROJECT_AROMA:
+            case ProjectNode.PROJECT_CUSTOM:
+            case ProjectNode.PROJECT_MOD:
                 str += "\nviewbox(\n"
                         + "\"Welcome\",\n"
                         + "\"You are about to make additional changes to your device.\\n\\n<b>\"+\n"

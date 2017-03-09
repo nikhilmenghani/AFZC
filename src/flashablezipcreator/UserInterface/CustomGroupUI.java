@@ -62,16 +62,15 @@ public class CustomGroupUI extends javax.swing.JFrame {
         cbFileInstructions = new javax.swing.JComboBox<>();
         lblDescription = new javax.swing.JLabel();
         txtDescription = new javax.swing.JTextField();
-        cbRecursive = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
         panelMain.setBackground(new java.awt.Color(255, 255, 255));
 
-        panelHeader.setBackground(new java.awt.Color(153, 153, 0));
+        panelHeader.setBackground(new java.awt.Color(204, 102, 0));
 
-        lblHeader.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        lblHeader.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lblHeader.setForeground(new java.awt.Color(255, 255, 255));
         lblHeader.setText("   Add Group");
 
@@ -214,13 +213,12 @@ public class CustomGroupUI extends javax.swing.JFrame {
                                         .addComponent(cbSetgid)
                                         .addGap(38, 38, 38)
                                         .addComponent(cbSticky))
-                                    .addComponent(lblPermInString))))
-                        .addGap(20, 20, 20))
+                                    .addComponent(lblPermInString)))))
                     .addComponent(cbSetuid)
                     .addGroup(panelPermissionsLayout.createSequentialGroup()
                         .addGap(77, 77, 77)
                         .addComponent(lblPermissions)))
-                .addGap(33, 33, 33))
+                .addGap(53, 53, 53))
         );
         panelPermissionsLayout.setVerticalGroup(
             panelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -261,26 +259,32 @@ public class CustomGroupUI extends javax.swing.JFrame {
                 .addComponent(lblPermInDigit)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblPermInString)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelGroupDetails.setBackground(new java.awt.Color(255, 255, 255));
 
         lblGroupName.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblGroupName.setText("Group Name ");
+        lblGroupName.setToolTipText("This will contain set of files you will choose from in Aroma Installer");
 
         txtGroupName.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtGroupName.setToolTipText("This will contain set of files you will choose from in Aroma Installer");
 
         lblInstallLocation.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblInstallLocation.setText("Install Location");
+        lblInstallLocation.setToolTipText("This is the location where your files will be installed (e.g. \\system\\framework)");
 
         txtInstallLocation.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        txtInstallLocation.setToolTipText("This is the location where your files will be installed (e.g. \\system\\framework)");
 
         lblFileInstructions.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lblFileInstructions.setText("File Install Instructions");
+        lblFileInstructions.setToolTipText("Choose whether only one from the list of files can be installed or multiple can be installed. (select box will be there for former one and check box will be there for latter one)");
 
         cbFileInstructions.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
         cbFileInstructions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Any One FIle Per Group", "Multiple Files Per Group" }));
+        cbFileInstructions.setToolTipText("Choose whether only one from the list of files can be installed or multiple can be installed. (select box will be there for former one and check box will be there for latter one)");
         cbFileInstructions.setOpaque(false);
 
         lblDescription.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -324,17 +328,14 @@ public class CustomGroupUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelGroupDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(panelGroupDetailsLayout.createSequentialGroup()
-                        .addGroup(panelGroupDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lblInstallLocation)
-                            .addComponent(lblDescription))
+                        .addGroup(panelGroupDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblDescription, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblInstallLocation))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtInstallLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-
-        cbRecursive.setBackground(new java.awt.Color(255, 255, 255));
-        cbRecursive.setText("Recursive");
 
         javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
         panelMain.setLayout(panelMainLayout);
@@ -343,8 +344,6 @@ public class CustomGroupUI extends javax.swing.JFrame {
             .addComponent(panelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(panelMainLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(cbRecursive)
-                .addGap(18, 18, 18)
                 .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addComponent(panelGroupDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -359,12 +358,10 @@ public class CustomGroupUI extends javax.swing.JFrame {
                 .addComponent(panelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(panelGroupDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelPermissions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbRecursive, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -434,7 +431,6 @@ public class CustomGroupUI extends javax.swing.JFrame {
     private javax.swing.JCheckBox cbOthersX;
     private javax.swing.JCheckBox cbOwnerR;
     private javax.swing.JCheckBox cbOwnerW;
-    private javax.swing.JCheckBox cbRecursive;
     private javax.swing.JCheckBox cbSetgid;
     private javax.swing.JCheckBox cbSetuid;
     private javax.swing.JCheckBox cbSticky;

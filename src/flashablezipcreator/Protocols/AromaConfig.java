@@ -39,6 +39,8 @@ public class AromaConfig {
 //                        aromaConfig += buildAdvancedScript((ProjectNode) project);
 //                        break;
                     case ProjectNode.PROJECT_AROMA:
+                    case ProjectNode.PROJECT_CUSTOM:
+                    case ProjectNode.PROJECT_MOD:
                         aromaConfig += buildAromaScript((ProjectNode) project);
                         break;
                     //following is not needed. added just in case.
@@ -63,9 +65,13 @@ public class AromaConfig {
         str += op.addInitString(project);
         str += op.addWelcomeString(project);
         for (ProjectItemNode group : to.getNodeList(ProjectItemNode.NODE_GROUP)) {
-            if (((ProjectNode) group.parent).projectType == ProjectNode.PROJECT_AROMA) {
-                str += op.addCheckBox((GroupNode) group);
-                str += op.addSelectBox((GroupNode) group);
+            switch (((ProjectNode) group.parent).projectType) {
+                case ProjectNode.PROJECT_AROMA:
+                case ProjectNode.PROJECT_CUSTOM:
+                case ProjectNode.PROJECT_MOD:
+                    str += op.addCheckBox((GroupNode) group);
+                    str += op.addSelectBox((GroupNode) group);
+                    break;
             }
         }
         str += "endif;\n";

@@ -30,7 +30,7 @@ public class Jar {
         TreeOperations to = new TreeOperations();
         String projectName = "Themes";
         int projectType = ProjectNode.PROJECT_THEMES;
-        ProjectNode themesProject = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, rootNode), true);
+        ProjectNode themesProject = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, Mod.MOD_LESS, rootNode), true);
         themesProject.children = new Vector<>();
         for (String theme : JarOperations.themesList) {
             if (Preferences.themes.contains(theme)) {

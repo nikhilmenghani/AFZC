@@ -41,12 +41,23 @@ public class ProjectNode extends ProjectItemNode {
     public static final int PROJECT_THEMES = 5;
     //public static final int PROJECT_ADVANCED = 6;
 
-    public ProjectNode(String title, int projectType, ProjectItemNode parent) {
+    public ProjectNode(String title, int projectType, int modType, ProjectItemNode parent) {
         super(title, ProjectItemNode.NODE_PROJECT, parent);
         this.projectName = title;
         this.projectType = projectType;
         super.path = parent + File.separator + title;
-        super.zipPath = parent.zipPath + "/" + zipPathPrefix + title;
+        switch (projectType) {
+            case ProjectNode.PROJECT_AROMA:
+                super.zipPath = parent.zipPath + "/" + "aroma_" + modType + "/" + zipPathPrefix + title;
+                break;
+            case ProjectNode.PROJECT_CUSTOM:
+                super.zipPath = parent.zipPath + "/" + "custom_" + modType + "/" + zipPathPrefix + title;
+                break;
+            case ProjectNode.PROJECT_MOD:
+                super.zipPath = parent.zipPath + "/" + "mod_" + modType + "/" + zipPathPrefix + title;
+                break;
+        }
+
         this.androidVersion = Preferences.IsFromLollipop ? "5.x+" : "4.x+";
     }
 

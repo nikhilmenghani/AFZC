@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.8" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -52,8 +52,6 @@
               <Component id="panelHeader" alignment="0" max="32767" attributes="0"/>
               <Group type="102" attributes="0">
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Component id="cbRecursive" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnAdd" min="-2" pref="83" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -71,13 +69,10 @@
                   <Component id="panelHeader" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                   <Component id="panelGroupDetails" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="panelPermissions" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btnAdd" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
-                      <Component id="cbRecursive" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                  </Group>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="btnAdd" min="-2" pref="31" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -87,7 +82,7 @@
         <Container class="javax.swing.JPanel" name="panelHeader">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="99" red="99" type="rgb"/>
+              <Color blue="0" green="66" red="cc" type="rgb"/>
             </Property>
           </Properties>
 
@@ -115,7 +110,7 @@
             <Component class="javax.swing.JLabel" name="lblHeader">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="16" style="0"/>
+                  <Font name="Tahoma" size="18" style="0"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -212,7 +207,6 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                           </Group>
                           <Component id="cbSetuid" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
@@ -220,7 +214,7 @@
                               <Component id="lblPermissions" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -270,7 +264,7 @@
                       <Component id="lblPermInDigit" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="lblPermInString" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="34" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -504,9 +498,9 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="lblInstallLocation" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="lblDescription" alignment="1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lblInstallLocation" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="txtInstallLocation" min="-2" pref="33" max="-2" attributes="0"/>
@@ -525,6 +519,7 @@
                   <Font name="Tahoma" size="14" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Group Name "/>
+                <Property name="toolTipText" type="java.lang.String" value="This will contain set of files you will choose from in Aroma Installer"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtGroupName">
@@ -532,6 +527,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="18" style="0"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="This will contain set of files you will choose from in Aroma Installer"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblInstallLocation">
@@ -540,6 +536,7 @@
                   <Font name="Tahoma" size="14" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Install Location"/>
+                <Property name="toolTipText" type="java.lang.String" value="This is the location where your files will be installed (e.g. \u005csystem\u005cframework)" containsInvalidXMLChars="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtInstallLocation">
@@ -547,6 +544,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="18" style="0"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="This is the location where your files will be installed (e.g. \u005csystem\u005cframework)" containsInvalidXMLChars="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblFileInstructions">
@@ -555,6 +553,7 @@
                   <Font name="Tahoma" size="14" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="File Install Instructions"/>
+                <Property name="toolTipText" type="java.lang.String" value="Choose whether only one from the list of files can be installed or multiple can be installed. (select box will be there for former one and check box will be there for latter one)"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="cbFileInstructions">
@@ -568,6 +567,7 @@
                     <StringItem index="1" value="Multiple Files Per Group"/>
                   </StringArray>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Choose whether only one from the list of files can be installed or multiple can be installed. (select box will be there for former one and check box will be there for latter one)"/>
                 <Property name="opaque" type="boolean" value="false"/>
               </Properties>
               <AuxValues>
@@ -591,14 +591,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JCheckBox" name="cbRecursive">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Recursive"/>
-          </Properties>
-        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

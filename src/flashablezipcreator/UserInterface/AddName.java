@@ -12,6 +12,7 @@ import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.MyTree;
 import flashablezipcreator.Operations.TreeOperations;
+import flashablezipcreator.Protocols.Mod;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
@@ -102,7 +103,7 @@ public class AddName extends javax.swing.JFrame {
             case ProjectItemNode.NODE_GROUP:
                 String headerText = "";
                 String subGroupName = "";
-                switch(type){
+                switch (type) {
                     case GroupNode.GROUP_DATA_LOCAL:
                     case GroupNode.GROUP_SYSTEM_MEDIA:
                         headerText = "   Add Boot Animation";
@@ -519,7 +520,7 @@ public class AddName extends javax.swing.JFrame {
         String projectName = txtProjectName.getText();
         if (!projectName.equals("")) {
             if (this.rNode != null) {
-                rNode.addChild(new ProjectNode(projectName, this.projectType, rNode), false);
+                rNode.addChild(new ProjectNode(projectName, this.projectType, Mod.MOD_LESS, rNode), false);
             } else if (this.gNode != null) {
                 gNode.addChild(new FolderNode(projectName, gNode), false);
             } else if (this.sNode != null) {
@@ -534,7 +535,7 @@ public class AddName extends javax.swing.JFrame {
             } else if (this.pNode != null) {
                 pNode.addChild(new GroupNode(name, this.groupType, pNode), false);
             } else if (this.rNode != null) {
-                rNode.addChild(new ProjectNode(projectName, this.projectType, rNode), false);
+                rNode.addChild(new ProjectNode(projectName, this.projectType, Mod.MOD_LESS, rNode), false);
             } else if (this.fNode != null) {
                 fNode.addChild(new FolderNode(name, fNode), false);
             }

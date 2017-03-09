@@ -101,14 +101,6 @@ public final class FileNode extends ProjectItemNode {
         this.filePermission = (parentPermission + "\"" + this.installLocation + "/" + title + "\"").replaceAll("\\\\", "/");
     }
 
-    public String getProjectType(ProjectNode project) {
-        switch (project.projectType) {
-            case ProjectNode.PROJECT_AROMA:
-                return "aroma";
-        }
-        return null;
-    }
-
     public void setDescription(String desc) {
         this.description = desc;
     }

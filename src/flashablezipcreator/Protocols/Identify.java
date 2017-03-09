@@ -225,7 +225,8 @@ public class Identify {
 
     public static int getProjectType(String path) throws IOException {
         if (path.startsWith("customize")) {
-            path = path.substring(path.indexOf("/") + 1, path.indexOf("/", path.indexOf("/") + 1));
+            //path = path.substring(path.indexOf("/") + 1, path.indexOf("/", path.indexOf("/") + 1));
+            path = path.substring(path.indexOf("/") + 1, path.indexOf("_"));
         }
         switch (path) {
             case "aroma":
@@ -235,6 +236,6 @@ public class Identify {
             case "mod":
                 return ProjectNode.PROJECT_MOD;
         }
-        return ProjectNode.PROJECT_MOD;
+        return ProjectNode.PROJECT_MOD;//This might get changed in future and set to Custom
     }
 }

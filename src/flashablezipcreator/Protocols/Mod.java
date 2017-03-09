@@ -17,10 +17,11 @@ import java.util.zip.ZipEntry;
  */
 public final class Mod {
 
-    public static final int TITANIUM_BACKUP = 0;
-    public static final int RADON_KERNEL_KENZO = 1;
-    public static final int AGNI_KERNEL_KERNEL = 2;
-    public static final int PIXEL_APPS = 3;
+    public static final int MOD_LESS = 0;
+    public static final int TITANIUM_BACKUP = 1;
+    public static final int RADON_KERNEL_KENZO = 2;
+    public static final int AGNI_KERNEL_KERNEL = 3;
+    public static final int PIXEL_APPS = 4;
     public static final int DEFAULT = -1;
 
     public static int getModType(ReadZip rz) {
@@ -29,6 +30,15 @@ public final class Mod {
             ZipEntry ze = e.nextElement();
             String name = ze.getName();
             if (name.endsWith("/") || (new File(name)).isDirectory() || name.startsWith("META-INF")) {
+                continue;
+            }
+            if (name.startsWith("customize") && name.contains("mod")) {
+                String path = name.substring(name.indexOf("_") + 1, name.length());
+                path = path.substring(0, path.indexOf("/"));
+                if (!fileList.contains("mod__" + path)) {
+                    fileList.add("mod__" + path);
+                }
+                fileList.add(name);
                 continue;
             }
             fileList.add(name);
@@ -41,7 +51,7 @@ public final class Mod {
 
     public static boolean isTitanium(ArrayList<String> fileList) {
         boolean flag = false;
-        if (fileList.contains("com.keramidas.TitaniumBackup.apk")) {
+        if (fileList.contains("com.keramidas.TitaniumBackup.apk") || fileList.contains("mod__" + TITANIUM_BACKUP)) {
             flag = true;
         }
         return flag;

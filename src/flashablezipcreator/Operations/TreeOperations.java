@@ -70,8 +70,8 @@ public class TreeOperations {
         node.removeMe();
     }
 
-    public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, ArrayList<String> folders, String projectName, int projectType) {
-        ProjectNode pNode = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, rootNode), false);
+    public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, ArrayList<String> folders, String projectName, int projectType, int modType) {
+        ProjectNode pNode = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, modType, rootNode), false);
         
         GroupNode gNode = (GroupNode) pNode.addChild(new GroupNode(groupName, groupType, pNode), false);
         SubGroupNode sgNode = null;
@@ -155,6 +155,8 @@ public class TreeOperations {
         ArrayList<ProjectItemNode> projects = new ArrayList<>();
         ArrayList<ProjectItemNode> projectAroma = new ArrayList<>();
         ArrayList<ProjectItemNode> projectThemes = new ArrayList<>();
+        ArrayList<ProjectItemNode> projectCustom = new ArrayList<>();
+        ArrayList<ProjectItemNode> projectMod = new ArrayList<>();
 
         for (ProjectItemNode project : getNodeList(ProjectItemNode.NODE_PROJECT)) {
             switch (((ProjectNode) project).projectType) {
@@ -164,12 +166,24 @@ public class TreeOperations {
                 case ProjectNode.PROJECT_THEMES:
                     projectThemes.add(project);
                     break;
+                case ProjectNode.PROJECT_CUSTOM:
+                    projectCustom.add(project);
+                    break;
+                case ProjectNode.PROJECT_MOD:
+                    projectMod.add(project);
+                    
             }
         }
         projectAroma.stream().forEach((node) -> {
             projects.add(node);
         });
         projectThemes.stream().forEach((node) -> {
+            projects.add(node);
+        });
+        projectCustom.stream().forEach((node) -> {
+            projects.add(node);
+        });
+        projectMod.stream().forEach((node) -> {
             projects.add(node);
         });
         return projects;

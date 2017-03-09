@@ -124,7 +124,7 @@ public class Import implements Runnable {
             progressBarImportExport.setValue(0);
             progressBarFlag = 0;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n");
+            JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n" + Logs.getExceptionTrace(e));
             Logs.write(Logs.getExceptionTrace(e));
             setCardLayout(1);
         }
@@ -136,11 +136,11 @@ public class Import implements Runnable {
             case Mod.TITANIUM_BACKUP:
                 String groupName = "Titanium Backup Apps";
                 int groupType = GroupNode.GROUP_DATA_APP;
-                String folderName = fName.contains("-") ? fName.substring(0, fName.indexOf("-")) : fName;
+                String folderName = fName.contains("-") ? fName.substring(0, fName.indexOf("-")) : fName.replaceFirst("[.][^.]+$", "");
                 ArrayList<String> folderList = new ArrayList<>();
                 folderList.add(folderName);
                 fName = folderName + ".apk";
-                FileNode file = to.addFileToTree(fName, "", -1, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_MOD);
+                FileNode file = to.addFileToTree(fName, "", -1, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_MOD, Mod.TITANIUM_BACKUP);
                 file.fileSourcePath = file.path;
                 rz.writeFileFromZip(in, file.fileSourcePath);
                 Logs.write("Written File: " + fName);
@@ -155,7 +155,7 @@ public class Import implements Runnable {
         String subGroupName = Identify.getSubGroupName(groupName, filePath);
         int subGroupType = groupType; //Groups that have subGroups have same type.
         String fName = (new File(filePath)).getName();
-        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_CUSTOM);
+        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_CUSTOM, Mod.MOD_LESS);
         file.fileSourcePath = file.path;
         rz.writeFileFromZip(in, file.fileSourcePath);
         Logs.write("Written File: " + fName);
@@ -168,7 +168,7 @@ public class Import implements Runnable {
         String subGroupName = Identify.getSubGroupName(groupName, filePath);
         int subGroupType = groupType; //Groups that have subGroups have same type.
         String fName = (new File(filePath)).getName();
-        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_AROMA);
+        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_AROMA, Mod.MOD_LESS);
         file.fileSourcePath = file.path;
         rz.writeFileFromZip(in, file.fileSourcePath);
         Logs.write("Written File: " + fName);
