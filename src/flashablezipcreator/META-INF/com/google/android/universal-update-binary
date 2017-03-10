@@ -184,7 +184,7 @@ restore_con() {
 # stdout(expr[, expr, ...]) {} is unneeded since all output goes to stdout by default
 
 # file_getprop <file> <property>
-file_getprop() { grep "^$2" "$1" | cut -d= -f2; }
+file_getprop() { grep -m1 "^$2" "$1" | cut -d= -f2; }
 # getprop <property>
 getprop() { test -e /sbin/getprop && /sbin/getprop $1 || grep "^$1" /default.prop; }
 
