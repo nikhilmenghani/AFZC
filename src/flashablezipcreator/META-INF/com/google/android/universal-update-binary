@@ -51,17 +51,18 @@ write_raw_image() { dd if=$1 of=$2; }
 # wipe_cache() {} should be done directly with format or rm -rf
 
 # package_extract_file <file> <destination_file>
-package_extract_file() { unzip -o "$ZIPFILE" "$1" -p > "$2"; }
+package_extract_file() { mkdir -p "$(dirname "$2")"; unzip -o "$ZIPFILE" "$1" -p > "$2"; }
 # package_extract_dir <dir> <destination_dir>
-package_extract_dir() { 
-	unzip -o "$ZIPFILE";
-	cd $1;
-	find . -mindepth 1 -maxdepth 1 -type d | while read -r dir
-	do
-		cp -r $dir $2/
-	done;
-	rm -rf *;
-	cd /tmp/zipContent
+package_extract_dir() {
+  for entry in $(unzip -l $ZIPFILE "$1/*" 2>/dev/null | tail -n+4 | rev | cut -d" " -f1 | rev); do
+    if [ "$entry" != "-------" ]; then
+      outfile="$(echo "$entry" | cut -d/ -f2-)";
+      mkdir -p "$2/$(dirname "$outfile")";
+      unzip -o "$ZIPFILE" "$entry" -p > "$2/$outfile";
+    else
+      break;
+    fi;
+  done;
 }
 
 # rename <file> <destination_file>
@@ -84,7 +85,7 @@ set_metadata() {
       uid) chown $2 $file;;
       gid) chown :$2 $file;;
       mode) chmod $2 $file;;
-      capabilities) ;;
+      capabilities) twrp setcap $2 $file;;
       selabel)
         for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
           LD_LIBRARY_PATH=/system/lib $i chcon -h $2 $file;
@@ -108,7 +109,7 @@ set_metadata_recursive() {
       gid) chown -R :$2 $dir;;
       dmode) find "$dir" -type d -exec chmod $2 {} +;;
       fmode) find "$dir" -type f -exec chmod $2 {} +;;
-      capabilities) ;;
+      capabilities) find "$dir" -exec twrp setcap $2 {} +;;
       selabel)
         for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
           find "$dir" -exec LD_LIBRARY_PATH=/system/lib $i chcon -h $2 {} +;
