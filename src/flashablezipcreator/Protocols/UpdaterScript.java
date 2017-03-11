@@ -65,7 +65,7 @@ public class UpdaterScript {
             }
         }
         str += "set_progress 1\n";
-        str += op.terminateUpdaterScript();
+        //str += op.terminateUpdaterScript();//unmounting is not needed
         return str += "fi;\n";
     }
 

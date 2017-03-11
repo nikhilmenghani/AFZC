@@ -36,7 +36,7 @@ public class UpdateBinaryOperations {
             case deleteString:
                 return "ui_print \"@Deleting " + str + "\"\n";
             case copyString:
-                return "ui_print \"@Copying " + str +"\"\n";
+                return "ui_print \"@Copying " + str + "\"\n";
         }
         return "ui_print \"" + str + "\"\n";
     }
@@ -76,9 +76,9 @@ public class UpdateBinaryOperations {
                         + "mount /system\n"
                         + "mount /data\n"
                         + "if [ $(is_mounted /data) == 1 ]; then\n"
-                        + addPrintString("/data already mounted. Remounting...")
-                        + "umount /data\n"
-                        + "mount /data\n"
+                        + addPrintString("/data already mounted.")
+//                        + "umount /data\n"
+//                        + "mount /data\n"
                         + "fi;\n"
                         + "mount -o rw,remount /system\n"
                         + "mount -o rw,remount /system /system\n"
@@ -101,7 +101,7 @@ public class UpdateBinaryOperations {
                 str = getFolderScript(str, child);
             } else if (child.type == ProjectItemNode.NODE_FILE) {
                 FileNode file = (FileNode) child;
-                str += createDirectory(file.installLocation);
+//                str += createDirectory(file.installLocation);//handled in updated update-binary-installer
                 if (file.title.endsWith("apk")) {
                     str += addPrintString(file.parent.title, installString);
                     FolderNode folder = (FolderNode) (file.parent);
@@ -180,7 +180,7 @@ public class UpdateBinaryOperations {
                 str += addPrintString("@Running script : " + ((FileNode) file).title);
                 str += "package_extract_file \"" + ((FileNode) file).fileZipPath + "\" /tmp/script\n"
                         + "set_perm 0 0 0777 /tmp/script\n"
-                        + "./tmp/script\n"  //TODO: CHECK Here
+                        + "./tmp/script\n" //TODO: CHECK Here
                         + "delete /tmp/script\n";
                 str += "fi;\n";
             }
@@ -353,7 +353,8 @@ public class UpdateBinaryOperations {
                 + "set_perm 2000 2000 0771 /data/local\n"
                 + "set_perm_recursive 1000 1000 0771 0644 /data/app\n";
     }
-    
+
+    //following is not needed as of now as creating directory is handled in newer update-binary-installer
     public String createDirectory(String dir) {
         return "mkdir -p \"" + dir + "\"\n";
     }
