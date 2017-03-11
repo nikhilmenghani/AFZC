@@ -422,6 +422,7 @@ public class MyPopup {
                 addGNUI = new AddName(location, groupType, extension, isSelectBox, node);
                 break;
             case "Project":
+                //addGNUI = new AddName();
                 addGNUI = new AddName("Project", ProjectNode.PROJECT_AROMA, node);
                 break;
             case "Folder":

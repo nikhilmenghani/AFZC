@@ -2,7 +2,7 @@
 
 <Form version="1.8" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="rbGroup">
+    <Component class="javax.swing.ButtonGroup" name="customrbGroup">
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -30,17 +30,17 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="panelMain" max="32767" attributes="0"/>
+          <Component id="customPanelMain" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="panelMain" alignment="0" max="32767" attributes="0"/>
+          <Component id="customPanelMain" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="panelMain">
+    <Container class="javax.swing.JPanel" name="customPanelMain">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -51,44 +51,41 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="panelGroupDetails" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jPanel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="custompanelHeader" max="32767" attributes="0"/>
+                      <Component id="custompanelGroupDetails" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
+                  <Component id="custompanelPermissions" min="-2" pref="273" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+              </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="panelPermissions" min="-2" pref="273" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <Component id="btnAdd" min="-2" pref="83" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+                  <Component id="custombtnAdd" min="-2" pref="83" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                  <Component id="custompanelHeader" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
-                  <Component id="panelGroupDetails" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="panelPermissions" min="-2" pref="255" max="-2" attributes="0"/>
+                  <Component id="custompanelGroupDetails" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                  <Component id="btnAdd" min="-2" pref="31" max="-2" attributes="0"/>
+                  <Component id="custompanelPermissions" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <Component id="custombtnAdd" min="-2" pref="31" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="btnAdd">
+        <Component class="javax.swing.JButton" name="custombtnAdd">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -102,10 +99,10 @@
             <Property name="contentAreaFilled" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="custombtnAddActionPerformed"/>
           </Events>
         </Component>
-        <Container class="javax.swing.JPanel" name="panelPermissions">
+        <Container class="javax.swing.JPanel" name="custompanelPermissions">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -120,66 +117,66 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="lblGroup" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblOthers" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lblOwner" min="-2" max="-2" attributes="0"/>
+                                  <Component id="customlblGroup" min="-2" max="-2" attributes="0"/>
+                                  <Component id="customlblOthers" min="-2" max="-2" attributes="0"/>
+                                  <Component id="customlblOwner" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="cbGroupR" min="-2" max="-2" attributes="0"/>
+                                              <Component id="customcbGroupR" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                                              <Component id="cbGroupW" min="-2" max="-2" attributes="0"/>
+                                              <Component id="customcbGroupW" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="0" attributes="0">
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                                  <Component id="lblR" max="32767" attributes="0"/>
-                                                  <Component id="cbOwnerR" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="customlblR" max="32767" attributes="0"/>
+                                                  <Component id="customcbOwnerR" min="-2" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="40" pref="40" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="cbOwnerW" min="-2" max="-2" attributes="0"/>
-                                                  <Component id="llblW" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
+                                                  <Component id="customcbOwnerW" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="customllblW" alignment="0" min="-2" pref="21" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                       </Group>
                                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="cbX" min="-2" max="-2" attributes="0"/>
-                                          <Component id="cbGroupX" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblX" min="-2" pref="21" max="-2" attributes="0"/>
+                                          <Component id="customcbX" min="-2" max="-2" attributes="0"/>
+                                          <Component id="customcbGroupX" min="-2" max="-2" attributes="0"/>
+                                          <Component id="customlblX" min="-2" pref="21" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
-                                      <Component id="cbOthersR" min="-2" max="-2" attributes="0"/>
+                                      <Component id="customcbOthersR" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                                      <Component id="cbOthersW" min="-2" max="-2" attributes="0"/>
+                                      <Component id="customcbOthersW" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                                      <Component id="cbOthersX" min="-2" max="-2" attributes="0"/>
+                                      <Component id="customcbOthersX" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
                                               <EmptySpace min="21" pref="21" max="-2" attributes="0"/>
-                                              <Component id="lblPermInDigit" min="-2" max="-2" attributes="0"/>
+                                              <Component id="customlblPermInDigit" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="cbSetgid" min="-2" max="-2" attributes="0"/>
+                                              <Component id="customcbSetgid" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                                              <Component id="cbSticky" min="-2" max="-2" attributes="0"/>
+                                              <Component id="customcbSticky" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="lblPermInString" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="customlblPermInString" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
                           </Group>
-                          <Component id="cbSetuid" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="customcbSetuid" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
-                              <Component id="lblPermissions" min="-2" max="-2" attributes="0"/>
+                              <Component id="customlblPermissions" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
@@ -190,69 +187,75 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="lblPermissions" min="-2" max="-2" attributes="0"/>
+                      <Component id="customlblPermissions" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblR" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="llblW" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblX" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="customlblR" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="customllblW" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="customlblX" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="cbOwnerR" alignment="1" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbOwnerW" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbX" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblOwner" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="customcbOwnerR" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="customcbOwnerW" min="-2" max="-2" attributes="0"/>
+                          <Component id="customcbX" min="-2" max="-2" attributes="0"/>
+                          <Component id="customlblOwner" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblGroup" min="-2" max="-2" attributes="0"/>
+                          <Component id="customlblGroup" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                              <Component id="cbGroupR" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="cbGroupW" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="cbGroupX" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="customcbGroupR" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="customcbGroupW" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="customcbGroupX" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblOthers" min="-2" max="-2" attributes="0"/>
+                          <Component id="customlblOthers" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                              <Component id="cbOthersR" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="cbOthersW" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="cbOthersX" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="customcbOthersR" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="customcbOthersW" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="customcbOthersX" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="cbSetuid" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbSticky" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cbSetgid" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="customcbSetuid" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="customcbSticky" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="customcbSetgid" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="lblPermInDigit" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="lblPermInString" min="-2" max="-2" attributes="0"/>
+                      <Component id="customlblPermInDigit" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                      <Component id="customlblPermInString" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JCheckBox" name="cbOthersX">
+            <Component class="javax.swing.JCheckBox" name="customcbOthersX">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbOthersXStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbOwnerW">
+            <Component class="javax.swing.JCheckBox" name="customcbOwnerW">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbOwnerWStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblPermInDigit">
+            <Component class="javax.swing.JLabel" name="customlblPermInDigit">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -260,26 +263,32 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="666"/>
+                <Property name="text" type="java.lang.String" value="644"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbGroupW">
+            <Component class="javax.swing.JCheckBox" name="customcbGroupW">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbGroupWStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbSticky">
+            <Component class="javax.swing.JCheckBox" name="customcbSticky">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="sticky"/>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbStickyStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblR">
+            <Component class="javax.swing.JLabel" name="customlblR">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
@@ -290,7 +299,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblOwner">
+            <Component class="javax.swing.JLabel" name="customlblOwner">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
@@ -298,7 +307,7 @@
                 <Property name="text" type="java.lang.String" value="Owner"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblX">
+            <Component class="javax.swing.JLabel" name="customlblX">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
@@ -309,14 +318,17 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbOwnerR">
+            <Component class="javax.swing.JCheckBox" name="customcbOwnerR">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbOwnerRStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblPermissions">
+            <Component class="javax.swing.JLabel" name="customlblPermissions">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="18" style="0"/>
@@ -324,7 +336,7 @@
                 <Property name="text" type="java.lang.String" value="Permissions"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="llblW">
+            <Component class="javax.swing.JLabel" name="customllblW">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
@@ -335,7 +347,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblGroup">
+            <Component class="javax.swing.JLabel" name="customlblGroup">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
@@ -343,37 +355,49 @@
                 <Property name="text" type="java.lang.String" value="Group"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbGroupX">
+            <Component class="javax.swing.JCheckBox" name="customcbGroupX">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbGroupXStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbSetuid">
+            <Component class="javax.swing.JCheckBox" name="customcbSetuid">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="setuid"/>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbSetuidStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbGroupR">
+            <Component class="javax.swing.JCheckBox" name="customcbGroupR">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbGroupRStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbSetgid">
+            <Component class="javax.swing.JCheckBox" name="customcbSetgid">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="setgid"/>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbSetgidStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblPermInString">
+            <Component class="javax.swing.JLabel" name="customlblPermInString">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -381,25 +405,31 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="-rw-rw-rw-"/>
+                <Property name="text" type="java.lang.String" value="-rw-r--r--"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbOthersW">
+            <Component class="javax.swing.JCheckBox" name="customcbOthersW">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbOthersWStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbOthersR">
+            <Component class="javax.swing.JCheckBox" name="customcbOthersR">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbOthersRStateChanged"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblOthers">
+            <Component class="javax.swing.JLabel" name="customlblOthers">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
@@ -407,16 +437,19 @@
                 <Property name="text" type="java.lang.String" value="Others"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="cbX">
+            <Component class="javax.swing.JCheckBox" name="customcbX">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbXStateChanged"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="panelGroupDetails">
+        <Container class="javax.swing.JPanel" name="custompanelGroupDetails">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
@@ -428,79 +461,38 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="lblGroupName" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblInstallLocation" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtGroupName" alignment="0" pref="166" max="32767" attributes="0"/>
-                          <Component id="txtInstallLocation" alignment="0" max="32767" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblDescription" alignment="0" min="-2" pref="113" max="-2" attributes="0"/>
-                          <Component id="lblFileInstructions" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jRadioButton1" min="-2" pref="73" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="jRadioButton2" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Component id="txtDescription" alignment="0" min="-2" pref="166" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="customrbSingleFile" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="customrbMultipleFiles" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
+                          <Component id="customtxtGroupName" max="32767" attributes="0"/>
+                          <Component id="customtxtInstallLocation" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="lblGroupName" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblFileInstructions" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="customtxtGroupName" min="-2" pref="28" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="customtxtInstallLocation" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="9" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="customrbSingleFile" alignment="1" max="32767" attributes="0"/>
+                          <Component id="customrbMultipleFiles" alignment="1" min="-2" pref="28" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                              <Component id="lblInstallLocation" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtInstallLocation" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="txtGroupName" max="32767" attributes="0"/>
-                                  <Component id="jRadioButton1" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="jRadioButton2" alignment="1" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace pref="7" max="32767" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="lblDescription" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="23" pref="23" max="-2" attributes="0"/>
-                                      <Component id="txtDescription" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="lblGroupName">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="14" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Group Name "/>
-                <Property name="toolTipText" type="java.lang.String" value="This will contain set of files you will choose from in Aroma Installer"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtGroupName">
+            <Component class="javax.swing.JTextField" name="customtxtGroupName">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="18" style="0"/>
@@ -508,16 +500,7 @@
                 <Property name="toolTipText" type="java.lang.String" value="This will contain set of files you will choose from in Aroma Installer"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblInstallLocation">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="14" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Install Location"/>
-                <Property name="toolTipText" type="java.lang.String" value="This is the location where your files will be installed (e.g. \u005csystem\u005cframework)" containsInvalidXMLChars="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtInstallLocation">
+            <Component class="javax.swing.JTextField" name="customtxtInstallLocation">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="18" style="0"/>
@@ -525,49 +508,37 @@
                 <Property name="toolTipText" type="java.lang.String" value="This is the location where your files will be installed (e.g. \u005csystem\u005cframework)" containsInvalidXMLChars="true"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblFileInstructions">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="14" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Install Instructions"/>
-                <Property name="toolTipText" type="java.lang.String" value="Choose whether only one from the list of files can be installed or multiple can be installed. (select box will be there for former one and check box will be there for latter one)"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="lblDescription">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="14" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="Description"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="txtDescription">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="18" style="0"/>
-                </Property>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JRadioButton" name="jRadioButton1">
+            <Component class="javax.swing.JRadioButton" name="customrbSingleFile">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Single File"/>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="customrbGroup"/>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Tahoma" size="12" style="0"/>
+                </Property>
+                <Property name="selected" type="boolean" value="true"/>
+                <Property name="text" type="java.lang.String" value="Install Single File"/>
+                <Property name="toolTipText" type="java.lang.String" value="Required in Groups such as BootAnimations, Fonts, Kernels, etc where you can only choose one from the list"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JRadioButton" name="jRadioButton2">
+            <Component class="javax.swing.JRadioButton" name="customrbMultipleFiles">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Multiple Files"/>
+                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                  <ComponentRef name="customrbGroup"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Install Multiple Files"/>
+                <Property name="toolTipText" type="java.lang.String" value="Required in Groups where you can only choose multiple files from the list"/>
               </Properties>
             </Component>
           </SubComponents>
         </Container>
-        <Container class="javax.swing.JPanel" name="jPanel1">
+        <Container class="javax.swing.JPanel" name="custompanelHeader">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="66" green="66" red="0" type="rgb"/>
@@ -584,7 +555,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="customlblHeader" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="158" max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -593,14 +564,14 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel1" pref="51" max="32767" attributes="0"/>
+                      <Component id="customlblHeader" pref="51" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jLabel1">
+            <Component class="javax.swing.JLabel" name="customlblHeader">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="30" style="0"/>
@@ -608,7 +579,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Add New Group"/>
+                <Property name="text" type="java.lang.String" value="Add Group"/>
               </Properties>
             </Component>
           </SubComponents>
