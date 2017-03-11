@@ -222,7 +222,7 @@ public class AddName extends javax.swing.JFrame {
         btnAdd.setText("Add");
         btnAdd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btnAdd.setContentAreaFilled(false);
-        btnAdd.addActionListener(this::btnAddActionPerformed);
+        btnAdd.addActionListener(this::btnAddProjectActionPerformed);
 
         javax.swing.GroupLayout panelBottomLayout = new javax.swing.GroupLayout(panelBottom);
         panelBottom.setLayout(panelBottomLayout);
@@ -441,7 +441,7 @@ public class AddName extends javax.swing.JFrame {
         btnAdd.setText("Add");
         btnAdd.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         btnAdd.setContentAreaFilled(false);
-        btnAdd.addActionListener(this::btnAddActionPerformed);
+        btnAdd.addActionListener(this::btnAddGroupActionPerformed);
 
         javax.swing.GroupLayout panelBottomLayout = new javax.swing.GroupLayout(panelBottom);
         panelBottom.setLayout(panelBottomLayout);
@@ -513,10 +513,9 @@ public class AddName extends javax.swing.JFrame {
         dialog.pack();
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
-    }// </editor-fold>                        
+    }// </editor-fold> 
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
-        String name = txtGroupName.getText();
+    private void btnAddProjectActionPerformed(java.awt.event.ActionEvent evt) {
         String projectName = txtProjectName.getText();
         if (!projectName.equals("")) {
             if (this.rNode != null) {
@@ -529,13 +528,18 @@ public class AddName extends javax.swing.JFrame {
                 fNode.addChild(new FolderNode(projectName, fNode), false);
             }
             dialog.dispose();
-        } else if (!name.equals("")) {
+        } else {
+            JOptionPane.showMessageDialog(this, "Name cannot be empty..!!");
+        }
+    }
+
+    private void btnAddGroupActionPerformed(java.awt.event.ActionEvent evt) {
+        String name = txtGroupName.getText();
+        if (!name.equals("")) {
             if (this.gNode != null) {
                 gNode.addChild(new SubGroupNode(name, this.subGroupType, gNode), false);
             } else if (this.pNode != null) {
                 pNode.addChild(new GroupNode(name, this.groupType, pNode), false);
-            } else if (this.rNode != null) {
-                rNode.addChild(new ProjectNode(projectName, this.projectType, Mod.MOD_LESS, rNode), false);
             } else if (this.fNode != null) {
                 fNode.addChild(new FolderNode(name, fNode), false);
             }
@@ -601,5 +605,44 @@ public class AddName extends javax.swing.JFrame {
     private javax.swing.JTextField txtGroupName = new JTextField();
     private javax.swing.JTextField txtLocation = new JTextField();
     public JDialog dialog;
+
+    // Variables declaration - do not modify                     
+    private javax.swing.JPanel customPanelMain;
+    private javax.swing.JButton custombtnAdd;
+    private javax.swing.JCheckBox customcbGroupR;
+    private javax.swing.JCheckBox customcbGroupW;
+    private javax.swing.JCheckBox customcbGroupX;
+    private javax.swing.JCheckBox customcbOthersR;
+    private javax.swing.JCheckBox customcbOthersW;
+    private javax.swing.JCheckBox customcbOthersX;
+    private javax.swing.JCheckBox customcbOwnerR;
+    private javax.swing.JCheckBox customcbOwnerW;
+    private javax.swing.JCheckBox customcbSetgid;
+    private javax.swing.JCheckBox customcbSetuid;
+    private javax.swing.JCheckBox customcbSticky;
+    private javax.swing.JCheckBox customcbX;
+    private javax.swing.JLabel customlblDescription;
+    private javax.swing.JLabel customlblFileInstructions;
+    private javax.swing.JLabel customlblGroup;
+    private javax.swing.JLabel customlblGroupName;
+    private javax.swing.JLabel customlblHeader;
+    private javax.swing.JLabel customlblInstallLocation;
+    private javax.swing.JLabel customlblOthers;
+    private javax.swing.JLabel customlblOwner;
+    private javax.swing.JLabel customlblPermInDigit;
+    private javax.swing.JLabel customlblPermInString;
+    private javax.swing.JLabel customlblPermissions;
+    private javax.swing.JLabel customlblR;
+    private javax.swing.JLabel customlblX;
+    private javax.swing.JLabel customllblW;
+    private javax.swing.JPanel custompanelGroupDetails;
+    private javax.swing.JPanel custompanelHeader;
+    private javax.swing.JPanel custompanelPermissions;
+    private javax.swing.ButtonGroup customrbGroup;
+    private javax.swing.JRadioButton customrbMultipleFiles;
+    private javax.swing.JRadioButton customrbSingleFile;
+    private javax.swing.JTextField customtxtDescription;
+    private javax.swing.JTextField customtxtGroupName;
+    private javax.swing.JTextField customtxtInstallLocation;
     // End of variables declaration                   
 }
