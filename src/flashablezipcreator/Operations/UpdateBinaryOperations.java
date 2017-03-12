@@ -101,7 +101,7 @@ public class UpdateBinaryOperations {
                 str = getFolderScript(str, child);
             } else if (child.type == ProjectItemNode.NODE_FILE) {
                 FileNode file = (FileNode) child;
-//                str += createDirectory(file.installLocation);//handled in updated update-binary-installer
+                str += createDirectory(file.installLocation);//handled in updated update-binary-installer
                 if (file.title.endsWith("apk")) {
                     str += addPrintString(file.parent.title, installString);
                     FolderNode folder = (FolderNode) (file.parent);
