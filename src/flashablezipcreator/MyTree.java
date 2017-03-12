@@ -92,6 +92,7 @@ public class MyTree extends JFrame {
         layeredPaneProgressBar = new javax.swing.JLayeredPane();
         panel_logo = new javax.swing.JPanel();
         lblHeader = new javax.swing.JLabel();
+        lblVersion = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuItemPreferences = new javax.swing.JMenuItem();
@@ -122,18 +123,26 @@ public class MyTree extends JFrame {
             }
         });
 
+        lblVersion.setForeground(new java.awt.Color(255, 255, 255));
+        lblVersion.setText(Preferences.currentVersion + " " + Preferences.versionType);
+
         javax.swing.GroupLayout panel_logoLayout = new javax.swing.GroupLayout(panel_logo);
         panel_logo.setLayout(panel_logoLayout);
         panel_logoLayout.setHorizontalGroup(
                 panel_logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(panel_logoLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lblHeader, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
         );
         panel_logoLayout.setVerticalGroup(
                 panel_logoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(lblHeader, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_logoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lblVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         panelLower.setBackground(new java.awt.Color(255, 255, 255));
@@ -196,6 +205,9 @@ public class MyTree extends JFrame {
                 panelCreateZipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(btnCreateZip, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
+        
+        layeredPaneButtons.setLayer(panelImportZip, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        layeredPaneButtons.setLayer(panelCreateZip, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layeredPaneButtonsLayout = new javax.swing.GroupLayout(layeredPaneButtons);
         layeredPaneButtons.setLayout(layeredPaneButtonsLayout);
@@ -235,6 +247,8 @@ public class MyTree extends JFrame {
             }
         });
 
+        layeredPaneProgressBar.setLayer(progressBarImportExport, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        
         javax.swing.GroupLayout layeredPaneProgressBarLayout = new javax.swing.GroupLayout(layeredPaneProgressBar);
         layeredPaneProgressBar.setLayout(layeredPaneProgressBarLayout);
         layeredPaneProgressBarLayout.setHorizontalGroup(
@@ -427,7 +441,7 @@ public class MyTree extends JFrame {
                             Update.downloadStableVersion();
                         }
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(this, "Your version is uptodate");
                 }
             } catch (Exception e) {
@@ -481,7 +495,7 @@ public class MyTree extends JFrame {
                             Update.downloadBetaVersion();
                         }
                     }
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(this, "Your version is uptodate");
                 }
             } catch (Exception e) {
@@ -562,6 +576,7 @@ public class MyTree extends JFrame {
     private javax.swing.JButton btnImportZip;
     private javax.swing.JScrollPane SP_tree;
     private javax.swing.JLabel lblHeader;
+    private javax.swing.JLabel lblVersion;
     private javax.swing.JPanel panel_logo;
     private javax.swing.JMenu menuAbout;
     private javax.swing.JMenu menuUpdate;

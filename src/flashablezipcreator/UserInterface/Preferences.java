@@ -653,6 +653,8 @@ public class Preferences extends javax.swing.JFrame {
     public static boolean preferencesFilePresent = false;
     public static String zipCreatorName = "Nikhil";
     public static String zipVersion = "1.0";
+    public static String currentVersion = "v4.0";
+    public static String versionType = "beta 2";
     Write w;
     Read r;
     // End of variables declaration                   

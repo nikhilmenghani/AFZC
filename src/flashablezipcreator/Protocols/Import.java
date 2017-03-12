@@ -16,7 +16,6 @@ import static flashablezipcreator.MyTree.progressBarFlag;
 import static flashablezipcreator.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.TreeOperations;
 import java.awt.CardLayout;
-import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
