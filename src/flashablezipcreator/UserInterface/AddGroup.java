@@ -215,6 +215,7 @@ public class AddGroup extends javax.swing.JFrame {
             }
         });
 
+        customcbPermissions.setSelected(true);
         customcbPermissions.setBackground(new java.awt.Color(255, 255, 255));
         customcbPermissions.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -478,6 +479,25 @@ public class AddGroup extends javax.swing.JFrame {
         dialog.setVisible(true);
     }
 
+    public void modifyPermissionsState() {
+        boolean flag = false;
+        if (customcbPermissions.isSelected()) {
+            flag = true;
+        }
+        customcbGroupR.setEnabled(flag);
+        customcbGroupW.setEnabled(flag);
+        customcbGroupX.setEnabled(flag);
+        customcbOthersR.setEnabled(flag);
+        customcbOthersW.setEnabled(flag);
+        customcbOthersX.setEnabled(flag);
+        customcbOwnerR.setEnabled(flag);
+        customcbOwnerW.setEnabled(flag);
+        customcbOwnerX.setEnabled(flag);
+        customcbSetgid.setEnabled(flag);
+        customcbSetuid.setEnabled(flag);
+        customcbSticky.setEnabled(flag);
+    }
+
     public void updatePermissions() {
         String miscPermissions = getPermissionsInDigit(customcbSetuid.isSelected(), customcbSetgid.isSelected(), customcbSticky.isSelected());
         if (miscPermissions.equals("0")) {
@@ -609,7 +629,7 @@ public class AddGroup extends javax.swing.JFrame {
     }
 
     private void customcbPermissionsItemStateChanged(java.awt.event.ItemEvent evt) {
-        updatePermissions();
+        modifyPermissionsState();
     }
 
     private void customcbGroupXItemStateChanged(java.awt.event.ItemEvent evt) {
