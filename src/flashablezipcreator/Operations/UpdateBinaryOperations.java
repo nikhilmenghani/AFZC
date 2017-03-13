@@ -77,8 +77,8 @@ public class UpdateBinaryOperations {
                         + "mount /data\n"
                         + "if [ $(is_mounted /data) == 1 ]; then\n"
                         + addPrintString("/data already mounted.")
-//                        + "umount /data\n"
-//                        + "mount /data\n"
+                        //                        + "umount /data\n"
+                        //                        + "mount /data\n"
                         + "fi;\n"
                         + "mount -o rw,remount /system\n"
                         + "mount -o rw,remount /system /system\n"
@@ -115,6 +115,7 @@ public class UpdateBinaryOperations {
                     str += addPrintString("Copying " + file.title);
                     str += "package_extract_file \"" + file.fileZipPath + "\" \"" + file.installLocation + "/" + file.title + "\"\n";
                 }
+                str += "set_perm " + "1000 1000 0755 \"" + file.installLocation + "\"" + "\n";
                 str += "set_perm " + file.filePermission + "\n";  //TODO: Inspect filePermission for removal of commas
             }
         }
