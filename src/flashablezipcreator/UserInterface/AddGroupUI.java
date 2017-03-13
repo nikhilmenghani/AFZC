@@ -33,7 +33,6 @@ public class AddGroupUI extends javax.swing.JFrame {
         custompanelPermissions = new javax.swing.JPanel();
         customcbOthersX = new javax.swing.JCheckBox();
         customcbOwnerW = new javax.swing.JCheckBox();
-        customlblPermInDigit = new javax.swing.JLabel();
         customcbGroupW = new javax.swing.JCheckBox();
         customcbSticky = new javax.swing.JCheckBox();
         customlblR = new javax.swing.JLabel();
@@ -47,12 +46,14 @@ public class AddGroupUI extends javax.swing.JFrame {
         customcbSetuid = new javax.swing.JCheckBox();
         customcbGroupR = new javax.swing.JCheckBox();
         customcbSetgid = new javax.swing.JCheckBox();
-        customlblPermInString = new javax.swing.JLabel();
         customcbOthersW = new javax.swing.JCheckBox();
         customcbOthersR = new javax.swing.JCheckBox();
         customlblOthers = new javax.swing.JLabel();
         customcbOwnerX = new javax.swing.JCheckBox();
         customcbPermissions = new javax.swing.JCheckBox();
+        custompanelPermissionsContent = new javax.swing.JPanel();
+        customlblPermInString = new javax.swing.JLabel();
+        customlblPermInDigit = new javax.swing.JLabel();
         custompanelGroupDetails = new javax.swing.JPanel();
         customtxtGroupName = new javax.swing.JTextField();
         customtxtInstallLocation = new javax.swing.JTextField();
@@ -91,11 +92,6 @@ public class AddGroupUI extends javax.swing.JFrame {
                 customcbOwnerWItemStateChanged(evt);
             }
         });
-
-        customlblPermInDigit.setBackground(new java.awt.Color(255, 255, 255));
-        customlblPermInDigit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        customlblPermInDigit.setText("000");
-        customlblPermInDigit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         customcbGroupW.setBackground(new java.awt.Color(255, 255, 255));
         customcbGroupW.addItemListener(new java.awt.event.ItemListener() {
@@ -170,11 +166,6 @@ public class AddGroupUI extends javax.swing.JFrame {
             }
         });
 
-        customlblPermInString.setBackground(new java.awt.Color(255, 255, 255));
-        customlblPermInString.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        customlblPermInString.setText("----------");
-        customlblPermInString.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
         customcbOthersW.setBackground(new java.awt.Color(255, 255, 255));
         customcbOthersW.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -205,6 +196,34 @@ public class AddGroupUI extends javax.swing.JFrame {
                 customcbPermissionsItemStateChanged(evt);
             }
         });
+
+        custompanelPermissionsContent.setBackground(new java.awt.Color(255, 255, 255));
+
+        customlblPermInString.setBackground(new java.awt.Color(255, 255, 255));
+        customlblPermInString.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        customlblPermInString.setText("----------");
+        customlblPermInString.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout custompanelPermissionsContentLayout = new javax.swing.GroupLayout(custompanelPermissionsContent);
+        custompanelPermissionsContent.setLayout(custompanelPermissionsContentLayout);
+        custompanelPermissionsContentLayout.setHorizontalGroup(
+            custompanelPermissionsContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(custompanelPermissionsContentLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(customlblPermInString)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        custompanelPermissionsContentLayout.setVerticalGroup(
+            custompanelPermissionsContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(custompanelPermissionsContentLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(customlblPermInString))
+        );
+
+        customlblPermInDigit.setBackground(new java.awt.Color(255, 255, 255));
+        customlblPermInDigit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        customlblPermInDigit.setText("0000");
+        customlblPermInDigit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout custompanelPermissionsLayout = new javax.swing.GroupLayout(custompanelPermissions);
         custompanelPermissions.setLayout(custompanelPermissionsLayout);
@@ -240,23 +259,22 @@ public class AddGroupUI extends javax.swing.JFrame {
                                     .addComponent(customcbGroupX)
                                     .addComponent(customlblX, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(custompanelPermissionsContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                        .addComponent(customcbSetgid)
+                                        .addGap(38, 38, 38)
+                                        .addComponent(customcbSticky))
+                                    .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                        .addGap(21, 21, 21)
+                                        .addComponent(customlblPermInDigit))))
+                            .addGroup(custompanelPermissionsLayout.createSequentialGroup()
                                 .addComponent(customcbOthersR)
                                 .addGap(40, 40, 40)
                                 .addComponent(customcbOthersW)
                                 .addGap(40, 40, 40)
-                                .addComponent(customcbOthersX))
-                            .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                                .addGap(38, 38, 38)
-                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                                        .addGap(21, 21, 21)
-                                        .addComponent(customlblPermInDigit))
-                                    .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                                        .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(customlblPermInString)
-                                            .addComponent(customcbSetgid))
-                                        .addGap(38, 38, 38)
-                                        .addComponent(customcbSticky))))))
+                                .addComponent(customcbOthersX))))
                     .addComponent(customcbSetuid)
                     .addGroup(custompanelPermissionsLayout.createSequentialGroup()
                         .addGap(50, 50, 50)
@@ -303,9 +321,8 @@ public class AddGroupUI extends javax.swing.JFrame {
                     .addComponent(customcbSetgid))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(customlblPermInDigit)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(customlblPermInString)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(custompanelPermissionsContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         custompanelGroupDetails.setBackground(new java.awt.Color(255, 255, 255));
@@ -545,10 +562,13 @@ public class AddGroupUI extends javax.swing.JFrame {
     private javax.swing.JPanel custompanelGroupDetails;
     private javax.swing.JPanel custompanelHeader;
     private javax.swing.JPanel custompanelPermissions;
+    private javax.swing.JPanel custompanelPermissionsContent;
     private javax.swing.ButtonGroup customrbGroup;
     private javax.swing.JRadioButton customrbMultipleFiles;
     private javax.swing.JRadioButton customrbSingleFile;
     private javax.swing.JTextField customtxtGroupName;
     private javax.swing.JTextField customtxtInstallLocation;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     // End of variables declaration//GEN-END:variables
 }

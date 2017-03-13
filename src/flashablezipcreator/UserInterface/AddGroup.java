@@ -68,6 +68,7 @@ public class AddGroup extends javax.swing.JFrame {
         customlblOthers = new javax.swing.JLabel();
         customcbOwnerX = new javax.swing.JCheckBox();
         customcbPermissions = new javax.swing.JCheckBox();
+        custompanelPermissionsContent = new javax.swing.JPanel();
         custompanelGroupDetails = new javax.swing.JPanel();
         customtxtGroupName = new PHTextField("Enter Your Group Name");
         customtxtInstallLocation = new PHTextField("Enter Install Location (/system/app)");
@@ -221,6 +222,34 @@ public class AddGroup extends javax.swing.JFrame {
             }
         });
 
+        custompanelPermissionsContent.setBackground(new java.awt.Color(255, 255, 255));
+
+        customlblPermInString.setBackground(new java.awt.Color(255, 255, 255));
+        customlblPermInString.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        customlblPermInString.setText("----------");
+        customlblPermInString.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        javax.swing.GroupLayout custompanelPermissionsContentLayout = new javax.swing.GroupLayout(custompanelPermissionsContent);
+        custompanelPermissionsContent.setLayout(custompanelPermissionsContentLayout);
+        custompanelPermissionsContentLayout.setHorizontalGroup(
+                custompanelPermissionsContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(custompanelPermissionsContentLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(customlblPermInString)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        custompanelPermissionsContentLayout.setVerticalGroup(
+                custompanelPermissionsContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(custompanelPermissionsContentLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(customlblPermInString))
+        );
+
+        customlblPermInDigit.setBackground(new java.awt.Color(255, 255, 255));
+        customlblPermInDigit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        customlblPermInDigit.setText("000");
+        customlblPermInDigit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout custompanelPermissionsLayout = new javax.swing.GroupLayout(custompanelPermissions);
         custompanelPermissions.setLayout(custompanelPermissionsLayout);
         custompanelPermissionsLayout.setHorizontalGroup(
@@ -255,23 +284,22 @@ public class AddGroup extends javax.swing.JFrame {
                                                                 .addComponent(customcbGroupX)
                                                                 .addComponent(customlblX, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                 .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                                        .addGap(38, 38, 38)
+                                                        .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                .addComponent(custompanelPermissionsContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                                                        .addComponent(customcbSetgid)
+                                                                        .addGap(38, 38, 38)
+                                                                        .addComponent(customcbSticky))
+                                                                .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                                                        .addGap(21, 21, 21)
+                                                                        .addComponent(customlblPermInDigit))))
+                                                .addGroup(custompanelPermissionsLayout.createSequentialGroup()
                                                         .addComponent(customcbOthersR)
                                                         .addGap(40, 40, 40)
                                                         .addComponent(customcbOthersW)
                                                         .addGap(40, 40, 40)
-                                                        .addComponent(customcbOthersX))
-                                                .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                                                        .addGap(38, 38, 38)
-                                                        .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                                                                        .addGap(21, 21, 21)
-                                                                        .addComponent(customlblPermInDigit))
-                                                                .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                                                                        .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                                                .addComponent(customlblPermInString)
-                                                                                .addComponent(customcbSetgid))
-                                                                        .addGap(38, 38, 38)
-                                                                        .addComponent(customcbSticky))))))
+                                                        .addComponent(customcbOthersX))))
                                 .addComponent(customcbSetuid)
                                 .addGroup(custompanelPermissionsLayout.createSequentialGroup()
                                         .addGap(50, 50, 50)
@@ -318,9 +346,8 @@ public class AddGroup extends javax.swing.JFrame {
                                 .addComponent(customcbSetgid))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(customlblPermInDigit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(customlblPermInString)
-                        .addContainerGap(12, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(custompanelPermissionsContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         custompanelGroupDetails.setBackground(new java.awt.Color(255, 255, 255));
@@ -452,13 +479,26 @@ public class AddGroup extends javax.swing.JFrame {
     }
 
     public void updatePermissions() {
+        String miscPermissions = getPermissionsInDigit(customcbSetuid.isSelected(), customcbSetgid.isSelected(), customcbSticky.isSelected());
+        if (miscPermissions.equals("0")) {
+            miscPermissions = "";
+        }
         String ownerPermissions = getPermissionsInDigit(customcbOwnerR.isSelected(), customcbOwnerW.isSelected(), customcbOwnerX.isSelected());
         String groupPermissions = getPermissionsInDigit(customcbGroupR.isSelected(), customcbGroupW.isSelected(), customcbGroupX.isSelected());
         String otherPermissions = getPermissionsInDigit(customcbOthersR.isSelected(), customcbOthersW.isSelected(), customcbOthersX.isSelected());
-        customlblPermInDigit.setText(ownerPermissions + groupPermissions + otherPermissions);
+        customlblPermInDigit.setText(miscPermissions + ownerPermissions + groupPermissions + otherPermissions);
         ownerPermissions = getPermissionsInString(customcbOwnerR.isSelected(), customcbOwnerW.isSelected(), customcbOwnerX.isSelected());
+        if (customcbSetuid.isSelected()) {
+            ownerPermissions = ownerPermissions.substring(0, ownerPermissions.length() - 1) + "S";
+        }
         groupPermissions = getPermissionsInString(customcbGroupR.isSelected(), customcbGroupW.isSelected(), customcbGroupX.isSelected());
+        if (customcbSetgid.isSelected()) {
+            groupPermissions = groupPermissions.substring(0, groupPermissions.length() - 1) + "S";
+        }
         otherPermissions = getPermissionsInString(customcbOthersR.isSelected(), customcbOthersW.isSelected(), customcbOthersX.isSelected());
+        if (customcbSticky.isSelected()) {
+            otherPermissions = otherPermissions.substring(0, otherPermissions.length() - 1) + "T";
+        }
         customlblPermInString.setText("-" + ownerPermissions + groupPermissions + otherPermissions);
     }
 
@@ -647,6 +687,7 @@ public class AddGroup extends javax.swing.JFrame {
     private javax.swing.JPanel custompanelGroupDetails;
     private javax.swing.JPanel custompanelHeader;
     private javax.swing.JPanel custompanelPermissions;
+    private javax.swing.JPanel custompanelPermissionsContent;
     private javax.swing.ButtonGroup customrbGroup;
     private javax.swing.JRadioButton customrbMultipleFiles;
     private javax.swing.JRadioButton customrbSingleFile;
