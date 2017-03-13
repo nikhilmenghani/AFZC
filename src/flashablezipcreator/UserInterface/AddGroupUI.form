@@ -50,22 +50,21 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="custompanelHeader" max="32767" attributes="0"/>
-                      <Component id="custompanelGroupDetails" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-              </Group>
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="53" max="-2" attributes="0"/>
-                  <Component id="custompanelPermissions" min="-2" pref="273" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="custombtnAdd" min="-2" pref="83" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+              </Group>
+              <Component id="custompanelHeader" max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="custompanelGroupDetails" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="custompanelPermissions" min="-2" pref="273" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace min="0" pref="1" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -75,9 +74,9 @@
                   <Component id="custompanelHeader" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                   <Component id="custompanelGroupDetails" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                   <Component id="custompanelPermissions" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="custombtnAdd" min="-2" pref="31" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -144,7 +143,7 @@
                                       </Group>
                                       <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="customcbX" min="-2" max="-2" attributes="0"/>
+                                          <Component id="customcbOwnerX" min="-2" max="-2" attributes="0"/>
                                           <Component id="customcbGroupX" min="-2" max="-2" attributes="0"/>
                                           <Component id="customlblX" min="-2" pref="21" max="-2" attributes="0"/>
                                       </Group>
@@ -164,18 +163,22 @@
                                               <Component id="customlblPermInDigit" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="customcbSetgid" min="-2" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="1" attributes="0">
+                                                  <Component id="customlblPermInString" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="customcbSetgid" min="-2" max="-2" attributes="0"/>
+                                              </Group>
                                               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
                                               <Component id="customcbSticky" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <Component id="customlblPermInString" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
                           </Group>
                           <Component id="customcbSetuid" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="customcbPermissions" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="customlblPermissions" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -186,8 +189,10 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                      <Component id="customlblPermissions" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="customlblPermissions" min="-2" max="-2" attributes="0"/>
+                          <Component id="customcbPermissions" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="customlblR" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -198,7 +203,7 @@
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="customcbOwnerR" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="customcbOwnerW" min="-2" max="-2" attributes="0"/>
-                          <Component id="customcbX" min="-2" max="-2" attributes="0"/>
+                          <Component id="customcbOwnerX" min="-2" max="-2" attributes="0"/>
                           <Component id="customlblOwner" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
@@ -227,9 +232,9 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="customlblPermInDigit" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="customlblPermInString" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="12" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -242,7 +247,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbOthersXStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbOthersXItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="customcbOwnerW">
@@ -252,7 +257,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbOwnerWStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbOwnerWItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="customlblPermInDigit">
@@ -263,7 +268,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="644"/>
+                <Property name="text" type="java.lang.String" value="000"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
               </Properties>
             </Component>
@@ -274,7 +279,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbGroupWStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbGroupWItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="customcbSticky">
@@ -285,7 +290,7 @@
                 <Property name="text" type="java.lang.String" value="sticky"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbStickyStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbStickyItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="customlblR">
@@ -325,7 +330,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbOwnerRStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbOwnerRItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="customlblPermissions">
@@ -362,7 +367,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbGroupXStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbGroupXItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="customcbSetuid">
@@ -373,7 +378,7 @@
                 <Property name="text" type="java.lang.String" value="setuid"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbSetuidStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbSetuidItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="customcbGroupR">
@@ -383,7 +388,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbGroupRStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbGroupRItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="customcbSetgid">
@@ -394,7 +399,7 @@
                 <Property name="text" type="java.lang.String" value="setgid"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbSetgidStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbSetgidItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="customlblPermInString">
@@ -405,7 +410,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="-rw-r--r--"/>
+                <Property name="text" type="java.lang.String" value="----------"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
               </Properties>
             </Component>
@@ -416,7 +421,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbOthersWStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbOthersWItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JCheckBox" name="customcbOthersR">
@@ -426,7 +431,7 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbOthersRStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbOthersRItemStateChanged"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="customlblOthers">
@@ -437,14 +442,24 @@
                 <Property name="text" type="java.lang.String" value="Others"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="customcbX">
+            <Component class="javax.swing.JCheckBox" name="customcbOwnerX">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="customcbXStateChanged"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbOwnerXItemStateChanged"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JCheckBox" name="customcbPermissions">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="customcbPermissionsItemStateChanged"/>
               </Events>
             </Component>
           </SubComponents>
@@ -466,10 +481,9 @@
                               <Component id="customrbSingleFile" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="customrbMultipleFiles" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="customtxtGroupName" max="32767" attributes="0"/>
                           <Component id="customtxtInstallLocation" alignment="0" max="32767" attributes="0"/>
+                          <Component id="customtxtGroupName" alignment="0" min="-2" pref="315" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -556,7 +570,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="customlblHeader" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="158" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

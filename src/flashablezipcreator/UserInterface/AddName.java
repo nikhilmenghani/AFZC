@@ -49,7 +49,10 @@ public class AddName extends javax.swing.JFrame {
     TreeOperations to = new TreeOperations();
 
     public AddName() {
-        AddGroup addGroup = new AddGroup();
+    }
+
+    public AddName(ProjectItemNode node) {
+        AddGroup addGroup = new AddGroup((ProjectNode) node);
     }
 
     public AddName(String nodeType, int type, ProjectItemNode parent) {

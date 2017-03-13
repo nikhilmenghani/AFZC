@@ -139,18 +139,22 @@ public class MyPopup {
                 addFontsGroupMenu.add(mitemFonts);
                 JMenu addTonesGroupMenu = new JMenu("Tones Group");
                 addTonesGroupMenu.add(mitemAlarms);
-
                 addTonesGroupMenu.add(mitemNotifications);
                 addTonesGroupMenu.add(mitemRingtones);
                 addTonesGroupMenu.add(mitemUI);
                 JMenu addBootAnimationGroupMenu = new JMenu("Boot Animation Group");
                 addBootAnimationGroupMenu.add(mitemBootAnimSystem);
                 addBootAnimationGroupMenu.add(mitemBootAnimLocal);
+                JMenuItem mitemCustomGroup = new JMenuItem("Custom Group");
+                mitemCustomGroup.addActionListener((ActionEvent ae) -> {
+                    addName("Group", "custom", nodeList.get(0));
+                });
                 addGroupMenu.add(addSystemGroupMenu);
                 addGroupMenu.add(addDataGroupMenu);
                 addGroupMenu.add(addFontsGroupMenu);
                 addGroupMenu.add(addTonesGroupMenu);
                 addGroupMenu.add(addBootAnimationGroupMenu);
+                addGroupMenu.add(mitemCustomGroup);
                 popup.add(addGroupMenu);
             }
         }
@@ -218,6 +222,7 @@ public class MyPopup {
                 case GroupNode.GROUP_SYSTEM_APK:
                 case GroupNode.GROUP_SYSTEM_PRIV_APK:
                 case GroupNode.GROUP_DATA_APP:
+                case GroupNode.GROUP_CUSTOM:
                     popup.add(mitemAddFolder);
                     popup.add(mitemAddFile);
                     break;
@@ -413,10 +418,17 @@ public class MyPopup {
                 extension = ".png||.prop";
                 isSelectBox = true;
                 break;
+            case "custom":
+                groupType = GroupNode.GROUP_CUSTOM;
+                break;
         }
         switch (nodeType) {
             case "Group":
-                addGNUI = new AddName(location, groupType, extension, isSelectBox, node);
+                if (location.equals("custom")) {
+                    addGNUI = new AddName(node);
+                } else {
+                    addGNUI = new AddName(location, groupType, extension, isSelectBox, node);
+                }
                 break;
             case "SubGroup":
                 addGNUI = new AddName(location, groupType, extension, isSelectBox, node);
