@@ -94,6 +94,7 @@ public class FlashableZipCreator {
                 Preferences.zipCreatorName = Xml.getZipCreatorName(preferencesConfig);
                 Preferences.zipVersion = Xml.getZipVersion(preferencesConfig);
                 Preferences.saveLogs = Xml.getLogsIndicator(preferencesConfig);
+                Preferences.checkUpdatesOnStartUp = Xml.getCheckUpdatesIndicator(preferencesConfig);
                 Logs.write("Created Logs File..");
                 Logs.write(OS + " Operating System Found..!!");
                 Logs.write("Preferences.config Found");
@@ -103,6 +104,10 @@ public class FlashableZipCreator {
                 Preferences.themes.add("Nikhil");
             }
 
+            Control.check();
+            if(Control.forceCheckOnStartUp){
+                Update.runUpdateCheck();
+            }
             if (Preferences.checkUpdatesOnStartUp) {
                 Update.runUpdateCheck();
             }

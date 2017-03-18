@@ -51,27 +51,22 @@ public class Preferences extends javax.swing.JFrame {
         cbAndroidVersion = new javax.swing.JCheckBox();
         lblGeneralOptions = new javax.swing.JLabel();
         lblHoverInformation = new javax.swing.JLabel();
-        lblAromaVersion = new javax.swing.JLabel();
-        cbAromaVersion = new javax.swing.JComboBox<>();
         lblProjectSetup = new javax.swing.JLabel();
         cbProjectSetup = new javax.swing.JCheckBox();
+        lblLogging = new javax.swing.JLabel();
+        cbSaveLogs = new javax.swing.JCheckBox();
+        lblUpdates = new javax.swing.JLabel();
+        cbUpdates = new javax.swing.JCheckBox();
+        panelAroma = new javax.swing.JPanel();
+        lblAromaOptions = new javax.swing.JLabel();
+        lblAromaHeading = new javax.swing.JLabel();
+        lblAromaHoverInformation = new javax.swing.JLabel();
+        lblAromaVersion = new javax.swing.JLabel();
+        cbAromaVersion = new javax.swing.JComboBox<>();
         lblZipCreatorName = new javax.swing.JLabel();
         txtZipCreatorName = new javax.swing.JTextField();
         lblZipVersion = new javax.swing.JLabel();
         txtZipVersion = new javax.swing.JTextField();
-        lblLogging = new javax.swing.JLabel();
-        cbSaveLogs = new javax.swing.JCheckBox();
-        panelThemes = new javax.swing.JPanel();
-        lblThemesOptions = new javax.swing.JLabel();
-        lblThemesHeading = new javax.swing.JLabel();
-        cbThemeDefault = new javax.swing.JCheckBox();
-        cbThemeNikhil = new javax.swing.JCheckBox();
-        cbThemeMiui = new javax.swing.JCheckBox();
-        cbThemeMiui4 = new javax.swing.JCheckBox();
-        cbThemeMiui6 = new javax.swing.JCheckBox();
-        cbThemeFranzyroy = new javax.swing.JCheckBox();
-        cbThemeIcs = new javax.swing.JCheckBox();
-        cbThemeTouchwiz = new javax.swing.JCheckBox();
         btnCancel = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
 
@@ -80,6 +75,9 @@ public class Preferences extends javax.swing.JFrame {
             preferencesFilePresent = true;
             preferencesConfig = r.getFileString("Preferences.config");
         }
+
+        themes = new ArrayList<>();
+        themes.add("Nikhil");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -92,7 +90,7 @@ public class Preferences extends javax.swing.JFrame {
 
         listPreferences.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         listPreferences.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = {"  General", "  Themes"};
+            String[] strings = {"  General", "  Aroma"};
 
             public int getSize() {
                 return strings.length;
@@ -112,12 +110,12 @@ public class Preferences extends javax.swing.JFrame {
                 String selectedValue = listPreferences.getSelectedValue();
                 switch (selectedValue) {
                     case "  General":
-                        panelThemes.setVisible(false);
+                        panelAroma.setVisible(false);
                         panelGeneral.setVisible(true);
                         break;
-                    case "  Themes":
+                    case "  Aroma":
                         panelGeneral.setVisible(false);
-                        panelThemes.setVisible(true);
+                        panelAroma.setVisible(true);
                         break;
                 }
             }
@@ -128,11 +126,11 @@ public class Preferences extends javax.swing.JFrame {
         panelPreferenceOptions.setLayout(panelPreferenceOptionsLayout);
         panelPreferenceOptionsLayout.setHorizontalGroup(
                 panelPreferenceOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(JSPPreferences, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                        .addComponent(JSPPreferences, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
         );
         panelPreferenceOptionsLayout.setVerticalGroup(
                 panelPreferenceOptionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(JSPPreferences)
+                        .addComponent(JSPPreferences)
         );
 
         panelPreferencesDetails.setBackground(new java.awt.Color(255, 255, 255));
@@ -211,239 +209,188 @@ public class Preferences extends javax.swing.JFrame {
         } else {
             txtZipVersion.setText(zipVersion);
         }
-        
+
         lblLogging.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblLogging.setText("Logging");
 
         cbSaveLogs.setBackground(new java.awt.Color(255, 255, 255));
-        if(preferencesFilePresent){
+        if (preferencesFilePresent) {
             cbSaveLogs.setSelected(Xml.getLogsIndicator(preferencesConfig));
         }
-        
+
         cbSaveLogs.setText("Save Logs");
         cbSaveLogs.setToolTipText("Enabling this will save a log file every time you use this tool");
+
+        lblUpdates.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblUpdates.setText("Updates");
+        lblUpdates.setToolTipText("Enabling this will check for updates on start of the application");
+
+        cbUpdates.setBackground(new java.awt.Color(255, 255, 255));
+        if (preferencesFilePresent) {
+            cbUpdates.setSelected(Xml.getCheckUpdatesIndicator(preferencesConfig));
+        }else{
+            cbUpdates.setSelected(checkUpdatesOnStartUp);
+        }
+        cbUpdates.setText("Check updates on startup");
+        cbUpdates.setToolTipText("Enabling this will check for updates on start of the application.");
 
         javax.swing.GroupLayout panelGeneralLayout = new javax.swing.GroupLayout(panelGeneral);
         panelGeneral.setLayout(panelGeneralLayout);
         panelGeneralLayout.setHorizontalGroup(
-            panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelGeneralLayout.createSequentialGroup()
-                .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelGeneralLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
-                        .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblHoverInformation)
-                            .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtZipCreatorName, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cbProjectSetup, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblZipVersion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtZipVersion, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addGroup(panelGeneralLayout.createSequentialGroup()
+                panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelGeneralLayout.createSequentialGroup()
                                 .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbAndroidVersion))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                                .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblLogging, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbSaveLogs)))))
-                    .addGroup(panelGeneralLayout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(lblGeneralOptions)))
-                .addContainerGap())
+                                        .addGroup(panelGeneralLayout.createSequentialGroup()
+                                                .addGap(36, 36, 36)
+                                                .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(lblHoverInformation)
+                                                        .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(cbProjectSetup)
+                                                        .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(cbAndroidVersion)
+                                                        .addComponent(lblLogging, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(cbSaveLogs)
+                                                        .addComponent(lblUpdates, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(cbUpdates)))
+                                        .addGroup(panelGeneralLayout.createSequentialGroup()
+                                                .addGap(79, 79, 79)
+                                                .addComponent(lblGeneralOptions)))
+                                .addContainerGap(45, Short.MAX_VALUE))
         );
         panelGeneralLayout.setVerticalGroup(
-            panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelGeneralLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblGeneralOptions)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblHoverInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
-                .addGroup(panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelGeneralLayout.createSequentialGroup()
-                        .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(cbAndroidVersion))
-                    .addGroup(panelGeneralLayout.createSequentialGroup()
-                        .addComponent(lblLogging, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(6, 6, 6)
-                        .addComponent(cbSaveLogs)))
-                .addGap(16, 16, 16)
-                .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
-                .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbProjectSetup)
-                .addGap(16, 16, 16)
-                .addComponent(lblZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
-                .addComponent(lblZipVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtZipVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                panelGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelGeneralLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblGeneralOptions)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblHoverInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(cbAndroidVersion)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblLogging, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(cbSaveLogs)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(cbProjectSetup)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblUpdates, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
+                                .addComponent(cbUpdates)
+                                .addContainerGap(52, Short.MAX_VALUE))
         );
 
-        panelThemes.setBackground(new java.awt.Color(255, 255, 255));
-        panelThemes.setPreferredSize(new java.awt.Dimension(385, 415));
-        themes = new ArrayList<>();
-        if (preferencesFilePresent) {
-            themes = Xml.getThemes(preferencesConfig);
-            if (themes.isEmpty()) {
-                themes.add("Nikhil");
-            }
-        } else {
-            themes.add("Nikhil");
-        }
-        lblThemesOptions.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        lblThemesOptions.setText("Themes Options");
+        panelAroma.setBackground(new java.awt.Color(255, 255, 255));
+        panelAroma.setPreferredSize(new java.awt.Dimension(385, 415));
 
-        lblThemesHeading.setBackground(new java.awt.Color(204, 204, 204));
-        lblThemesHeading.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        lblThemesHeading.setText("Check Themes to be added by default");
+        lblAromaOptions.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblAromaOptions.setText("Aroma Options");
 
-        cbThemeDefault.setBackground(new java.awt.Color(255, 255, 255));
-        cbThemeDefault.setText("Default");
-        if (themes.contains("Default")) {
-            cbThemeDefault.setSelected(true);
-        }
+        lblAromaHeading.setBackground(new java.awt.Color(204, 204, 204));
+        lblAromaHeading.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblAromaHeading.setText("Important options for working with Aroma");
 
-        cbThemeNikhil.setBackground(new java.awt.Color(255, 255, 255));
-        if (preferencesFilePresent) {
-            if (themes.contains("Nikhil")) {
-                cbThemeNikhil.setSelected(true);
-            } else {
-                cbThemeNikhil.setSelected(false);
-            }
-        } else {
-            cbThemeNikhil.setSelected(true);
-        }
-        cbThemeNikhil.setText("Nikhil");
+        lblAromaHoverInformation.setText("Hover your mouse over options to get additional info");
 
-        cbThemeMiui.setBackground(new java.awt.Color(255, 255, 255));
-        cbThemeMiui.setText("Miui");
-        if (themes.contains("Miui")) {
-            cbThemeMiui.setSelected(true);
-        }
+        lblAromaVersion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblAromaVersion.setText("Binary Version");
 
-        cbThemeMiui4.setBackground(new java.awt.Color(255, 255, 255));
-        cbThemeMiui4.setText("Miui4");
-        if (themes.contains("Miui4")) {
-            cbThemeMiui4.setSelected(true);
-        }
+        cbAromaVersion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Version 3.00b1 - MELATI", "Version 2.70 RC2 - FLAMBOYAN", "Version 2.56 - EDELWEIS"}));
+        cbAromaVersion.setToolTipText("Choose which Aroma Binary to use.");
+        cbAromaVersion.setOpaque(false);
 
-        cbThemeMiui6.setBackground(new java.awt.Color(255, 255, 255));
-        cbThemeMiui6.setText("Miui6");
-        if (themes.contains("Miui6")) {
-            cbThemeMiui6.setSelected(true);
-        }
+        lblZipCreatorName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblZipCreatorName.setText("Zip Creator Name");
 
-        cbThemeFranzyroy.setBackground(new java.awt.Color(255, 255, 255));
-        cbThemeFranzyroy.setText("Franzyroy");
-        if (themes.contains("Franzyroy")) {
-            cbThemeFranzyroy.setSelected(true);
-        }
+        txtZipCreatorName.setToolTipText("This Name will reflect in Aroma as Zip Creator");
 
-        cbThemeIcs.setBackground(new java.awt.Color(255, 255, 255));
-        cbThemeIcs.setText("Ics");
-        if (themes.contains("Ics")) {
-            cbThemeIcs.setSelected(true);
-        }
+        lblZipVersion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        lblZipVersion.setText("Release Version");
 
-        cbThemeTouchwiz.setBackground(new java.awt.Color(255, 255, 255));
-        cbThemeTouchwiz.setText("Touchwiz");
-        if (themes.contains("Touchwiz")) {
-            cbThemeTouchwiz.setSelected(true);
-        }
+        txtZipVersion.setToolTipText("This Version will reflect in Aroma as Release Version");
 
-        javax.swing.GroupLayout panelThemesLayout = new javax.swing.GroupLayout(panelThemes);
-        panelThemes.setLayout(panelThemesLayout);
-        panelThemesLayout.setHorizontalGroup(
-                panelThemesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelThemesLayout.createSequentialGroup()
-                        .addGroup(panelThemesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(panelThemesLayout.createSequentialGroup()
-                                        .addGap(79, 79, 79)
-                                        .addComponent(lblThemesOptions))
-                                .addGroup(panelThemesLayout.createSequentialGroup()
-                                        .addGap(36, 36, 36)
-                                        .addGroup(panelThemesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(cbThemeDefault)
-                                                .addComponent(lblThemesHeading)
-                                                .addComponent(cbThemeNikhil)
-                                                .addComponent(cbThemeMiui)
-                                                .addComponent(cbThemeMiui4)
-                                                .addComponent(cbThemeMiui6)
-                                                .addComponent(cbThemeFranzyroy)
-                                                .addComponent(cbThemeIcs)
-                                                .addComponent(cbThemeTouchwiz))))
-                        .addContainerGap(117, Short.MAX_VALUE))
+        javax.swing.GroupLayout panelAromaLayout = new javax.swing.GroupLayout(panelAroma);
+        panelAroma.setLayout(panelAromaLayout);
+        panelAromaLayout.setHorizontalGroup(
+                panelAromaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelAromaLayout.createSequentialGroup()
+                                .addGroup(panelAromaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(panelAromaLayout.createSequentialGroup()
+                                                .addGap(79, 79, 79)
+                                                .addComponent(lblAromaOptions))
+                                        .addGroup(panelAromaLayout.createSequentialGroup()
+                                                .addGap(37, 37, 37)
+                                                .addGroup(panelAromaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(lblAromaHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(lblAromaHoverInformation)
+                                                        .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(lblZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addGroup(panelAromaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                .addComponent(txtZipCreatorName, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                .addComponent(lblZipVersion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(txtZipVersion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addContainerGap(44, Short.MAX_VALUE))
         );
-        panelThemesLayout.setVerticalGroup(
-                panelThemesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelThemesLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblThemesOptions)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblThemesHeading)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbThemeDefault)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbThemeNikhil)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbThemeMiui)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbThemeMiui4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbThemeMiui6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbThemeFranzyroy)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbThemeIcs)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbThemeTouchwiz)
-                        .addContainerGap(146, Short.MAX_VALUE))
+        panelAromaLayout.setVerticalGroup(
+                panelAromaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAromaLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblAromaOptions)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblAromaHoverInformation, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(13, 13, 13)
+                                .addComponent(lblAromaHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(27, 27, 27)
+                                .addComponent(lblAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbAromaVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtZipCreatorName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblZipVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtZipVersion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(114, Short.MAX_VALUE))
         );
 
-        panelThemes.setVisible(false);
+        panelAroma.setVisible(false);
 
         paneGeneral.setLayer(panelGeneral, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        paneGeneral.setLayer(panelThemes, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        paneGeneral.setLayer(panelAroma, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout paneGeneralLayout = new javax.swing.GroupLayout(paneGeneral);
         paneGeneral.setLayout(paneGeneralLayout);
         paneGeneralLayout.setHorizontalGroup(
                 paneGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(paneGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(panelThemes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(panelGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(paneGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(panelAroma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         paneGeneralLayout.setVerticalGroup(
                 paneGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(paneGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(panelThemes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(panelGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(paneGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(panelAroma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelPreferencesDetailsLayout = new javax.swing.GroupLayout(panelPreferencesDetails);
         panelPreferencesDetails.setLayout(panelPreferencesDetailsLayout);
         panelPreferencesDetailsLayout.setHorizontalGroup(
                 panelPreferencesDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(paneGeneral)
+                        .addComponent(paneGeneral)
         );
         panelPreferencesDetailsLayout.setVerticalGroup(
                 panelPreferencesDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(paneGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(paneGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         btnCancel.setText("Cancel");
@@ -474,31 +421,31 @@ public class Preferences extends javax.swing.JFrame {
         MainPanel.setLayout(MainPanelLayout);
         MainPanelLayout.setHorizontalGroup(
                 MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(MainPanelLayout.createSequentialGroup()
-                                        .addGap(0, 1, Short.MAX_VALUE)
-                                        .addComponent(panelPreferenceOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, 0)
-                                        .addComponent(panelPreferencesDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
-                                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(MainPanelLayout.createSequentialGroup()
+                                                .addGap(0, 1, Short.MAX_VALUE)
+                                                .addComponent(panelPreferenceOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, 0)
+                                                .addComponent(panelPreferencesDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, MainPanelLayout.createSequentialGroup()
+                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
         );
         MainPanelLayout.setVerticalGroup(
                 MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(MainPanelLayout.createSequentialGroup()
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(panelPreferenceOptions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(panelPreferencesDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
+                        .addGroup(MainPanelLayout.createSequentialGroup()
+                                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(panelPreferenceOptions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(panelPreferencesDetails, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(MainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(btnCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())
         );
 
         btnCancel.getAccessibleContext().setAccessibleName("btnPreferencesOk");
@@ -507,18 +454,18 @@ public class Preferences extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                        .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
-    }// </editor-fold>                        
+    }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
@@ -526,48 +473,16 @@ public class Preferences extends javax.swing.JFrame {
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, TransformerException, IOException {
         String xml = null;
-        themes = new ArrayList<>();
-        if (cbThemeDefault.isSelected()) {
-            themes.add("Default");
-        }
-        if (cbThemeFranzyroy.isSelected()) {
-            themes.add("Franzyroy");
-        }
-        if (cbThemeIcs.isSelected()) {
-            themes.add("Ics");
-        }
-        if (cbThemeMiui.isSelected()) {
-            themes.add("Miui");
-        }
-        if (cbThemeMiui4.isSelected()) {
-            themes.add("Miui4");
-        }
-        if (cbThemeMiui6.isSelected()) {
-            themes.add("Miui6");
-        }
-        if (cbThemeNikhil.isSelected()) {
-            themes.add("Nikhil");
-        }
-        if (cbThemeTouchwiz.isSelected()) {
-            themes.add("Touchwiz");
-        }
-        if (themes.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "There has to be atleast one theme selected. Setting default...");
-            cbThemeNikhil.setSelected(true);
-            themes.add("Nikhil");
-        }
-        if (Jar.isExecutingThrough()) {
-            Jar.addThemesToTree();
-        }
         aromaVersion = cbAromaVersion.getSelectedItem().toString();
         IsFromLollipop = cbAndroidVersion.isSelected();
         IsQuickSetup = cbProjectSetup.isSelected();
         zipCreatorName = txtZipCreatorName.getText();
+        checkUpdatesOnStartUp = cbUpdates.isSelected();
         Project.zipCreator = zipCreatorName;
         zipVersion = txtZipVersion.getText();
         Project.releaseVersion = zipVersion;
         saveLogs = cbSaveLogs.isSelected();
-        xml = Xml.getPreferenceConfigString(aromaVersion, IsFromLollipop, IsQuickSetup, themes, zipCreatorName, zipVersion, saveLogs);
+        xml = Xml.getPreferenceConfigString(aromaVersion, IsFromLollipop, IsQuickSetup, checkUpdatesOnStartUp, zipCreatorName, zipVersion, saveLogs);
         Write w = new Write();
         w.writeStringToFile(xml, "Preferences.config");
         this.dispose();
@@ -617,37 +532,32 @@ public class Preferences extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbAromaVersion;
     private javax.swing.JCheckBox cbProjectSetup;
     private javax.swing.JCheckBox cbSaveLogs;
-    private javax.swing.JCheckBox cbThemeDefault;
-    private javax.swing.JCheckBox cbThemeFranzyroy;
-    private javax.swing.JCheckBox cbThemeIcs;
-    private javax.swing.JCheckBox cbThemeMiui;
-    private javax.swing.JCheckBox cbThemeMiui4;
-    private javax.swing.JCheckBox cbThemeMiui6;
-    private javax.swing.JCheckBox cbThemeNikhil;
-    private javax.swing.JCheckBox cbThemeTouchwiz;
+    private javax.swing.JCheckBox cbUpdates;
     private javax.swing.JLabel lblAndroidVersion;
+    private javax.swing.JLabel lblAromaHeading;
+    private javax.swing.JLabel lblAromaHoverInformation;
+    private javax.swing.JLabel lblAromaOptions;
     private javax.swing.JLabel lblAromaVersion;
     private javax.swing.JLabel lblGeneralHeading;
     private javax.swing.JLabel lblGeneralOptions;
     private javax.swing.JLabel lblHoverInformation;
     private javax.swing.JLabel lblLogging;
     private javax.swing.JLabel lblProjectSetup;
-    private javax.swing.JLabel lblThemesHeading;
-    private javax.swing.JLabel lblThemesOptions;
+    private javax.swing.JLabel lblUpdates;
     private javax.swing.JLabel lblZipCreatorName;
     private javax.swing.JLabel lblZipVersion;
     private javax.swing.JList<String> listPreferences;
     private javax.swing.JLayeredPane paneGeneral;
+    private javax.swing.JPanel panelAroma;
     private javax.swing.JPanel panelGeneral;
     private javax.swing.JPanel panelPreferenceOptions;
     private javax.swing.JPanel panelPreferencesDetails;
-    private javax.swing.JPanel panelThemes;
     private javax.swing.JTextField txtZipCreatorName;
     private javax.swing.JTextField txtZipVersion;
     public static String preferencesConfig;
     public static boolean IsFromLollipop = true;
     public static boolean useUniversalBinary = true;
-    public static boolean checkUpdatesOnStartUp = true;
+    public static boolean checkUpdatesOnStartUp = false;
     public static boolean IsQuickSetup = true;
     public static String aromaVersion = "Version 3.00b1 - MELATI";
     public static boolean saveLogs = false;

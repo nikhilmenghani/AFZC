@@ -39,71 +39,67 @@ public class Update {
     public static void runUpdateCheck() throws URISyntaxException {
         if (Web.netIsAvailable()) {
             Logs.write("Running Update Check");
-            Control.check();
-            if (Control.forceCheckOnStartUp) {
-                Logs.write("Force Check Up: " + true);
-                switch (CurrentVersionType) {
-                    case "Stable":
-                        if (Control.forceStableUpdate && Update.isStableUpdateAvailable()) {
+            switch (CurrentVersionType) {
+                case "Stable":
+                    if (Control.forceStableUpdate && Update.isStableUpdateAvailable()) {
+                        isStableUpdateAvailable = true;
+                    }
+                    break;
+                case "Beta":
+                    if (Control.forceBetaUpdate) {
+                        if (Update.isBetaUpdateAvailable()) {
+                            isBetaUpdateAvailable = true;
+                        }
+                        if (Update.isStableUpdateAvailable()) {
                             isStableUpdateAvailable = true;
                         }
-                        break;
-                    case "Beta":
-                        if (Control.forceBetaUpdate) {
-                            if (Update.isBetaUpdateAvailable()) {
-                                isBetaUpdateAvailable = true;
-                            }
-                            if (Update.isStableUpdateAvailable()) {
-                                isStableUpdateAvailable = true;
-                            }
+                    }
+                    break;
+                case "Test":
+                    if (Control.forceTestUpdate) {
+                        if (Update.isTestUpdateAvailable()) {
+                            isTestUpdateAvailable = true;
                         }
-                        break;
-                    case "Test":
-                        if (Control.forceTestUpdate) {
-                            if (Update.isTestUpdateAvailable()) {
-                                isTestUpdateAvailable = true;
-                            }
-                            if (Update.isBetaUpdateAvailable()) {
-                                isBetaUpdateAvailable = true;
-                            }
-                            if (Update.isStableUpdateAvailable()) {
-                                isStableUpdateAvailable = true;
-                            }
+                        if (Update.isBetaUpdateAvailable()) {
+                            isBetaUpdateAvailable = true;
                         }
-                        break;
-                }
-                if (isStableUpdateAvailable) {
-                    String changelog = Update.getStableChangelog();
-                    Logs.write("Stable Changelog: " + changelog);
-                    String message = "A new update is available with following changelog\n" + changelog;
-                    int dialogResult = JOptionPane.showConfirmDialog(null, message, "Stable Update Changelog", JOptionPane.YES_NO_OPTION);
-                    if (dialogResult == JOptionPane.YES_OPTION) {
-                        Update.downloadStableVersion();
-                        System.exit(0);
+                        if (Update.isStableUpdateAvailable()) {
+                            isStableUpdateAvailable = true;
+                        }
                     }
-                } else if (isBetaUpdateAvailable) {
-                    String changelog = Update.getBetaChangelog();
-                    Logs.write("Beta Changelog: " + changelog);
-                    String message = "A new update is available with following changelog\n" + changelog;
-                    int dialogResult = JOptionPane.showConfirmDialog(null, message, "Beta Update Changelog", JOptionPane.YES_NO_OPTION);
-                    if (dialogResult == JOptionPane.YES_OPTION) {
-                        Update.downloadBetaVersion();
-                        System.exit(0);
-                    }
-                } else if (isTestUpdateAvailable) {
-                    String changelog = Update.getTestChangelog();
-                    Logs.write("Test Changelog: " + changelog);
-                    String message = "A new update is available with following changelog\n" + changelog;
-                    int dialogResult = JOptionPane.showConfirmDialog(null, message, "Test Update Changelog", JOptionPane.YES_NO_OPTION);
-                    if (dialogResult == JOptionPane.YES_OPTION) {
-                        Update.downloadTestVersion();
-                        System.exit(0);
-                    }
-                }
-                Logs.write("Beta update status: " + Update.isBetaUpdateAvailable);
-                Logs.write("Stable update status: " + Update.isStableUpdateAvailable);
-                Logs.write("Test update status: " + Update.isTestUpdateAvailable);
+                    break;
             }
+            if (isStableUpdateAvailable) {
+                String changelog = Update.getStableChangelog();
+                Logs.write("Stable Changelog: " + changelog);
+                String message = "A new update is available with following changelog\n" + changelog;
+                int dialogResult = JOptionPane.showConfirmDialog(null, message, "Stable Update Changelog", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    Update.downloadStableVersion();
+                    System.exit(0);
+                }
+            } else if (isBetaUpdateAvailable) {
+                String changelog = Update.getBetaChangelog();
+                Logs.write("Beta Changelog: " + changelog);
+                String message = "A new update is available with following changelog\n" + changelog;
+                int dialogResult = JOptionPane.showConfirmDialog(null, message, "Beta Update Changelog", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    Update.downloadBetaVersion();
+                    System.exit(0);
+                }
+            } else if (isTestUpdateAvailable) {
+                String changelog = Update.getTestChangelog();
+                Logs.write("Test Changelog: " + changelog);
+                String message = "A new update is available with following changelog\n" + changelog;
+                int dialogResult = JOptionPane.showConfirmDialog(null, message, "Test Update Changelog", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    Update.downloadTestVersion();
+                    System.exit(0);
+                }
+            }
+            Logs.write("Beta update status: " + Update.isBetaUpdateAvailable);
+            Logs.write("Stable update status: " + Update.isStableUpdateAvailable);
+            Logs.write("Test update status: " + Update.isTestUpdateAvailable);
         }
     }
 

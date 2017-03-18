@@ -52,7 +52,7 @@ public class XmlOperations {
     TreeOperations to = new TreeOperations();
 
     public void createConfigurationConfig(String aromaVersion, boolean androidVersionAboveLP, boolean quickProjectSetup,
-            ArrayList<String> themes, String zipCreatorName, String zipVersion, boolean saveLogs) throws ParserConfigurationException {
+            boolean checkUpdatesOnStartUp, String zipCreatorName, String zipVersion, boolean saveLogs) throws ParserConfigurationException {
         documentFactory = DocumentBuilderFactory.newInstance();
         documentBuilder = documentFactory.newDocumentBuilder();
         document = documentBuilder.newDocument();
@@ -64,12 +64,8 @@ public class XmlOperations {
         androidVersionElem.setTextContent(String.valueOf(androidVersionAboveLP));
         Element quickProjectSetupElem = document.createElement("QuickProjectSetup");
         quickProjectSetupElem.setTextContent(String.valueOf(quickProjectSetup));
-        Element themesElem = document.createElement("Themes");
-        for (String theme : themes) {
-            Element themeElem = document.createElement("Theme");
-            themeElem.setTextContent(theme);
-            themesElem.appendChild(themeElem);
-        }
+        Element checkUpdatesElem = document.createElement("CheckUpdates");
+        checkUpdatesElem.setTextContent(String.valueOf(checkUpdatesOnStartUp));
         Element zipCreatorNameElem = document.createElement("zipCreatorName");
         zipCreatorNameElem.setTextContent(zipCreatorName);
         Element zipVersionElem = document.createElement("zipVersion");
@@ -79,7 +75,7 @@ public class XmlOperations {
         root.appendChild(aromaVersionElem);
         root.appendChild(androidVersionElem);
         root.appendChild(quickProjectSetupElem);
-        root.appendChild(themesElem);
+        root.appendChild(checkUpdatesElem);
         root.appendChild(zipCreatorNameElem);
         root.appendChild(zipVersionElem);
         root.appendChild(saveLogsElem);
@@ -412,7 +408,7 @@ public class XmlOperations {
                             folders.remove(folderChildName);
                             break;
                         case "FileData":
-                            Logs.write("Working for file(inside folder " + folders.get(folders.size()-1) + " ): " + folderChildName);
+                            Logs.write("Working for file(inside folder " + folders.get(folders.size() - 1) + " ): " + folderChildName);
                             FileNode file = to.getFileNode(folderChildName, folders, SubGroupName, GroupName, ProjectName);
                             file.description = ((Element) folderChildNode).getElementsByTagName("description").item(0).getTextContent();
                             break;

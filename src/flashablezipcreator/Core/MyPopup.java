@@ -154,7 +154,7 @@ public class MyPopup {
                 addGroupMenu.add(addFontsGroupMenu);
                 addGroupMenu.add(addTonesGroupMenu);
                 addGroupMenu.add(addBootAnimationGroupMenu);
-                //addGroupMenu.add(mitemCustomGroup);
+                addGroupMenu.add(mitemCustomGroup);
                 popup.add(addGroupMenu);
             }
         }

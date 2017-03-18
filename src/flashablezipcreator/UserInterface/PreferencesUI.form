@@ -2,7 +2,7 @@
 
 <Form version="1.9" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
       <Color blue="ff" green="ff" red="ff" type="rgb"/>
     </Property>
@@ -127,12 +127,11 @@
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                       <StringArray count="2">
                         <StringItem index="0" value="General"/>
-                        <StringItem index="1" value="Themes"/>
+                        <StringItem index="1" value="Aroma"/>
                       </StringArray>
                     </Property>
                     <Property name="selectionMode" type="int" value="0"/>
                     <Property name="fixedCellHeight" type="int" value="50"/>
-                    <Property name="selectedIndex" type="int" value="0"/>
                     <Property name="valueIsAdjusting" type="boolean" value="true"/>
                   </Properties>
                   <AuxValues>
@@ -175,7 +174,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="panelGeneral" alignment="0" max="32767" attributes="0"/>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                          <Component id="panelThemes" alignment="0" max="32767" attributes="0"/>
+                          <Component id="panelAroma" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -183,7 +182,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="panelGeneral" min="-2" max="-2" attributes="0"/>
                       <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                          <Component id="panelThemes" alignment="0" max="32767" attributes="0"/>
+                          <Component id="panelAroma" alignment="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -206,27 +205,14 @@
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="lblGeneralHeading" min="-2" pref="304" max="-2" attributes="0"/>
                                           <Component id="lblHoverInformation" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblAromaVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
-                                          <Component id="cbAromaVersion" alignment="0" min="-2" max="-2" attributes="0"/>
                                           <Component id="lblProjectSetup" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
-                                          <Component id="lblZipCreatorName" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
-                                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="txtZipCreatorName" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="cbProjectSetup" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="lblZipVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
-                                              <Component id="txtZipVersion" alignment="0" max="32767" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" attributes="0">
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="lblAndroidVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
-                                                  <Component id="cbAndroidVersion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                              <EmptySpace pref="47" max="32767" attributes="0"/>
-                                              <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Component id="lblLogging" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
-                                                  <Component id="cbSaveLogs" alignment="0" min="-2" max="-2" attributes="0"/>
-                                              </Group>
-                                          </Group>
+                                          <Component id="cbProjectSetup" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblAndroidVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                          <Component id="cbAndroidVersion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblLogging" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                          <Component id="cbSaveLogs" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblUpdates" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                          <Component id="cbUpdates" alignment="0" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
@@ -234,7 +220,7 @@
                                       <Component id="lblGeneralOptions" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace pref="45" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -247,36 +233,23 @@
                               <Component id="lblHoverInformation" min="-2" pref="20" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Component id="lblGeneralHeading" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblAndroidVersion" min="-2" pref="22" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="lblAndroidVersion" min="-2" pref="22" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                                      <Component id="cbAndroidVersion" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="lblLogging" min="-2" pref="22" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                                      <Component id="cbSaveLogs" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                              <Component id="lblAromaVersion" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="cbAromaVersion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="16" max="32767" attributes="0"/>
+                              <Component id="cbAndroidVersion" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="lblLogging" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="cbSaveLogs" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="lblProjectSetup" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                               <Component id="cbProjectSetup" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                              <Component id="lblZipCreatorName" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtZipCreatorName" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                              <Component id="lblZipVersion" min="-2" pref="22" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="txtZipVersion" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="lblUpdates" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                              <Component id="cbUpdates" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="52" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -324,12 +297,160 @@
                         <Property name="text" type="java.lang.String" value="Hover your mouse over options to get additional info"/>
                       </Properties>
                     </Component>
+                    <Component class="javax.swing.JLabel" name="lblProjectSetup">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Tahoma" size="11" style="1"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Quick Project Setup"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Enabling this will Open Add Project Dialog Box on Start up for quick project creation."/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JCheckBox" name="cbProjectSetup">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="selected" type="boolean" value="true"/>
+                        <Property name="text" type="java.lang.String" value="Open dialog box automatically"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Enabling this will Open Add Project Dialog Box on Start up for quick project creation."/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="lblLogging">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Tahoma" size="11" style="1"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Logging"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JCheckBox" name="cbSaveLogs">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="selected" type="boolean" value="true"/>
+                        <Property name="text" type="java.lang.String" value="Save Logs"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Enabling this will save a log file every time you use this tool"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="lblUpdates">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Tahoma" size="11" style="1"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Updates"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Enabling this will check for updates on start of the application"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JCheckBox" name="cbUpdates">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="selected" type="boolean" value="true"/>
+                        <Property name="text" type="java.lang.String" value="Check updates on startup"/>
+                        <Property name="toolTipText" type="java.lang.String" value="Enabling this will check for updates on start of the application."/>
+                      </Properties>
+                    </Component>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JPanel" name="panelAroma">
+                  <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[385, 415]"/>
+                    </Property>
+                  </Properties>
+
+                  <Layout>
+                    <DimensionLayout dim="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
+                                      <Component id="lblAromaOptions" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="lblAromaHeading" alignment="0" min="-2" pref="304" max="-2" attributes="0"/>
+                                          <Component id="lblAromaHoverInformation" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblAromaVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                          <Component id="cbAromaVersion" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Component id="lblZipCreatorName" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                          <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                              <Component id="txtZipCreatorName" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="lblZipVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                              <Component id="txtZipVersion" alignment="0" min="-2" pref="146" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                              <EmptySpace pref="44" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                    <DimensionLayout dim="1">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblAromaOptions" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="lblAromaHoverInformation" min="-2" pref="20" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                              <Component id="lblAromaHeading" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                              <Component id="lblAromaVersion" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="cbAromaVersion" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="lblZipCreatorName" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtZipCreatorName" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="lblZipVersion" min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="txtZipVersion" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="114" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                    </DimensionLayout>
+                  </Layout>
+                  <SubComponents>
+                    <Component class="javax.swing.JLabel" name="lblAromaOptions">
+                      <Properties>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Tahoma" size="14" style="1"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Aroma Options"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="lblAromaHeading">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="cc" green="cc" red="cc" type="rgb"/>
+                        </Property>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Tahoma" size="12" style="1"/>
+                        </Property>
+                        <Property name="text" type="java.lang.String" value="Important options for working with Aroma"/>
+                      </Properties>
+                    </Component>
+                    <Component class="javax.swing.JLabel" name="lblAromaHoverInformation">
+                      <Properties>
+                        <Property name="text" type="java.lang.String" value="Hover your mouse over options to get additional info"/>
+                      </Properties>
+                    </Component>
                     <Component class="javax.swing.JLabel" name="lblAromaVersion">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Tahoma" size="11" style="1"/>
                         </Property>
-                        <Property name="text" type="java.lang.String" value="Aroma Version"/>
+                        <Property name="text" type="java.lang.String" value="Binary Version"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JComboBox" name="cbAromaVersion">
@@ -347,24 +468,6 @@
                       <AuxValues>
                         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
                       </AuxValues>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="lblProjectSetup">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Tahoma" size="11" style="1"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Quick Project Setup"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbProjectSetup">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="selected" type="boolean" value="true"/>
-                        <Property name="text" type="java.lang.String" value="Open dialog box automatically"/>
-                        <Property name="toolTipText" type="java.lang.String" value="Enabling this will Open Add Project Dialog Box on Start up for quick project creation."/>
-                      </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="lblZipCreatorName">
                       <Properties>
@@ -390,177 +493,6 @@
                     <Component class="javax.swing.JTextField" name="txtZipVersion">
                       <Properties>
                         <Property name="toolTipText" type="java.lang.String" value="This Version will reflect in Aroma as Release Version"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="lblLogging">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Tahoma" size="11" style="1"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Logging"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbSaveLogs">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="selected" type="boolean" value="true"/>
-                        <Property name="text" type="java.lang.String" value="Save Logs"/>
-                        <Property name="toolTipText" type="java.lang.String" value="Enabling this will save a log file every time you use this tool"/>
-                      </Properties>
-                    </Component>
-                  </SubComponents>
-                </Container>
-                <Container class="javax.swing.JPanel" name="panelThemes">
-                  <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[385, 415]"/>
-                    </Property>
-                  </Properties>
-
-                  <Layout>
-                    <DimensionLayout dim="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
-                                      <Component id="lblThemesOptions" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="cbThemeDefault" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblThemesHeading" min="-2" max="-2" attributes="0"/>
-                                          <Component id="cbThemeNikhil" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="cbThemeMiui" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="cbThemeMiui4" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="cbThemeMiui6" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="cbThemeFranzyroy" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="cbThemeIcs" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="cbThemeTouchwiz" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                              <EmptySpace pref="117" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                    </DimensionLayout>
-                    <DimensionLayout dim="1">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblThemesOptions" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="lblThemesHeading" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="cbThemeDefault" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cbThemeNikhil" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cbThemeMiui" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cbThemeMiui4" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cbThemeMiui6" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cbThemeFranzyroy" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cbThemeIcs" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="cbThemeTouchwiz" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace pref="146" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
-                    </DimensionLayout>
-                  </Layout>
-                  <SubComponents>
-                    <Component class="javax.swing.JLabel" name="lblThemesOptions">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Tahoma" size="14" style="1"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Themes Options"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="lblThemesHeading">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="cc" green="cc" red="cc" type="rgb"/>
-                        </Property>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Tahoma" size="12" style="1"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Check Themes to be added by default"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbThemeDefault">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Default"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbThemeNikhil">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="selected" type="boolean" value="true"/>
-                        <Property name="text" type="java.lang.String" value="Nikhil"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbThemeMiui">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Miui"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbThemeMiui4">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Miui4"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbThemeMiui6">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Miui6"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbThemeFranzyroy">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Franzyroy"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbThemeIcs">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Ics"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JCheckBox" name="cbThemeTouchwiz">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                        </Property>
-                        <Property name="text" type="java.lang.String" value="Touchwiz"/>
                       </Properties>
                     </Component>
                   </SubComponents>
