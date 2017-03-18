@@ -14,6 +14,8 @@ import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.FlashableZipCreator;
+import static flashablezipcreator.Operations.UpdaterScriptOperations.copyString;
+import static flashablezipcreator.Operations.UpdaterScriptOperations.installString;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -96,14 +98,15 @@ public class UpdateBinaryOperations {
     }
 
     public String getFolderScript(String str, ProjectItemNode parent) {
+        str += createDirectory(((FolderNode) parent).folderLocation.replaceAll("\\\\", "/"));
+        str += "set_perm " + ((FolderNode) parent).folderPermission + "\n";
         for (ProjectItemNode child : parent.children) {
             if (child.type == ProjectItemNode.NODE_FOLDER) {
                 str = getFolderScript(str, child);
             } else if (child.type == ProjectItemNode.NODE_FILE) {
                 FileNode file = (FileNode) child;
-                str += createDirectory(file.installLocation);//handled in updated update-binary-installer
                 if (file.title.endsWith("apk")) {
-                    str += addPrintString(file.parent.title, installString);
+                    str += addPrintString(file.parent.title, copyString);
                     FolderNode folder = (FolderNode) (file.parent);
                     GroupNode group = (GroupNode) (folder.originalParent);
                     if (group.groupType == GroupNode.GROUP_DATA_APP) {
@@ -115,8 +118,6 @@ public class UpdateBinaryOperations {
                     str += addPrintString("Copying " + file.title);
                     str += "package_extract_file \"" + file.fileZipPath + "\" \"" + file.installLocation + "/" + file.title + "\"\n";
                 }
-                //following should come from folder and not from file,
-                str += "set_perm " + "1000 1000 0755 \"" + file.installLocation + "\"" + "\n";
                 str += "set_perm " + file.filePermission + "\n";  //TODO: Inspect filePermission for removal of commas
             }
         }
@@ -130,11 +131,13 @@ public class UpdateBinaryOperations {
             if (Preferences.IsFromLollipop) {
                 str += "if [ $(file_getprop /tmp/aroma/" + node.prop + " item.1." + count++ + ") == 1 ]; then\n";
                 for (ProjectItemNode folder : node.children) {
+                    str += addPrintString(folder.title, installString);
                     str = getFolderScript(str, folder);
                 }
                 str += "fi;\n";
                 for (ProjectItemNode folder : node.children) {
                     str += "if [ $(file_getprop /tmp/aroma/" + node.prop + " item.1." + count++ + ") == 1 ]; then\n";
+                    str += addPrintString(folder.title, installString);
                     str = getFolderScript(str, folder);
                     str += "fi;\n";
                 }

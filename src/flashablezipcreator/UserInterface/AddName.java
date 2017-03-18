@@ -525,8 +525,6 @@ public class AddName extends javax.swing.JFrame {
                 rNode.addChild(new ProjectNode(projectName, this.projectType, Mod.MOD_LESS, rNode), false);
             } else if (this.gNode != null) {
                 gNode.addChild(new FolderNode(projectName, gNode), false);
-            } else if (this.sNode != null) {
-                sNode.addChild(new FolderNode(projectName, sNode), false);
             } else if (this.fNode != null) {
                 fNode.addChild(new FolderNode(projectName, fNode), false);
             }

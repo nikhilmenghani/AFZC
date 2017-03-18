@@ -138,17 +138,19 @@ public class Identify {
     public static ArrayList<String> getFolderNames(String path, int projectType) {
         ArrayList<String> fList = new ArrayList<>();
         switch (projectType) {
+            case ProjectNode.PROJECT_MOD:
+                if (!path.contains(folderSeparator)) {
+                    while (path.contains("/")) {
+                        String folderName = path.substring(0, path.indexOf("/"));
+                        fList.add(folderName);
+                        path = path.substring(path.indexOf("/") + 1, path.length());
+                    }
+                    return fList;
+                }
             case ProjectNode.PROJECT_AROMA:
             case ProjectNode.PROJECT_CUSTOM:
                 while (path.contains(folderSeparator)) {
                     path = path.substring(path.indexOf(folderSeparator) + folderSeparator.length(), path.length());
-                    String folderName = path.substring(0, path.indexOf("/"));
-                    fList.add(folderName);
-                    path = path.substring(path.indexOf("/") + 1, path.length());
-                }
-                return fList;
-            case ProjectNode.PROJECT_MOD:
-                while(path.contains("/")){
                     String folderName = path.substring(0, path.indexOf("/"));
                     fList.add(folderName);
                     path = path.substring(path.indexOf("/") + 1, path.length());

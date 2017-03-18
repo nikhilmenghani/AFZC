@@ -4,12 +4,11 @@
  * and open the template in the editor.
  */
 
-/*
+ /*
     THIS CLASS IS DEPRECATED DUE TO INTRODUCTION OF UNIVERSAL-UPDATE-BINARY
     If you want to modify script operations, then head over to UpdateBinaryOperations class,
     which is essentially a copy of this class with additional modifications to make it emit shell script rather than Edify
-*/
-
+ */
 package flashablezipcreator.Operations;
 
 import flashablezipcreator.Core.FileNode;
@@ -24,7 +23,6 @@ import flashablezipcreator.Protocols.Project;
  *
  * @author Nikhil
  */
-
 public class UpdaterScriptOperations {
 
     public static final int installString = 1;
@@ -86,14 +84,15 @@ public class UpdaterScriptOperations {
     }
 
     public String getFolderScript(String str, ProjectItemNode parent) {
+        str += createDirectory(((FolderNode) parent).folderLocation.replaceAll("\\\\", "/"));
+        str += "set_perm(" + ((FolderNode) parent).folderPermission + ");\n";
         for (ProjectItemNode child : parent.children) {
             if (child.type == ProjectItemNode.NODE_FOLDER) {
                 str = getFolderScript(str, child);
             } else if (child.type == ProjectItemNode.NODE_FILE) {
                 FileNode file = (FileNode) child;
-                str += createDirectory(file.installLocation);
                 if (file.title.endsWith("apk")) {
-                    str += addPrintString(file.parent.title, installString);
+                    str += addPrintString(file.parent.title, copyString);
                     FolderNode folder = (FolderNode) (file.parent);
                     GroupNode group = (GroupNode) (folder.originalParent);
                     if (group.groupType == GroupNode.GROUP_DATA_APP) {
@@ -105,8 +104,6 @@ public class UpdaterScriptOperations {
                     str += addPrintString("Copying " + file.title);
                     str += "package_extract_file(\"" + file.fileZipPath + "\", \"" + file.installLocation + "/" + file.title + "\");\n";
                 }
-                //following should come from folder and not from file,
-                str += "set_perm(" + "1000, 1000, 0755, \"" + file.installLocation + "\");" + "\n";
                 str += "set_perm(" + file.filePermission + ");\n";
             }
         }
@@ -120,11 +117,13 @@ public class UpdaterScriptOperations {
             if (Preferences.IsFromLollipop) {
                 str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
                 for (ProjectItemNode folder : node.children) {
+                    str += addPrintString(folder.title, installString);
                     str = getFolderScript(str, folder);
                 }
                 str += "endif;\n\n";
                 for (ProjectItemNode folder : node.children) {
                     str += "if (file_getprop(\"/tmp/aroma/" + node.prop + "\", \"item.1." + count++ + "\")==\"1\") then \n";
+                    str += addPrintString(folder.title, installString);
                     str = getFolderScript(str, folder);
                     str += "endif;\n\n";
                 }

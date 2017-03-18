@@ -72,7 +72,7 @@ public class TreeOperations {
 
     public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, ArrayList<String> folders, String projectName, int projectType, int modType) {
         ProjectNode pNode = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, modType, rootNode), false);
-        
+
         GroupNode gNode = (GroupNode) pNode.addChild(new GroupNode(groupName, groupType, pNode), false);
         SubGroupNode sgNode = null;
         if (!subGroupName.equals("")) {
@@ -84,11 +84,7 @@ public class TreeOperations {
             for (String folder : folders) {
                 FolderNode fNode = null;
                 if (count++ == 1) {
-                    if (sgNode != null) {
-                        fNode = (FolderNode) sgNode.addChild(new FolderNode(folder, sgNode), false);
-                    } else {
-                        fNode = (FolderNode) gNode.addChild(new FolderNode(folder, gNode), false);
-                    }
+                    fNode = (FolderNode) gNode.addChild(new FolderNode(folder, gNode), false);
                 } else if (folNode != null) {
                     fNode = (FolderNode) folNode.addChild(new FolderNode(folder, folNode), false);
                 } else {
@@ -171,7 +167,7 @@ public class TreeOperations {
                     break;
                 case ProjectNode.PROJECT_MOD:
                     projectMod.add(project);
-                    
+
             }
         }
         projectAroma.stream().forEach((node) -> {

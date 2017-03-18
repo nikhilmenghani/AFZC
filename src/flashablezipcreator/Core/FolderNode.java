@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Core;
 
+import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,6 +17,8 @@ public class FolderNode extends ProjectItemNode {
 
     String folderName;
     String permission;
+    String defaultFolderPerm = "";
+    public String folderPermission = "";
     boolean isBootAnimationGroup = false;
     public ProjectItemNode originalParent;
     String projectName;
@@ -23,7 +26,7 @@ public class FolderNode extends ProjectItemNode {
     public String description;
     String zipPathPrefix = "Folder_";
     public static final int FOLDER_TYPE = 0;
-    String folderLocation;
+    public String folderLocation;
 
     public FolderNode(String title, int type, ProjectItemNode parent) {
         super(title, type, parent);
@@ -42,23 +45,9 @@ public class FolderNode extends ProjectItemNode {
         super.location = parent.location;
         this.folderLocation = parent.location + File.separator + title;
         this.permission = parent.permission;
-        this.originalParent = parent;
-        this.projectName = parent.projectName;
-        this.originalGroupType = parent.originalGroupType;
-    }
-
-    public FolderNode(String title, SubGroupNode parent) {
-        super(title, ProjectItemNode.NODE_FOLDER, parent);
-        if (!title.endsWith("-1")) {
-            title += "-1";
-            super.title = title;
-        }
-        this.folderName = title;
-        super.path = parent.path + File.separator + title;
-        super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
-        super.location = parent.location;
-        this.folderLocation = parent.location + File.separator + title;
-        this.permission = parent.permission;
+        this.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " " : 
+                "1000" + ", " + "1000" + ", " + "0755" + ", ";
+        setPermissions();
         this.originalParent = parent;
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
@@ -72,9 +61,17 @@ public class FolderNode extends ProjectItemNode {
         super.location = parent.location;
         this.folderLocation = parent.folderLocation + File.separator + title;
         this.permission = parent.permission;
+        this.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " " : 
+                "1000" + ", " + "1000" + ", " + "0755" + ", ";
+        setPermissions();
         this.originalParent = parent.originalParent;
         this.projectName = parent.projectName;
         this.originalGroupType = parent.originalGroupType;
+    }
+
+    public void setPermissions() {
+        this.folderPermission = this.defaultFolderPerm + "\"" + this.folderLocation + "\"";
+        this.folderPermission = this.folderPermission.replaceAll("\\\\", "/");
     }
 
     public void renameMe(String newName) throws IOException {
