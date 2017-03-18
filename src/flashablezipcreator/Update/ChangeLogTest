@@ -1,0 +1,6 @@
+
+v4.0 b2 test 6
+-fixed: folders with spaces in path not working
+-added support for devices on which universal-update-binary was not working
+-many fixes in aroma
+-changed the aroma theme

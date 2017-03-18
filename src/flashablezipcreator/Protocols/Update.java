@@ -5,14 +5,8 @@
  */
 package flashablezipcreator.Protocols;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
@@ -23,168 +17,218 @@ public class Update {
 
     public static String RawLatestBetaVersion = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/LatestBetaVersion";
     public static String RawLatestStableVersion = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/LatestStableVersion";
+    public static String RawLatestTestVersion = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/LatestTestVersion";
     public static String RawDownloadLatestBetaVersion = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/DownloadLatestBetaVersion";
-    public static String RawDownloadLatestStableVersion = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/DownloadLatestStableVersion";
+    public static String RawDownloadLatestStableVersion = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/DownloadLatestTestVersion";
+    public static String RawDownloadLatestTestVersion = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/DownloadLatestStableVersion";
     public static String RawChangeLogBeta = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/ChangeLogBeta";
     public static String RawChangeLogStable = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/ChangeLogStable";
+    public static String RawChangeLogTest = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/ChangeLogTest";
     public static String RawUpcomingFeatures = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/UpcomingFeatures";
-    public static float CurrentVersion = 4.0F;
-    public static String CurrentVersionType = "Beta";
+    public static float CurrentMainVersion = 3;
+    public static float CurrentBetaVersion = 2;
+    public static float CurrentTestVersion = 5;
+    public static String CurrentVersionType = "Stable";
     public static boolean isBetaUpdateAvailable = false;
     public static boolean isStableUpdateAvailable = false;
+    public static boolean isTestUpdateAvailable = false;
     public static String betaDownloadLink = "";
     public static String stableDownloadLink = "";
+    public static String testDownloadLink = "";
 
-    public static void runUpdateCheck() {
-        if (Update.netIsAvailable()) {
-            if (Update.isStableUpdateAvailable()) {
-                isStableUpdateAvailable = true;
+    public static void runUpdateCheck() throws URISyntaxException {
+        Logs.write("Running Update Check");
+        if (Web.netIsAvailable()) {
+            Control.check();
+            switch (CurrentVersionType) {
+                case "Stable":
+                    if (Control.forceStableUpdate && Update.isStableUpdateAvailable()) {
+                        isStableUpdateAvailable = true;
+                    }
+                    break;
+                case "Beta":
+                    if (Control.forceBetaUpdate) {
+                        if (Update.isBetaUpdateAvailable()) {
+                            isBetaUpdateAvailable = true;
+                        }
+                        if (Update.isStableUpdateAvailable()) {
+                            isStableUpdateAvailable = true;
+                        }
+                    }
+                    break;
+                case "Test":
+                    if (Control.forceTestUpdate) {
+                        if (Update.isTestUpdateAvailable()) {
+                            isTestUpdateAvailable = true;
+                        }
+                        if (Update.isBetaUpdateAvailable()) {
+                            isBetaUpdateAvailable = true;
+                        }
+                        if (Update.isStableUpdateAvailable()) {
+                            isStableUpdateAvailable = true;
+                        }
+                    }
+                    break;
             }
+            if (isStableUpdateAvailable) {
+                String changelog = Update.getStableChangelog();
+                Logs.write("Stable Changelog: " + changelog);
+                String message = "A new update is available with following changelog\n" + changelog;
+                int dialogResult = JOptionPane.showConfirmDialog(null, message, "Stable Update Changelog", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    Update.downloadStableVersion();
+                }
+            } else if (isBetaUpdateAvailable) {
+                String changelog = Update.getBetaChangelog();
+                Logs.write("Beta Changelog: " + changelog);
+                String message = "A new update is available with following changelog\n" + changelog;
+                int dialogResult = JOptionPane.showConfirmDialog(null, message, "Beta Update Changelog", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    Update.downloadBetaVersion();
+                }
+            } else if (isTestUpdateAvailable) {
+                String changelog = Update.getTestChangelog();
+                Logs.write("Test Changelog: " + changelog);
+                String message = "A new update is available with following changelog\n" + changelog;
+                int dialogResult = JOptionPane.showConfirmDialog(null, message, "Test Update Changelog", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    Update.downloadTestVersion();
+                }
+            }
+            Logs.write("Beta update status: " + Update.isBetaUpdateAvailable);
+            Logs.write("Stable update status: " + Update.isStableUpdateAvailable);
+            Logs.write("Test update status: " + Update.isTestUpdateAvailable);
+        }
+    }
+
+    public static void runTestUpdateCheck() {
+        if (Web.netIsAvailable()) {
+            if (Update.isTestUpdateAvailable()) {
+                isTestUpdateAvailable = true;
+            }
+            Logs.write("Test update status: " + Update.isTestUpdateAvailable);
+        }
+    }
+
+    public static void runBetaUpdateCheck() {
+        if (Web.netIsAvailable()) {
             if (Update.isBetaUpdateAvailable()) {
                 isBetaUpdateAvailable = true;
             }
             Logs.write("Beta update status: " + Update.isBetaUpdateAvailable);
+        }
+    }
+
+    public static void runStableUpdateCheck() {
+        if (Web.netIsAvailable()) {
+            if (Update.isStableUpdateAvailable()) {
+                isStableUpdateAvailable = true;
+            }
             Logs.write("Stable update status: " + Update.isStableUpdateAvailable);
         }
     }
 
     public static void downloadBetaVersion() throws URISyntaxException {
         String downloadLink = Update.getBetaDownloadLink();
-        Update.openWebpage(new URI(downloadLink));
+        Web.openWebpage(new URI(downloadLink));
     }
 
     public static void downloadStableVersion() throws URISyntaxException {
         String downloadLink = Update.getStableDownloadLink();
-        Update.openWebpage(new URI(downloadLink));
+        Web.openWebpage(new URI(downloadLink));
     }
 
-    public static String getHtmlContent(String url) {
-        String content = "";
-        URLConnection connection = null;
-        try {
-            connection = new URL(url).openConnection();
-            Scanner scanner = new Scanner(connection.getInputStream());
-            scanner.useDelimiter("\\Z");
-            content = scanner.next();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return content;
+    public static void downloadTestVersion() throws URISyntaxException {
+        String downloadLink = Update.getStableDownloadLink();
+        Web.openWebpage(new URI(downloadLink));
     }
 
     public static String getBetaVersion() {
-        return getHtmlContent(RawLatestBetaVersion);
+        return Web.getHtmlContent(RawLatestBetaVersion);
     }
 
     public static String getStableVersion() {
-        return getHtmlContent(RawLatestStableVersion);
+        return Web.getHtmlContent(RawLatestStableVersion);
+    }
+
+    public static String getTestVersion() {
+        return Web.getHtmlContent(RawLatestTestVersion);
     }
 
     public static String getBetaDownloadLink() {
-        return getHtmlContent(RawDownloadLatestBetaVersion);
+        return Web.getHtmlContent(RawDownloadLatestBetaVersion);
     }
 
     public static String getStableDownloadLink() {
-        return getHtmlContent(RawDownloadLatestStableVersion);
+        return Web.getHtmlContent(RawDownloadLatestStableVersion);
+    }
+
+    public static String getTestDownloadLink() {
+        return Web.getHtmlContent(RawDownloadLatestTestVersion);
     }
 
     public static String getBetaChangelog() {
-        return getHtmlContent(RawChangeLogBeta);
+        return Web.getHtmlContent(RawChangeLogBeta);
     }
 
     public static String getStableChangelog() {
-        return getHtmlContent(RawChangeLogStable);
+        return Web.getHtmlContent(RawChangeLogStable);
+    }
+
+    public static String getTestChangelog() {
+        return Web.getHtmlContent(RawChangeLogTest);
     }
 
     public static String getUpcomingFeatures() {
-        return getHtmlContent(RawUpcomingFeatures);
+        return Web.getHtmlContent(RawUpcomingFeatures);
     }
 
     public static boolean isBetaUpdateAvailable() {
         boolean updateStatus = false;
-        float betaVersion = Float.valueOf(getBetaVersion());
-        if (CurrentVersion < betaVersion) {
-            updateStatus = true;
+        try {
+            String data = getBetaVersion();
+            String[] version = data.split(" ");
+            float mainVersion = Float.valueOf(version[0]);
+            float betaVersion = Float.valueOf(version[1].substring(4, version[1].length()));
+            if (CurrentMainVersion <= mainVersion && CurrentBetaVersion < betaVersion) {
+                updateStatus = true;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Take logs and Contact Developer! Couldn't check Beta update");
+            Logs.write("While Checking Beta Update: " + Logs.getExceptionTrace(e));
         }
         return updateStatus;
     }
 
     public static boolean isStableUpdateAvailable() {
         boolean updateStatus = false;
-        float stableVersion = Float.valueOf(getStableVersion());
-        if (CurrentVersion < stableVersion) {
-            updateStatus = true;
+        try {
+            float stableVersion = Float.valueOf(getStableVersion());
+            if (CurrentMainVersion < stableVersion) {
+                updateStatus = true;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Take logs and Contact Developer! Couldn't check Stable update");
+            Logs.write("While Checking Stable Update: " + Logs.getExceptionTrace(e));
         }
         return updateStatus;
     }
 
-    public static void openURL(String url) throws InterruptedException {
-        StringBuilder sb = new StringBuilder();
-        if (System.getProperty("os.name").contains("Windows")) {
-            String command = null;
-            String urlLC = url.toLowerCase();
-            if (urlLC.startsWith("https")) {
-                command = WindowsCommandRetriever.getCommandForFileType("https");
-            } else if (urlLC.startsWith("http")) {
-                command = WindowsCommandRetriever.getCommandForFileType("http");
-            }
-            if (command == null) {
-                command = WindowsCommandRetriever.commandForExtension(".html");
-            }
-            if (command.contains("%1")) {
-                sb.append(command.substring(0, command.indexOf("%1")));
-                sb.append(url);
-                sb.append(command.substring(command.indexOf("%1") + "%1".length()));
-            } else {
-                sb.append(command).append(' ');
-                sb.append('"');
-                sb.append(url);
-                sb.append('"');
-            }
-        } else {
-            sb.append("open ");
-            sb.append(url);
-        }
+    public static boolean isTestUpdateAvailable() {
+        boolean updateStatus = false;
         try {
-            final Process p = Runtime.getRuntime().exec(sb.toString());
-
-            // Here you have the process. You can destroy it if you want
-            // You need to figure out how you are going to handle this here.
-        } catch (IOException e1) {
-            System.err.println("Error while executing " + sb.toString());
-        }
-    }
-
-    public static void openWebpage(URI uri) {
-        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-            try {
-                //openURL("https://www.google.co.in/?gws_rd=ssl");
-                desktop.browse(uri);
-            } catch (Exception e) {
-                Logs.write("Exception Caught while opening url: " + Logs.getExceptionTrace(e));
-                JOptionPane.showMessageDialog(null, "Exception Caught while opening url: " + Logs.getExceptionTrace(e));
+            String data = getTestVersion();
+            String[] version = data.split(" ");
+            float mainVersion = Float.valueOf(version[0]);
+            float betaVersion = Float.valueOf(version[1].substring(4, version[1].length()));
+            float testVersion = Float.valueOf(version[2].substring(4, version[2].length()));
+            if (CurrentMainVersion <= mainVersion && CurrentBetaVersion <= betaVersion && CurrentTestVersion < testVersion) {
+                updateStatus = true;
             }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Take logs and Contact Developer! Couldn't check Test update");
+            Logs.write("While Checking Test Update: " + Logs.getExceptionTrace(e));
         }
-    }
-
-    public static void openWebpage(URL url) {
-        try {
-            openWebpage(url.toURI());
-        } catch (URISyntaxException e) {
-        }
-    }
-
-    public static boolean netIsAvailable() {
-        try {
-            final URL url = new URL("http://www.google.com");
-            final URLConnection conn = url.openConnection();
-            conn.connect();
-            return true;
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            return false;
-        }
+        return updateStatus;
     }
 }

@@ -6,13 +6,9 @@
 package flashablezipcreator.Protocols;
 
 import flashablezipcreator.DiskOperations.Write;
-import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.UserInterface.Preferences;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  *

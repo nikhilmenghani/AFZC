@@ -10,9 +10,11 @@ import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.Operations.JarOperations;
+import flashablezipcreator.Protocols.Control;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
+import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.AddName;
 import flashablezipcreator.UserInterface.Preferences;
@@ -78,6 +80,8 @@ public class FlashableZipCreator {
         }
         //</editor-fold>
 
+        Update.runUpdateCheck();
+        
         try {
             File f = new File("Preferences.config");
             Read r = new Read();
@@ -106,7 +110,7 @@ public class FlashableZipCreator {
                 Device.binary = (new Read()).getFileBytes("update-binary");
                 Logs.write("update-binary found");
                 Preferences.useUniversalBinary = false;
-            }else{
+            } else {
                 Logs.write("update-binary not found, using Universal Binary");
                 Preferences.useUniversalBinary = true;
             }

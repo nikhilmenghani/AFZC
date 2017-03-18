@@ -147,7 +147,7 @@ public class UpdaterScriptOperations {
                     str += addPrintString(((FileNode) file).title, deleteString);
                     str += "delete(\"/" + ((FileNode) file).getDeleteLocation() + "\");\n";
                 } else {
-                    str += addPrintString(file.title, installString);
+                    str += addPrintString(file.title, copyString);
                     str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
                     str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
                 }
@@ -159,7 +159,7 @@ public class UpdaterScriptOperations {
                     str += addPrintString(((FileNode) file).title, deleteString);
                     str += "delete(\"/" + ((FileNode) file).getDeleteLocation() + "\");\n";
                 } else {
-                    str += addPrintString(((FileNode) file).title, installString);
+                    str += addPrintString(((FileNode) file).title, copyString);
                     str += "package_extract_file(\"" + ((FileNode) file).fileZipPath + "\", \"" + ((FileNode) file).installLocation + "/" + ((FileNode) file).title + "\");\n";
                     str += "set_perm(" + ((FileNode) file).filePermission + ");\n";
                 }
