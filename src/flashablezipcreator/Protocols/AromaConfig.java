@@ -64,7 +64,7 @@ public class AromaConfig {
         str += "if prop(\"" + project.title + ".prop\",\"selected\")==\"1\" then\n";
         str += op.addInitString(project);
         str += op.addWelcomeString(project);
-        for (ProjectItemNode group : to.getNodeList(ProjectItemNode.NODE_GROUP)) {
+        for (ProjectItemNode group : project.children) {
             switch (((ProjectNode) group.parent).projectType) {
                 case ProjectNode.PROJECT_AROMA:
                 case ProjectNode.PROJECT_CUSTOM:
