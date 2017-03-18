@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Core;
 
+import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 import java.io.IOException;
 
@@ -166,7 +167,11 @@ public final class GroupNode extends ProjectItemNode {
     }
 
     public String setPermissions(String i, String j, String k) {
-        this.permission = i + " " + j + " " + k + " ";
+        if (Preferences.useUniversalBinary) {
+            this.permission = i + " " + j + " " + k + " ";
+        } else {
+            this.permission = i + ", " + j + ", " + k + ", ";
+        }
         return this.permission;
     }
 

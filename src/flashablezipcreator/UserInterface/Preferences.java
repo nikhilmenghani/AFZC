@@ -646,6 +646,7 @@ public class Preferences extends javax.swing.JFrame {
     private javax.swing.JTextField txtZipVersion;
     public static String preferencesConfig;
     public static boolean IsFromLollipop = true;
+    public static boolean useUniversalBinary = true;
     public static boolean IsQuickSetup = true;
     public static String aromaVersion = "Version 3.00b1 - MELATI";
     public static boolean saveLogs = false;

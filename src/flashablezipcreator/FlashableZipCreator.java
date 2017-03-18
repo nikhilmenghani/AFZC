@@ -10,6 +10,7 @@ import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.Operations.JarOperations;
+import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Xml;
@@ -99,7 +100,17 @@ public class FlashableZipCreator {
             if (Preferences.themes.isEmpty()) {
                 Preferences.themes.add("Nikhil");
             }
-            
+
+            //Device Configuration
+            if ((new File("update-binary").exists())) {
+                Device.binary = (new Read()).getFileBytes("update-binary");
+                Logs.write("update-binary found");
+                Preferences.useUniversalBinary = false;
+            }else{
+                Logs.write("update-binary not found, using Universal Binary");
+                Preferences.useUniversalBinary = true;
+            }
+
             if (Jar.isExecutingThrough()) {
                 JarOperations.setJarFileList();
             } else {
@@ -110,7 +121,7 @@ public class FlashableZipCreator {
                 Xml.fileDetailsData = r.getFileString(Xml.file_details_path);
                 Xml.initializeProjectDetails(Xml.fileDetailsData);
             }
-            
+
             //if(!Device.selected.equals("")){
             new MyTree().setVisible(true);
             if (Preferences.IsQuickSetup) {

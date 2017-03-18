@@ -24,12 +24,13 @@ import flashablezipcreator.Protocols.Project;
  *
  * @author Nikhil
  */
-@Deprecated
+
 public class UpdaterScriptOperations {
 
     public static final int installString = 1;
     public static final int deleteString = 2;
     public static final int normalString = 3;
+    public static final int copyString = 4;
 
     public String addPrintString(String str, int type) {
         switch (type) {
@@ -37,6 +38,8 @@ public class UpdaterScriptOperations {
                 return "ui_print(\"@Installing " + str + "\");\n";
             case deleteString:
                 return "ui_print(\"@Deleting " + str + "\");\n";
+            case copyString:
+                return "ui_print(\"@Copying " + str + "\");\n";
         }
         return "ui_print(\"" + str + "\");\n";
     }
@@ -58,7 +61,7 @@ public class UpdaterScriptOperations {
 
     public String addWipeDalvikCacheString() {
         String str = "";
-        str += "run_program(\"/sbin/busybox\",\"mount\", \"/data\");\n";
+        //str += "run_program(\"/sbin/busybox\",\"mount\", \"/data\");\n";
         str += "if(file_getprop(\"/tmp/aroma/dalvik_choices.prop\", \"true\")==\"yes\") then\n"
                 + "ui_print(\"@Wiping dalvik-cache\");\n"
                 + "delete_recursive(\"/data/dalvik-cache\");\n"
@@ -72,7 +75,7 @@ public class UpdaterScriptOperations {
             case 1:
                 return addPrintString("@Mounting Partitions...")
                         + "run_program(\"/sbin/busybox\", \"mount\", \"/system\");\n"
-                        + "run_program(\"/sbin/busybox\", \"mount\", \"/data\");\n"
+                        //+ "run_program(\"/sbin/busybox\", \"mount\", \"/data\");\n"
                         + createDirectory("/system/app")
                         + createDirectory("/data/app") + "\n";
             case 2:
@@ -102,10 +105,12 @@ public class UpdaterScriptOperations {
                     str += addPrintString("Copying " + file.title);
                     str += "package_extract_file(\"" + file.fileZipPath + "\", \"" + file.installLocation + "/" + file.title + "\");\n";
                 }
-                str += "set_perm(" + file.filePermission + ");\n\n";
+                //following should come from folder and not from file,
+                str += "set_perm(" + "1000, 1000, 0755, \"" + file.installLocation + "\");" + "\n";
+                str += "set_perm(" + file.filePermission + ");\n";
             }
         }
-        return str + "\n";
+        return str;
     }
 
     public String predefinedFolderGroupScript(GroupNode node) {
@@ -127,7 +132,7 @@ public class UpdaterScriptOperations {
                 str = predefinedGroupScript(node);
             }
         }
-        return str + "\n";
+        return str;
     }
 
     public String predefinedGroupScript(GroupNode node) {
@@ -174,7 +179,7 @@ public class UpdaterScriptOperations {
         } else {
             System.out.println("This Group is not supported");
         }
-        return str + "\n";
+        return str;
     }
 
     public String deleteTempFiles() {
@@ -214,7 +219,7 @@ public class UpdaterScriptOperations {
                 str += "endif;\n";
             }
         }
-        return str + "\n";
+        return str;
     }
 
     public String customGroupScript(GroupNode node) {

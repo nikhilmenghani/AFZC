@@ -115,6 +115,7 @@ public class UpdateBinaryOperations {
                     str += addPrintString("Copying " + file.title);
                     str += "package_extract_file \"" + file.fileZipPath + "\" \"" + file.installLocation + "/" + file.title + "\"\n";
                 }
+                //following should come from folder and not from file,
                 str += "set_perm " + "1000 1000 0755 \"" + file.installLocation + "\"" + "\n";
                 str += "set_perm " + file.filePermission + "\n";  //TODO: Inspect filePermission for removal of commas
             }

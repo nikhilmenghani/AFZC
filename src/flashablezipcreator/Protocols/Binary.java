@@ -20,4 +20,8 @@ public class Binary {
     public static byte[] getUpdateBinary(ProjectItemNode rootNode) throws IOException {
         return Jar.getAromaBinary();
     }
+    
+    public static byte[] getInstallerBinary(ProjectItemNode rootNode) throws IOException {
+        return Device.getBinary();
+    }
 }
