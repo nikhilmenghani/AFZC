@@ -14,16 +14,18 @@ public class Control {
     public static boolean forceTestUpdate = false;
     public static boolean forceBetaUpdate = false;
     public static boolean forceStableUpdate = false;
-    public static String RawControlUrl = "https://raw.githubusercontent.com/nikhilmenghani/FlashableZipCreator/master/src/flashablezipcreator/Update/Control";
+    public static boolean forceCheckOnStartUp = false;
+    public static String RawControlUrl = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/Control";
 
     public static void check() {
         if (Web.netIsAvailable()) {
             try {
                 String data = Web.getHtmlContent(RawControlUrl);
                 String[] commands = data.split("\n");
-                forceTestUpdate = Boolean.valueOf((commands[0].split(":"))[1]);
-                forceBetaUpdate = Boolean.valueOf((commands[1].split(":"))[1]);
-                forceStableUpdate = Boolean.valueOf((commands[2].split(":"))[1]);
+                forceTestUpdate = (commands[0].split(":"))[1].contains("1");
+                forceBetaUpdate = (commands[1].split(":"))[1].contains("1");
+                forceStableUpdate = (commands[2].split(":"))[1].contains("1");
+                forceCheckOnStartUp = (commands[3].split(":"))[1].contains("1");
             } catch (Exception e) {
                 Logs.write("While checking Contols: " + Logs.getExceptionTrace(e));
             }

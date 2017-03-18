@@ -80,8 +80,6 @@ public class FlashableZipCreator {
         }
         //</editor-fold>
 
-        Update.runUpdateCheck();
-        
         try {
             File f = new File("Preferences.config");
             Read r = new Read();
@@ -103,6 +101,10 @@ public class FlashableZipCreator {
             }
             if (Preferences.themes.isEmpty()) {
                 Preferences.themes.add("Nikhil");
+            }
+
+            if (Preferences.checkUpdatesOnStartUp) {
+                Update.runUpdateCheck();
             }
 
             //Device Configuration
