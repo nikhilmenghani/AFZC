@@ -108,8 +108,7 @@ public class FlashableZipCreator {
             Control.check();
             if(Control.forceCheckOnStartUp){
                 Update.runUpdateCheck();
-            }
-            if (Preferences.checkUpdatesOnStartUp) {
+            }else if (Preferences.checkUpdatesOnStartUp) {
                 Update.runUpdateCheck();
             }
 
