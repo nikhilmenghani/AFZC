@@ -102,6 +102,7 @@ public class FlashableZipCreator {
             }
             if (Preferences.themes.isEmpty()) {
                 Preferences.themes.add("Nikhil");
+                Preferences.themes.add("Ics");
             }
 
             Control.check();

@@ -78,7 +78,7 @@ public class Preferences extends javax.swing.JFrame {
 
         themes = new ArrayList<>();
         themes.add("Nikhil");
-
+        themes.add("Ics");
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 

@@ -106,7 +106,7 @@ public class UpdateBinaryOperations {
             } else if (child.type == ProjectItemNode.NODE_FILE) {
                 FileNode file = (FileNode) child;
                 if (file.title.endsWith("apk")) {
-                    str += addPrintString(file.parent.title, copyString);
+                    str += addPrintString("Copying " + file.title);
                     FolderNode folder = (FolderNode) (file.parent);
                     GroupNode group = (GroupNode) (folder.originalParent);
                     if (group.groupType == GroupNode.GROUP_DATA_APP) {

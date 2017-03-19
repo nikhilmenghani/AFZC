@@ -39,18 +39,16 @@ public class AromaScriptOperations {
     public String addThemesString(ProjectItemNode rootNode) {
         String str = "theme(\"" + "Nikhil" + "\");\n";
         str += "\nselectbox(\"Themes\",\"Choose your desired theme from following\",\"@customize\",\"theme.prop\",\n";
-        int i = 1;
         for (ProjectItemNode projectNode : rootNode.children) {
             if (((ProjectNode) projectNode).projectType == ProjectNode.PROJECT_THEMES) {
                 for (ProjectItemNode theme : ((ProjectNode) projectNode).children) {
-                    str += "\"" + theme.title + "\", \"\", " + i + ",\n";
-                    i = 0;
+                    str += "\"" + theme.title + "\", \"\", " + (theme.title.equals("Nikhil") ? 1 : 0) + ",\n";
                 }
             }
         }
         str = str.substring(0, str.length() - 2);
         str += ");\n\n";
-        i = 1;
+        int i = 1;
         for (ProjectItemNode projectNode : rootNode.children) {
             if (((ProjectNode) projectNode).projectType == ProjectNode.PROJECT_THEMES) {
                 for (ProjectItemNode theme : ((ProjectNode) projectNode).children) {
