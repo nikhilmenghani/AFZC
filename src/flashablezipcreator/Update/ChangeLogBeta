@@ -1,6 +1,9 @@
 
-v4.0 b1
--Removed Device Check
--Added universal-update-binary (Support for all the devices)
--Added a new menu for Instructions
--Added OTA updates for tool
+v4.0 b2
+-Mod: added Titanium Backup generated zip (Apps only) support
+-fixed: folders with spaces in path not working (Now you can keep whatever folder/filename you want)
+-added support for devices on which universal-update-binary was not working (place update-binary from any working Rom in root directory of tool if universal-update-binary doesn't work for you)
+-fixed group shown multiple times in aroma installer for multiple projects
+-removed the inbuilt aroma themes (you don't care about aroma themes, do you?)
+-Improved OTA updates for tool
+-added check for updates on start up option in preferences so that you can know about the new features
