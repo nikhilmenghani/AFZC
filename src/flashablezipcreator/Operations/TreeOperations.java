@@ -12,7 +12,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.Write;
-import flashablezipcreator.MyTree;
+import flashablezipcreator.UserInterface.MyTree;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;

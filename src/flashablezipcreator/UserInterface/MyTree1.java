@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package flashablezipcreator;
+package flashablezipcreator.UserInterface;
 
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectTreeBuilder;
@@ -40,7 +40,7 @@ import org.xml.sax.SAXException;
  *
  * @author Nikhil
  */
-public class MyTree extends JFrame {
+public class MyTree1 extends JFrame {
 
     /**
      * Creates new form MyTree
@@ -63,7 +63,7 @@ public class MyTree extends JFrame {
 
     MyFileFilter uio = new MyFileFilter();
 
-    public MyTree() throws IOException, ParserConfigurationException, TransformerException, SAXException {
+    public MyTree1() throws IOException, ParserConfigurationException, TransformerException, SAXException {
         tree = ProjectTreeBuilder.buildTree();
         model = ProjectTreeBuilder.buildModel();
         rootNode = ProjectTreeBuilder.rootNode;
@@ -165,7 +165,7 @@ public class MyTree extends JFrame {
                 try {
                     btnImportZipActionPerformed(evt);
                 } catch (IOException | ParserConfigurationException | TransformerException | SAXException | InterruptedException ex) {
-                    Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MyTree1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -193,7 +193,7 @@ public class MyTree extends JFrame {
             try {
                 btnCreateZipActionPerformed(evt);
             } catch (IOException | ParserConfigurationException | TransformerException ex) {
-                Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MyTree1.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
@@ -298,11 +298,11 @@ public class MyTree extends JFrame {
                 try {
                     menuItemPreferencesActionPerformed(evt);
                 } catch (ParserConfigurationException ex) {
-                    Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MyTree1.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SAXException ex) {
-                    Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MyTree1.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
-                    Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MyTree1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -365,7 +365,7 @@ public class MyTree extends JFrame {
                 try {
                     aboutUpdateStableMenuItemActionPerformed();
                 } catch (URISyntaxException ex) {
-                    Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(MyTree1.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });
@@ -407,9 +407,14 @@ public class MyTree extends JFrame {
         try {
             String dir = "AFZC Projects";
             if ((new File(dir).exists())) {
-                int dialogResult = JOptionPane.showConfirmDialog(this, "Do you want to delete temporary files?", "", JOptionPane.YES_NO_OPTION);
+                int dialogResult = JOptionPane.showConfirmDialog(this, "Do you want to delete temporary files?", "", JOptionPane.YES_NO_CANCEL_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
                     deleteDirectory(new File(dir));
+                    System.out.println("Window Closing..");
+                    System.exit(0);
+                }else if(dialogResult == JOptionPane.NO_OPTION){
+                    System.out.println("Window Closing..");
+                    System.exit(0);
                 }
             }
         } catch (Exception e) {
@@ -418,8 +423,6 @@ public class MyTree extends JFrame {
             JOptionPane.showMessageDialog(this, "Something Went Wrong!\nCouldn't delete Temp files!");
         }
 
-        System.out.println("Window Closing..");
-        System.exit(0);
     }
 
     public boolean deleteDirectory(File directory) {
@@ -437,8 +440,8 @@ public class MyTree extends JFrame {
         }
         return (directory.delete());
     }
-    
-    private void aboutUpdateTestMenuItemActionPerformed(){
+
+    private void aboutUpdateTestMenuItemActionPerformed() {
         Logs.write("Checking if internet is available!");
         if (Web.netIsAvailable()) {
             try {

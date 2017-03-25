@@ -10,7 +10,7 @@ import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
-import flashablezipcreator.MyTree;
+import flashablezipcreator.UserInterface.MyTree;
 import java.io.File;
 
 /**

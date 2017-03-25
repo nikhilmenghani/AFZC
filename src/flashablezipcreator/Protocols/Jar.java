@@ -10,7 +10,7 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.FlashableZipCreator;
-import flashablezipcreator.MyTree;
+import flashablezipcreator.UserInterface.MyTree;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.UserInterface.Preferences;

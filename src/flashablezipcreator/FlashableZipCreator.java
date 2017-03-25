@@ -17,8 +17,11 @@ import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.AddName;
+import flashablezipcreator.UserInterface.MyTree;
+import flashablezipcreator.UserInterface.MyTreeUI;
 import flashablezipcreator.UserInterface.Preferences;
 import static flashablezipcreator.UserInterface.Preferences.preferencesConfig;
+import flashablezipcreator.UserInterface.ProgressBarUI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -48,7 +51,7 @@ public class FlashableZipCreator {
      * @throws javax.xml.parsers.ParserConfigurationException
      * @throws org.xml.sax.SAXException
      */
-    public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException, URISyntaxException {
+    public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException, URISyntaxException, TransformerException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -103,15 +106,15 @@ public class FlashableZipCreator {
             if (Preferences.themes.isEmpty()) {
                 Preferences.themes.add("Nikhil");
                 Preferences.themes.add("Ics");
+                Preferences.themes.add("RedBlack");
             }
 
-            Control.check();
-            if(Control.forceCheckOnStartUp){
-                Update.runUpdateCheck();
-            }else if (Preferences.checkUpdatesOnStartUp) {
-                Update.runUpdateCheck();
-            }
-
+//            Control.check();
+//            if(Control.forceCheckOnStartUp){
+//                Update.runUpdateCheck();
+//            }else if (Preferences.checkUpdatesOnStartUp) {
+//                Update.runUpdateCheck();
+//            }
             //Device Configuration
             if ((new File("update-binary").exists())) {
                 Device.binary = (new Read()).getFileBytes("update-binary");
@@ -138,8 +141,7 @@ public class FlashableZipCreator {
             if (Preferences.IsQuickSetup) {
                 new AddName("Project", ProjectNode.PROJECT_AROMA, MyTree.rootNode);
             }
-            //}
-        } catch (IOException | ParserConfigurationException | TransformerException | SAXException ex) {
+        } catch (IOException | ParserConfigurationException | SAXException ex) {
             Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

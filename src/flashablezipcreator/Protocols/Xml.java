@@ -8,7 +8,7 @@ package flashablezipcreator.Protocols;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
-import flashablezipcreator.MyTree;
+import flashablezipcreator.UserInterface.MyTree;
 import flashablezipcreator.Operations.XmlOperations;
 import static flashablezipcreator.Protocols.Export.to;
 import java.io.IOException;

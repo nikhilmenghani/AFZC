@@ -5,6 +5,10 @@
  */
 package flashablezipcreator.UserInterface;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JDialog;
+
 /**
  *
  * @author Nikhil
@@ -12,8 +16,11 @@ package flashablezipcreator.UserInterface;
 public class Instructions extends javax.swing.JFrame {
 
     /**
-     * Creates new form InstructionsUI
+     * Creates new form Instructions
      */
+    
+    public JDialog dialog;
+
     public Instructions() {
         initComponents();
     }
@@ -26,7 +33,9 @@ public class Instructions extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
-
+        dialog = new JDialog(this, "Instructions", true);
+        dialog.setResizable(false);
+        
         panelMain = new javax.swing.JPanel();
         jspInstructions = new javax.swing.JScrollPane();
         jepInstructions = new javax.swing.JEditorPane();
@@ -64,8 +73,17 @@ public class Instructions extends javax.swing.JFrame {
             .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
-        setLocationRelativeTo(null);
+        dialog.getContentPane().add(panelMain);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                dialog.dispose();
+            }
+        });
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }// </editor-fold>                        
 
     /**

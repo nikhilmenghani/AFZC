@@ -5,8 +5,8 @@
  */
 package flashablezipcreator.Core;
 
-import static flashablezipcreator.MyTree.model;
-import static flashablezipcreator.MyTree.tree;
+import static flashablezipcreator.UserInterface.MyTree.model;
+import static flashablezipcreator.UserInterface.MyTree.tree;
 import java.awt.Font;
 import java.io.IOException;
 import javax.swing.tree.DefaultTreeModel;

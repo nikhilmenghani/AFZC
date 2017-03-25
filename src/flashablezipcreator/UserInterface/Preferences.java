@@ -7,16 +7,17 @@ package flashablezipcreator.UserInterface;
 
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.Write;
-import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Xml;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
+import javax.swing.JDialog;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.xml.parsers.ParserConfigurationException;
@@ -28,6 +29,23 @@ import org.xml.sax.SAXException;
  * @author Nikhil
  */
 public class Preferences extends javax.swing.JFrame {
+    
+    public static ArrayList<String> themes = new ArrayList<>();
+    public static boolean IsFromLollipop = true;
+    public static boolean useUniversalBinary = true;
+    public static boolean checkUpdatesOnStartUp = true;
+    public static boolean IsQuickSetup = true;
+    public static boolean saveLogs = false;
+    public static boolean preferencesFilePresent = false;
+    public static String preferencesConfig;
+    public static String aromaVersion = "Version 3.00b1 - MELATI";
+    public static String zipCreatorName = "Nikhil";
+    public static String zipVersion = "1.0";
+    public static String currentVersion = "v4.1";
+    public static String versionType = "stable";
+    Write w;
+    Read r;
+    public JDialog dialog;
 
     public Preferences() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
         w = new Write();
@@ -38,7 +56,8 @@ public class Preferences extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException {
-
+        dialog = new JDialog(this, "Preferences", true);
+        dialog.setResizable(false);
         MainPanel = new javax.swing.JPanel();
         panelPreferenceOptions = new javax.swing.JPanel();
         JSPPreferences = new javax.swing.JScrollPane();
@@ -79,6 +98,7 @@ public class Preferences extends javax.swing.JFrame {
         themes = new ArrayList<>();
         themes.add("Nikhil");
         themes.add("Ics");
+        themes.add("RedBlack");
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -228,7 +248,7 @@ public class Preferences extends javax.swing.JFrame {
         cbUpdates.setBackground(new java.awt.Color(255, 255, 255));
         if (preferencesFilePresent) {
             cbUpdates.setSelected(Xml.getCheckUpdatesIndicator(preferencesConfig));
-        }else{
+        } else {
             cbUpdates.setSelected(checkUpdatesOnStartUp);
         }
         cbUpdates.setText("Check updates on startup");
@@ -463,12 +483,21 @@ public class Preferences extends javax.swing.JFrame {
                         .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        pack();
-        setLocationRelativeTo(null);
+        dialog.getContentPane().add(MainPanel);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent we) {
+                dialog.dispose();
+            }
+        });
+        dialog.pack();
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {
-        this.dispose();
+        dialog.dispose();
     }
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, TransformerException, IOException {
@@ -485,42 +514,7 @@ public class Preferences extends javax.swing.JFrame {
         xml = Xml.getPreferenceConfigString(aromaVersion, IsFromLollipop, IsQuickSetup, checkUpdatesOnStartUp, zipCreatorName, zipVersion, saveLogs);
         Write w = new Write();
         w.writeStringToFile(xml, "Preferences.config");
-        this.dispose();
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PreferencesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PreferencesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PreferencesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PreferencesUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PreferencesUI().setVisible(true);
-            }
-        });
+        dialog.dispose();
     }
 
     // Variables declaration - do not modify                     
@@ -554,20 +548,5 @@ public class Preferences extends javax.swing.JFrame {
     private javax.swing.JPanel panelPreferencesDetails;
     private javax.swing.JTextField txtZipCreatorName;
     private javax.swing.JTextField txtZipVersion;
-    public static String preferencesConfig;
-    public static boolean IsFromLollipop = true;
-    public static boolean useUniversalBinary = true;
-    public static boolean checkUpdatesOnStartUp = true;
-    public static boolean IsQuickSetup = true;
-    public static String aromaVersion = "Version 3.00b1 - MELATI";
-    public static boolean saveLogs = false;
-    public static ArrayList<String> themes = new ArrayList<>();
-    public static boolean preferencesFilePresent = false;
-    public static String zipCreatorName = "Nikhil";
-    public static String zipVersion = "1.0";
-    public static String currentVersion = "v4.0";
-    public static String versionType = "beta 2";
-    Write w;
-    Read r;
     // End of variables declaration                   
 }

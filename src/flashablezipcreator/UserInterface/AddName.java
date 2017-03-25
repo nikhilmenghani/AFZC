@@ -10,7 +10,6 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
-import flashablezipcreator.MyTree;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Protocols.Mod;
 import java.awt.event.WindowAdapter;
@@ -21,7 +20,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.tree.DefaultTreeModel;
 
 /**
  *

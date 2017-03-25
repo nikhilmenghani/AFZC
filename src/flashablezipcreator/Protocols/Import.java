@@ -10,10 +10,10 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.DiskOperations.ReadZip;
-import flashablezipcreator.MyTree;
-import static flashablezipcreator.MyTree.panelLower;
-import static flashablezipcreator.MyTree.progressBarFlag;
-import static flashablezipcreator.MyTree.progressBarImportExport;
+import flashablezipcreator.UserInterface.MyTree;
+import static flashablezipcreator.UserInterface.MyTree.panelLower;
+import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
+import static flashablezipcreator.UserInterface.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.TreeOperations;
 import java.awt.CardLayout;
 import java.io.File;
@@ -125,7 +125,7 @@ public class Import implements Runnable {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n" + Logs.getExceptionTrace(e));
             Logs.write(Logs.getExceptionTrace(e));
-            setCardLayout(1);
+            MyTree.setCardLayout(1);
         }
     }
 
@@ -192,17 +192,12 @@ public class Import implements Runnable {
         fileIndex++;
     }
 
-    public static void setCardLayout(int cardNo) {
-        CardLayout cardLayout = (CardLayout) panelLower.getLayout();
-        cardLayout.show(panelLower, "card" + Integer.toString(cardNo));
-    }
-
     @Override
     public void run() {
         try {
-            setCardLayout(2);
+            MyTree.setCardLayout(2);
             fromTheZip(path);
-            setCardLayout(1);
+            MyTree.setCardLayout(1);
         } catch (Exception e) {
             Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, e);
             Logs.write(Logs.getExceptionTrace(e));

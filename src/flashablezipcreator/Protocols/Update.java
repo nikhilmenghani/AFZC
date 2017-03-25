@@ -28,7 +28,7 @@ public class Update {
     public static float CurrentMainVersion = 4;
     public static float CurrentBetaVersion = 2;
     public static float CurrentTestVersion = 0;
-    public static String CurrentVersionType = "Beta";
+    public static String CurrentVersionType = "Test";
     public static boolean isBetaUpdateAvailable = false;
     public static boolean isStableUpdateAvailable = false;
     public static boolean isTestUpdateAvailable = false;
