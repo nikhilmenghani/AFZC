@@ -7,12 +7,11 @@ package flashablezipcreator.UserInterface;
 
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectNode;
-import java.awt.event.ItemEvent;
+import flashablezipcreator.Protocols.Types;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -627,7 +626,7 @@ public class AddGroup extends javax.swing.JFrame {
     private void custombtnAddActionPerformed(java.awt.event.ActionEvent evt) {
         String groupName = customtxtGroupName.getText();
         String location = customtxtInstallLocation.getText();
-        pNode.addChild(new GroupNode(groupName, GroupNode.GROUP_CUSTOM, pNode), false);
+        pNode.addChild(new GroupNode(groupName, Types.GROUP_CUSTOM, pNode), false);
         this.dispose();
     }
 

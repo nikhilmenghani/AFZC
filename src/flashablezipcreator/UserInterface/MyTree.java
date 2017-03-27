@@ -5,7 +5,6 @@
  */
 package flashablezipcreator.UserInterface;
 
-import flashablezipcreator.Core.FileSystemModel;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectTreeBuilder;
 import flashablezipcreator.Operations.MyFileFilter;
@@ -16,25 +15,13 @@ import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
-import static flashablezipcreator.UserInterface.MyTree1.model;
-import static flashablezipcreator.UserInterface.MyTree1.panelLower;
-import static flashablezipcreator.UserInterface.MyTree1.progressBarFlag;
-import static flashablezipcreator.UserInterface.MyTree1.progressBarImportExport;
-import static flashablezipcreator.UserInterface.MyTree1.rootNode;
-import static flashablezipcreator.UserInterface.MyTree1.setCardLayout;
-import static flashablezipcreator.UserInterface.MyTree1.tree;
-import static flashablezipcreator.UserInterface.MyTreeUI.panelLower;
-import static flashablezipcreator.UserInterface.MyTreeUI.progressBarImportExport;
-import static flashablezipcreator.UserInterface.MyTreeUI.tree;
 import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
@@ -62,7 +49,9 @@ public class MyTree extends javax.swing.JFrame {
         rootNode = ProjectTreeBuilder.rootNode;
         progressBarImportExport = new JProgressBar();
         if (Jar.isExecutingThrough()) {
+            Logs.write("adding themes");
             Jar.addThemesToTree();
+            Logs.write("added themes");
         }
         initComponents();
     }
@@ -503,11 +492,12 @@ public class MyTree extends javax.swing.JFrame {
                     System.out.println("Window Closing..");
                     System.exit(0);
                 }
-            }else{
-                int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to Exit?", "", JOptionPane.YES_NO_OPTION);
-                if (dialogResult == JOptionPane.YES_OPTION) {
+            }
+            else{
+//                int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to Exit?", "", JOptionPane.YES_NO_OPTION);
+//                if (dialogResult == JOptionPane.YES_OPTION) {
                     System.exit(0);
-                }
+//                }
             }
         } catch (Exception e) {
             Logs.write("Deleting Temporary Files");

@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Core;
 
+import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 import java.io.IOException;
@@ -15,93 +16,82 @@ import java.io.IOException;
  */
 public class FolderNode extends ProjectItemNode {
 
-    String folderName;
-    String permission;
-    String defaultFolderPerm = "";
-    public String folderPermission = "";
-    boolean isBootAnimationGroup = false;
-    public ProjectItemNode originalParent;
-    String projectName;
-    String originalGroupType;
-    public String description;
-    String zipPathPrefix = "Folder_";
-    public static final int FOLDER_TYPE = 0;
-    public String folderLocation;
-
     public FolderNode(String title, int type, ProjectItemNode parent) {
         super(title, type, parent);
-        this.originalParent = parent;
+        prop.originalParent = parent;
     }
 
     public FolderNode(String title, GroupNode parent) {
-        super(title, ProjectItemNode.NODE_FOLDER, parent);
-        if (!title.endsWith("-1") && parent.groupType == GroupNode.GROUP_DATA_APP) {
+        super(title, Types.NODE_FOLDER, parent);
+        prop.originalParent = parent;
+        prop.groupParent = parent;
+        if (!title.endsWith("-1") && parent.prop.groupType == Types.GROUP_DATA_APP) {
             title += "-1";
-            super.title = title;
+            prop.title = title;
         }
-        this.folderName = title;
-        super.path = parent.path + File.separator + title;
-        super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
-        super.location = parent.location;
-        this.folderLocation = parent.location + File.separator + title;
-        this.permission = parent.permission;
-        this.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " " : 
+        prop.folderName = title;
+        prop.path = parent.prop.path + File.separator + title;
+        prop.zipPath = parent.prop.zipPath + "/" + prop.folderZipPathPrefix + title;
+        prop.location = parent.prop.location;
+        prop.folderLocation = parent.prop.location + File.separator + title;
+        prop.permission = parent.prop.permission;
+        prop.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " " : 
                 "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
-        this.originalParent = parent;
-        this.projectName = parent.projectName;
-        this.originalGroupType = parent.originalGroupType;
+        prop.projectName = parent.prop.projectName;
+        prop.originalGroupType = parent.prop.originalGroupType;
     }
 
     public FolderNode(String title, FolderNode parent) {
-        super(title, ProjectItemNode.NODE_FOLDER, parent);
-        this.folderName = title;
-        super.path = parent.path + File.separator + title;
-        super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
-        super.location = parent.location;
-        this.folderLocation = parent.folderLocation + File.separator + title;
-        this.permission = parent.permission;
-        this.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " " : 
+        super(title, Types.NODE_FOLDER, parent);
+        prop.originalParent = parent.prop.originalParent;
+        prop.groupParent = parent.prop.groupParent;
+        prop.folderName = title;
+        prop.path = parent.prop.path + File.separator + title;
+        prop.zipPath = parent.prop.zipPath + "/" + prop.folderZipPathPrefix + title;
+        prop.location = parent.prop.location;
+        prop.folderLocation = parent.prop.folderLocation + File.separator + title;
+        prop.permission = parent.prop.permission;
+        prop.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " " : 
                 "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
-        this.originalParent = parent.originalParent;
-        this.projectName = parent.projectName;
-        this.originalGroupType = parent.originalGroupType;
+        prop.projectName = parent.prop.projectName;
+        prop.originalGroupType = parent.prop.originalGroupType;
     }
 
     public void setPermissions() {
-        this.folderPermission = this.defaultFolderPerm + "\"" + this.folderLocation + "\"";
-        this.folderPermission = this.folderPermission.replaceAll("\\\\", "/");
+        prop.folderPermission = prop.defaultFolderPerm + "\"" + prop.folderLocation + "\"";
+        prop.folderPermission = prop.folderPermission.replaceAll("\\\\", "/");
     }
 
     public void renameMe(String newName) throws IOException {
-        super.setTitle(newName);
-        this.folderName = newName;
-        super.path = parent.path + File.separator + newName;
-        super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + newName;
-        super.location = parent.location + File.separator + newName;
+        prop.title = newName;
+        prop.folderName = newName;
+        prop.path = prop.parent.prop.path + File.separator + newName;
+        prop.zipPath = prop.parent.prop.zipPath + "/" + prop.folderZipPathPrefix + newName;
+        prop.location = prop.parent.prop.location + File.separator + newName;
         this.updateChildrenPath();
         this.updateChildrenZipPath();
     }
 
     public String getLocation() {
-        return location;
+        return prop.location;
     }
 
     public void updateZipPath() {
-        super.zipPath = parent.zipPath + "/" + zipPathPrefix + title;
+        prop.zipPath = prop.parent.prop.zipPath + "/" + prop.folderZipPathPrefix + prop.title;
     }
 
     public void updateChildrenZipPath() {
-        for (ProjectItemNode node : children) {
-            switch (node.type) {
-                case ProjectItemNode.NODE_FILE:
+        for (ProjectItemNode node : prop.children) {
+            switch (node.prop.type) {
+                case Types.NODE_FILE:
                     ((FileNode) node).updateZipPath();
                     ((FileNode) node).updateInstallLocation();
-                    if (this.isBootAnimationGroup) {
-                        ((FileNode) node).setPermissions(this.permission, "bootanimation.zip");
+                    if (prop.isBootAnimationGroup) {
+                        ((FileNode) node).setPermissions(prop.groupPermission, "bootanimation.zip");
                     } else {
-                        ((FileNode) node).setPermissions(this.permission, ((FileNode) node).title);
+                        ((FileNode) node).setPermissions(prop.groupPermission, ((FileNode) node).prop.title);
                     }
                     break;
             }

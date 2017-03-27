@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Core;
 
+import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 import java.io.IOException;
@@ -17,102 +18,89 @@ import java.nio.file.Path;
  */
 public final class FileNode extends ProjectItemNode {
 
-    public String fileName;
-    public String fileSourcePath;
-    public String installLocation = "";
-    public String belongsToGroup;
-    public String filePermission = "";
-    public String description = "";
-    public String fileZipPath = "";
-    public String projectName;
-    public String originalGroupType;
-    public String groupLocation;
-
     public FileNode(String fileSourcePath, GroupNode parent) {
-        super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
+        super((new File(fileSourcePath)).getName(), Types.NODE_FILE, parent);
+        prop.originalParent = parent;
         File file = new File(fileSourcePath);
-        this.installLocation = parent.location.replaceAll("\\\\", "/");
-        super.path = parent.path + File.separator + file.getName();
-        setPermissions(parent.permission, title);
-        this.fileSourcePath = file.getAbsolutePath();
-        this.projectName = parent.projectName;
-        this.originalGroupType = parent.originalGroupType;
-        fileZipPath = parent.zipPath + "/" + title;
-        if (parent.groupType == GroupNode.GROUP_AROMA_THEMES) {
-            fileZipPath = super.path.replaceAll("\\\\", "/");
+        prop.fileSourcePath = fileSourcePath;
+        prop.fileInstallLocation = parent.prop.location.replaceAll("\\\\", "/");
+        prop.path = parent.prop.path + File.separator + file.getName();
+        prop.setPermissions(parent.prop.permission, prop.title);
+        prop.fileSourcePath = file.getAbsolutePath();
+        prop.projectName = parent.prop.projectName;
+        prop.originalGroupType = parent.prop.originalGroupType;
+        prop.fileZipPath = parent.prop.zipPath + "/" + prop.title;
+        if (parent.prop.groupType == Types.GROUP_AROMA_THEMES) {
+            prop.fileZipPath = prop.path.replaceAll("\\\\", "/");
         }
-        this.groupLocation = parent.location;
+        prop.location = parent.prop.location;
     }
 
     public FileNode(String fileSourcePath, SubGroupNode parent) {
-        super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
+        super((new File(fileSourcePath)).getName(), Types.NODE_FILE, parent);
+        prop.originalParent = parent.prop.originalParent;
         File file = new File(fileSourcePath);
-        this.installLocation = parent.location.replaceAll("\\\\", "/");
-        super.path = parent.path + File.separator + file.getName();
-        if (parent.isBootAnimationGroup) {
-            setPermissions(parent.permission, "bootanimation.zip");
+        prop.fileInstallLocation = parent.prop.location.replaceAll("\\\\", "/");
+        prop.path = parent.prop.path + File.separator + file.getName();
+        if (parent.prop.isBootAnimationGroup) {
+            prop.setPermissions(parent.prop.permission, "bootanimation.zip");
         } else {
-            setPermissions(parent.permission, title);
+            prop.setPermissions(parent.prop.permission, prop.title);
         }
-        this.fileSourcePath = fileSourcePath;
-        this.projectName = parent.projectName;
-        this.originalGroupType = parent.originalGroupType;
-        fileZipPath = parent.zipPath + "/" + title;
-        this.groupLocation = parent.location;
+        prop.fileSourcePath = fileSourcePath;
+        prop.projectName = parent.prop.projectName;
+        prop.originalGroupType = parent.prop.originalGroupType;
+        prop.fileZipPath = parent.prop.zipPath + "/" + prop.title;
+        prop.location = parent.prop.location;
     }
 
     public FileNode(String fileSourcePath, FolderNode parent) {
-        super((new File(fileSourcePath)).getName(), ProjectItemNode.NODE_FILE, parent);
-        this.installLocation = parent.folderLocation.replaceAll("\\\\", "/");
-        super.path = parent.path + File.separator + (new File(fileSourcePath)).getName();
-        parent.description = this.description;
-        if (parent.isBootAnimationGroup) {
-            setPermissions(parent.permission, "bootanimation.zip");
-        } else if (((GroupNode) parent.originalParent).groupType == GroupNode.GROUP_DATA_APP && Preferences.IsFromLollipop) {
-            setPermissions(parent.permission, "base.apk");
+        super((new File(fileSourcePath)).getName(), Types.NODE_FILE, parent);
+        prop.fileInstallLocation = parent.prop.folderLocation.replaceAll("\\\\", "/");
+        prop.path = parent.prop.path + File.separator + (new File(fileSourcePath)).getName();
+        prop.description = prop.parent.prop.description;
+        if (parent.prop.isBootAnimationGroup) {
+            prop.setPermissions(parent.prop.permission, "bootanimation.zip");
+        } else if (((GroupNode) parent.prop.originalParent).prop.groupType == Types.GROUP_DATA_APP && Preferences.IsFromLollipop) {
+            prop.setPermissions(parent.prop.permission, "base.apk");
         } else {
-            setPermissions(parent.permission, title);
+            prop.setPermissions(parent.prop.permission, prop.title);
         }
-        this.fileSourcePath = fileSourcePath;
-        this.projectName = parent.projectName;
-        this.originalGroupType = parent.originalGroupType;
-        fileZipPath = parent.zipPath + "/" + title;
-        this.groupLocation = parent.location;
-    }
-
-    //this will generate a path that will be used as destination path of file in output zip.
-    public final String getZipPath() {
-        return parent.zipPath + "/" + title;
+        prop.fileSourcePath = fileSourcePath;
+        prop.projectName = parent.prop.projectName;
+        prop.originalGroupType = parent.prop.originalGroupType;
+        prop.fileZipPath = parent.prop.zipPath + "/" + prop.title;
+        prop.location = parent.prop.location;
     }
 
     public void updateZipPath() {
-        fileZipPath = parent.zipPath + "/" + title;
+        prop.fileZipPath = prop.parent.prop.zipPath + "/" + prop.title;
     }
 
     public void updateInstallLocation() {
-        this.installLocation = parent.location.replaceAll("\\\\", "/");
+        prop.fileInstallLocation = prop.parent.prop.location.replaceAll("\\\\", "/");
     }
 
     public String getDeleteLocation() {
-        return ((GroupNode) parent).getLocation() + "/" + title;
+        return ((GroupNode) parent).getLocation() + "/" + prop.title;
     }
 
     public void setPermissions(String parentPermission, String title) {
-        this.filePermission = (parentPermission + "\"" + this.installLocation + "/" + title + "\"").replaceAll("\\\\", "/");
+        prop.filePermission = (parentPermission + "\"" + prop.fileInstallLocation + "/" + title + "\"").replaceAll("\\\\", "/");
     }
 
     public void setDescription(String desc) {
-        this.description = desc;
+        prop.description = desc;
     }
 
     public void renameMe(String newName) throws IOException {
-        super.setTitle(newName);
-        this.fileName = newName;
-        super.path = parent.path + File.separator + newName;
+        prop.title = newName;
+        prop.fileName = newName;
+        prop.path = prop.parent.prop.path + File.separator + newName;
         //this.fileDestPath = parent.path + File.separator + newName;
-        Path p = FileSystems.getDefault().getPath(this.fileSourcePath);
-        this.fileSourcePath = p.resolveSibling(newName).toString();
-        this.fileZipPath = this.parent.zipPath + "/" + title;
+        Path p = FileSystems.getDefault().getPath(prop.fileSourcePath);
+        prop.fileSourcePath = p.resolveSibling(newName).toString();
+        prop.fileZipPath = prop.parent.prop.zipPath + "/" + prop.title;
     }
 
 }

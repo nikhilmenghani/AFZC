@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Core;
 
+import flashablezipcreator.Protocols.Logs;
 import java.util.Enumeration;
 import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -12,6 +13,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import flashablezipcreator.UserInterface.MyTree;
 import java.io.File;
+import java.util.Collections;
 
 /**
  *
@@ -19,99 +21,78 @@ import java.io.File;
  */
 public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode {
 
-    public String title;
-    public String path = "AFZC Projects";
-    public String zipPath = "customize";
-    public String location = "";
-
-    public int type; //helpful in setting appropriate icon for the node
-
-    //Using vector is better than ArrayList here
-    public Vector<ProjectItemNode> children = new Vector<ProjectItemNode>();
-    public ProjectItemNode parent;
     public DefaultTreeModel model;
-
-    //Constants for types of node
-    public static final int NODE_ROOT = 0;
-    public static final int NODE_PROJECT = 1;
-    public static final int NODE_GROUP = 2;
-    public static final int NODE_SUBGROUP = 3;
-    public static final int NODE_FOLDER = 4;
-    public static final int NODE_FILE = 5;
+    public NodeProperties prop = new NodeProperties();
 
     //not required yet
     public ProjectItemNode(String title) {
         super(title);
-        this.title = title;
+        prop.title = title;
     }
 
     //required in root node
     public ProjectItemNode(String title, int type) {
         super(title);
-        this.title = title;
-        this.type = type;
+        prop.title = title;
+        prop.type = type;
     }
 
     public ProjectItemNode(String title, int type, ProjectItemNode parent) {
         super(title);
-        this.title = title;
-        this.type = type;
-        setParent(parent);
+        prop.title = title;
+        prop.type = type;
+        prop.parent = parent;
     }
 
-//    public void addChild(ProjectItemNode child) {
-//        children.add(child);
-//    }
     public ProjectItemNode addChild(ProjectItemNode child, boolean overwrite) {
         boolean childExists = false;
-        for (ProjectItemNode childNode : children) {
-            if (childNode.title.equals(child.title)) {
+        Logs.write("checking if children exists");
+        for (ProjectItemNode childNode : prop.children) {
+            if (childNode.prop.title.equals(child.prop.title)) {
                 childExists = true;
                 child = childNode;
             }
         }
+        Logs.write("over writing");
         if (overwrite) {
             if (childExists) {
-                children.remove(child);
+                prop.children.remove(child);
             }
-            children.add(child);
+            prop.children.add(child);
         } else if (!childExists) {
-            children.add(child);
+            prop.children.add(child);
         }
-
+        Logs.write("added children" + child.prop.title);
         MyTree.model.reload(this);
         return child;
     }
 
-//    public void removeChild(ProjectItemNode child) {
-//        children.remove(child);
-//    }
     public void removeChild(ProjectItemNode child) {
-        children.remove(child);
+        prop.children.remove(child);
         MyTree.model.reload(parent);
     }
 
     //should be used this when we want to remove by child object
     public void removeMe() {
-        parent.children.remove(this);
-        MyTree.model.reload(parent);
+        prop.parent.prop.children.remove(this);
+        MyTree.model.reload(prop.parent);
     }
 
-    public void setParent(ProjectItemNode parent) {
-        this.parent = parent;
+    private void setParent(ProjectItemNode parent) {
+        prop.parent = parent;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        prop.title = title;
     }
 
     public String getTitle() {
-        return title;
+        return prop.title;
     }
 
     public void updateChildrenPath() {
-        for (ProjectItemNode node : children) {
-            node.path = this.path + File.separator + node.title;
+        for (ProjectItemNode node : prop.children) {
+            node.prop.path = prop.path + File.separator + node.prop.title;
             node.updateChildrenPath();
         }
     }
@@ -120,28 +101,24 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
      *
      * @return
      */
-    //following method cannot override DefaultMutableTreeNode class' method
-//    public String getPath(){
-//        return path;
-//    }
     @Override
     public ProjectItemNode getChildAt(int i) {
-        return children.elementAt(i);
+        return prop.children.get(i);
     }
 
     @Override
     public int getChildCount() {
-        return children.size();
+        return prop.children.size();
     }
 
     @Override
     public ProjectItemNode getParent() {
-        return this.parent;
+        return prop.parent;
     }
 
     @Override
     public int getIndex(TreeNode tn) {
-        return children.indexOf(tn);
+        return prop.children.indexOf(tn);
     }
 
     @Override
@@ -151,20 +128,20 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
 
     @Override
     public boolean isLeaf() {
-        return (children.isEmpty());
+        return (prop.children.isEmpty());
     }
 
     @Override
     public Enumeration children() {
-        return children.elements();
+        return Collections.enumeration(prop.children);
     }
 
     @Override
     public String toString() {
-        return title;
+        return prop.title;
     }
 
     public int getType() {
-        return type;
+        return prop.type;
     }
 }

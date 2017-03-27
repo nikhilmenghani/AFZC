@@ -11,9 +11,6 @@ import flashablezipcreator.DiskOperations.ReadZip;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -84,13 +81,13 @@ public class Identify {
 //    public static int check(String name) {
 //        if (isRom(name)) {
 //            rom = true;
-//            return ProjectNode.PROJECT_ROM;
+//            return Types.PROJECT_ROM;
 //        } else if (rom == false && isGapps(name)) {
 //            gapps = true;
-//            return ProjectNode.PROJECT_GAPPS;
+//            return Types.PROJECT_GAPPS;
 //        } else if (rom == false && gapps == false && isAroma(name)) {
 //            aroma = true;
-//            return ProjectNode.PROJECT_AROMA;
+//            return Types.PROJECT_AROMA;
 //        }
 //        return -1;
 //    }
@@ -138,7 +135,7 @@ public class Identify {
     public static ArrayList<String> getFolderNames(String path, int projectType) {
         ArrayList<String> fList = new ArrayList<>();
         switch (projectType) {
-            case ProjectNode.PROJECT_MOD:
+            case Types.PROJECT_MOD:
                 if (!path.contains(folderSeparator)) {
                     while (path.contains("/")) {
                         String folderName = path.substring(0, path.indexOf("/"));
@@ -147,8 +144,8 @@ public class Identify {
                     }
                     return fList;
                 }
-            case ProjectNode.PROJECT_AROMA:
-            case ProjectNode.PROJECT_CUSTOM:
+            case Types.PROJECT_AROMA:
+            case Types.PROJECT_CUSTOM:
                 while (path.contains(folderSeparator)) {
                     path = path.substring(path.indexOf(folderSeparator) + folderSeparator.length(), path.length());
                     String folderName = path.substring(0, path.indexOf("/"));
@@ -186,33 +183,33 @@ public class Identify {
         str = str.substring(0, str.indexOf("/"));
         switch (str) {
             case "system_app":
-                return GroupNode.GROUP_SYSTEM_APK;
+                return Types.GROUP_SYSTEM_APK;
             case "system_priv_app":
-                return GroupNode.GROUP_SYSTEM_PRIV_APK;
+                return Types.GROUP_SYSTEM_PRIV_APK;
             case "script":
-                return GroupNode.GROUP_SCRIPT;
+                return Types.GROUP_SCRIPT;
             case "system_media_alarms":
-                return GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS;
+                return Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS;
             case "system_media_notifications":
-                return GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS;
+                return Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS;
             case "system_media_ringtones":
-                return GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES;
+                return Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES;
             case "system_media_ui":
-                return GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI;
+                return Types.GROUP_SYSTEM_MEDIA_AUDIO_UI;
             case "data_app":
-                return GroupNode.GROUP_DATA_APP;
+                return Types.GROUP_DATA_APP;
             case "system_fonts":
-                return GroupNode.GROUP_SYSTEM_FONTS;
+                return Types.GROUP_SYSTEM_FONTS;
             case "system_media":
-                return GroupNode.GROUP_SYSTEM_MEDIA;
+                return Types.GROUP_SYSTEM_MEDIA;
             case "data_local":
-                return GroupNode.GROUP_DATA_LOCAL;
+                return Types.GROUP_DATA_LOCAL;
             case "custom":
-                return GroupNode.GROUP_CUSTOM;
+                return Types.GROUP_CUSTOM;
             case "mod":
-                return GroupNode.GROUP_MOD;
+                return Types.GROUP_MOD;
             default:
-                return GroupNode.GROUP_CUSTOM;
+                return Types.GROUP_CUSTOM;
         }
     }
 
@@ -232,12 +229,12 @@ public class Identify {
         }
         switch (path) {
             case "aroma":
-                return ProjectNode.PROJECT_AROMA;
+                return Types.PROJECT_AROMA;
             case "custom":
-                return ProjectNode.PROJECT_CUSTOM;
+                return Types.PROJECT_CUSTOM;
             case "mod":
-                return ProjectNode.PROJECT_MOD;
+                return Types.PROJECT_MOD;
         }
-        return ProjectNode.PROJECT_MOD;//This might get changed in future and set to Custom
+        return Types.PROJECT_MOD;//This might get changed in future and set to Custom
     }
 }

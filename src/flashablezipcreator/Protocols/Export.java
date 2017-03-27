@@ -13,14 +13,11 @@ import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.WriteZip;
 import flashablezipcreator.UserInterface.MyTree;
-import static flashablezipcreator.UserInterface.MyTree.panelLower;
 import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
 import static flashablezipcreator.UserInterface.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.UserInterface.Preferences;
-import java.awt.CardLayout;
-import java.awt.HeadlessException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +42,7 @@ public class Export implements Runnable {
         wz = new WriteZip(Project.outputPath);
         for (ProjectItemNode node : fileNode) {
             //this will simply take each file from source and create the same file in zip at specified destination path.
-            wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
+            wz.writeFileToZip(((FileNode) node).prop.fileSourcePath, ((FileNode) node).prop.fileZipPath);
         }
         wz.close();
     }
@@ -60,61 +57,61 @@ public class Export implements Runnable {
         int fileIndex = 0;
 //        ArrayList<String> tempPaths = new ArrayList<>();
         List<ProjectItemNode> projectNodeList = to.getProjectsSorted(rootNode);
-        maxSize = getNodeCount(to.getNodeList(ProjectItemNode.NODE_FILE)) + 10; //10 because we write more files than node count
+        maxSize = getNodeCount(to.getNodeList(Types.NODE_FILE)) + 10; //10 because we write more files than node count
         try {
             for (ProjectItemNode project : projectNodeList) {
-                if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
-                    for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
-                        if (groupNode.children.isEmpty()) {
-                            Logs.write("Removing " + groupNode.title + " as it is empty");
+                if (((ProjectNode) project).prop.projectType != Types.PROJECT_THEMES) {
+                    for (ProjectItemNode groupNode : ((ProjectNode) project).prop.children) {
+                        if (groupNode.prop.children.isEmpty()) {
+                            Logs.write("Removing " + groupNode.prop.title + " as it is empty");
                             groupNode.removeMe();
                         }
-                        for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                            if (node.children.isEmpty() && node.type != ProjectItemNode.NODE_FILE) {
-                                Logs.write("Removing " + node.title + " as it is empty");
+                        for (ProjectItemNode node : ((GroupNode) groupNode).prop.children) {
+                            if (node.prop.children.isEmpty() && node.prop.type != Types.NODE_FILE) {
+                                Logs.write("Removing " + node.prop.title + " as it is empty");
                                 node.removeMe();
                             }
-                            switch (node.type) {
-                                case ProjectItemNode.NODE_SUBGROUP:
-                                    for (ProjectItemNode fileNode : ((SubGroupNode) node).children) {
-                                        if (((FileNode) fileNode).title.equals("DroidSans.ttf")
-                                                || ((FileNode) fileNode).title.equals("Roboto-Regular.ttf")) {
-                                            increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
+                            switch (node.prop.type) {
+                                case Types.NODE_SUBGROUP:
+                                    for (ProjectItemNode fileNode : ((SubGroupNode) node).prop.children) {
+                                        if (((FileNode) fileNode).prop.title.equals("DroidSans.ttf")
+                                                || ((FileNode) fileNode).prop.title.equals("Roboto-Regular.ttf")) {
+                                            increaseProgressBar(fileIndex, ((FileNode) fileNode).prop.fileSourcePath);
                                             fileIndex++;
-                                            wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).title + ".ttf");
+                                            wz.writeFileToZip(((FileNode) fileNode).prop.fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).prop.title + ".ttf");
                                         }
-                                        increaseProgressBar(fileIndex, ((FileNode) fileNode).fileSourcePath);
+                                        increaseProgressBar(fileIndex, ((FileNode) fileNode).prop.fileSourcePath);
                                         fileIndex++;
-                                        wz.writeFileToZip(((FileNode) fileNode).fileSourcePath, ((FileNode) fileNode).fileZipPath);
+                                        wz.writeFileToZip(((FileNode) fileNode).prop.fileSourcePath, ((FileNode) fileNode).prop.fileZipPath);
                                     }
                                     break;
-                                case ProjectItemNode.NODE_FILE:
-                                    increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
+                                case Types.NODE_FILE:
+                                    increaseProgressBar(fileIndex, ((FileNode) node).prop.fileSourcePath);
                                     fileIndex++;
-                                    wz.writeFileToZip(((FileNode) node).fileSourcePath, ((FileNode) node).fileZipPath);
+                                    wz.writeFileToZip(((FileNode) node).prop.fileSourcePath, ((FileNode) node).prop.fileZipPath);
                                     break;
-                                case ProjectItemNode.NODE_FOLDER:
+                                case Types.NODE_FOLDER:
                                     ArrayList<FileNode> files = new ArrayList<FileNode>();
                                     for (FileNode file : getFilesOfFolder((FolderNode) node, files)) {
-                                        increaseProgressBar(fileIndex, file.fileSourcePath);
+                                        increaseProgressBar(fileIndex, file.prop.fileSourcePath);
                                         fileIndex++;
-                                        wz.writeFileToZip(file.fileSourcePath, file.fileZipPath);
+                                        wz.writeFileToZip(file.prop.fileSourcePath, file.prop.fileZipPath);
                                     }
                                     break;
                                 default:
                                     break;
                             }
                         }
-                        if (((GroupNode) groupNode).groupType == GroupNode.GROUP_CUSTOM) {
+                        if (((GroupNode) groupNode).prop.groupType == Types.GROUP_CUSTOM) {
                             isCustomGroupPresent = true;
                         }
                     }
                 } else {
-                    for (ProjectItemNode groupNode : ((ProjectNode) project).children) {
-                        for (ProjectItemNode node : ((GroupNode) groupNode).children) {
-                            increaseProgressBar(fileIndex, ((FileNode) node).fileSourcePath);
+                    for (ProjectItemNode groupNode : ((ProjectNode) project).prop.children) {
+                        for (ProjectItemNode node : ((GroupNode) groupNode).prop.children) {
+                            increaseProgressBar(fileIndex, ((FileNode) node).prop.fileSourcePath);
                             fileIndex++;
-                            wz.writeFileToZip(JarOperations.getInputStream(((FileNode) node).fileSourcePath), ((FileNode) node).fileZipPath);
+                            wz.writeFileToZip(JarOperations.getInputStream(((FileNode) node).prop.fileSourcePath), ((FileNode) node).prop.fileZipPath);
                         }
                     }
                 }
@@ -182,11 +179,11 @@ public class Export implements Runnable {
     }
 
     public static ArrayList<FileNode> getFilesOfFolder(FolderNode folder, ArrayList<FileNode> fileList) {
-        for (ProjectItemNode node : folder.children) {
-            if (node.type == ProjectItemNode.NODE_FOLDER) {
+        for (ProjectItemNode node : folder.prop.children) {
+            if (node.prop.type == Types.NODE_FOLDER) {
                 fileList = getFilesOfFolder((FolderNode) node, fileList);
             }
-            if (node.type == ProjectItemNode.NODE_FILE) {
+            if (node.prop.type == Types.NODE_FILE) {
                 fileList.add((FileNode) node);
             }
         }

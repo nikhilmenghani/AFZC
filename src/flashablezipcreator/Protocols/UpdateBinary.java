@@ -26,11 +26,11 @@ public class UpdateBinary {
         to = new TreeOperations();
         updateBinaryInstaller += ubo.initiateUpdaterScript();
         for (ProjectItemNode project : to.getProjectsSorted(rootNode)) {
-            if (((ProjectNode) project).createZip) {
-                switch (((ProjectNode) project).projectType) {
-                    case ProjectNode.PROJECT_AROMA:
-                    case ProjectNode.PROJECT_CUSTOM:
-                    case ProjectNode.PROJECT_MOD:
+            if (((ProjectNode) project).prop.createZip) {
+                switch (((ProjectNode) project).prop.projectType) {
+                    case Types.PROJECT_AROMA:
+                    case Types.PROJECT_CUSTOM:
+                    case Types.PROJECT_MOD:
                         updateBinaryInstaller += buildAromaScript((ProjectNode) project);
                         break;
                 }
@@ -48,11 +48,11 @@ public class UpdateBinary {
 
     public static String buildAromaScript(ProjectNode project) {
         String str = "";
-        str += "if [ $(file_getprop \"/tmp/aroma/" + project.title + ".prop\" selected) == 1 ]; then\n";
+        str += "if [ $(file_getprop \"/tmp/aroma/" + project.prop.title + ".prop\" selected) == 1 ]; then\n";
         str += ubo.getMountMethod(1);
         str += "set_progress 0\n";
-        for (ProjectItemNode group : to.getNodeList(ProjectItemNode.NODE_GROUP)) {
-            if (((ProjectNode) group.parent).projectType == project.projectType && ((ProjectNode) group.parent).title.equals(project.title)) {
+        for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {
+            if (((ProjectNode) group.prop.parent).prop.projectType == project.prop.projectType && ((ProjectNode) group.prop.parent).prop.title.equals(project.prop.title)) {
                 str += ubo.generateUpdaterScript((GroupNode) group);
             }
         }

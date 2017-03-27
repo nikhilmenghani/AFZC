@@ -39,7 +39,7 @@ public class Xml {
         xo = new XmlOperations();
         xo.createXML();
         for (ProjectItemNode project : to.getProjectsSorted(MyTree.rootNode)) {
-            if (((ProjectNode) project).projectType != ProjectNode.PROJECT_THEMES) {
+            if (((ProjectNode) project).prop.projectType != Types.PROJECT_THEMES) {
                 xo.addProjectNode((ProjectNode) project);
             }
         }
@@ -49,10 +49,7 @@ public class Xml {
     public static void parseXml(int type) throws ParserConfigurationException, SAXException, IOException {
         ProjectItemNode rootNode = MyTree.rootNode;
         switch (type) {
-            case GroupNode.GROUP_CUSTOM:
-                xo.parseGeneratedXML(rootNode, generatedData, originalData);//generatedData and OriginalData are modified in Import.java.
-                break;
-            case GroupNode.GROUP_DELETE_FILES:
+            case Types.GROUP_DELETE_FILES:
                 xo.parseXML(deleteData);
                 break;
             default:

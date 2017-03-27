@@ -12,6 +12,7 @@ import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Protocols.Mod;
+import flashablezipcreator.Protocols.Types;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JDialog;
@@ -54,18 +55,18 @@ public class AddName extends javax.swing.JFrame {
     }
 
     public AddName(String nodeType, int type, ProjectItemNode parent) {
-        switch (parent.type) {
-            case ProjectItemNode.NODE_ROOT:
+        switch (parent.prop.type) {
+            case Types.NODE_ROOT:
                 this.rNode = parent;
                 this.projectType = type;
                 break;
-            case ProjectItemNode.NODE_GROUP:
+            case Types.NODE_GROUP:
                 gNode = (GroupNode) parent;
                 break;
-            case ProjectItemNode.NODE_SUBGROUP:
+            case Types.NODE_SUBGROUP:
                 sNode = (SubGroupNode) parent;
                 break;
-            case ProjectItemNode.NODE_FOLDER:
+            case Types.NODE_FOLDER:
                 fNode = (FolderNode) parent;
                 break;
         }
@@ -87,10 +88,10 @@ public class AddName extends javax.swing.JFrame {
         } else {
             rbRadio.setSelected(true);
         }
-        switch (parent.type) {
-            case ProjectItemNode.NODE_PROJECT:
+        switch (parent.prop.type) {
+            case Types.NODE_PROJECT:
                 this.pNode = (ProjectNode) parent;
-                if (pNode.projectType == ProjectNode.PROJECT_THEMES) {
+                if (pNode.prop.projectType == Types.PROJECT_THEMES) {
                     lblHeader.setText("   Add Theme");
                     lblGroupName.setText("Theme Name");
                     panelHeader.setBackground(new java.awt.Color(245, 127, 23));
@@ -101,16 +102,16 @@ public class AddName extends javax.swing.JFrame {
                 }
                 this.groupType = type;
                 break;
-            case ProjectItemNode.NODE_GROUP:
+            case Types.NODE_GROUP:
                 String headerText = "";
                 String subGroupName = "";
                 switch (type) {
-                    case GroupNode.GROUP_DATA_LOCAL:
-                    case GroupNode.GROUP_SYSTEM_MEDIA:
+                    case Types.GROUP_DATA_LOCAL:
+                    case Types.GROUP_SYSTEM_MEDIA:
                         headerText = "   Add Boot Animation";
                         subGroupName = "Boot Animation Name";
                         break;
-                    case GroupNode.GROUP_SYSTEM_FONTS:
+                    case Types.GROUP_SYSTEM_FONTS:
                         headerText = "   Add Font";
                         subGroupName = "Font Name";
                         break;

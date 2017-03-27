@@ -57,7 +57,7 @@ public class ProjectTree extends JFrame implements TreeSelectionListener {
             return;
         }
         
-        JOptionPane.showMessageDialog(this, "You have selected: " + node.parent);
+        JOptionPane.showMessageDialog(this, "You have selected: " + node.prop.parent);
     }
     
     public static void main(String args[]){

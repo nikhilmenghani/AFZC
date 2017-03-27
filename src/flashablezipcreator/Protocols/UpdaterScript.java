@@ -9,12 +9,9 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Operations.TreeOperations;
-import flashablezipcreator.Operations.UpdateBinaryOperations;
 import flashablezipcreator.Operations.UpdaterScriptOperations;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -34,11 +31,11 @@ public class UpdaterScript {
         to = new TreeOperations();
         updaterScript += op.initiateUpdaterScript();
         for (ProjectItemNode project : to.getProjectsSorted(rootNode)) {
-            if (((ProjectNode) project).createZip) {
-                switch (((ProjectNode) project).projectType) {
-                    case ProjectNode.PROJECT_AROMA:
-                    case ProjectNode.PROJECT_CUSTOM:
-                    case ProjectNode.PROJECT_MOD:
+            if (((ProjectNode) project).prop.createZip) {
+                switch (((ProjectNode) project).prop.projectType) {
+                    case Types.PROJECT_AROMA:
+                    case Types.PROJECT_CUSTOM:
+                    case Types.PROJECT_MOD:
                         updaterScript += buildAromaScript((ProjectNode) project);
                         break;
                 }
@@ -56,12 +53,12 @@ public class UpdaterScript {
 
     public static String buildAromaScript(ProjectNode project) {
         String str = "";
-        str += "if (file_getprop(\"/tmp/aroma/" + project.title + ".prop\", \"selected\")==\"1\") then\n";
+        str += "if (file_getprop(\"/tmp/aroma/" + project.prop.title + ".prop\", \"selected\")==\"1\") then\n";
         str += op.getMountMethod(1);
         //str += op.getExtractDataString();
         str += "set_progress(0);\n";
-        for (ProjectItemNode group : to.getNodeList(ProjectItemNode.NODE_GROUP)) {
-            if (((ProjectNode) group.parent).projectType == project.projectType && ((ProjectNode) group.parent).title.equals(project.title)) {
+        for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {
+            if (((ProjectNode) group.prop.parent).prop.projectType == project.prop.projectType && ((ProjectNode) group.prop.parent).prop.title.equals(project.prop.title)) {
                 str += op.generateUpdaterScript((GroupNode) group);
             }
         }

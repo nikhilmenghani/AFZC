@@ -12,6 +12,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.Write;
+import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,23 +44,23 @@ public class TreeOperations {
 
     public void renameNode(ProjectItemNode node, String newName) throws IOException {
         String oldName = "";
-        switch (node.type) {
-            case ProjectItemNode.NODE_ROOT:
+        switch (node.prop.type) {
+            case Types.NODE_ROOT:
                 break;
-            case ProjectItemNode.NODE_PROJECT:
+            case Types.NODE_PROJECT:
                 ((ProjectNode) node).renameMe(newName);
                 break;
-            case ProjectItemNode.NODE_GROUP:
+            case Types.NODE_GROUP:
                 ((GroupNode) node).renameMe(newName);
                 break;
-            case ProjectItemNode.NODE_SUBGROUP:
+            case Types.NODE_SUBGROUP:
                 ((SubGroupNode) node).renameMe(newName);
                 break;
-            case ProjectItemNode.NODE_FOLDER:
+            case Types.NODE_FOLDER:
                 ((FolderNode) node).renameMe(newName);
                 break;
-            case ProjectItemNode.NODE_FILE:
-                oldName = ((FileNode) node).fileSourcePath;
+            case Types.NODE_FILE:
+                oldName = ((FileNode) node).prop.fileSourcePath;
                 ((FileNode) node).renameMe(newName);
                 w.rename(oldName, newName); //check if this is required
                 break;
@@ -108,29 +109,29 @@ public class TreeOperations {
 
     public ArrayList<ProjectItemNode> parseNode(ProjectItemNode node, int type) {
         for (int i = 0; i < node.getChildCount(); i++) {
-            if (((ProjectItemNode) node.getChildAt(i)).type == type) {
-                switch (((ProjectItemNode) node.getChildAt(i)).type) {
-                    case ProjectItemNode.NODE_PROJECT:
+            if (((ProjectItemNode) node.getChildAt(i)).prop.type == type) {
+                switch (((ProjectItemNode) node.getChildAt(i)).prop.type) {
+                    case Types.NODE_PROJECT:
                         if (!list.contains((ProjectItemNode) node.getChildAt(i))) {
                             list.add((ProjectItemNode) node.getChildAt(i));
                         }
                         break;
-                    case ProjectItemNode.NODE_GROUP:
+                    case Types.NODE_GROUP:
                         if (!list.contains((ProjectItemNode) node.getChildAt(i))) {
                             list.add((ProjectItemNode) node.getChildAt(i));
                         }
                         break;
-                    case ProjectItemNode.NODE_FOLDER:
+                    case Types.NODE_FOLDER:
                         if (!list.contains((ProjectItemNode) node.getChildAt(i))) {
                             list.add((ProjectItemNode) node.getChildAt(i));
                         }
                         break;
-                    case ProjectItemNode.NODE_SUBGROUP:
+                    case Types.NODE_SUBGROUP:
                         if (!list.contains((ProjectItemNode) node.getChildAt(i))) {
                             list.add((ProjectItemNode) node.getChildAt(i));
                         }
                         break;
-                    case ProjectItemNode.NODE_FILE:
+                    case Types.NODE_FILE:
                         if (!list.contains((ProjectItemNode) node.getChildAt(i))) {
                             list.add((ProjectItemNode) node.getChildAt(i));
                         }
@@ -154,18 +155,18 @@ public class TreeOperations {
         ArrayList<ProjectItemNode> projectCustom = new ArrayList<>();
         ArrayList<ProjectItemNode> projectMod = new ArrayList<>();
 
-        for (ProjectItemNode project : getNodeList(ProjectItemNode.NODE_PROJECT)) {
-            switch (((ProjectNode) project).projectType) {
-                case ProjectNode.PROJECT_AROMA:
+        for (ProjectItemNode project : getNodeList(Types.NODE_PROJECT)) {
+            switch (((ProjectNode) project).prop.projectType) {
+                case Types.PROJECT_AROMA:
                     projectAroma.add(project);
                     break;
-                case ProjectNode.PROJECT_THEMES:
+                case Types.PROJECT_THEMES:
                     projectThemes.add(project);
                     break;
-                case ProjectNode.PROJECT_CUSTOM:
+                case Types.PROJECT_CUSTOM:
                     projectCustom.add(project);
                     break;
-                case ProjectNode.PROJECT_MOD:
+                case Types.PROJECT_MOD:
                     projectMod.add(project);
 
             }
@@ -186,42 +187,42 @@ public class TreeOperations {
     }
 
     public FolderNode getFolderNode(ArrayList<String> folders, String folderName, String groupName, int groupType, String subGroupName, int subGroupType, String projectName) {
-        for (ProjectItemNode node : getNodeList(ProjectItemNode.NODE_FOLDER)) {
+        for (ProjectItemNode node : getNodeList(Types.NODE_FOLDER)) {
             FolderNode fNode = (FolderNode) node;
-            if (fNode.title.equals(folderName)) {
-                switch (fNode.parent.type) {
-                    case ProjectItemNode.NODE_GROUP:
-                        GroupNode gNode = (GroupNode) fNode.parent;
-                        ProjectNode pNode = (ProjectNode) gNode.parent;
-                        if (gNode.groupName.equals(groupName) && gNode.groupType == groupType && pNode.projectName.equals(projectName)) {
+            if (fNode.prop.title.equals(folderName)) {
+                switch (fNode.prop.parent.prop.type) {
+                    case Types.NODE_GROUP:
+                        GroupNode gNode = (GroupNode) fNode.prop.parent;
+                        ProjectNode pNode = (ProjectNode) gNode.prop.parent;
+                        if (gNode.prop.groupName.equals(groupName) && gNode.prop.groupType == groupType && pNode.prop.projectName.equals(projectName)) {
                             return fNode;
                         }
                         break;
-                    case ProjectItemNode.NODE_SUBGROUP:
-                        SubGroupNode sgNode = (SubGroupNode) fNode.parent;
-                        GroupNode sgParent = (GroupNode) sgNode.parent;
-                        ProjectNode gParent = (ProjectNode) sgNode.parent;
-                        if (sgNode.subGroupName.equals(subGroupName) && sgNode.subGroupType == subGroupType
-                                && sgParent.groupName.equals(groupName) && sgParent.groupType == groupType
-                                && gParent.projectName.equals(projectName)) {
+                    case Types.NODE_SUBGROUP:
+                        SubGroupNode sgNode = (SubGroupNode) fNode.prop.parent;
+                        GroupNode sgParent = (GroupNode) sgNode.prop.parent;
+                        ProjectNode gParent = (ProjectNode) sgNode.prop.parent;
+                        if (sgNode.prop.subGroupName.equals(subGroupName) && sgNode.prop.subGroupType == subGroupType
+                                && sgParent.prop.groupName.equals(groupName) && sgParent.prop.groupType == groupType
+                                && gParent.prop.projectName.equals(projectName)) {
                             return fNode;
                         }
                         break;
-                    case ProjectItemNode.NODE_FOLDER:
-                        switch (fNode.originalParent.type) {
-                            case ProjectItemNode.NODE_GROUP:
-                                GroupNode fgNode = (GroupNode) fNode.originalParent;
-                                if (fgNode.groupName.equals(groupName) && fgNode.groupType == groupType && fgNode.projectName.equals(projectName)) {
+                    case Types.NODE_FOLDER:
+                        switch (fNode.prop.originalParent.prop.type) {
+                            case Types.NODE_GROUP:
+                                GroupNode fgNode = (GroupNode) fNode.prop.originalParent;
+                                if (fgNode.prop.groupName.equals(groupName) && fgNode.prop.groupType == groupType && fgNode.prop.projectName.equals(projectName)) {
                                     return getFolderNode(fNode, folders);
                                 }
                                 break;
-                            case ProjectItemNode.NODE_SUBGROUP:
-                                SubGroupNode fsgNode = (SubGroupNode) fNode.originalParent;
-                                GroupNode fsgParent = (GroupNode) fsgNode.parent;
-                                ProjectNode fsgpParent = (ProjectNode) fsgParent.parent;
-                                if (fsgNode.subGroupName.equals(subGroupName) && fsgNode.subGroupType == subGroupType
-                                        && fsgParent.groupName.equals(groupName) && fsgParent.groupType == groupType
-                                        && fsgpParent.projectName.equals(projectName)) {
+                            case Types.NODE_SUBGROUP:
+                                SubGroupNode fsgNode = (SubGroupNode) fNode.prop.originalParent;
+                                GroupNode fsgParent = (GroupNode) fsgNode.prop.parent;
+                                ProjectNode fsgpParent = (ProjectNode) fsgParent.prop.parent;
+                                if (fsgNode.prop.subGroupName.equals(subGroupName) && fsgNode.prop.subGroupType == subGroupType
+                                        && fsgParent.prop.groupName.equals(groupName) && fsgParent.prop.groupType == groupType
+                                        && fsgpParent.prop.projectName.equals(projectName)) {
                                     return getFolderNode(fNode, folders);
                                 }
                                 break;
@@ -235,12 +236,12 @@ public class TreeOperations {
 
     public FolderNode getFolderNode(FolderNode fNode, ArrayList<String> folders) {
         int count = folders.size() - 1;
-        FolderNode temp = (FolderNode) fNode.parent;
+        FolderNode temp = (FolderNode) fNode.prop.parent;
         while (count > 0) {
-            if (count == 1 && temp.title.equals(folders.get(0))) {
+            if (count == 1 && temp.prop.title.equals(folders.get(0))) {
                 return fNode;
-            } else if (folders.contains(temp.title)) {
-                temp = (FolderNode) temp.parent;
+            } else if (folders.contains(temp.prop.title)) {
+                temp = (FolderNode) temp.prop.parent;
                 count--;
             } else {
                 break;
@@ -250,8 +251,8 @@ public class TreeOperations {
     }
 
     public FileNode getFileNode(String name, String groupName, String projectName) {
-        for (ProjectItemNode node : getNodeList(ProjectItemNode.NODE_FILE)) {
-            if (node.title.equals(name) && node.parent.title.equals(groupName) && node.parent.parent.title.equals(projectName)) {
+        for (ProjectItemNode node : getNodeList(Types.NODE_FILE)) {
+            if (node.prop.title.equals(name) && node.prop.parent.prop.title.equals(groupName) && node.prop.parent.prop.parent.prop.title.equals(projectName)) {
                 return (FileNode) node;
             }
         }
@@ -260,30 +261,30 @@ public class TreeOperations {
     }
 
     public FileNode getFileNode(String name, ArrayList<String> folders, String subGroupName, String groupName, String projectName) {
-        for (ProjectItemNode node : getNodeList(ProjectItemNode.NODE_FILE)) {
+        for (ProjectItemNode node : getNodeList(Types.NODE_FILE)) {
             FileNode file = (FileNode) node;
-            if (file.title.equals(name)) {
-                switch (file.parent.type) {
-                    case ProjectItemNode.NODE_GROUP:
-                        if (file.parent.title.equals(groupName) && file.parent.parent.title.equals(projectName)) {
+            if (file.prop.title.equals(name)) {
+                switch (file.prop.parent.prop.type) {
+                    case Types.NODE_GROUP:
+                        if (file.prop.parent.prop.title.equals(groupName) && file.prop.parent.prop.parent.prop.title.equals(projectName)) {
                             return file;
                         }
                         break;
-                    case ProjectItemNode.NODE_SUBGROUP:
-                        if (file.parent.title.equals(subGroupName)
-                                && file.parent.parent.title.equals(groupName)
-                                && file.parent.parent.parent.title.equals(projectName)) {
+                    case Types.NODE_SUBGROUP:
+                        if (file.prop.parent.prop.title.equals(subGroupName)
+                                && file.prop.parent.prop.parent.prop.title.equals(groupName)
+                                && file.prop.parent.prop.parent.prop.parent.prop.title.equals(projectName)) {
                             return file;
                         }
                         break;
-                    case ProjectItemNode.NODE_FOLDER:
-                        FolderNode folder = (FolderNode) file.parent;
+                    case Types.NODE_FOLDER:
+                        FolderNode folder = (FolderNode) file.prop.parent;
                         int size = folders.size();
                         boolean folderMatch = true;
                         while (size > 0) {
-                            if (folder.title.equals(folders.get(size - 1))) {
+                            if (folder.prop.title.equals(folders.get(size - 1))) {
                                 if (size > 1) {
-                                    folder = (FolderNode) folder.parent;
+                                    folder = (FolderNode) folder.prop.parent;
                                 }
                                 size--;
                             } else {
@@ -292,16 +293,16 @@ public class TreeOperations {
                             }
                         }
                         if (folderMatch) {
-                            switch (folder.parent.type) {
-                                case ProjectItemNode.NODE_GROUP:
-                                    if (folder.parent.title.equals(groupName) && folder.parent.parent.title.equals(projectName)) {
+                            switch (folder.prop.parent.prop.type) {
+                                case Types.NODE_GROUP:
+                                    if (folder.prop.parent.prop.title.equals(groupName) && folder.prop.parent.prop.parent.prop.title.equals(projectName)) {
                                         return file;
                                     }
                                     break;
-                                case ProjectItemNode.NODE_SUBGROUP:
-                                    if (folder.parent.title.equals(subGroupName)
-                                            && folder.parent.parent.title.equals(groupName)
-                                            && folder.parent.parent.parent.title.equals(projectName)) {
+                                case Types.NODE_SUBGROUP:
+                                    if (folder.prop.parent.prop.title.equals(subGroupName)
+                                            && folder.prop.parent.prop.parent.prop.title.equals(groupName)
+                                            && folder.prop.parent.prop.parent.prop.parent.prop.title.equals(projectName)) {
                                         return file;
                                     }
                                     break;
@@ -315,8 +316,9 @@ public class TreeOperations {
     }
 
     public FileNode getFileNode(String name, String subGroupName, String groupName, String projectName) {
-        for (ProjectItemNode node : getNodeList(ProjectItemNode.NODE_FILE)) {
-            if (node.title.equals(name) && node.parent.title.equals(subGroupName) && node.parent.parent.title.equals(groupName) && node.parent.parent.parent.title.equals(projectName)) {
+        for (ProjectItemNode node : getNodeList(Types.NODE_FILE)) {
+            if (node.prop.title.equals(name) && node.prop.parent.prop.title.equals(subGroupName) && node.prop.parent.prop.parent.prop.title.equals(groupName) 
+                    && node.prop.parent.prop.parent.prop.parent.prop.title.equals(projectName)) {
                 return (FileNode) node;
             }
         }

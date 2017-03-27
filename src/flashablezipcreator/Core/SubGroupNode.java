@@ -1,12 +1,12 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change prop license header, choose License Headers in Project Properties.
+ * To change prop template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package flashablezipcreator.Core;
 
+import flashablezipcreator.Protocols.Types;
 import java.io.File;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,76 +14,53 @@ import javax.swing.JOptionPane;
  */
 public class SubGroupNode extends ProjectItemNode {
 
-    public String parentNodeName;
-    public String subGroupName;
-    public String permission = "";
-    public int subGroupType;
-    public String description = "";
-    public String extension = "";
-    public boolean isBootAnimationGroup = false;
-    public String projectName;
-    public String originalGroupType;
-    String zipPathPrefix = "SubGroup_";
-
-    public static final int TYPE_SYSTEM_FONTS = GroupNode.GROUP_SYSTEM_FONTS;
-    public static final int TYPE_SYSTEM_MEDIA = GroupNode.GROUP_SYSTEM_MEDIA;
-    public static final int TYPE_DATA_LOCAL = GroupNode.GROUP_DATA_LOCAL;
-    public static final int TYPE_CUSTOM = GroupNode.GROUP_CUSTOM;
-
     public SubGroupNode(String title, int type, GroupNode parent) {
-        super(title, ProjectItemNode.NODE_SUBGROUP, parent);
-        super.path = parent.path + File.separator + title;
-        subGroupName = title;
-        this.subGroupType = type;
-        this.projectName = parent.projectName;
-        this.originalGroupType = parent.originalGroupType;
-        super.location = parent.location;
-        //System.out.println("SubGroup Path is : " + path);
+        super(title, Types.NODE_SUBGROUP, parent);
+        prop.originalParent = parent;
+        prop.path = parent.prop.path + File.separator + title;
+        prop.subGroupName = title;
+        prop.subGroupType = type;
+        prop.projectName = parent.prop.projectName;
+        prop.originalGroupType = parent.prop.originalGroupType;
+        prop.location = parent.prop.location;
         switch (type) {
-            case TYPE_SYSTEM_FONTS:
-                this.extension = "ttf";
+            case Types.GROUP_SYSTEM_FONTS:
+                prop.extension = "ttf";
                 break;
-            case TYPE_SYSTEM_MEDIA:
-                this.extension = "zip";
-                this.isBootAnimationGroup = true;
+            case Types.GROUP_SYSTEM_MEDIA:
+                prop.extension = "zip";
+                prop.isBootAnimationGroup = true;
                 break;
-            case TYPE_DATA_LOCAL:
-                this.extension = "zip";
-                this.isBootAnimationGroup = true;
-                break;
-//            case TYPE_KERNEL:
-            case TYPE_CUSTOM:
-                //location and permissions shall remain null and let file node override this property.
+            case Types.GROUP_DATA_LOCAL:
+                prop.extension = "zip";
+                prop.isBootAnimationGroup = true;
                 break;
         }
-        super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
-        this.permission = parent.permission;
+        prop.zipPath = parent.prop.zipPath + "/" + prop.subGroupZipPathPrefix + title;
+        prop.permission = parent.prop.permission;
+        prop.groupPermission = parent.prop.groupPermission;
     }
 
     public String getLocation() {
-        return location;
+        return prop.location;
     }
 
     public String getPermissions() {
-        return permission;
+        return prop.permission;
     }
 
     public void setDescription(String desc) {
-        this.description = desc;
+        prop.description = desc;
     }
     
     public void updateZipPath(){
-        super.zipPath = parent.zipPath + "/" + zipPathPrefix + title;
+        prop.zipPath = prop.parent.prop.zipPath + "/" + prop.subGroupZipPathPrefix + prop.title;
     }
 
     public void updateChildrenZipPath(){
-        for (ProjectItemNode node : children) {
-            switch (node.type) {
-                case ProjectItemNode.NODE_FOLDER:
-                    ((FolderNode)node).updateZipPath();
-                    ((FolderNode)node).updateChildrenZipPath();
-                    break;
-                case ProjectItemNode.NODE_FILE:
+        for (ProjectItemNode node : prop.children) {
+            switch (node.prop.type) {
+                case Types.NODE_FILE:
                     ((FileNode) node).updateZipPath();
                     break;
             }
@@ -96,10 +73,10 @@ public class SubGroupNode extends ProjectItemNode {
     }
 
     public void renameMe(String newName) {
-        super.setTitle(newName);
-        this.subGroupName = newName;
-        super.path = parent.path + File.separator + newName;
-        super.zipPath = parent.zipPath + "/" + this.zipPathPrefix + title;
+        prop.title = newName;
+        prop.subGroupName = newName;
+        prop.path = prop.parent.prop.path + File.separator + newName;
+        prop.zipPath = prop.parent.prop.zipPath + "/" + prop.subGroupZipPathPrefix + prop.title;
         this.updateChildrenPath();
         this.updateChildrenZipPath();
     }

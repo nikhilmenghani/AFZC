@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.TreePath;
 import flashablezipcreator.Operations.MyFileFilter;
+import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.UserInterface.AddName;
 import java.io.File;
@@ -35,28 +36,28 @@ public class MyPopup {
         Set<Integer> typeList = new HashSet<>();
         for (TreePath path : paths) {
             nodeList.add((ProjectItemNode) path.getLastPathComponent());
-            typeList.add(((ProjectItemNode) path.getLastPathComponent()).type);
+            typeList.add(((ProjectItemNode) path.getLastPathComponent()).prop.type);
         }
         if (typeList.size() > 1) {
             JOptionPane.showMessageDialog(null, "You cannot select nodes of different types.");
         } else {
-            switch (nodeList.get(0).type) {
-                case ProjectItemNode.NODE_ROOT:
+            switch (nodeList.get(0).prop.type) {
+                case Types.NODE_ROOT:
                     popup = getRootMenu(nodeList);
                     break;
-                case ProjectItemNode.NODE_PROJECT:
+                case Types.NODE_PROJECT:
                     popup = getProjectMenu(nodeList);
                     break;
-                case ProjectItemNode.NODE_GROUP:
+                case Types.NODE_GROUP:
                     popup = getGroupMenu(nodeList, myTree);
                     break;
-                case ProjectItemNode.NODE_SUBGROUP:
+                case Types.NODE_SUBGROUP:
                     popup = getSubGroupMenu(nodeList);
                     break;
-                case ProjectItemNode.NODE_FOLDER:
+                case Types.NODE_FOLDER:
                     popup = getFolderMenu(nodeList);
                     break;
-                case ProjectItemNode.NODE_FILE:
+                case Types.NODE_FILE:
                     popup = getFileMenu(nodeList);
                     break;
             }
@@ -122,7 +123,7 @@ public class MyPopup {
 
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
-            if (((ProjectNode) nodeList.get(0)).projectType == ProjectNode.PROJECT_THEMES) {
+            if (((ProjectNode) nodeList.get(0)).prop.projectType == Types.PROJECT_THEMES) {
                 JMenuItem mitemAddThemes = new JMenuItem("Add Theme");
                 mitemAddThemes.addActionListener((ActionEvent ae) -> {
                     addName("Theme", "themes", nodeList.get(0));
@@ -164,15 +165,15 @@ public class MyPopup {
 
     public static JPopupMenu getGroupMenu(ArrayList<ProjectItemNode> nodeList, JTree myTree) {
         JMenuItem mitemAddSubGroup = null;
-        int groupType = ((GroupNode) nodeList.get(0)).groupType;
+        int groupType = ((GroupNode) nodeList.get(0)).prop.groupType;
         switch (groupType) {
-            case GroupNode.GROUP_SYSTEM_FONTS:
+            case Types.GROUP_SYSTEM_FONTS:
                 mitemAddSubGroup = new JMenuItem("Add Fonts");
                 break;
-            case GroupNode.GROUP_DATA_LOCAL:
+            case Types.GROUP_DATA_LOCAL:
                 mitemAddSubGroup = new JMenuItem("Add Boot Animations");
                 break;
-            case GroupNode.GROUP_SYSTEM_MEDIA:
+            case Types.GROUP_SYSTEM_MEDIA:
                 mitemAddSubGroup = new JMenuItem("Add Boot Animations");
                 break;
             default:
@@ -181,13 +182,13 @@ public class MyPopup {
         mitemAddSubGroup.addActionListener(
                 (ActionEvent ae) -> {
                     switch (groupType) {
-                        case GroupNode.GROUP_SYSTEM_FONTS:
+                        case Types.GROUP_SYSTEM_FONTS:
                             addName("SubGroup", "system/fonts", nodeList.get(0));
                             break;
-                        case GroupNode.GROUP_DATA_LOCAL:
+                        case Types.GROUP_DATA_LOCAL:
                             addName("SubGroup", "data/local", nodeList.get(0));
                             break;
-                        case GroupNode.GROUP_SYSTEM_MEDIA:
+                        case Types.GROUP_SYSTEM_MEDIA:
                             addName("SubGroup", "system/media", nodeList.get(0));
                             break;
                     }
@@ -213,29 +214,29 @@ public class MyPopup {
                     deleteNode(nodeList);
                 }
         );
-        if (((GroupNode) nodeList.get(0)).groupType == GroupNode.GROUP_AROMA_THEMES) {
+        if (((GroupNode) nodeList.get(0)).prop.groupType == Types.GROUP_AROMA_THEMES) {
             mitemDeleteGroup.setText("Delete Theme(s)");
         }
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
-            switch (((GroupNode) nodeList.get(0)).groupType) {
-                case GroupNode.GROUP_SYSTEM_APK:
-                case GroupNode.GROUP_SYSTEM_PRIV_APK:
-                case GroupNode.GROUP_DATA_APP:
-                case GroupNode.GROUP_CUSTOM:
+            switch (((GroupNode) nodeList.get(0)).prop.groupType) {
+                case Types.GROUP_SYSTEM_APK:
+                case Types.GROUP_SYSTEM_PRIV_APK:
+                case Types.GROUP_DATA_APP:
+                case Types.GROUP_CUSTOM:
                     popup.add(mitemAddFolder);
                     popup.add(mitemAddFile);
                     break;
-                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-                case GroupNode.GROUP_AROMA_THEMES:
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+                case Types.GROUP_AROMA_THEMES:
                     popup.add(mitemAddFile);
                     break;
-                case GroupNode.GROUP_SYSTEM_FONTS:
-                case GroupNode.GROUP_DATA_LOCAL:
-                case GroupNode.GROUP_SYSTEM_MEDIA:
+                case Types.GROUP_SYSTEM_FONTS:
+                case Types.GROUP_DATA_LOCAL:
+                case Types.GROUP_SYSTEM_MEDIA:
                     popup.add(mitemAddSubGroup);
                     break;
             }
@@ -312,19 +313,19 @@ public class MyPopup {
     }
 
     public static void addNode(ArrayList<ProjectItemNode> nodeList) {
-        switch (nodeList.get(0).type) {
-            case ProjectNode.NODE_GROUP:
+        switch (nodeList.get(0).prop.type) {
+            case Types.NODE_GROUP:
                 GroupNode gNode = (GroupNode) nodeList.get(0);
-                for (File tempFile : MyFileFilter.getSelectedFiles(gNode.extension)) {
+                for (File tempFile : MyFileFilter.getSelectedFiles(gNode.prop.extension)) {
                     FileNode fnode;
                     if (Preferences.IsFromLollipop) {
-                        switch (gNode.groupType) {
-                            case GroupNode.GROUP_SYSTEM_APK:
-                            case GroupNode.GROUP_SYSTEM_PRIV_APK:
-                            case GroupNode.GROUP_DATA_APP:
+                        switch (gNode.prop.groupType) {
+                            case Types.GROUP_SYSTEM_APK:
+                            case Types.GROUP_SYSTEM_PRIV_APK:
+                            case Types.GROUP_DATA_APP:
                                 String folderName = tempFile.getName().replaceFirst("[.][^.]+$", "");
                                 //it is okay to remove following condition as this is handled directly while creating folder node
-                                if (gNode.groupType == GroupNode.GROUP_DATA_APP) {
+                                if (gNode.prop.groupType == Types.GROUP_DATA_APP) {
                                     folderName = tempFile.getName().replaceFirst("[.][^.]+$", "") + "-1";
                                 }
                                 FolderNode folderNode = new FolderNode(folderName, gNode);
@@ -342,14 +343,14 @@ public class MyPopup {
                     }
                 }
                 break;
-            case ProjectNode.NODE_SUBGROUP:
-                for (File tempFile : MyFileFilter.getSelectedFiles(((SubGroupNode) nodeList.get(0)).extension)) {
+            case Types.NODE_SUBGROUP:
+                for (File tempFile : MyFileFilter.getSelectedFiles(((SubGroupNode) nodeList.get(0)).prop.extension)) {
                     FileNode fnode = new FileNode(tempFile.getAbsolutePath(), (SubGroupNode) nodeList.get(0));
                     //fnode.fileSourcePath = tempFile.getAbsolutePath();
                     ((SubGroupNode) nodeList.get(0)).addChild(fnode, true);
                 }
                 break;
-            case ProjectNode.NODE_FOLDER:
+            case Types.NODE_FOLDER:
                 for (File tempFile : MyFileFilter.getSelectedFiles("folder")) {
                     FileNode fnode = new FileNode(tempFile.getAbsolutePath(), (FolderNode) nodeList.get(0));
                     ((FolderNode) nodeList.get(0)).addChild(fnode, true);
@@ -371,55 +372,55 @@ public class MyPopup {
         boolean isSelectBox = false;
         switch (location) {
             case "system/app":
-                groupType = GroupNode.GROUP_SYSTEM_APK;
+                groupType = Types.GROUP_SYSTEM_APK;
                 extension = ".apk";
                 break;
             case "system/priv-app":
-                groupType = GroupNode.GROUP_SYSTEM_PRIV_APK;
+                groupType = Types.GROUP_SYSTEM_PRIV_APK;
                 extension = ".apk";
                 break;
             case "data/app":
-                groupType = GroupNode.GROUP_DATA_APP;
+                groupType = Types.GROUP_DATA_APP;
                 extension = ".apk";
                 break;
             case "system/media/audio/alarms":
-                groupType = GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS;
+                groupType = Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS;
                 extension = ".acc||.mp3||.m4a||.wav||.ogg";
                 break;
             case "system/media/audio/notifications":
-                groupType = GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS;
+                groupType = Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS;
                 extension = ".acc||.mp3||.m4a||.wav||.ogg";
                 break;
             case "system/media/audio/ringtones":
-                groupType = GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES;
+                groupType = Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES;
                 extension = ".acc||.mp3||.m4a||.wav||.ogg";
                 break;
             case "system/media/audio/ui":
-                groupType = GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI;
+                groupType = Types.GROUP_SYSTEM_MEDIA_AUDIO_UI;
                 extension = ".acc||.mp3||.m4a||.wav||.ogg";
                 break;
             case "system/fonts":
-                groupType = GroupNode.GROUP_SYSTEM_FONTS;
+                groupType = Types.GROUP_SYSTEM_FONTS;
                 extension = ".tff";
                 isSelectBox = true;
                 break;
             case "system/media":
-                groupType = GroupNode.GROUP_SYSTEM_MEDIA;
+                groupType = Types.GROUP_SYSTEM_MEDIA;
                 extension = ".zip";
                 isSelectBox = true;
                 break;
             case "data/local":
-                groupType = GroupNode.GROUP_DATA_LOCAL;
+                groupType = Types.GROUP_DATA_LOCAL;
                 extension = ".zip";
                 isSelectBox = true;
                 break;
             case "themes":
-                groupType = GroupNode.GROUP_AROMA_THEMES;
+                groupType = Types.GROUP_AROMA_THEMES;
                 extension = ".png||.prop";
                 isSelectBox = true;
                 break;
             case "custom":
-                groupType = GroupNode.GROUP_CUSTOM;
+                groupType = Types.GROUP_CUSTOM;
                 break;
         }
         switch (nodeType) {
@@ -435,10 +436,10 @@ public class MyPopup {
                 break;
             case "Project":
                 //addGNUI = new AddName();
-                addGNUI = new AddName("Project", ProjectNode.PROJECT_AROMA, node);
+                addGNUI = new AddName("Project", Types.PROJECT_AROMA, node);
                 break;
             case "Folder":
-                addGNUI = new AddName("Folder", ProjectItemNode.NODE_FOLDER, node);
+                addGNUI = new AddName("Folder", Types.NODE_FOLDER, node);
                 break;
 
             case "Theme":

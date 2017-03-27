@@ -17,6 +17,7 @@ import flashablezipcreator.UserInterface.Preferences;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,19 +30,24 @@ public class Jar {
         ProjectItemNode rootNode = MyTree.rootNode;
         TreeOperations to = new TreeOperations();
         String projectName = "Themes";
-        int projectType = ProjectNode.PROJECT_THEMES;
-        ProjectNode themesProject = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, Mod.MOD_LESS, rootNode), true);
-        themesProject.children = new Vector<>();
-        for (String theme : JarOperations.themesList) {
-            if (Preferences.themes.contains(theme)) {
-                GroupNode themeGroup = (GroupNode) themesProject.addChild(new GroupNode(theme,GroupNode.GROUP_AROMA_THEMES, themesProject), true);
-                String themePath = "META-INF/com/google/android/aroma/themes/" + theme + "/";
-                for (String themesPath : JarOperations.themesFileList) {
-                    if (themesPath.contains(themePath)) {
-                        themeGroup.addChild(new FileNode(themesPath,themeGroup), true);
+        int projectType = Types.PROJECT_THEMES;
+        try {
+            ProjectNode themesProject = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, Mod.MOD_LESS, rootNode), true);
+            themesProject.prop.children = new ArrayList<>();
+            for (String theme : JarOperations.themesList) {
+                Logs.write(theme);
+                if (Preferences.themes.contains(theme)) {
+                    GroupNode themeGroup = (GroupNode) themesProject.addChild(new GroupNode(theme, Types.GROUP_AROMA_THEMES, themesProject), true);String themePath = "META-INF/com/google/android/aroma/themes/" + theme + "/";
+                    for (String themesPath : JarOperations.themesFileList) {
+                        if (themesPath.contains(themePath)) {
+                            themeGroup.addChild(new FileNode(themesPath, themeGroup), true);
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            Logs.write("Exception occurred while adding themes to tree");
+            Logs.write(Logs.getExceptionTrace(e));
         }
     }
 
@@ -59,7 +65,7 @@ public class Jar {
 
     public static byte[] getAromaBinary() {
         Logs.write("Aroma Binary Selected: " + Preferences.aromaVersion);
-        switch(Preferences.aromaVersion){
+        switch (Preferences.aromaVersion) {
             case "Version 3.00b1 - MELATI":
                 return JarOperations.binary_MELATI;
             case "Version 2.70 RC2 - FLAMBOYAN":

@@ -13,7 +13,7 @@ import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
-import javax.swing.JOptionPane;
+import flashablezipcreator.Protocols.Types;
 
 /**
  *
@@ -39,21 +39,21 @@ public class AromaScriptOperations {
     public String addThemesString(ProjectItemNode rootNode) {
         String str = "theme(\"" + "Nikhil" + "\");\n";
         str += "\nselectbox(\"Themes\",\"Choose your desired theme from following\",\"@customize\",\"theme.prop\",\n";
-        for (ProjectItemNode projectNode : rootNode.children) {
-            if (((ProjectNode) projectNode).projectType == ProjectNode.PROJECT_THEMES) {
-                for (ProjectItemNode theme : ((ProjectNode) projectNode).children) {
-                    str += "\"" + theme.title + "\", \"\", " + (theme.title.equals("Nikhil") ? 1 : 0) + ",\n";
+        for (ProjectItemNode projectNode : rootNode.prop.children) {
+            if (((ProjectNode) projectNode).prop.projectType == Types.PROJECT_THEMES) {
+                for (ProjectItemNode theme : ((ProjectNode) projectNode).prop.children) {
+                    str += "\"" + theme.prop.title + "\", \"\", " + (theme.prop.title.equals("Nikhil") ? 1 : 0) + ",\n";
                 }
             }
         }
         str = str.substring(0, str.length() - 2);
         str += ");\n\n";
         int i = 1;
-        for (ProjectItemNode projectNode : rootNode.children) {
-            if (((ProjectNode) projectNode).projectType == ProjectNode.PROJECT_THEMES) {
-                for (ProjectItemNode theme : ((ProjectNode) projectNode).children) {
+        for (ProjectItemNode projectNode : rootNode.prop.children) {
+            if (((ProjectNode) projectNode).prop.projectType == Types.PROJECT_THEMES) {
+                for (ProjectItemNode theme : ((ProjectNode) projectNode).prop.children) {
                     str += "if prop(\"theme.prop\", \"selected.0\")==\"" + i++ + "\" then\n"
-                            + "theme(\"" + theme.title + "\");\n"
+                            + "theme(\"" + theme.prop.title + "\");\n"
                             + "endif;\n"
                             + "\n";
                 }
@@ -82,27 +82,27 @@ public class AromaScriptOperations {
 
     public String addSelectBox(GroupNode node) {
         String str = "";
-        switch (node.groupType) {
-            case GroupNode.GROUP_DATA_LOCAL:
-            case GroupNode.GROUP_SYSTEM_MEDIA:
-//            case GroupNode.GROUP_AROMA_KERNEL:
-            case GroupNode.GROUP_SCRIPT:
-                str += "\nselectbox(\"" + node.title + " List\",\"Select from " + node.title + "\",\"@personalize\",\"" + node.prop + "\",\n"
+        switch (node.prop.groupType) {
+            case Types.GROUP_DATA_LOCAL:
+            case Types.GROUP_SYSTEM_MEDIA:
+//            case Types.GROUP_AROMA_KERNEL:
+            case Types.GROUP_SCRIPT:
+                str += "\nselectbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@personalize\",\"" + node.prop.propFile + "\",\n"
                         + "\"Select one from the list\", \"\", 2,\n"
                         + "\"Select None\",\"Skip this Group.\", 1";
                 for (int i = 0; i < node.getChildCount(); i++) {
 
-                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).description + "\", 0";
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", 0";
                 }
                 str += ");\n";
-                str += "writetmpfile(\"" + node.prop + "\",readtmpfile(\"" + node.prop + "\"));\n";
+                str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
                 break;
-            case GroupNode.GROUP_CUSTOM:
+            case Types.GROUP_CUSTOM:
                 if (!node.isSelectBox()) {
                     break;
                 }
                 str += configCustomGroup(node, node.isSelectBox());
-            case GroupNode.GROUP_SYSTEM_FONTS:
+            case Types.GROUP_SYSTEM_FONTS:
                 str += configFonts(node);
                 break;
         }
@@ -112,62 +112,62 @@ public class AromaScriptOperations {
     public String configCustomGroup(GroupNode node, boolean flag) {
         String str = "";
         if (flag) {//flag is to separate selectbox and checkbox.
-            str += "\nselectbox(\"" + node.title + " List\",\"Select from " + node.title + "\",\"@personalize\",\"" + node.prop + "\",\n"
+            str += "\nselectbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@personalize\",\"" + node.prop.propFile + "\",\n"
                     + "\"Select one from the list\", \"\", 2,\n"
                     + "\"Select None\",\"Skip this Group.\", 1";
             for (int i = 0; i < node.getChildCount(); i++) {
                 try {
-                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).description + "\", 0";
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", 0";
                 } catch (ClassCastException cce) {
-                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).description + "\", 0";
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", 0";
                 }
             }
             str += ");\n";
-            str += "writetmpfile(\"" + node.prop + "\",readtmpfile(\"" + node.prop + "\"));\n";
+            str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
         } else {
-            str += "\ncheckbox(\"" + node.title + " List\",\"Select from " + node.title + "\",\"@apps\",\"" + node.prop + "\",\n"
+            str += "\ncheckbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                     + "\"Select files from the list\", \"\", 2,\n"
                     + "\"Select All\",\"Installs All Files.\", 1";
             for (int i = 0; i < node.getChildCount(); i++) {
                 try {
-                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).description + "\", 0";
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", 0";
                 } catch (ClassCastException cce) {
-                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).description + "\", 0";
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", 0";
                 }
             }
             str += ");\n";
-            str += "writetmpfile(\"" + node.prop + "\",readtmpfile(\"" + node.prop + "\"));\n";
+            str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
         }
         return str;
     }
 
     public String configFonts(GroupNode node) {
         String str = "";
-        str += "\nselectbox(\"" + node.title + " List\",\"Select from " + node.title + " List For Preview\",\"@info\",\"" + node.prop + "\""
+        str += "\nselectbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + " List For Preview\",\"@info\",\"" + node.prop.propFile + "\""
                 + ",\n\"Select None\",\"Skip this Group.\", 1";
         for (int i = 0; i < node.getChildCount(); i++) {
-            str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).description + "\", " + 0 + "";
+            str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", " + 0 + "";
         }
         str += ");\n";
-        str += "writetmpfile(\"" + node.prop.replace(".prop", "_temp.prop") + "\",\"init=no\\n\");\n";//initialize temp.prop.
+        str += "writetmpfile(\"" + node.prop.propFile.replace(".prop", "_temp.prop") + "\",\"init=no\\n\");\n";//initialize temp.prop.
 
-        str += "if prop(\"" + node.prop + "\", \"selected.0\")==\"" + 1 + "\" then\n";
+        str += "if prop(\"" + node.prop.propFile + "\", \"selected.0\")==\"" + 1 + "\" then\n";
         str += "setvar(\"fontname\",\"" + "default" + "\");\n";
         str += "endif;\n";
 
-        if (node.groupType == GroupNode.GROUP_SYSTEM_FONTS) {
+        if (node.prop.groupType == Types.GROUP_SYSTEM_FONTS) {
             for (int i = 0; i < node.getChildCount(); i++) {
                 SubGroupNode sgnode = (SubGroupNode) node.getChildAt(i);
-                str += "if prop(\"" + node.prop + "\", \"selected.0\")==\"" + (i + 2) + "\" then\n";
+                str += "if prop(\"" + node.prop.propFile + "\", \"selected.0\")==\"" + (i + 2) + "\" then\n";
                 for (int j = 0; j < sgnode.getChildCount(); j++) {
                     FileNode fnode = (FileNode) sgnode.getChildAt(j);
-                    if (((FileNode) fnode).title.equals("DroidSans.ttf")
-                            || ((FileNode) fnode).title.equals("Roboto-Regular.ttf")) {
+                    if (((FileNode) fnode).prop.title.equals("DroidSans.ttf")
+                            || ((FileNode) fnode).prop.title.equals("Roboto-Regular.ttf")) {
                         str += "fontresload(\"0\", \"ttf/" + sgnode.toString() + ".ttf;\", \"15\");\n";
                     }
                 }
                 str += "setvar(\"fontname\",\"" + sgnode.toString() + "\");\n";
-                str += "writetmpfile(\"" + node.prop.replace(".prop", "_temp.prop") + "\",\"" + sgnode + "=yes\\n\");\n";
+                str += "writetmpfile(\"" + node.prop.propFile.replace(".prop", "_temp.prop") + "\",\"" + sgnode + "=yes\\n\");\n";
                 str += "endif;\n";
             }
             str += addFontsViewBoxString();
@@ -178,15 +178,15 @@ public class AromaScriptOperations {
 
     public String addMenuBox(ProjectNode project) {
         String str = "";
-        switch (project.projectType) {
-            case ProjectNode.PROJECT_AROMA:
-            case ProjectNode.PROJECT_CUSTOM:
-            case ProjectNode.PROJECT_MOD:
-                str += "\nmenubox(\"" + "Menu" + " List\",\"Select from " + "following" + "\",\"@installmods\",\"" + project.title + ".prop" + "\",\n"
-                        + "\"Open " + project.title + "\", \"Install files from " + project.title + "\", \"@install\"";
-                str += ",\n\"" + "Skip" + "\", \"Do Not Install files from " + project.title + "\", \"@apps\"";
+        switch (project.prop.projectType) {
+            case Types.PROJECT_AROMA:
+            case Types.PROJECT_CUSTOM:
+            case Types.PROJECT_MOD:
+                str += "\nmenubox(\"" + "Menu" + " List\",\"Select from " + "following" + "\",\"@installmods\",\"" + project.prop.title + ".prop" + "\",\n"
+                        + "\"Open " + project.prop.title + "\", \"Install files from " + project.prop.title + "\", \"@install\"";
+                str += ",\n\"" + "Skip" + "\", \"Do Not Install files from " + project.prop.title + "\", \"@apps\"";
                 str += ");\n";
-                str += "writetmpfile(\"" + project.title + ".prop" + "\",readtmpfile(\"" + project.title + ".prop" + "\"));\n";
+                str += "writetmpfile(\"" + project.prop.title + ".prop" + "\",readtmpfile(\"" + project.prop.title + ".prop" + "\"));\n";
                 break;
         }
         return str;
@@ -194,12 +194,12 @@ public class AromaScriptOperations {
 
     public String addInitString(ProjectNode project) {
         String str = "";
-        switch (project.projectType) {
-            case ProjectNode.PROJECT_AROMA:
-            case ProjectNode.PROJECT_CUSTOM:
-            case ProjectNode.PROJECT_MOD:
-                str += "setvar(\"release_version\",\"" + project.releaseVersion + "\");\n"
-                        + "setvar(\"android_version\",\"" + project.androidVersion + "\");\n"
+        switch (project.prop.projectType) {
+            case Types.PROJECT_AROMA:
+            case Types.PROJECT_CUSTOM:
+            case Types.PROJECT_MOD:
+                str += "setvar(\"release_version\",\"" + project.prop.releaseVersion + "\");\n"
+                        + "setvar(\"android_version\",\"" + project.prop.androidVersion + "\");\n"
                         + "setvar(\"file_creator\",\"" + Project.zipCreator + "\");\n";
                 break;
         }
@@ -208,10 +208,10 @@ public class AromaScriptOperations {
 
     public String addWelcomeString(ProjectNode project) {
         String str = "";
-        switch (project.projectType) {
-            case ProjectNode.PROJECT_AROMA:
-            case ProjectNode.PROJECT_CUSTOM:
-            case ProjectNode.PROJECT_MOD:
+        switch (project.prop.projectType) {
+            case Types.PROJECT_AROMA:
+            case Types.PROJECT_CUSTOM:
+            case Types.PROJECT_MOD:
                 str += "\nviewbox(\n"
                         + "\"Welcome\",\n"
                         + "\"You are about to make additional changes to your device.\\n\\n<b>\"+\n"
@@ -231,45 +231,45 @@ public class AromaScriptOperations {
 
     public String addCheckBox(GroupNode node) {
         String str = "";
-        switch (node.groupType) {
-            case GroupNode.GROUP_SYSTEM_APK:
-            case GroupNode.GROUP_SYSTEM_PRIV_APK:
-            case GroupNode.GROUP_DATA_APP:
-                str += "\ncheckbox(\"" + node.title + " List\",\"Select from " + node.title + "\",\"@apps\",\"" + node.prop + "\",\n"
+        switch (node.prop.groupType) {
+            case Types.GROUP_SYSTEM_APK:
+            case Types.GROUP_SYSTEM_PRIV_APK:
+            case Types.GROUP_DATA_APP:
+                str += "\ncheckbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                         + "\"Select files from the list\", \"\", 2,\n"
                         + "\"Select All\",\"Installs All Files.\", 1";
                 for (int i = 0; i < node.getChildCount(); i++) {
                     if (Preferences.IsFromLollipop) {
-                        switch (node.getChildAt(i).type) {
-                            case ProjectItemNode.NODE_FOLDER:
-                                str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FolderNode) node.getChildAt(i)).description + "\", 0";
+                        switch (node.getChildAt(i).prop.type) {
+                            case Types.NODE_FOLDER:
+                                str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FolderNode) node.getChildAt(i)).prop.description + "\", 0";
                                 break;
-                            case ProjectItemNode.NODE_FILE:
-                                str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).description + "\", 0";
+                            case Types.NODE_FILE:
+                                str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", 0";
                                 break;
                         }
                     } else {
-                        str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).description + "\", 0";
+                        str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", 0";
                     }
                 }
                 str += ");\n";
-                str += "writetmpfile(\"" + node.prop + "\",readtmpfile(\"" + node.prop + "\"));\n";
+                str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
                 break;
-            case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-            case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-            case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-            case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-            case GroupNode.GROUP_DELETE_FILES:
-                str += "\ncheckbox(\"" + node.title + " List\",\"Select from " + node.title + "\",\"@apps\",\"" + node.prop + "\",\n"
+            case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
+            case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
+            case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
+            case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+            case Types.GROUP_DELETE_FILES:
+                str += "\ncheckbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                         + "\"Select files from the list\", \"\", 2,\n"
                         + "\"Select All\",\"Installs All Files.\", 1";
                 for (int i = 0; i < node.getChildCount(); i++) {
-                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).description + "\", 0";
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", 0";
                 }
                 str += ");\n";
-                str += "writetmpfile(\"" + node.prop + "\",readtmpfile(\"" + node.prop + "\"));\n";
+                str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
                 break;
-            case GroupNode.GROUP_CUSTOM:
+            case Types.GROUP_CUSTOM:
                 if (!node.isCheckBox()) {
                     break;
                 }

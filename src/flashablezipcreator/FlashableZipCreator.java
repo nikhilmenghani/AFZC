@@ -5,23 +5,19 @@
  */
 package flashablezipcreator;
 
-import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.Operations.JarOperations;
-import flashablezipcreator.Protocols.Control;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
-import flashablezipcreator.Protocols.Update;
+import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.AddName;
 import flashablezipcreator.UserInterface.MyTree;
-import flashablezipcreator.UserInterface.MyTreeUI;
 import flashablezipcreator.UserInterface.Preferences;
 import static flashablezipcreator.UserInterface.Preferences.preferencesConfig;
-import flashablezipcreator.UserInterface.ProgressBarUI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -126,7 +122,9 @@ public class FlashableZipCreator {
             }
 
             if (Jar.isExecutingThrough()) {
+                Logs.write("setting jar file list");
                 JarOperations.setJarFileList();
+                Logs.write("set jar file list");
             } else {
                 Xml.file_details_path = "dist/" + Xml.file_details_path;
             }
@@ -135,13 +133,13 @@ public class FlashableZipCreator {
                 Xml.fileDetailsData = r.getFileString(Xml.file_details_path);
                 Xml.initializeProjectDetails(Xml.fileDetailsData);
             }
-
             //if(!Device.selected.equals("")){
             new MyTree().setVisible(true);
             if (Preferences.IsQuickSetup) {
-                new AddName("Project", ProjectNode.PROJECT_AROMA, MyTree.rootNode);
+                AddName addName = new AddName("Project", Types.PROJECT_AROMA, MyTree.rootNode);
             }
         } catch (IOException | ParserConfigurationException | SAXException ex) {
+            JOptionPane.showMessageDialog(null, Logs.getExceptionTrace(ex));
             Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

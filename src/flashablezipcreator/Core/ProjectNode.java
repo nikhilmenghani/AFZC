@@ -5,7 +5,8 @@
  */
 package flashablezipcreator.Core;
 
-import flashablezipcreator.Protocols.Project;
+import flashablezipcreator.Protocols.Logs;
+import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 
@@ -15,57 +16,33 @@ import java.io.File;
  */
 public class ProjectNode extends ProjectItemNode {
 
-    public int projectType;
-    public String projectName = "";
-    public boolean createZip = true; //when multiple projects will be loaded, this will help in choosing which one to create zip of.
-    public String updater_script = "";
-    public String aroma_config = "";
-    public byte[] update_binary = null;
-    public byte[] update_binary_installer = null;
-//    public String romName = Project.romName;
-//    public String romVersion = Project.romVersion;
-//    public String romAuthor = Project.romAuthor;
-//    public String romDevice = Project.romDevice;
-//    public String romDate = Project.romDate;
-//    public String gappsName = Project.gappsName;
-    public String androidVersion = Project.androidVersion;
-//    public String gappsType = Project.gappsType;
-//    public String gappsDate = Project.gappsDate;
-    public String releaseVersion = Project.releaseVersion;
-    String zipPathPrefix = "Project_";
-
-    //public static final int PROJECT_NORMAL = 1;
-    public static final int PROJECT_AROMA = 2;
-    public static final int PROJECT_CUSTOM = 3;
-    public static final int PROJECT_MOD = 4;
-    public static final int PROJECT_THEMES = 5;
-    //public static final int PROJECT_ADVANCED = 6;
-
     public ProjectNode(String title, int projectType, int modType, ProjectItemNode parent) {
-        super(title, ProjectItemNode.NODE_PROJECT, parent);
-        this.projectName = title;
-        this.projectType = projectType;
-        super.path = parent + File.separator + title;
+        super(title, Types.NODE_PROJECT, parent);
+        Logs.write("adding project now");
+        prop.projectName = title;
+        prop.projectType = projectType;
+        prop.path = parent + File.separator + title;
         switch (projectType) {
-            case ProjectNode.PROJECT_AROMA:
-                super.zipPath = parent.zipPath + "/" + "aroma_" + modType + "/" + zipPathPrefix + title;
+            case Types.PROJECT_AROMA:
+                prop.zipPath = parent.prop.zipPath + "/" + "aroma_" + modType + "/" + prop.projectZipPathPrefix + title;
                 break;
-            case ProjectNode.PROJECT_CUSTOM:
-                super.zipPath = parent.zipPath + "/" + "custom_" + modType + "/" + zipPathPrefix + title;
+            case Types.PROJECT_CUSTOM:
+                prop.zipPath = parent.prop.zipPath + "/" + "custom_" + modType + "/" + prop.projectZipPathPrefix + title;
                 break;
-            case ProjectNode.PROJECT_MOD:
-                super.zipPath = parent.zipPath + "/" + "mod_" + modType + "/" + zipPathPrefix + title;
+            case Types.PROJECT_MOD:
+                prop.zipPath = parent.prop.zipPath + "/" + "mod_" + modType + "/" + prop.projectZipPathPrefix + title;
                 break;
         }
 
-        this.androidVersion = Preferences.IsFromLollipop ? "5.x+" : "4.x+";
+        prop.androidVersion = Preferences.IsFromLollipop ? "5.x+" : "4.x+";
+        Logs.write("done adding project");
     }
 
     public void renameMe(String newName) {
         super.setTitle(newName);
-        this.projectName = newName;
-        super.path = parent.path + File.separator + newName;
-        super.zipPath = parent.zipPath + "/" + zipPathPrefix + newName;
+        prop.projectName = newName;
+        prop.path = prop.parent.prop.path + File.separator + newName;
+        prop.zipPath = prop.parent.prop.zipPath + "/" + prop.projectZipPathPrefix + newName;
         this.updateChildrenPath();
         this.updateChildrenZipPath();
     }
@@ -75,7 +52,7 @@ public class ProjectNode extends ProjectItemNode {
     }
 
     public void updateChildrenZipPath() {
-        for (ProjectItemNode node : children) {
+        for (ProjectItemNode node : prop.children) {
             ((GroupNode) node).updateZipPath(); //casting to group node as project node cannot have child of any other type.
             ((GroupNode) node).updateChildrenZipPath();
         }

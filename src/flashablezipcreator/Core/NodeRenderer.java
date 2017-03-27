@@ -6,6 +6,7 @@
 package flashablezipcreator.Core;
 
 import flashablezipcreator.FlashableZipCreator;
+import flashablezipcreator.Protocols.Types;
 import java.awt.Component;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -44,42 +45,42 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
         ProjectItemNode node = (ProjectItemNode) value;
 
         switch (node.getType()) {
-            case ProjectItemNode.NODE_ROOT:
+            case Types.NODE_ROOT:
                 setIcon(iconRoot);
                 break;
-            case ProjectItemNode.NODE_PROJECT:
+            case Types.NODE_PROJECT:
                 ProjectNode pNode = (ProjectNode) node;
-                if (pNode.projectType == ProjectNode.PROJECT_THEMES) {
+                if (pNode.prop.projectType == Types.PROJECT_THEMES) {
                     setIcon(iconThemeProject);
                 } else {
                     setIcon(iconAromaProject);
                 }
                 break;
-            case ProjectItemNode.NODE_GROUP:
+            case Types.NODE_GROUP:
                 GroupNode gNode = (GroupNode) node;
-                if (((ProjectNode) gNode.parent).projectType == ProjectNode.PROJECT_THEMES) {
+                if (((ProjectNode) gNode.prop.parent).prop.projectType == Types.PROJECT_THEMES) {
                     setIcon(iconThemeGroup);
                 }
                 else {
-                    switch (gNode.groupType) {
-                        case GroupNode.GROUP_SYSTEM_APK:
-                        case GroupNode.GROUP_SYSTEM_PRIV_APK:
+                    switch (gNode.prop.groupType) {
+                        case Types.GROUP_SYSTEM_APK:
+                        case Types.GROUP_SYSTEM_PRIV_APK:
                             setIcon(iconSystemGroup);
                             break;
-                        case GroupNode.GROUP_DATA_APP:
+                        case Types.GROUP_DATA_APP:
                             setIcon(iconDataGroup);
                             break;
-                        case GroupNode.GROUP_SYSTEM_FONTS:
+                        case Types.GROUP_SYSTEM_FONTS:
                             setIcon(iconFontsGroup);
                             break;
-                        case GroupNode.GROUP_DATA_LOCAL:
-                        case GroupNode.GROUP_SYSTEM_MEDIA:
+                        case Types.GROUP_DATA_LOCAL:
+                        case Types.GROUP_SYSTEM_MEDIA:
                             setIcon(iconBAGroup);
                             break;
-                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                        case GroupNode.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+                        case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
+                        case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
+                        case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
+                        case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
                             setIcon(iconMusicGroup);
                             break;
                         default:
@@ -87,22 +88,22 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
                     }
                 }
                 break;
-            case ProjectItemNode.NODE_SUBGROUP:
+            case Types.NODE_SUBGROUP:
                 SubGroupNode sgNode = (SubGroupNode) node;
-                switch (sgNode.subGroupType) {
-                    case SubGroupNode.TYPE_SYSTEM_FONTS:
+                switch (sgNode.prop.subGroupType) {
+                    case Types.GROUP_SYSTEM_FONTS:
                         setIcon(iconFontsSubGroup);
                         break;
-                    case SubGroupNode.TYPE_SYSTEM_MEDIA:
-                    case SubGroupNode.TYPE_DATA_LOCAL:
+                    case Types.GROUP_SYSTEM_MEDIA:
+                    case Types.GROUP_DATA_LOCAL:
                         setIcon(iconBASubGroup);
                         break;
                 }
                 break;
-            case ProjectItemNode.NODE_FOLDER:
+            case Types.NODE_FOLDER:
                 setIcon(iconFolder);
                 break;
-            case ProjectItemNode.NODE_FILE:
+            case Types.NODE_FILE:
                 setIcon(iconFile);
                 break;
         }

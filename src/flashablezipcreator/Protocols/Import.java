@@ -11,11 +11,9 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.UserInterface.MyTree;
-import static flashablezipcreator.UserInterface.MyTree.panelLower;
 import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
 import static flashablezipcreator.UserInterface.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.TreeOperations;
-import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,13 +90,13 @@ public class Import implements Runnable {
                 String projectName = Identify.getProjectName(name);
                 int projectType = Identify.getProjectType(filePath);
                 switch (projectType) {
-                    case ProjectNode.PROJECT_AROMA:
+                    case Types.PROJECT_AROMA:
                         importAromaZip(filePath, projectName, in);
                         break;
-                    case ProjectNode.PROJECT_MOD:
+                    case Types.PROJECT_MOD:
                         importModZip(filePath, projectName, in, modType);
                         break;
-                    case ProjectNode.PROJECT_CUSTOM:
+                    case Types.PROJECT_CUSTOM:
                         importCustomZip(filePath, projectName, in);
                         break;
                 }
@@ -134,18 +132,18 @@ public class Import implements Runnable {
         switch (modType) {
             case Mod.TITANIUM_BACKUP:
                 String groupName = "Titanium Backup Apps";
-                int groupType = GroupNode.GROUP_DATA_APP;
+                int groupType = Types.GROUP_DATA_APP;
                 String folderName = fName.contains("-") ? fName.substring(0, fName.indexOf("-")) : fName.replaceFirst("[.][^.]+$", "");
                 ArrayList<String> folderList = new ArrayList<>();
                 if (!filePath.contains(Identify.folderSeparator)) {
                     folderList.add(folderName);
                 }else{
-                    folderList = Identify.getFolderNames(filePath, ProjectNode.PROJECT_MOD);
+                    folderList = Identify.getFolderNames(filePath, Types.PROJECT_MOD);
                 }
                 fName = folderName + ".apk";
-                FileNode file = to.addFileToTree(fName, "", -1, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_MOD, Mod.TITANIUM_BACKUP);
-                file.fileSourcePath = file.path;
-                rz.writeFileFromZip(in, file.fileSourcePath);
+                FileNode file = to.addFileToTree(fName, "", -1, groupName, groupType, folderList, projectName, Types.PROJECT_MOD, Mod.TITANIUM_BACKUP);
+                file.prop.fileSourcePath = file.prop.path;
+                rz.writeFileFromZip(in, file.prop.fileSourcePath);
                 Logs.write("Written File: " + fName);
                 break;
         }
@@ -154,26 +152,26 @@ public class Import implements Runnable {
     public static void importCustomZip(String filePath, String projectName, InputStream in) throws IOException {
         String groupName = Identify.getGroupName(filePath);
         int groupType = Identify.getGroupType(filePath);
-        ArrayList<String> folderList = Identify.getFolderNames(filePath, ProjectNode.PROJECT_CUSTOM);
+        ArrayList<String> folderList = Identify.getFolderNames(filePath, Types.PROJECT_CUSTOM);
         String subGroupName = Identify.getSubGroupName(groupName, filePath);
         int subGroupType = groupType; //Groups that have subGroups have same type.
         String fName = (new File(filePath)).getName();
-        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_CUSTOM, Mod.MOD_LESS);
-        file.fileSourcePath = file.path;
-        rz.writeFileFromZip(in, file.fileSourcePath);
+        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, Types.PROJECT_CUSTOM, Mod.MOD_LESS);
+        file.prop.fileSourcePath = file.prop.path;
+        rz.writeFileFromZip(in, file.prop.fileSourcePath);
         Logs.write("Written File: " + fName);
     }
 
     public static void importAromaZip(String filePath, String projectName, InputStream in) throws IOException {
         String groupName = Identify.getGroupName(filePath);
         int groupType = Identify.getGroupType(filePath);
-        ArrayList<String> folderList = Identify.getFolderNames(filePath, ProjectNode.PROJECT_AROMA);
+        ArrayList<String> folderList = Identify.getFolderNames(filePath, Types.PROJECT_AROMA);
         String subGroupName = Identify.getSubGroupName(groupName, filePath);
         int subGroupType = groupType; //Groups that have subGroups have same type.
         String fName = (new File(filePath)).getName();
-        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, ProjectNode.PROJECT_AROMA, Mod.MOD_LESS);
-        file.fileSourcePath = file.path;
-        rz.writeFileFromZip(in, file.fileSourcePath);
+        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, Types.PROJECT_AROMA, Mod.MOD_LESS);
+        file.prop.fileSourcePath = file.prop.path;
+        rz.writeFileFromZip(in, file.prop.fileSourcePath);
         Logs.write("Written File: " + fName);
     }
 
