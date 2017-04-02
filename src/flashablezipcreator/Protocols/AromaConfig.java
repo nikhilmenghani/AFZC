@@ -10,6 +10,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Operations.AromaScriptOperations;
 import flashablezipcreator.Operations.TreeOperations;
+import flashablezipcreator.UserInterface.Preferences;
 
 /**
  *
@@ -25,6 +26,9 @@ public class AromaConfig {
     public static String build(ProjectItemNode rootNode) {
         aromaConfig = "";
         to = new TreeOperations();
+        if (!Preferences.aromaVersion.equals("Version 2.56 - EDELWEIS")) {
+            aromaConfig += "ini_set(\"force_colorspace\", \"rgba\");\n\n";
+        }
         aromaConfig += op.addSplashString();
         aromaConfig += op.addFontsString();
         aromaConfig += op.addThemesString(rootNode);
