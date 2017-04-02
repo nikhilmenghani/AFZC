@@ -16,6 +16,7 @@ import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
+import static flashablezipcreator.Operations.UpdateBinaryOperations.installString;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Types;
@@ -86,7 +87,9 @@ public class UpdaterScriptOperations {
 
     public String getFolderScript(String str, ProjectItemNode parent) {
         str += createDirectory(((FolderNode) parent).prop.folderLocation.replaceAll("\\\\", "/"));
-        str += "set_perm(" + ((FolderNode) parent).prop.folderPermission + ");\n";
+        if (((FolderNode) parent).prop.setPermissions) {
+            str += "set_perm(" + ((FolderNode) parent).prop.folderPermission + ");\n";
+        }
         for (ProjectItemNode child : parent.prop.children) {
             if (child.prop.type == Types.NODE_FOLDER) {
                 str = getFolderScript(str, child);
@@ -105,7 +108,9 @@ public class UpdaterScriptOperations {
                     str += addPrintString("Copying " + file.prop.title);
                     str += "package_extract_file(\"" + file.prop.fileZipPath + "\", \"" + file.prop.fileInstallLocation + "/" + file.prop.title + "\");\n";
                 }
-                str += "set_perm(" + file.prop.filePermission + ");\n";
+                if (file.prop.setPermissions) {
+                    str += "set_perm(" + file.prop.filePermission + ");\n";
+                }
             }
         }
         return str;
@@ -149,7 +154,9 @@ public class UpdaterScriptOperations {
                 } else {
                     str += addPrintString(file.prop.title, copyString);
                     str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\");\n";
-                    str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
+                    if (((FileNode) file).prop.setPermissions) {
+                        str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
+                    }
                 }
             }
             str += "endif;\n";
@@ -161,7 +168,9 @@ public class UpdaterScriptOperations {
                 } else {
                     str += addPrintString(((FileNode) file).prop.title, copyString);
                     str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\");\n";
-                    str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
+                    if (((FileNode) file).prop.setPermissions) {
+                        str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
+                    }
                 }
                 str += "endif;\n";
             }
@@ -206,13 +215,17 @@ public class UpdaterScriptOperations {
                     switch (node.prop.groupType) {
                         case Types.GROUP_SYSTEM_FONTS:
                             str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\");\n";
-                            str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n\n";
+                            if (((FileNode) file).prop.setPermissions) {
+                                str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n\n";
+                            }
                             break;
                         case Types.GROUP_DATA_LOCAL:
                         case Types.GROUP_SYSTEM_MEDIA:
                             //this will rename any zip package to bootamination.zip allowing users to add bootanimation.zip with custom names.
                             str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + "bootanimation.zip" + "\");\n";
-                            str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n\n";
+                            if (((FileNode) file).prop.setPermissions) {
+                                str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n\n";
+                            }
                             break;
                     }
                 }
@@ -229,36 +242,34 @@ public class UpdaterScriptOperations {
             str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
             for (ProjectItemNode tempNode : node.prop.children) {
                 switch (tempNode.prop.type) {
-                    case Types.NODE_SUBGROUP:
-                        str += addPrintString(((SubGroupNode) tempNode).prop.title, installString);
-                        for (ProjectItemNode file : tempNode.prop.children) {
-                            str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\");\n";
-                            str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
-                        }
+                    case Types.NODE_FOLDER:
+                        str += addPrintString(((FolderNode) tempNode).prop.title, installString);
+                        str = getFolderScript(str, (FolderNode) tempNode);
                         break;
                     case Types.NODE_FILE:
                         str += addPrintString(((FileNode) tempNode).prop.title, installString);
                         str += "package_extract_file(\"" + ((FileNode) tempNode).prop.fileZipPath + "\", \"" + ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title + "\");\n";
-                        str += "set_perm(" + ((FileNode) tempNode).prop.filePermission + ");\n";
+                        if (((FileNode) tempNode).prop.setPermissions) {
+                            str += "set_perm(" + ((FileNode) tempNode).prop.filePermission + ");\n";
+                        }
                 }
             }
             str += "endif;\n";
             for (ProjectItemNode tempNode : node.prop.children) {
                 switch (tempNode.prop.type) {
-                    case Types.NODE_SUBGROUP:
+                    case Types.NODE_FOLDER:
                         str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
-                        str += addPrintString(((SubGroupNode) tempNode).prop.title, installString);
-                        for (ProjectItemNode file : tempNode.prop.children) {
-                            str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\");\n";
-                            str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
-                        }
+                        str += addPrintString(((FolderNode) tempNode).prop.title, installString);
+                        str = getFolderScript(str, (FolderNode) tempNode);
                         str += "endif;\n";
                         break;
                     case Types.NODE_FILE:
                         str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
                         str += addPrintString(((FileNode) tempNode).prop.title, installString);
                         str += "package_extract_file(\"" + ((FileNode) tempNode).prop.fileZipPath + "\", \"" + ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title + "\");\n";
-                        str += "set_perm(" + ((FileNode) tempNode).prop.filePermission + ");\n";
+                        if (((FileNode) tempNode).prop.setPermissions) {
+                            str += "set_perm(" + ((FileNode) tempNode).prop.filePermission + ");\n";
+                        }
                         str += "endif;\n";
                 }
             }
@@ -268,18 +279,17 @@ public class UpdaterScriptOperations {
                 switch (tempNode.prop.type) {
                     case Types.NODE_SUBGROUP:
                         str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"selected.1\")==\"" + count++ + "\") then \n";
-                        str += addPrintString(((SubGroupNode) tempNode).prop.title, installString);
-                        for (ProjectItemNode file : tempNode.prop.children) {
-                            str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\");\n";
-                            str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
-                        }
+                        str += addPrintString(((FolderNode) tempNode).prop.title, installString);
+                        str = getFolderScript(str, (FolderNode) tempNode);
                         str += "endif;\n";
                         break;
                     case Types.NODE_FILE:
                         str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"selected.1\")==\"" + count++ + "\") then \n";
                         str += addPrintString(((FileNode) tempNode).prop.title, installString);
                         str += "package_extract_file(\"" + ((FileNode) tempNode).prop.fileZipPath + "\", \"" + ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title + "\");\n";
-                        str += "set_perm(" + ((FileNode) tempNode).prop.filePermission + ");\n";
+                        if (((FileNode) tempNode).prop.setPermissions) {
+                            str += "set_perm(" + ((FileNode) tempNode).prop.filePermission + ");\n";
+                        }
                         str += "endif;\n";
                 }
             }
