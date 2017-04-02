@@ -117,7 +117,7 @@ public class AromaScriptOperations {
                     + "\"Select None\",\"Skip this Group.\", 1";
             for (int i = 0; i < node.getChildCount(); i++) {
                 try {
-                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", 0";
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FolderNode) node.getChildAt(i)).prop.description + "\", 0";
                 } catch (ClassCastException cce) {
                     str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", 0";
                 }
@@ -130,7 +130,7 @@ public class AromaScriptOperations {
                     + "\"Select All\",\"Installs All Files.\", 1";
             for (int i = 0; i < node.getChildCount(); i++) {
                 try {
-                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", 0";
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FolderNode) node.getChildAt(i)).prop.description + "\", 0";
                 } catch (ClassCastException cce) {
                     str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", 0";
                 }

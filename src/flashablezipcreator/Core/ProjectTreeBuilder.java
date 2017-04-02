@@ -29,6 +29,7 @@ public class ProjectTreeBuilder {
         tree.setDragEnabled(true);
         tree.setEditable(true);
         tree.setInvokesStopCellEditing(true);
+        tree.setSelectionRow(0);
         tree.setShowsRootHandles(true);
         tree.setTransferHandler(new MyTransferHandler(rootNode, (DefaultTreeModel) ProjectTreeBuilder.tree.getModel()));
         Font currentFont = tree.getFont();

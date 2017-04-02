@@ -18,6 +18,10 @@ import java.nio.file.Path;
  */
 public final class FileNode extends ProjectItemNode {
 
+    public FileNode(NodeProperties properties){
+        super(properties);
+    }
+    
     public FileNode(String fileSourcePath, GroupNode parent) {
         super((new File(fileSourcePath)).getName(), Types.NODE_FILE, parent);
         prop.originalParent = parent;
@@ -26,6 +30,7 @@ public final class FileNode extends ProjectItemNode {
         prop.fileInstallLocation = parent.prop.location.replaceAll("\\\\", "/");
         prop.path = parent.prop.path + File.separator + file.getName();
         prop.setPermissions(parent.prop.permission, prop.title);
+        prop.setPermissions = parent.prop.setPermissions;
         prop.fileSourcePath = file.getAbsolutePath();
         prop.projectName = parent.prop.projectName;
         prop.originalGroupType = parent.prop.originalGroupType;
@@ -47,6 +52,7 @@ public final class FileNode extends ProjectItemNode {
         } else {
             prop.setPermissions(parent.prop.permission, prop.title);
         }
+        prop.setPermissions = parent.prop.setPermissions;
         prop.fileSourcePath = fileSourcePath;
         prop.projectName = parent.prop.projectName;
         prop.originalGroupType = parent.prop.originalGroupType;
@@ -66,6 +72,7 @@ public final class FileNode extends ProjectItemNode {
         } else {
             prop.setPermissions(parent.prop.permission, prop.title);
         }
+        prop.setPermissions = parent.prop.setPermissions;
         prop.fileSourcePath = fileSourcePath;
         prop.projectName = parent.prop.projectName;
         prop.originalGroupType = parent.prop.originalGroupType;
@@ -73,20 +80,16 @@ public final class FileNode extends ProjectItemNode {
         prop.location = parent.prop.location;
     }
 
-    public void updateZipPath() {
-        prop.fileZipPath = prop.parent.prop.zipPath + "/" + prop.title;
-    }
+//    public void updateZipPath() {
+//        prop.fileZipPath = prop.parent.prop.zipPath + "/" + prop.title;
+//    }
 
-    public void updateInstallLocation() {
-        prop.fileInstallLocation = prop.parent.prop.location.replaceAll("\\\\", "/");
-    }
+//    public void updateInstallLocation() {
+//        prop.fileInstallLocation = prop.parent.prop.location.replaceAll("\\\\", "/");
+//    }
 
     public String getDeleteLocation() {
         return ((GroupNode) parent).getLocation() + "/" + prop.title;
-    }
-
-    public void setPermissions(String parentPermission, String title) {
-        prop.filePermission = (parentPermission + "\"" + prop.fileInstallLocation + "/" + title + "\"").replaceAll("\\\\", "/");
     }
 
     public void setDescription(String desc) {

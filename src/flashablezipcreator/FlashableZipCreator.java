@@ -12,9 +12,7 @@ import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
-import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.Protocols.Xml;
-import flashablezipcreator.UserInterface.AddName;
 import flashablezipcreator.UserInterface.MyTree;
 import flashablezipcreator.UserInterface.Preferences;
 import static flashablezipcreator.UserInterface.Preferences.preferencesConfig;
@@ -47,13 +45,16 @@ public class FlashableZipCreator {
      * @throws javax.xml.parsers.ParserConfigurationException
      * @throws org.xml.sax.SAXException
      */
+    
+    public static String OS = "Windoes";
+            
     public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException, URISyntaxException, TransformerException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        String OS = "Windows";
+        OS = "Windows";
         try {
             OS = JarOperations.getSystemOS();
             if (OS.equals("Windows")) {
@@ -78,7 +79,11 @@ public class FlashableZipCreator {
             java.util.logging.Logger.getLogger(JTreeDemo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
+        letsBegin();
+    }
+    
+    public static void letsBegin(){
         try {
             File f = new File("Preferences.config");
             Read r = new Read();
@@ -133,11 +138,7 @@ public class FlashableZipCreator {
                 Xml.fileDetailsData = r.getFileString(Xml.file_details_path);
                 Xml.initializeProjectDetails(Xml.fileDetailsData);
             }
-            //if(!Device.selected.equals("")){
             new MyTree().setVisible(true);
-            if (Preferences.IsQuickSetup) {
-                AddName addName = new AddName("Project", Types.PROJECT_AROMA, MyTree.rootNode);
-            }
         } catch (IOException | ParserConfigurationException | SAXException ex) {
             JOptionPane.showMessageDialog(null, Logs.getExceptionTrace(ex));
             Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);

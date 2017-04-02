@@ -14,6 +14,10 @@ import java.io.File;
  */
 public class SubGroupNode extends ProjectItemNode {
 
+    public SubGroupNode(NodeProperties properties){
+        super(properties);
+    }
+    
     public SubGroupNode(String title, int type, GroupNode parent) {
         super(title, Types.NODE_SUBGROUP, parent);
         prop.originalParent = parent;
@@ -38,7 +42,7 @@ public class SubGroupNode extends ProjectItemNode {
         }
         prop.zipPath = parent.prop.zipPath + "/" + prop.subGroupZipPathPrefix + title;
         prop.permission = parent.prop.permission;
-        prop.groupPermission = parent.prop.groupPermission;
+        prop.setPermissions = parent.prop.setPermissions;
     }
 
     public String getLocation() {
@@ -61,7 +65,7 @@ public class SubGroupNode extends ProjectItemNode {
         for (ProjectItemNode node : prop.children) {
             switch (node.prop.type) {
                 case Types.NODE_FILE:
-                    ((FileNode) node).updateZipPath();
+                    ((FileNode) node).prop.updateFileZipPath();
                     break;
             }
         }

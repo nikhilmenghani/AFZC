@@ -71,7 +71,7 @@ public class MyTree extends javax.swing.JFrame {
         lblHeader = new javax.swing.JLabel();
         lblVersion = new javax.swing.JLabel();
         SP_tree = ProjectTreeBuilder.buildScrollPane();
-        tree = new javax.swing.JTree();
+        //tree = new javax.swing.JTree();
         panelLower = new javax.swing.JPanel();
         layeredPaneButtons = new javax.swing.JLayeredPane();
         panelImportZip = new javax.swing.JPanel();

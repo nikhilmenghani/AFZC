@@ -7,6 +7,7 @@ package flashablezipcreator.Protocols;
 
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.GroupNode;
+import flashablezipcreator.Core.NodeProperties;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.FlashableZipCreator;
@@ -37,7 +38,9 @@ public class Jar {
             for (String theme : JarOperations.themesList) {
                 Logs.write(theme);
                 if (Preferences.themes.contains(theme)) {
-                    GroupNode themeGroup = (GroupNode) themesProject.addChild(new GroupNode(theme, Types.GROUP_AROMA_THEMES, themesProject), true);String themePath = "META-INF/com/google/android/aroma/themes/" + theme + "/";
+                    NodeProperties np = new NodeProperties(theme, Types.GROUP_AROMA_THEMES, themesProject);
+                    GroupNode themeGroup = (GroupNode) themesProject.addChild(new GroupNode(np), true);
+                    String themePath = "META-INF/com/google/android/aroma/themes/" + theme + "/";
                     for (String themesPath : JarOperations.themesFileList) {
                         if (themesPath.contains(themePath)) {
                             themeGroup.addChild(new FileNode(themesPath, themeGroup), true);

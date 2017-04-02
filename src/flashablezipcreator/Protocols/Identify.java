@@ -35,6 +35,8 @@ public class Identify {
     static String subGroupSeparator = "SubGroup_";
     static String folderSeparator = "Folder_";
     static String typeSeparator = "Type_";
+    static String locSeparator = "Loc_";
+    static String permSeparator = "Perm_";
 
     public static void init() {
         rom = false;
@@ -176,6 +178,25 @@ public class Identify {
     public static String getGroupName(String path) {
         String str = path.substring(path.indexOf(groupSeparator) + groupSeparator.length(), path.length());
         return str.substring(0, str.indexOf("/"));
+    }
+
+    public static String getPermissions(String customOriginalGroupType) {
+        String str = customOriginalGroupType.substring(customOriginalGroupType.indexOf(permSeparator) + permSeparator.length()
+                , customOriginalGroupType.length());
+        return str;
+    }
+
+    public static String getLocation(String customOriginalGroupType) {
+        String str = customOriginalGroupType.substring(customOriginalGroupType.indexOf(locSeparator) + locSeparator.length(),
+                customOriginalGroupType.indexOf(permSeparator) - 1)
+                .replaceAll("\\+", "/");
+        return str;
+    }
+
+    public static String getOriginalGroupType(String path) {
+        String str = path.substring(path.indexOf(typeSeparator) + typeSeparator.length(), path.length());
+        str = str.substring(0, str.indexOf("/"));
+        return str;
     }
 
     public static int getGroupType(String path) {

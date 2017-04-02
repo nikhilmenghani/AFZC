@@ -16,6 +16,10 @@ import java.io.IOException;
  */
 public class FolderNode extends ProjectItemNode {
 
+    public FolderNode(NodeProperties properties) {
+        super(properties);
+    }
+
     public FolderNode(String title, int type, ProjectItemNode parent) {
         super(title, type, parent);
         prop.originalParent = parent;
@@ -35,8 +39,9 @@ public class FolderNode extends ProjectItemNode {
         prop.location = parent.prop.location;
         prop.folderLocation = parent.prop.location + File.separator + title;
         prop.permission = parent.prop.permission;
-        prop.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " " : 
-                "1000" + ", " + "1000" + ", " + "0755" + ", ";
+        prop.setPermissions = parent.prop.setPermissions;
+        prop.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
+                : "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
         prop.projectName = parent.prop.projectName;
         prop.originalGroupType = parent.prop.originalGroupType;
@@ -52,8 +57,9 @@ public class FolderNode extends ProjectItemNode {
         prop.location = parent.prop.location;
         prop.folderLocation = parent.prop.folderLocation + File.separator + title;
         prop.permission = parent.prop.permission;
-        prop.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " " : 
-                "1000" + ", " + "1000" + ", " + "0755" + ", ";
+        prop.setPermissions = parent.prop.setPermissions;
+        prop.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
+                : "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
         prop.projectName = parent.prop.projectName;
         prop.originalGroupType = parent.prop.originalGroupType;
@@ -70,6 +76,9 @@ public class FolderNode extends ProjectItemNode {
         prop.path = prop.parent.prop.path + File.separator + newName;
         prop.zipPath = prop.parent.prop.zipPath + "/" + prop.folderZipPathPrefix + newName;
         prop.location = prop.parent.prop.location + File.separator + newName;
+        prop.folderLocation = prop.folderLocation.replaceAll("\\\\", "/");
+        prop.folderLocation = prop.folderLocation.substring(0, prop.folderLocation.lastIndexOf("/") + 1) + newName;
+        setPermissions();
         this.updateChildrenPath();
         this.updateChildrenZipPath();
     }
@@ -86,12 +95,12 @@ public class FolderNode extends ProjectItemNode {
         for (ProjectItemNode node : prop.children) {
             switch (node.prop.type) {
                 case Types.NODE_FILE:
-                    ((FileNode) node).updateZipPath();
-                    ((FileNode) node).updateInstallLocation();
+                    ((FileNode) node).prop.updateFileZipPath();
+                    ((FileNode) node).prop.updateFileInstallLocation();
                     if (prop.isBootAnimationGroup) {
-                        ((FileNode) node).setPermissions(prop.groupPermission, "bootanimation.zip");
+                        ((FileNode) node).prop.setPermissions(prop.owner, prop.group, prop.perm, "bootanimation.zip");
                     } else {
-                        ((FileNode) node).setPermissions(prop.groupPermission, ((FileNode) node).prop.title);
+                        ((FileNode) node).prop.setPermissions(prop.owner, prop.group, prop.perm, ((FileNode) node).prop.title);
                     }
                     break;
             }

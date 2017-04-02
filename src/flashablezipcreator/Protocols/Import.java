@@ -6,9 +6,8 @@
 package flashablezipcreator.Protocols;
 
 import flashablezipcreator.Core.FileNode;
-import flashablezipcreator.Core.GroupNode;
+import flashablezipcreator.Core.NodeProperties;
 import flashablezipcreator.Core.ProjectItemNode;
-import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
@@ -137,11 +136,11 @@ public class Import implements Runnable {
                 ArrayList<String> folderList = new ArrayList<>();
                 if (!filePath.contains(Identify.folderSeparator)) {
                     folderList.add(folderName);
-                }else{
+                } else {
                     folderList = Identify.getFolderNames(filePath, Types.PROJECT_MOD);
                 }
                 fName = folderName + ".apk";
-                FileNode file = to.addFileToTree(fName, "", -1, groupName, groupType, folderList, projectName, Types.PROJECT_MOD, Mod.TITANIUM_BACKUP);
+                FileNode file = to.addFileToTree(fName, "", -1, groupName, groupType, "", folderList, projectName, Types.PROJECT_MOD, Mod.TITANIUM_BACKUP);
                 file.prop.fileSourcePath = file.prop.path;
                 rz.writeFileFromZip(in, file.prop.fileSourcePath);
                 Logs.write("Written File: " + fName);
@@ -152,11 +151,19 @@ public class Import implements Runnable {
     public static void importCustomZip(String filePath, String projectName, InputStream in) throws IOException {
         String groupName = Identify.getGroupName(filePath);
         int groupType = Identify.getGroupType(filePath);
+        String originalGroupType = "";
+        if (groupType == Types.GROUP_CUSTOM) {
+            try {
+                originalGroupType = Identify.getOriginalGroupType(filePath);
+            } catch (Exception e) {
+                originalGroupType = "";
+            }
+        }
         ArrayList<String> folderList = Identify.getFolderNames(filePath, Types.PROJECT_CUSTOM);
         String subGroupName = Identify.getSubGroupName(groupName, filePath);
         int subGroupType = groupType; //Groups that have subGroups have same type.
         String fName = (new File(filePath)).getName();
-        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, Types.PROJECT_CUSTOM, Mod.MOD_LESS);
+        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_CUSTOM, Mod.MOD_LESS);
         file.prop.fileSourcePath = file.prop.path;
         rz.writeFileFromZip(in, file.prop.fileSourcePath);
         Logs.write("Written File: " + fName);
@@ -165,11 +172,20 @@ public class Import implements Runnable {
     public static void importAromaZip(String filePath, String projectName, InputStream in) throws IOException {
         String groupName = Identify.getGroupName(filePath);
         int groupType = Identify.getGroupType(filePath);
+        String originalGroupType = "";
+        if (groupType == Types.GROUP_CUSTOM) {
+            try {
+                originalGroupType = Identify.getOriginalGroupType(filePath);
+            } catch (Exception e) {
+                originalGroupType = "";
+            }
+        }
         ArrayList<String> folderList = Identify.getFolderNames(filePath, Types.PROJECT_AROMA);
         String subGroupName = Identify.getSubGroupName(groupName, filePath);
         int subGroupType = groupType; //Groups that have subGroups have same type.
         String fName = (new File(filePath)).getName();
-        FileNode file = to.addFileToTree(fName, subGroupName, subGroupType, groupName, groupType, folderList, projectName, Types.PROJECT_AROMA, Mod.MOD_LESS);
+        NodeProperties np = new NodeProperties();
+        FileNode file = np.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_AROMA, Mod.MOD_LESS);
         file.prop.fileSourcePath = file.prop.path;
         rz.writeFileFromZip(in, file.prop.fileSourcePath);
         Logs.write("Written File: " + fName);

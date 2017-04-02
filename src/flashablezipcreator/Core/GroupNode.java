@@ -5,9 +5,7 @@
  */
 package flashablezipcreator.Core;
 
-import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Types;
-import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 import java.io.IOException;
 
@@ -17,140 +15,10 @@ import java.io.IOException;
  */
 public final class GroupNode extends ProjectItemNode {
 
-    public GroupNode(String title, int type, ProjectNode parent) {
-        super(title, Types.NODE_GROUP, parent);
-        prop.groupType = type;
-        prop.groupName = title;
-        prop.path = parent.prop.path + File.separator + title;
-        prop.projectName = parent.prop.projectName;
-
-        switch (type) {
-            case Types.GROUP_SYSTEM_APK:
-                prop.location = "/system/app";
-                prop.propFile = getProp("system_app");
-                prop.extension = "apk";
-                prop.originalGroupType = prop.typePrefix + "system_app";
-                setPermissions("0", "0", "0644");
-                break;
-            case Types.GROUP_SYSTEM_PRIV_APK:
-                prop.location = "/system/priv-app";
-                prop.propFile = getProp("system_priv");
-                prop.extension = "apk";
-                prop.originalGroupType = prop.typePrefix + "system_priv_app";
-                setPermissions("0", "0", "0644");
-                break;
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                prop.location = "/system/media/audio/alarms";
-                prop.propFile = getProp("system_media_alarms");
-                prop.extension = "audio";
-                prop.originalGroupType = prop.typePrefix + "system_media_alarms";
-                setPermissions("1000", "1000", "0644");
-                break;
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                prop.location = "/system/media/audio/notifications";
-                prop.propFile = getProp("system_media_notifications");
-                prop.extension = "audio";
-                prop.originalGroupType = prop.typePrefix + "system_media_notifications";
-                setPermissions("1000", "1000", "0644");
-                break;
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                prop.location = "/system/media/audio/ringtones";
-                prop.propFile = getProp("system_media_ringtones");
-                prop.extension = "audio";
-                prop.originalGroupType = prop.typePrefix + "system_media_ringtones";
-                setPermissions("1000", "1000", "0644");
-                break;
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-                prop.location = "/system/media/audio/ui";
-                prop.propFile = getProp("system_media_ui");
-                prop.extension = "audio";
-                prop.originalGroupType = prop.typePrefix + "system_media_ui";
-                setPermissions("1000", "1000", "0644");
-                break;
-            case Types.GROUP_SYSTEM_MEDIA:
-                prop.location = "/system/media";
-                prop.propFile = getProp("system_media");
-                prop.isSelectBox = true;
-                prop.extension = "zip";
-                prop.isBootAnimationGroup = true;
-                prop.originalGroupType = prop.typePrefix + "system_media";
-                setPermissions("1000", "1000", "0644");
-                break;
-            case Types.GROUP_SYSTEM_FONTS:
-                prop.location = "/system/fonts";
-                prop.propFile = getProp("system_fonts");
-                prop.isSelectBox = true;
-                prop.extension = "ttf";
-                prop.originalGroupType = prop.typePrefix + "system_fonts";
-                setPermissions("1000", "1000", "0644");
-                break;
-            case Types.GROUP_DATA_APP:
-                prop.location = "/data/app";
-                prop.propFile = getProp("data_app");
-                prop.extension = "apk";
-                prop.originalGroupType = prop.typePrefix + "data_app";
-                setPermissions("1000", "1000", "0644");
-                break;
-            case Types.GROUP_DATA_LOCAL:
-                prop.location = "/data/local";
-                prop.propFile = getProp("data_local");
-                prop.isSelectBox = true;
-                prop.extension = "zip";
-                prop.isBootAnimationGroup = true;
-                prop.originalGroupType = prop.typePrefix + "data_local";
-                setPermissions("1000", "1000", "0644");
-                break;
-            case Types.GROUP_CUSTOM:
-//                prop.location = "/custom";
-//                this.permissions = "";
-                prop.propFile = getProp("custom");
-                prop.isSelectBox = false;
-                prop.originalGroupType = prop.typePrefix + "custom";
-                break;
-            case Types.GROUP_MOD:
-//                prop.location = "";
-//                this.permissions = "";
-                //following properties not needed but added.
-                prop.propFile = getProp("other");
-                prop.isSelectBox = false;
-                prop.originalGroupType = prop.typePrefix + "other";
-                break;
-            case Types.GROUP_AROMA_THEMES:
-//                prop.location = "";
-//                this.permissions = "";
-                Logs.write("adding themes");
-                prop.propFile = "themes.prop";
-                prop.isSelectBox = true;
-                prop.path = "META-INF/com/google/android/aroma/themes" + File.separator + title;
-                prop.extension = "themes";
-                break;
-            case Types.GROUP_DELETE_FILES:
-                prop.propFile = getProp("delete");
-                prop.isSelectBox = false;
-                prop.extension = "delete";
-                prop.originalGroupType = prop.typePrefix + "delete";
-                break;
-            case Types.GROUP_SCRIPT:
-                prop.propFile = getProp("dpi");
-                prop.isSelectBox = true;
-                prop.extension = "sh";
-                prop.originalGroupType = prop.typePrefix + "script";
-                break;
-        }
-        prop.zipPath = parent.prop.zipPath + "/" + prop.originalGroupType + "/" + prop.groupZipPathPrefix + title;
-        Logs.write("group property ready");
+    public GroupNode(NodeProperties properties) {
+        super(properties);
     }
-
-    public String setPermissions(String i, String j, String k) {
-        if (Preferences.useUniversalBinary) {
-            prop.groupPermission = i + " " + j + " " + k + " ";
-        } else {
-            prop.groupPermission = i + ", " + j + ", " + k + ", ";
-        }
-        prop.permission = prop.groupPermission;
-        return prop.groupPermission;
-    }
-
+    
     public boolean isSelectBox() {
         return prop.isSelectBox;
     }
@@ -176,6 +44,7 @@ public final class GroupNode extends ProjectItemNode {
         prop.groupName = newName;
         prop.path = prop.parent.prop.path + File.separator + newName;
         prop.zipPath = prop.parent.prop.zipPath + "/" + prop.originalGroupType + "/" + prop.groupZipPathPrefix + newName;
+        prop.reloadZipPath(newName);
         this.updateChildrenPath();
         this.updateChildrenZipPath();
     }
@@ -192,7 +61,7 @@ public final class GroupNode extends ProjectItemNode {
                     ((FolderNode) node).updateChildrenZipPath();
                     break;
                 case Types.NODE_FILE:
-                    ((FileNode) node).updateZipPath();
+                    ((FileNode) node).prop.updateFileZipPath();
                     break;
             }
         }

@@ -7,7 +7,6 @@ package flashablezipcreator.Core;
 
 import flashablezipcreator.Protocols.Logs;
 import java.util.Enumeration;
-import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
@@ -42,6 +41,11 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
         prop.title = title;
         prop.type = type;
         prop.parent = parent;
+    }
+    
+    public ProjectItemNode(NodeProperties properties){
+        this(properties.title, properties.type, properties.parent);
+        prop = properties;
     }
 
     public ProjectItemNode addChild(ProjectItemNode child, boolean overwrite) {

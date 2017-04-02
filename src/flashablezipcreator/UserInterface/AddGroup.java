@@ -6,12 +6,16 @@
 package flashablezipcreator.UserInterface;
 
 import flashablezipcreator.Core.GroupNode;
+import flashablezipcreator.Core.NodeProperties;
+import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
+import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.Protocols.Types;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,9 +27,128 @@ public class AddGroup extends javax.swing.JFrame {
      * Creates new form CustomGroupUI
      */
     public ProjectNode pNode = null;
+    public GroupNode gNode = null;
+    public String title = "Group";
+    public String location = "";
+    public String owner = "";
+    public String group = "";
+    public String perm = "";
+    public boolean modifyPerms = true;
+    public boolean isSingleFileGroup = false;
+    public int groupType;
+    public int parentType;
+    public int headerWidth = 30;
 
     public AddGroup(ProjectNode project) {
         this.pNode = project;
+        initComponents();
+    }
+
+    public AddGroup(int groupType, ProjectItemNode node) {
+        this.groupType = groupType;
+        switch (node.prop.type) {
+            case Types.NODE_PROJECT:
+                this.pNode = (ProjectNode) node;
+                this.parentType = Types.NODE_PROJECT;
+                break;
+            case Types.NODE_GROUP:
+                this.gNode = (GroupNode) node;
+                this.parentType = Types.NODE_GROUP;
+                break;
+        }
+        switch (groupType) {
+            case Types.GROUP_SYSTEM_APK:
+                location = "/system/app";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "System Apps Group";
+                headerWidth = 26;
+                break;
+            case Types.GROUP_SYSTEM_PRIV_APK:
+                location = "/system/priv-app";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "Priv Apps Group";
+                break;
+            case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
+                location = "/system/media/audio/alarms";
+                owner = "1000";
+                group = "1000";
+                perm = "0644";
+                title = "Alarms Group";
+                break;
+            case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
+                location = "/system/media/audio/notifications";
+                owner = "1000";
+                group = "1000";
+                perm = "0644";
+                title = "Notifications Group";
+                headerWidth = 28;
+                break;
+            case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
+                location = "/system/media/audio/ringtones";
+                owner = "1000";
+                group = "1000";
+                perm = "0644";
+                title = "Ringtones Group";
+                break;
+            case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+                location = "/system/media/audio/ui";
+                owner = "1000";
+                group = "1000";
+                perm = "0644";
+                title = "UI Tones Group";
+                break;
+            case Types.GROUP_SYSTEM_MEDIA:
+                location = "/system/media";
+                owner = "1000";
+                group = "1000";
+                perm = "0644";
+                title = pNode != null ? "Boot Animations Group" : "Boot Animation";
+                headerWidth = 24;
+                isSingleFileGroup = true;
+                break;
+            case Types.GROUP_SYSTEM_FONTS:
+                location = "/system/fonts";
+                owner = "1000";
+                group = "1000";
+                perm = "0644";
+                title = pNode != null ? "Fonts Group" : "Font";
+                isSingleFileGroup = true;
+                break;
+            case Types.GROUP_DATA_APP:
+                location = "/data/app";
+                owner = "1000";
+                group = "1000";
+                perm = "0644";
+                title = "Data Apps Group";
+                break;
+            case Types.GROUP_DATA_LOCAL:
+                location = "/data/local";
+                owner = "1000";
+                group = "1000";
+                perm = "0644";
+                title = pNode != null ? "Boot Animations Group" : "Boot Animation";
+                headerWidth = 24;
+                isSingleFileGroup = true;
+                break;
+            case Types.GROUP_CUSTOM:
+                title = "Custom Group";
+                break;
+            case Types.GROUP_MOD:
+                break;
+            case Types.GROUP_AROMA_THEMES:
+                break;
+            case Types.GROUP_DELETE_FILES:
+                break;
+            case Types.GROUP_SCRIPT:
+                break;
+        }
+        if (!location.equals("")) {
+            modifyPerms = false;
+        }
         initComponents();
     }
 
@@ -39,7 +162,7 @@ public class AddGroup extends javax.swing.JFrame {
 
     private void initComponents() {
 
-        dialog = new JDialog(this, "Add Group Name", true);
+        dialog = new JDialog(this, "Add " + title, true);
         dialog.setResizable(false);
 
         customrbGroup = new javax.swing.ButtonGroup();
@@ -48,7 +171,6 @@ public class AddGroup extends javax.swing.JFrame {
         custompanelPermissions = new javax.swing.JPanel();
         customcbOthersX = new javax.swing.JCheckBox();
         customcbOwnerW = new javax.swing.JCheckBox();
-        customlblPermInDigit = new javax.swing.JLabel();
         customcbGroupW = new javax.swing.JCheckBox();
         customcbSticky = new javax.swing.JCheckBox();
         customlblR = new javax.swing.JLabel();
@@ -62,17 +184,28 @@ public class AddGroup extends javax.swing.JFrame {
         customcbSetuid = new javax.swing.JCheckBox();
         customcbGroupR = new javax.swing.JCheckBox();
         customcbSetgid = new javax.swing.JCheckBox();
-        customlblPermInString = new javax.swing.JLabel();
         customcbOthersW = new javax.swing.JCheckBox();
         customcbOthersR = new javax.swing.JCheckBox();
         customlblOthers = new javax.swing.JLabel();
         customcbOwnerX = new javax.swing.JCheckBox();
         customcbPermissions = new javax.swing.JCheckBox();
+        customlblPermInString = new javax.swing.JLabel();
+        customtxtOwner = new PHTextField("Owner(1000)");
+        customtxtOwner.setText(owner);
+        customtxtGroup = new PHTextField("Group(1000)");
+        customtxtGroup.setText(group);
+        customtxtPerm = new PHTextField("Perm(0000)");
+        customtxtPerm.setText(perm);
+        setPermissionsFromDigit(perm);
         custompanelGroupDetails = new javax.swing.JPanel();
-        customtxtGroupName = new PHTextField("Enter Your Group Name");
+        customtxtGroupName = new PHTextField("Enter " + title + " Name");
         customtxtInstallLocation = new PHTextField("Enter Install Location (/system/app)");
+        customtxtInstallLocation.setText(location);
+        customtxtInstallLocation.setEnabled(modifyPerms);
         customrbSingleFile = new javax.swing.JRadioButton();
+        customrbSingleFile.setEnabled(modifyPerms);
         customrbMultipleFiles = new javax.swing.JRadioButton();
+        customrbMultipleFiles.setEnabled(modifyPerms);
         custompanelHeader = new javax.swing.JPanel();
         customlblHeader = new javax.swing.JLabel();
 
@@ -106,11 +239,6 @@ public class AddGroup extends javax.swing.JFrame {
                 customcbOwnerWItemStateChanged(evt);
             }
         });
-
-        customlblPermInDigit.setBackground(new java.awt.Color(255, 255, 255));
-        customlblPermInDigit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        customlblPermInDigit.setText("0000");
-        customlblPermInDigit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         customcbGroupW.setBackground(new java.awt.Color(255, 255, 255));
         customcbGroupW.addItemListener(new java.awt.event.ItemListener() {
@@ -185,12 +313,6 @@ public class AddGroup extends javax.swing.JFrame {
             }
         });
 
-        customlblPermInString.setBackground(new java.awt.Color(255, 255, 255));
-        customlblPermInString.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        customlblPermInString.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        customlblPermInString.setText("----------");
-        customlblPermInString.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
         customcbOthersW.setBackground(new java.awt.Color(255, 255, 255));
         customcbOthersW.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -215,8 +337,11 @@ public class AddGroup extends javax.swing.JFrame {
             }
         });
 
-        customcbPermissions.setSelected(true);
         customcbPermissions.setBackground(new java.awt.Color(255, 255, 255));
+        customcbPermissions.setToolTipText("Uncheck this if location is sdcard, otherwise check");
+        customcbPermissions.setSelected(modifyPerms);
+        customcbPermissions.setEnabled(modifyPerms);
+        modifyPermissionsState();
         customcbPermissions.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 customcbPermissionsItemStateChanged(evt);
@@ -224,112 +349,132 @@ public class AddGroup extends javax.swing.JFrame {
         });
 
         customlblPermInString.setBackground(new java.awt.Color(255, 255, 255));
-        customlblPermInString.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        customlblPermInString.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        customlblPermInString.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         customlblPermInString.setText("----------");
         customlblPermInString.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        customlblPermInDigit.setBackground(new java.awt.Color(255, 255, 255));
-        customlblPermInDigit.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        customlblPermInDigit.setText("000");
-        customlblPermInDigit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        customtxtOwner.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        customtxtOwner.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        customtxtOwner.setToolTipText("Owner (e.g. 0 for root 1000 for system)");
+        customtxtOwner.setPreferredSize(new java.awt.Dimension(82, 22));
+
+        customtxtGroup.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        customtxtGroup.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        customtxtGroup.setToolTipText("Group (e.g. 0 for root 1000 for system)");
+        customtxtGroup.setPreferredSize(new java.awt.Dimension(82, 22));
+
+        customtxtPerm.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        customtxtPerm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        customtxtPerm.setToolTipText("Permissions (e.g. 0644, 0755)");
+        customtxtPerm.setPreferredSize(new java.awt.Dimension(82, 22));
+        customtxtPerm.setEnabled(false);
 
         javax.swing.GroupLayout custompanelPermissionsLayout = new javax.swing.GroupLayout(custompanelPermissions);
         custompanelPermissions.setLayout(custompanelPermissionsLayout);
         custompanelPermissionsLayout.setHorizontalGroup(
-            custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(customlblPermInDigit)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, custompanelPermissionsLayout.createSequentialGroup()
-                .addContainerGap(15, Short.MAX_VALUE)
-                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                        .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(customlblGroup)
-                            .addComponent(customlblOthers)
-                            .addComponent(customlblOwner))
-                        .addGap(18, 18, 18)
-                        .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, custompanelPermissionsLayout.createSequentialGroup()
+                                .addContainerGap(24, Short.MAX_VALUE)
                                 .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                                        .addComponent(customcbGroupR)
-                                        .addGap(40, 40, 40)
-                                        .addComponent(customcbGroupW))
-                                    .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                                        .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(customlblR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(customcbOwnerR))
-                                        .addGap(40, 40, 40)
-                                        .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(customcbOwnerW)
-                                            .addComponent(customllblW, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(40, 40, 40)
-                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(customcbOwnerX)
-                                    .addComponent(customcbGroupX)
-                                    .addComponent(customlblX, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                                .addComponent(customcbOthersR)
-                                .addGap(40, 40, 40)
-                                .addComponent(customcbOthersW)
-                                .addGap(40, 40, 40)
-                                .addComponent(customcbOthersX))
-                            .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                                .addGap(38, 38, 38)
-                                .addComponent(customcbSetgid)
-                                .addGap(38, 38, 38)
-                                .addComponent(customcbSticky))))
-                    .addComponent(customcbSetuid)
-                    .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(customcbPermissions)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(customlblPermissions)))
-                .addGap(9, 9, 9))
-            .addComponent(customlblPermInString, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(customlblGroup)
+                                                        .addComponent(customlblOthers)
+                                                        .addComponent(customlblOwner))
+                                                .addGap(18, 18, 18)
+                                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                                                                .addComponent(customcbGroupR)
+                                                                                .addGap(40, 40, 40)
+                                                                                .addComponent(customcbGroupW))
+                                                                        .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                                                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                                        .addComponent(customlblR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                                        .addComponent(customcbOwnerR))
+                                                                                .addGap(40, 40, 40)
+                                                                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                                        .addComponent(customcbOwnerW)
+                                                                                        .addComponent(customllblW, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                                .addGap(40, 40, 40)
+                                                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(customcbOwnerX)
+                                                                        .addComponent(customcbGroupX)
+                                                                        .addComponent(customlblX, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                        .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                                                .addComponent(customcbOthersR)
+                                                                .addGap(40, 40, 40)
+                                                                .addComponent(customcbOthersW)
+                                                                .addGap(40, 40, 40)
+                                                                .addComponent(customcbOthersX))
+                                                        .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                                                .addGap(38, 38, 38)
+                                                                .addComponent(customcbSetgid)
+                                                                .addGap(38, 38, 38)
+                                                                .addComponent(customcbSticky))))
+                                        .addComponent(customcbSetuid)
+                                        .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                                .addGap(50, 50, 50)
+                                                .addComponent(customcbPermissions)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(customlblPermissions)))
+                                .addGap(9, 9, 9))
+                        .addComponent(customlblPermInString, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(customtxtOwner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(customtxtGroup, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addComponent(customtxtPerm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
         custompanelPermissionsLayout.setVerticalGroup(
-            custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(custompanelPermissionsLayout.createSequentialGroup()
-                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(customlblPermissions)
-                    .addComponent(customcbPermissions))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(customlblR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(customllblW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(customlblX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
-                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(customcbOwnerR)
-                    .addComponent(customcbOwnerW)
-                    .addComponent(customcbOwnerX)
-                    .addComponent(customlblOwner, javax.swing.GroupLayout.Alignment.LEADING))
-                .addGap(7, 7, 7)
-                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(customlblGroup)
-                    .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(customcbGroupR)
-                        .addComponent(customcbGroupW)
-                        .addComponent(customcbGroupX)))
-                .addGap(7, 7, 7)
-                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(customlblOthers)
-                    .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(customcbOthersR)
-                        .addComponent(customcbOthersW)
-                        .addComponent(customcbOthersX)))
-                .addGap(7, 7, 7)
-                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(customcbSetuid)
-                    .addComponent(customcbSticky)
-                    .addComponent(customcbSetgid))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addComponent(customlblPermInDigit)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(customlblPermInString, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(custompanelPermissionsLayout.createSequentialGroup()
+                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(customlblPermissions)
+                                        .addComponent(customcbPermissions))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(customlblR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(customllblW, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(customlblX, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(4, 4, 4)
+                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(customcbOwnerR)
+                                        .addComponent(customcbOwnerW)
+                                        .addComponent(customcbOwnerX)
+                                        .addComponent(customlblOwner, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(7, 7, 7)
+                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(customlblGroup)
+                                        .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(customcbGroupR)
+                                                .addComponent(customcbGroupW)
+                                                .addComponent(customcbGroupX)))
+                                .addGap(7, 7, 7)
+                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(customlblOthers)
+                                        .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                .addComponent(customcbOthersR)
+                                                .addComponent(customcbOthersW)
+                                                .addComponent(customcbOthersX)))
+                                .addGap(7, 7, 7)
+                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(customcbSetuid)
+                                        .addComponent(customcbSticky)
+                                        .addComponent(customcbSetgid))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(customlblPermInString, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(custompanelPermissionsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(customtxtOwner, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(customtxtGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(customtxtPerm, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         custompanelGroupDetails.setBackground(new java.awt.Color(255, 255, 255));
@@ -343,12 +488,13 @@ public class AddGroup extends javax.swing.JFrame {
         customrbSingleFile.setBackground(new java.awt.Color(255, 255, 255));
         customrbGroup.add(customrbSingleFile);
         customrbSingleFile.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        customrbSingleFile.setSelected(true);
+        customrbSingleFile.setSelected(isSingleFileGroup);
         customrbSingleFile.setText("Install Single File");
         customrbSingleFile.setToolTipText("Required in Groups such as BootAnimations, Fonts, Kernels, etc where you can only choose one from the list");
 
         customrbMultipleFiles.setBackground(new java.awt.Color(255, 255, 255));
         customrbGroup.add(customrbMultipleFiles);
+        customrbMultipleFiles.setSelected(!isSingleFileGroup);
         customrbMultipleFiles.setText("Install Multiple Files");
         customrbMultipleFiles.setToolTipText("Required in Groups where you can only choose multiple files from the list");
 
@@ -356,98 +502,96 @@ public class AddGroup extends javax.swing.JFrame {
         custompanelGroupDetails.setLayout(custompanelGroupDetailsLayout);
         custompanelGroupDetailsLayout.setHorizontalGroup(
                 custompanelGroupDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(custompanelGroupDetailsLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(custompanelGroupDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(custompanelGroupDetailsLayout.createSequentialGroup()
-                                        .addComponent(customrbSingleFile)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(customrbMultipleFiles))
-                                .addComponent(customtxtInstallLocation)
-                                .addComponent(customtxtGroupName, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
+                        .addGroup(custompanelGroupDetailsLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(custompanelGroupDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(custompanelGroupDetailsLayout.createSequentialGroup()
+                                                .addComponent(customrbSingleFile)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(customrbMultipleFiles))
+                                        .addComponent(customtxtInstallLocation)
+                                        .addComponent(customtxtGroupName, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())
         );
         custompanelGroupDetailsLayout.setVerticalGroup(
                 custompanelGroupDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(custompanelGroupDetailsLayout.createSequentialGroup()
-                        .addComponent(customtxtGroupName, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(customtxtInstallLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                        .addGroup(custompanelGroupDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(customrbSingleFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(customrbMultipleFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
+                        .addGroup(custompanelGroupDetailsLayout.createSequentialGroup()
+                                .addComponent(customtxtGroupName, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(customtxtInstallLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                                .addGroup(custompanelGroupDetailsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(customrbSingleFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(customrbMultipleFiles, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap())
         );
 
         custompanelHeader.setBackground(new java.awt.Color(0, 102, 102));
         custompanelHeader.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        customlblHeader.setFont(new java.awt.Font("Tahoma", 0, 30)); // NOI18N
+        customlblHeader.setFont(new java.awt.Font("Tahoma", 0, headerWidth)); // NOI18N
         customlblHeader.setForeground(new java.awt.Color(255, 255, 255));
-        customlblHeader.setText("Add Group");
+        customlblHeader.setText("Add " + title);
 
         javax.swing.GroupLayout custompanelHeaderLayout = new javax.swing.GroupLayout(custompanelHeader);
         custompanelHeader.setLayout(custompanelHeaderLayout);
         custompanelHeaderLayout.setHorizontalGroup(
                 custompanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(custompanelHeaderLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(customlblHeader)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(custompanelHeaderLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(customlblHeader)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         custompanelHeaderLayout.setVerticalGroup(
                 custompanelHeaderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(custompanelHeaderLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(customlblHeader, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                        .addContainerGap())
+                        .addGroup(custompanelHeaderLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(customlblHeader, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
+                                .addContainerGap())
         );
 
         javax.swing.GroupLayout customPanelMainLayout = new javax.swing.GroupLayout(customPanelMain);
         customPanelMain.setLayout(customPanelMainLayout);
         customPanelMainLayout.setHorizontalGroup(
-            customPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(custompanelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(customPanelMainLayout.createSequentialGroup()
-                .addComponent(custompanelGroupDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customPanelMainLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(customPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customPanelMainLayout.createSequentialGroup()
-                        .addComponent(custombtnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customPanelMainLayout.createSequentialGroup()
-                        .addComponent(custompanelPermissions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34))))
+                customPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(custompanelHeader, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(customPanelMainLayout.createSequentialGroup()
+                                .addComponent(custompanelGroupDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customPanelMainLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(custombtnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customPanelMainLayout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(custompanelPermissions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34))
         );
         customPanelMainLayout.setVerticalGroup(
-            customPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(customPanelMainLayout.createSequentialGroup()
-                .addComponent(custompanelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(custompanelGroupDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(custompanelPermissions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(1, 1, 1)
-                .addComponent(custombtnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                customPanelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(customPanelMainLayout.createSequentialGroup()
+                                .addComponent(custompanelHeader, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(custompanelGroupDetails, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(custompanelPermissions, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(custombtnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(customPanelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(customPanelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(customPanelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(customPanelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        setPermissionsFromDigit("0644");
-        pack();
+        updatePermissions();
 
         dialog.getContentPane().add(customPanelMain);
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
@@ -462,10 +606,27 @@ public class AddGroup extends javax.swing.JFrame {
         dialog.setVisible(true);
     }
 
+    //</editor-fold>
+    // <editor-fold defaultstate="collapsed" desc="Functions">           
     public void modifyPermissionsState() {
         boolean flag = false;
         if (customcbPermissions.isSelected()) {
             flag = true;
+        } else if(modifyPerms){
+            customcbGroupR.setSelected(flag);
+            customcbGroupW.setSelected(flag);
+            customcbGroupX.setSelected(flag);
+            customcbOthersR.setSelected(flag);
+            customcbOthersW.setSelected(flag);
+            customcbOthersX.setSelected(flag);
+            customcbOwnerR.setSelected(flag);
+            customcbOwnerW.setSelected(flag);
+            customcbOwnerX.setSelected(flag);
+            customcbSetgid.setSelected(flag);
+            customcbSetuid.setSelected(flag);
+            customcbSticky.setSelected(flag);
+            customtxtOwner.setText("");
+            customtxtGroup.setText("");
         }
         customcbGroupR.setEnabled(flag);
         customcbGroupW.setEnabled(flag);
@@ -479,6 +640,8 @@ public class AddGroup extends javax.swing.JFrame {
         customcbSetgid.setEnabled(flag);
         customcbSetuid.setEnabled(flag);
         customcbSticky.setEnabled(flag);
+        customtxtOwner.setEnabled(flag);
+        customtxtGroup.setEnabled(flag);
     }
 
     public void updatePermissions() {
@@ -486,7 +649,7 @@ public class AddGroup extends javax.swing.JFrame {
         String ownerPermissions = getPermissionsInDigit(customcbOwnerR.isSelected(), customcbOwnerW.isSelected(), customcbOwnerX.isSelected());
         String groupPermissions = getPermissionsInDigit(customcbGroupR.isSelected(), customcbGroupW.isSelected(), customcbGroupX.isSelected());
         String otherPermissions = getPermissionsInDigit(customcbOthersR.isSelected(), customcbOthersW.isSelected(), customcbOthersX.isSelected());
-        customlblPermInDigit.setText(miscPermissions + ownerPermissions + groupPermissions + otherPermissions);
+        customtxtPerm.setText((miscPermissions + ownerPermissions + groupPermissions + otherPermissions).replace("0000", ""));
         ownerPermissions = getPermissionsInString(customcbOwnerR.isSelected(), customcbOwnerW.isSelected(), customcbOwnerX.isSelected());
         if (customcbSetuid.isSelected()) {
             ownerPermissions = ownerPermissions.substring(0, ownerPermissions.length() - 1) + "S";
@@ -507,16 +670,11 @@ public class AddGroup extends javax.swing.JFrame {
         char owner = '0';
         char group = '0';
         char other = '0';
-        if (digit.length() == 3) {
-            owner = digit.charAt(0);
-            group = digit.charAt(1);
-            other = digit.charAt(2);
-        } else {
-            misc = digit.charAt(0);
-            owner = digit.charAt(1);
-            group = digit.charAt(2);
-            other = digit.charAt(3);
-        }
+        digit = digit.equals("") ? "0000" : digit;
+        misc = digit.charAt(0);
+        owner = digit.charAt(1);
+        group = digit.charAt(2);
+        other = digit.charAt(3);
         setPerm(misc, customcbSetuid, customcbSetgid, customcbSticky);
         setPerm(owner, customcbOwnerR, customcbOwnerW, customcbOwnerX);
         setPerm(group, customcbGroupR, customcbGroupW, customcbGroupX);
@@ -622,12 +780,90 @@ public class AddGroup extends javax.swing.JFrame {
         return String.valueOf(perm);
     }
 
+    public boolean isValid(String groupName, String location, String owner, String group, String perm, boolean allowPerm) {
+        boolean flag = true;
+        if (groupName.equals("")) {
+            JOptionPane.showMessageDialog(this, "Group Name cannot be empty", "Validation Message", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (location.equals("")) {
+            JOptionPane.showMessageDialog(this, "location cannot be empty", "Validation Message", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (!location.startsWith("/")) {
+            JOptionPane.showMessageDialog(this, "location name should start with /", "Validation Message", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (location.length() > 1 && location.endsWith("/")) {
+            JOptionPane.showMessageDialog(this, "location name should not end with /", "Validation Message", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (allowPerm) {
+            if (owner.equals("")) {
+                JOptionPane.showMessageDialog(this, "owner cannot be empty (1000 may be?)", "Validation Message", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            if (group.equals("")) {
+                JOptionPane.showMessageDialog(this, "group cannot be empty (1000 may be?)", "Validation Message", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            if (perm.equals("")) {
+                JOptionPane.showMessageDialog(this, "permissions cannot be empty (0644 may be?)", "Validation Message", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            try {
+                Integer.valueOf(owner);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "owner cannot be a string value (1000 may be?)", "Validation Message", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+            try {
+                Integer.valueOf(group);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "group cannot be a string value (1000 may be?)", "Validation Message", JOptionPane.WARNING_MESSAGE);
+                return false;
+            }
+        }
+        return flag;
+    }
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="Events">           
     private void custombtnAddActionPerformed(java.awt.event.ActionEvent evt) {
         String groupName = customtxtGroupName.getText();
-        String location = customtxtInstallLocation.getText();
-        pNode.addChild(new GroupNode(groupName, Types.GROUP_CUSTOM, pNode), false);
-        this.dispose();
+        String loc = customtxtInstallLocation.getText();
+        String o = customtxtOwner.getText();
+        String g = customtxtGroup.getText();
+        String p = customtxtPerm.getText();
+        boolean allowPerm = customcbPermissions.isSelected();
+        NodeProperties np = null;
+        if (isValid(groupName, loc, o, g, p, allowPerm)) {
+            switch (this.parentType) {
+                case Types.NODE_PROJECT:
+                    np = new NodeProperties(groupName, groupType, pNode);
+                    np.setPermissions(o, g, p);
+                    np.location = loc;
+                    np.owner = o;
+                    np.group = g;
+                    np.perm = p;
+                    if (groupType == Types.GROUP_CUSTOM) {
+                        np.reloadOriginalStringType();
+                        np.reloadZipPath();
+                        np.setPermissions = allowPerm;
+                    }
+                    np.isSelectBox = customrbSingleFile.isSelected();
+                    pNode.addChild(new GroupNode(np), false);
+                    break;
+                case Types.NODE_GROUP:
+                    np = new NodeProperties(groupName, groupType, gNode);
+                    np.setPermissions(o, g, p);
+                    np.location = loc;
+                    np.isSelectBox = customrbSingleFile.isSelected();
+                    gNode.addChild(new SubGroupNode(np), false);
+                    break;
+            }
+            this.dispose();
+        }
     }
 
     private void customcbOwnerRItemStateChanged(java.awt.event.ItemEvent evt) {
@@ -744,7 +980,6 @@ public class AddGroup extends javax.swing.JFrame {
     private javax.swing.JLabel customlblInstallLocation;
     private javax.swing.JLabel customlblOthers;
     private javax.swing.JLabel customlblOwner;
-    private javax.swing.JLabel customlblPermInDigit;
     private javax.swing.JLabel customlblPermInString;
     private javax.swing.JLabel customlblPermissions;
     private javax.swing.JLabel customlblR;
@@ -756,8 +991,11 @@ public class AddGroup extends javax.swing.JFrame {
     private javax.swing.ButtonGroup customrbGroup;
     private javax.swing.JRadioButton customrbMultipleFiles;
     private javax.swing.JRadioButton customrbSingleFile;
+    private javax.swing.JTextField customtxtGroup;
     private javax.swing.JTextField customtxtGroupName;
     private javax.swing.JTextField customtxtInstallLocation;
+    private javax.swing.JTextField customtxtOwner;
+    private javax.swing.JTextField customtxtPerm;
     public JDialog dialog;
     // End of variables declaration                   
 }

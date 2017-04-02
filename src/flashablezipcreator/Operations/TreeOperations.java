@@ -8,12 +8,15 @@ package flashablezipcreator.Operations;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
+import flashablezipcreator.Core.NodeProperties;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.Write;
+import flashablezipcreator.Protocols.Identify;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
+import static flashablezipcreator.UserInterface.MyTree.rootNode;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -71,13 +74,22 @@ public class TreeOperations {
         node.removeMe();
     }
 
-    public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, ArrayList<String> folders, String projectName, int projectType, int modType) {
-        ProjectNode pNode = (ProjectNode) rootNode.addChild(new ProjectNode(projectName, projectType, modType, rootNode), false);
-
-        GroupNode gNode = (GroupNode) pNode.addChild(new GroupNode(groupName, groupType, pNode), false);
+    public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, String originalGroupType,
+            ArrayList<String> folders, String projectName, int projectType, int modType) {
+        NodeProperties np = new NodeProperties(projectName, projectType, modType, rootNode);
+        ProjectNode pNode = (ProjectNode) rootNode.addChild(new ProjectNode(np), false);
+        np = new NodeProperties(groupName, groupType, pNode);
+        if (groupType == Types.GROUP_CUSTOM && !originalGroupType.equals("")) {
+            np.location = Identify.getLocation(originalGroupType);
+            np.permission = Identify.getPermissions(originalGroupType);
+            np.reloadOriginalStringType();
+            np.reloadZipPath();
+        }
+        GroupNode gNode = (GroupNode) pNode.addChild(new GroupNode(np), false);
         SubGroupNode sgNode = null;
         if (!subGroupName.equals("")) {
-            sgNode = (SubGroupNode) gNode.addChild(new SubGroupNode(subGroupName, subGroupType, gNode), false);
+            np = new NodeProperties(subGroupName, subGroupType, gNode);
+            sgNode = (SubGroupNode) gNode.addChild(new SubGroupNode(np), false);
         }
         FolderNode folNode = null;
         if (folders.size() > 0) {
@@ -85,9 +97,11 @@ public class TreeOperations {
             for (String folder : folders) {
                 FolderNode fNode = null;
                 if (count++ == 1) {
-                    fNode = (FolderNode) gNode.addChild(new FolderNode(folder, gNode), false);
+                    np = new NodeProperties(folder, gNode);
+                    fNode = (FolderNode) gNode.addChild(new FolderNode(np), false);
                 } else if (folNode != null) {
-                    fNode = (FolderNode) folNode.addChild(new FolderNode(folder, folNode), false);
+                    np = new NodeProperties(folder, folNode);
+                    fNode = (FolderNode) folNode.addChild(new FolderNode(np), false);
                 } else {
                     JOptionPane.showMessageDialog(null, "Something went wrong!");
                 }
@@ -317,7 +331,7 @@ public class TreeOperations {
 
     public FileNode getFileNode(String name, String subGroupName, String groupName, String projectName) {
         for (ProjectItemNode node : getNodeList(Types.NODE_FILE)) {
-            if (node.prop.title.equals(name) && node.prop.parent.prop.title.equals(subGroupName) && node.prop.parent.prop.parent.prop.title.equals(groupName) 
+            if (node.prop.title.equals(name) && node.prop.parent.prop.title.equals(subGroupName) && node.prop.parent.prop.parent.prop.title.equals(groupName)
                     && node.prop.parent.prop.parent.prop.parent.prop.title.equals(projectName)) {
                 return (FileNode) node;
             }

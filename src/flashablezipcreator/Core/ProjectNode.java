@@ -16,24 +16,28 @@ import java.io.File;
  */
 public class ProjectNode extends ProjectItemNode {
 
+    public ProjectNode(NodeProperties properties){
+        super(properties);
+    }
+    
     public ProjectNode(String title, int projectType, int modType, ProjectItemNode parent) {
         super(title, Types.NODE_PROJECT, parent);
         Logs.write("adding project now");
         prop.projectName = title;
         prop.projectType = projectType;
         prop.path = parent + File.separator + title;
+        prop.modType = modType;
         switch (projectType) {
             case Types.PROJECT_AROMA:
-                prop.zipPath = parent.prop.zipPath + "/" + "aroma_" + modType + "/" + prop.projectZipPathPrefix + title;
+                prop.zipPath = "customize" + "/" + "aroma_" + modType + "/" + prop.projectZipPathPrefix + title;
                 break;
             case Types.PROJECT_CUSTOM:
-                prop.zipPath = parent.prop.zipPath + "/" + "custom_" + modType + "/" + prop.projectZipPathPrefix + title;
+                prop.zipPath = "customize" + "/" + "custom_" + modType + "/" + prop.projectZipPathPrefix + title;
                 break;
             case Types.PROJECT_MOD:
-                prop.zipPath = parent.prop.zipPath + "/" + "mod_" + modType + "/" + prop.projectZipPathPrefix + title;
+                prop.zipPath = "customize" + "/" + "mod_" + modType + "/" + prop.projectZipPathPrefix + title;
                 break;
         }
-
         prop.androidVersion = Preferences.IsFromLollipop ? "5.x+" : "4.x+";
         Logs.write("done adding project");
     }
@@ -42,7 +46,17 @@ public class ProjectNode extends ProjectItemNode {
         super.setTitle(newName);
         prop.projectName = newName;
         prop.path = prop.parent.prop.path + File.separator + newName;
-        prop.zipPath = prop.parent.prop.zipPath + "/" + prop.projectZipPathPrefix + newName;
+        switch (prop.projectType) {
+            case Types.PROJECT_AROMA:
+                prop.zipPath = "customize" + "/" + "aroma_" + prop.modType + "/" + prop.projectZipPathPrefix + prop.title;
+                break;
+            case Types.PROJECT_CUSTOM:
+                prop.zipPath = "customize" + "/" + "custom_" + prop.modType + "/" + prop.projectZipPathPrefix + prop.title;
+                break;
+            case Types.PROJECT_MOD:
+                prop.zipPath = "customize" + "/" + "mod_" + prop.modType + "/" + prop.projectZipPathPrefix + prop.title;
+                break;
+        }
         this.updateChildrenPath();
         this.updateChildrenZipPath();
     }

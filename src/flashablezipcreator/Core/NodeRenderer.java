@@ -9,7 +9,6 @@ import flashablezipcreator.FlashableZipCreator;
 import flashablezipcreator.Protocols.Types;
 import java.awt.Component;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
