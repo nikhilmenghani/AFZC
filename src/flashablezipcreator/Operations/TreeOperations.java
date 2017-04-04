@@ -16,7 +16,6 @@ import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.Protocols.Identify;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
-import static flashablezipcreator.UserInterface.MyTree.rootNode;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;

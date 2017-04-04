@@ -42,8 +42,8 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
         prop.type = type;
         prop.parent = parent;
     }
-    
-    public ProjectItemNode(NodeProperties properties){
+
+    public ProjectItemNode(NodeProperties properties) {
         this(properties.title, properties.type, properties.parent);
         prop = properties;
     }
@@ -99,6 +99,14 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
             node.prop.path = prop.path + File.separator + node.prop.title;
             node.updateChildrenPath();
         }
+    }
+
+    public boolean contains(String title) {
+        for (ProjectItemNode node : prop.children) {
+            if(node.prop.title.equals(title))
+                return true;
+        }
+        return false;
     }
 
     /**

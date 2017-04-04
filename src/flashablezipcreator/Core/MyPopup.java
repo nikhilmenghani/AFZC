@@ -75,9 +75,19 @@ public class MyPopup {
     public static JPopupMenu getRootMenu() {
         JMenuItem mitemAddProject = new JMenuItem("Add Project");
         mitemAddProject.addActionListener((ActionEvent ae) -> {
+            String defaultProjName = "My Project";
+            if (rootNode.contains(defaultProjName)) {
+                for (int i = 1;; i++) {
+                    if (rootNode.contains(defaultProjName + "(" + i + ")")) {
+                        continue;
+                    }
+                    defaultProjName = defaultProjName + "(" + i + ")";
+                    break;
+                }
+            }
             ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
             if (selNode != null) {
-                ProjectNode newNode = new ProjectNode("My Project", Types.PROJECT_AROMA, Mod.MOD_LESS, rootNode);
+                ProjectNode newNode = new ProjectNode(defaultProjName, Types.PROJECT_AROMA, Mod.MOD_LESS, rootNode);
                 rootNode.addChild(newNode, false);
                 TreeNode[] nodes = model.getPathToRoot(newNode);
                 TreePath path = new TreePath(nodes);
@@ -216,9 +226,19 @@ public class MyPopup {
         );
         JMenuItem mitemAddFolder = new JMenuItem("Add Folder");
         mitemAddFolder.addActionListener((ActionEvent ae) -> {
+            String defaultFolderName = "NewFolder";
+            if (node.contains(defaultFolderName)) {
+                for (int i = 1;; i++) {
+                    if (node.contains(defaultFolderName + "(" + i + ")")) {
+                        continue;
+                    }
+                    defaultFolderName = defaultFolderName + "(" + i + ")";
+                    break;
+                }
+            }
             ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
             if (selNode != null) {
-                FolderNode newNode = new FolderNode("New Folder", (GroupNode) node);
+                FolderNode newNode = new FolderNode(defaultFolderName, (GroupNode) node);
                 node.addChild(newNode, false);
                 TreeNode[] nodes = model.getPathToRoot(newNode);
                 TreePath path = new TreePath(nodes);
@@ -317,9 +337,19 @@ public class MyPopup {
         );
         JMenuItem mitemAddFolder = new JMenuItem("Add Folder");
         mitemAddFolder.addActionListener((ActionEvent ae) -> {
+            String defaultFolderName = "NewFolder";
+            if (node.contains(defaultFolderName)) {
+                for (int i = 1;; i++) {
+                    if (node.contains(defaultFolderName + "(" + i + ")")) {
+                        continue;
+                    }
+                    defaultFolderName = defaultFolderName + "(" + i + ")";
+                    break;
+                }
+            }
             ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
             if (selNode != null) {
-                FolderNode newNode = new FolderNode("New Folder", (FolderNode) node);
+                FolderNode newNode = new FolderNode(defaultFolderName, (FolderNode) node);
                 node.addChild(newNode, false);
                 TreeNode[] nodes = model.getPathToRoot(newNode);
                 TreePath path = new TreePath(nodes);
