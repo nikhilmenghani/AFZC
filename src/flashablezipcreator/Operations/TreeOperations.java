@@ -64,7 +64,7 @@ public class TreeOperations {
             case Types.NODE_FILE:
                 oldName = ((FileNode) node).prop.fileSourcePath;
                 ((FileNode) node).renameMe(newName);
-                w.rename(oldName, newName); //check if this is required
+                //w.rename(oldName, newName); //check if this is required
                 break;
         }
     }

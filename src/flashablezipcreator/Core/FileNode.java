@@ -100,9 +100,9 @@ public final class FileNode extends ProjectItemNode {
         prop.title = newName;
         prop.fileName = newName;
         prop.path = prop.parent.prop.path + File.separator + newName;
-        //this.fileDestPath = parent.path + File.separator + newName;
-        Path p = FileSystems.getDefault().getPath(prop.fileSourcePath);
-        prop.fileSourcePath = p.resolveSibling(newName).toString();
+        //following lines should be considered when we are actually renaming the file. which we aren't currently.
+//        Path p = FileSystems.getDefault().getPath(prop.fileSourcePath);
+//        prop.fileSourcePath = p.resolveSibling(newName).toString();
         prop.fileZipPath = prop.parent.prop.zipPath + "/" + prop.title;
     }
 
