@@ -170,6 +170,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
+                location = "/system/app";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_app";
                 break;
@@ -179,6 +180,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
+                location = "/system/priv-app";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_priv_app";
                 break;
@@ -188,6 +190,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
+                location = "/system/media/alarms";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_alarms";
                 break;
@@ -197,6 +200,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
+                location = "/system/media/notifications";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_notifications";
                 break;
@@ -206,6 +210,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
+                location = "/system/media/ringtones";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_ringtones";
                 break;
@@ -215,6 +220,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
+                location = "/system/media/ui";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_ui";
                 break;
@@ -225,6 +231,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
+                location = "/system/media";
                 setPermissions(owner, group, perm, "bootanimation.zip");
                 isBootAnimationGroup = true;
                 originalGroupType = typePrefix + "system_media";
@@ -236,6 +243,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
+                location = "/system/fonts";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_fonts";
                 break;
@@ -245,6 +253,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
+                location = "/data/app";
                 setPermissions(owner, group, perm, "base/apk");
                 originalGroupType = typePrefix + "data_app";
                 break;
@@ -255,6 +264,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
+                location = "/data/local";
                 setPermissions(owner, group, perm, "bootanimation.zip");
                 isBootAnimationGroup = true;
                 originalGroupType = typePrefix + "data_local";

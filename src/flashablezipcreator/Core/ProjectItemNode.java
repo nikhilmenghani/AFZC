@@ -73,7 +73,7 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
 
     public void removeChild(ProjectItemNode child) {
         prop.children.remove(child);
-        MyTree.model.reload(parent);
+        MyTree.model.reload(prop.parent);
     }
 
     //should be used this when we want to remove by child object
