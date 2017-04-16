@@ -12,6 +12,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.Protocols.Logs;
+import flashablezipcreator.Protocols.PreferenceProperties;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Types;
 import java.io.IOException;
@@ -52,27 +53,26 @@ public class XmlOperations {
     public Element rootFolder;
     TreeOperations to = new TreeOperations();
 
-    public void createConfigurationConfig(String aromaVersion, boolean androidVersionAboveLP, boolean quickProjectSetup,
-            boolean checkUpdatesOnStartUp, String zipCreatorName, String zipVersion, boolean saveLogs) throws ParserConfigurationException {
+    public void createConfigurationConfig(PreferenceProperties pp) throws ParserConfigurationException {
         documentFactory = DocumentBuilderFactory.newInstance();
         documentBuilder = documentFactory.newDocumentBuilder();
         document = documentBuilder.newDocument();
         root = document.createElement("Configuration");
         document.appendChild(root);
         Element aromaVersionElem = document.createElement("AromaVersion");
-        aromaVersionElem.setTextContent(aromaVersion);
+        aromaVersionElem.setTextContent(pp.aromaVersion);
         Element androidVersionElem = document.createElement("AboveLollipop");
-        androidVersionElem.setTextContent(String.valueOf(androidVersionAboveLP));
-        Element quickProjectSetupElem = document.createElement("QuickProjectSetup");
-        quickProjectSetupElem.setTextContent(String.valueOf(quickProjectSetup));
+        androidVersionElem.setTextContent(String.valueOf(pp.androidVersionAboveLP));
+        Element quickProjectSetupElem = document.createElement("IsQuickSetup");
+        quickProjectSetupElem.setTextContent(String.valueOf(pp.isQuickSetup));
         Element checkUpdatesElem = document.createElement("CheckUpdates");
-        checkUpdatesElem.setTextContent(String.valueOf(checkUpdatesOnStartUp));
+        checkUpdatesElem.setTextContent(String.valueOf(pp.checkUpdatesOnStartUp));
         Element zipCreatorNameElem = document.createElement("zipCreatorName");
-        zipCreatorNameElem.setTextContent(zipCreatorName);
+        zipCreatorNameElem.setTextContent(pp.zipCreatorName);
         Element zipVersionElem = document.createElement("zipVersion");
-        zipVersionElem.setTextContent(zipVersion);
+        zipVersionElem.setTextContent(pp.zipVersion);
         Element saveLogsElem = document.createElement("saveLogs");
-        saveLogsElem.setTextContent(String.valueOf(saveLogs));
+        saveLogsElem.setTextContent(String.valueOf(pp.saveLogs));
         root.appendChild(aromaVersionElem);
         root.appendChild(androidVersionElem);
         root.appendChild(quickProjectSetupElem);

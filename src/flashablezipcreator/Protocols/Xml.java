@@ -77,18 +77,9 @@ public class Xml {
     public static String getPreferenceConfigString(PreferenceProperties pp)
             throws ParserConfigurationException, TransformerException {
         xo = new XmlOperations();
-        xo.createConfigurationConfig(pp.aromaVersion, pp.androidVersionAboveLP, pp.isQuickSetup, pp.checkUpdatesOnStartUp, pp.zipCreatorName,
-                pp.zipVersion, pp.saveLogs);
+        xo.createConfigurationConfig(pp);
         return xo.getXML();
     }
-
-//    public static String getPreferenceConfigString(String aromaVersion, boolean androidVersionAboveLP,
-//            boolean quickProjectSetup, boolean checkUpdatesOnStartUp, String zipCreatorName, String ZipVersion, boolean saveLogs)
-//            throws ParserConfigurationException, TransformerException {
-//        xo = new XmlOperations();
-//        xo.createConfigurationConfig(aromaVersion, androidVersionAboveLP, quickProjectSetup, checkUpdatesOnStartUp, zipCreatorName, ZipVersion, saveLogs);
-//        return xo.getXML();
-//    }
 
     public static String getAromaVersion(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
@@ -102,7 +93,7 @@ public class Xml {
 
     public static boolean getQuickProjectSetup(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
-        return xo.getBoolConfigValue(configData, "QuickProjectSetup");
+        return xo.getBoolConfigValue(configData, "IsQuickSetup");
     }
 
     public static ArrayList<String> getThemes(String configData) throws ParserConfigurationException, SAXException, IOException {
