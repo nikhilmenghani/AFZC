@@ -5,7 +5,6 @@
  */
 package flashablezipcreator.Protocols;
 
-import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.UserInterface.MyTree;
@@ -91,7 +90,7 @@ public class Xml {
         return xo.getBoolConfigValue(configData, "AboveLollipop");
     }
 
-    public static boolean getQuickProjectSetup(String configData) throws ParserConfigurationException, SAXException, IOException {
+    public static boolean getQuickSetup(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
         return xo.getBoolConfigValue(configData, "IsQuickSetup");
     }

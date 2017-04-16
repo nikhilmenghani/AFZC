@@ -75,28 +75,7 @@ public class MyPopup {
     public static JPopupMenu getRootMenu() {
         JMenuItem mitemAddProject = new JMenuItem("Add Project");
         mitemAddProject.addActionListener((ActionEvent ae) -> {
-            String defaultProjName = "My Project";
-            if (rootNode.contains(defaultProjName)) {
-                for (int i = 1;; i++) {
-                    if (rootNode.contains(defaultProjName + "(" + i + ")")) {
-                        continue;
-                    }
-                    defaultProjName = defaultProjName + "(" + i + ")";
-                    break;
-                }
-            }
-            ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
-            if (selNode != null) {
-                ProjectNode newNode = new ProjectNode(defaultProjName, Types.PROJECT_AROMA, Mod.MOD_LESS, rootNode);
-                rootNode.addChild(newNode, false);
-                TreeNode[] nodes = model.getPathToRoot(newNode);
-                TreePath path = new TreePath(nodes);
-                tree.scrollPathToVisible(path);
-                tree.setSelectionPath(path);
-                tree.startEditingAtPath(path);
-            } else {
-                JOptionPane.showMessageDialog(popup, "Select the AFZC Projects node first");
-            }
+            addQuickProjectObject();
         });
         popup = new JPopupMenu();
         popup.add(mitemAddProject);
@@ -107,43 +86,43 @@ public class MyPopup {
         ProjectNode node = (ProjectNode) nodeList.get(0);
         JMenuItem mitemSystemApp = new JMenuItem("system/app");
         mitemSystemApp.addActionListener((ActionEvent ae) -> {
-            addName(Types.GROUP_SYSTEM_APK, node);
+            addQuickGroupObject(Types.GROUP_SYSTEM_APK, node, "System Apps");
         });
         JMenuItem mitemPrivApp = new JMenuItem("system/priv-app");
         mitemPrivApp.addActionListener((ActionEvent ae) -> {
-            addName(Types.GROUP_SYSTEM_PRIV_APK, node);
+            addQuickGroupObject(Types.GROUP_SYSTEM_PRIV_APK, node, "Priv Apps");
         });
         JMenuItem mitemDataApp = new JMenuItem("data/app");
         mitemDataApp.addActionListener((ActionEvent ae) -> {
-            addName(Types.GROUP_DATA_APP, node);
+            addQuickGroupObject(Types.GROUP_DATA_APP, node, "Data Apps");
         });
         JMenuItem mitemAlarms = new JMenuItem("system/media/audio/alarms");
         mitemAlarms.addActionListener((ActionEvent ae) -> {
-            addName(Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS, node);
+            addQuickGroupObject(Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS, node, "Alarm Tones");
         });
         JMenuItem mitemNotifications = new JMenuItem("system/media/audio/notifications");
         mitemNotifications.addActionListener((ActionEvent ae) -> {
-            addName(Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS, node);
+            addQuickGroupObject(Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS, node, "Notifications");
         });
         JMenuItem mitemRingtones = new JMenuItem("system/media/audio/ringtones");
         mitemRingtones.addActionListener((ActionEvent ae) -> {
-            addName(Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES, node);
+            addQuickGroupObject(Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES, node, "Ringtones");
         });
         JMenuItem mitemUI = new JMenuItem("system/media/audio/ui");
         mitemUI.addActionListener((ActionEvent ae) -> {
-            addName(Types.GROUP_SYSTEM_MEDIA_AUDIO_UI, node);
+            addQuickGroupObject(Types.GROUP_SYSTEM_MEDIA_AUDIO_UI, node, "UI Tones");
         });
         JMenuItem mitemFonts = new JMenuItem("system/fonts");
         mitemFonts.addActionListener((ActionEvent ae) -> {
-            addName(Types.GROUP_SYSTEM_FONTS, node);
+            addQuickGroupObject(Types.GROUP_SYSTEM_FONTS, node, "Fonts");
         });
         JMenuItem mitemBootAnimSystem = new JMenuItem("system/media");
         mitemBootAnimSystem.addActionListener((ActionEvent ae) -> {
-            addName(Types.GROUP_SYSTEM_MEDIA, node);
+            addQuickGroupObject(Types.GROUP_SYSTEM_MEDIA, node, "Boot Animations");
         });
         JMenuItem mitemBootAnimLocal = new JMenuItem("data/local");
         mitemBootAnimLocal.addActionListener((ActionEvent ae) -> {
-            addName(Types.GROUP_DATA_LOCAL, node);
+            addQuickGroupObject(Types.GROUP_DATA_LOCAL, node, "Boot Animations");
         });
         JMenuItem mitemDeleteProject = new JMenuItem("Delete Project");
         mitemDeleteProject.addActionListener((ActionEvent ae) -> {
@@ -155,7 +134,7 @@ public class MyPopup {
             if (((ProjectNode) node).prop.projectType == Types.PROJECT_THEMES) {
                 JMenuItem mitemAddThemes = new JMenuItem("Add Theme");
                 mitemAddThemes.addActionListener((ActionEvent ae) -> {
-                    addName(Types.GROUP_AROMA_THEMES, node);
+                    addQuickGroupObject(Types.GROUP_AROMA_THEMES, node, "My Theme");
                 });
                 popup.add(mitemAddThemes);
             } else {
@@ -193,7 +172,7 @@ public class MyPopup {
     }
 
     public static JPopupMenu getGroupMenu(ArrayList<ProjectItemNode> nodeList, JTree myTree) {
-        ProjectItemNode node = nodeList.get(0);
+        GroupNode node = (GroupNode) nodeList.get(0);
         JMenuItem mitemAddSubGroup = null;
         int groupType = ((GroupNode) node).prop.groupType;
         switch (groupType) {
@@ -213,41 +192,20 @@ public class MyPopup {
                 (ActionEvent ae) -> {
                     switch (groupType) {
                         case Types.GROUP_SYSTEM_FONTS:
-                            addName(Types.GROUP_SYSTEM_FONTS, node);
+                            addQuickSubGroupObject(Types.GROUP_SYSTEM_FONTS, node, "Font");
                             break;
                         case Types.GROUP_DATA_LOCAL:
-                            addName(Types.GROUP_DATA_LOCAL, node);
+                            addQuickSubGroupObject(Types.GROUP_DATA_LOCAL, node, "Boot Animation");
                             break;
                         case Types.GROUP_SYSTEM_MEDIA:
-                            addName(Types.GROUP_SYSTEM_MEDIA, node);
+                            addQuickSubGroupObject(Types.GROUP_SYSTEM_MEDIA, node, "Boot Animation");
                             break;
                     }
                 }
         );
         JMenuItem mitemAddFolder = new JMenuItem("Add Folder");
         mitemAddFolder.addActionListener((ActionEvent ae) -> {
-            String defaultFolderName = "NewFolder";
-            if (node.contains(defaultFolderName)) {
-                for (int i = 1;; i++) {
-                    if (node.contains(defaultFolderName + "(" + i + ")")) {
-                        continue;
-                    }
-                    defaultFolderName = defaultFolderName + "(" + i + ")";
-                    break;
-                }
-            }
-            ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
-            if (selNode != null) {
-                FolderNode newNode = new FolderNode(defaultFolderName, (GroupNode) node);
-                node.addChild(newNode, false);
-                TreeNode[] nodes = model.getPathToRoot(newNode);
-                TreePath path = new TreePath(nodes);
-                tree.scrollPathToVisible(path);
-                tree.setSelectionPath(path);
-                tree.startEditingAtPath(path);
-            } else {
-                JOptionPane.showMessageDialog(popup, "Select the Group Node first");
-            }
+            addQuickFolderObject(node);
         });
         JMenuItem mitemAddFile = new JMenuItem("Add File(s)");
         mitemAddFile.addActionListener(
@@ -337,28 +295,7 @@ public class MyPopup {
         );
         JMenuItem mitemAddFolder = new JMenuItem("Add Folder");
         mitemAddFolder.addActionListener((ActionEvent ae) -> {
-            String defaultFolderName = "NewFolder";
-            if (node.contains(defaultFolderName)) {
-                for (int i = 1;; i++) {
-                    if (node.contains(defaultFolderName + "(" + i + ")")) {
-                        continue;
-                    }
-                    defaultFolderName = defaultFolderName + "(" + i + ")";
-                    break;
-                }
-            }
-            ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
-            if (selNode != null) {
-                FolderNode newNode = new FolderNode(defaultFolderName, (FolderNode) node);
-                node.addChild(newNode, false);
-                TreeNode[] nodes = model.getPathToRoot(newNode);
-                TreePath path = new TreePath(nodes);
-                tree.scrollPathToVisible(path);
-                tree.setSelectionPath(path);
-                tree.startEditingAtPath(path);
-            } else {
-                JOptionPane.showMessageDialog(popup, "Select the Folder Node first");
-            }
+            addQuickFolderObject(node);
         });
         JMenuItem mitemDeleteFolder = new JMenuItem("Delete Folder(s)");
         mitemDeleteFolder.addActionListener((ActionEvent ae) -> {
@@ -444,5 +381,118 @@ public class MyPopup {
 
     public static void addName(int type, ProjectItemNode node) {
         addGroup = new AddGroup(type, node);
+    }
+
+    public static void addQuickProjectObject() {
+        String defaultProjName = "My Project";
+        if (rootNode.contains(defaultProjName)) {
+            for (int i = 1;; i++) {
+                if (rootNode.contains(defaultProjName + "(" + i + ")")) {
+                    continue;
+                }
+                defaultProjName = defaultProjName + "(" + i + ")";
+                break;
+            }
+        }
+        ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
+        if (selNode != null) {
+            ProjectNode newNode = new ProjectNode(defaultProjName, Types.PROJECT_AROMA, Mod.MOD_LESS, rootNode);
+            rootNode.addChild(newNode, false);
+            TreeNode[] nodes = model.getPathToRoot(newNode);
+            TreePath path = new TreePath(nodes);
+            tree.scrollPathToVisible(path);
+            tree.setSelectionPath(path);
+            tree.startEditingAtPath(path);
+        } else {
+            JOptionPane.showMessageDialog(popup, "Select the AFZC Projects node first");
+        }
+    }
+
+    public static void addQuickGroupObject(int type, ProjectNode parent, String defaultName) {
+        if (!Preferences.pp.isQuickSetup) {
+            addName(type, parent);
+        } else {
+            if (parent.contains(defaultName)) {
+                for (int i = 1;; i++) {
+                    if (parent.contains(defaultName + "(" + i + ")")) {
+                        continue;
+                    }
+                    defaultName = defaultName + "(" + i + ")";
+                    break;
+                }
+            }
+            ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
+            if (selNode != null) {
+                NodeProperties p = new NodeProperties(defaultName, type, parent);
+                GroupNode newNode = new GroupNode(p);
+                parent.addChild(newNode, false);
+                TreeNode[] nodes = model.getPathToRoot(newNode);
+                TreePath path = new TreePath(nodes);
+                tree.scrollPathToVisible(path);
+                tree.setSelectionPath(path);
+                tree.startEditingAtPath(path);
+            } else {
+                JOptionPane.showMessageDialog(popup, "Select the Project first");
+            }
+        }
+    }
+
+    public static void addQuickSubGroupObject(int type, GroupNode parent, String defaultName) {
+        if (!Preferences.pp.isQuickSetup) {
+            addName(type, parent);
+        } else {
+            if (parent.contains(defaultName)) {
+                for (int i = 1;; i++) {
+                    if (parent.contains(defaultName + "(" + i + ")")) {
+                        continue;
+                    }
+                    defaultName = defaultName + "(" + i + ")";
+                    break;
+                }
+            }
+            ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
+            if (selNode != null) {
+                NodeProperties p = new NodeProperties(defaultName, type, parent);
+                SubGroupNode newNode = new SubGroupNode(p);
+                parent.addChild(newNode, false);
+                TreeNode[] nodes = model.getPathToRoot(newNode);
+                TreePath path = new TreePath(nodes);
+                tree.scrollPathToVisible(path);
+                tree.setSelectionPath(path);
+                tree.startEditingAtPath(path);
+            } else {
+                JOptionPane.showMessageDialog(popup, "Select the Group first");
+            }
+        }
+    }
+
+    public static void addQuickFolderObject(ProjectItemNode parent) {
+        String defaultFolderName = "NewFolder";
+        if (parent.contains(defaultFolderName)) {
+            for (int i = 1;; i++) {
+                if (parent.contains(defaultFolderName + "(" + i + ")")) {
+                    continue;
+                }
+                defaultFolderName = defaultFolderName + "(" + i + ")";
+                break;
+            }
+        }
+        ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
+        if (selNode != null) {
+            FolderNode newNode = null;//try catch should be implemented here as if conditions may not be true
+            if (parent.prop.type == Types.NODE_GROUP) {
+                newNode = new FolderNode(defaultFolderName, (GroupNode) parent);
+            } else if (parent.prop.type == Types.NODE_FOLDER) {
+                newNode = new FolderNode(defaultFolderName, (FolderNode) parent);
+            }
+            parent.addChild(newNode, false);
+            TreeNode[] nodes = model.getPathToRoot(newNode);
+            TreePath path = new TreePath(nodes);
+            tree.scrollPathToVisible(path);
+            tree.setSelectionPath(path);
+            tree.startEditingAtPath(path);
+        } else {
+            JOptionPane.showMessageDialog(popup, "Select the Group Node first");
+        }
     }
 }

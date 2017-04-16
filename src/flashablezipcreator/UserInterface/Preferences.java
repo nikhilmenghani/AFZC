@@ -61,7 +61,7 @@ public class Preferences extends javax.swing.JFrame {
         lblGeneralOptions = new javax.swing.JLabel();
         lblHoverInformation = new javax.swing.JLabel();
         lblProjectSetup = new javax.swing.JLabel();
-        cbProjectSetup = new javax.swing.JCheckBox();
+        cbQuickSetup = new javax.swing.JCheckBox();
         lblLogging = new javax.swing.JLabel();
         cbSaveLogs = new javax.swing.JCheckBox();
         lblUpdates = new javax.swing.JLabel();
@@ -185,18 +185,18 @@ public class Preferences extends javax.swing.JFrame {
         }
 
         lblProjectSetup.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        lblProjectSetup.setText("Quick Project Setup");
+        lblProjectSetup.setText("Quick Setup");
 
-        cbProjectSetup.setBackground(new java.awt.Color(255, 255, 255));
+        cbQuickSetup.setBackground(new java.awt.Color(255, 255, 255));
         if (pp.preferencesFilePresent) {
-            cbProjectSetup.setSelected(Xml.getQuickProjectSetup(pp.preferencesConfig));
-            pp.isQuickSetup = cbProjectSetup.isSelected();
+            cbQuickSetup.setSelected(Xml.getQuickSetup(pp.preferencesConfig));
+            pp.isQuickSetup = cbQuickSetup.isSelected();
         } else {
-            cbProjectSetup.setSelected(true);
+            cbQuickSetup.setSelected(true);
             pp.isQuickSetup = true;
         }
-        cbProjectSetup.setText("Open dialog box automatically");
-        cbProjectSetup.setToolTipText("Enabling this will Open Add Project Dialog Box on Start up for quick project creation.");
+        cbQuickSetup.setText("Don't show popup before adding any object");
+        cbQuickSetup.setToolTipText("Enabling this will not open a detailed dialog box and create objects quickly");
 
         lblZipCreatorName.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblZipCreatorName.setText("Zip Creator Name");
@@ -256,7 +256,7 @@ public class Preferences extends javax.swing.JFrame {
                                                         .addComponent(lblGeneralHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(lblHoverInformation)
                                                         .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(cbProjectSetup)
+                                                        .addComponent(cbQuickSetup)
                                                         .addComponent(lblAndroidVersion, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(cbAndroidVersion)
                                                         .addComponent(lblLogging, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,7 +288,7 @@ public class Preferences extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(lblProjectSetup, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(6, 6, 6)
-                                .addComponent(cbProjectSetup)
+                                .addComponent(cbQuickSetup)
                                 .addGap(18, 18, 18)
                                 .addComponent(lblUpdates, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(6, 6, 6)
@@ -494,7 +494,7 @@ public class Preferences extends javax.swing.JFrame {
         String xml = null;
         pp.aromaVersion = cbAromaVersion.getSelectedItem().toString();
         pp.IsFromLollipop = cbAndroidVersion.isSelected();
-        pp.isQuickSetup = cbProjectSetup.isSelected();
+        pp.isQuickSetup = cbQuickSetup.isSelected();
         pp.zipCreatorName = txtZipCreatorName.getText();
         pp.checkUpdatesOnStartUp = cbUpdates.isSelected();
         Project.zipCreator = pp.zipCreatorName;
@@ -514,7 +514,7 @@ public class Preferences extends javax.swing.JFrame {
     private javax.swing.JButton btnOK;
     private javax.swing.JCheckBox cbAndroidVersion;
     private javax.swing.JComboBox<String> cbAromaVersion;
-    private javax.swing.JCheckBox cbProjectSetup;
+    private javax.swing.JCheckBox cbQuickSetup;
     private javax.swing.JCheckBox cbSaveLogs;
     private javax.swing.JCheckBox cbUpdates;
     private javax.swing.JLabel lblAndroidVersion;

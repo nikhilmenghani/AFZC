@@ -94,7 +94,7 @@ public class FlashableZipCreator {
                 Preferences.pp.themes = Xml.getThemes(preferencesConfig);
                 Preferences.pp.aromaVersion = Xml.getAromaVersion(preferencesConfig);
                 Preferences.pp.IsFromLollipop = Xml.getAndroidVersionDetail(preferencesConfig);
-                Preferences.pp.isQuickSetup = Xml.getQuickProjectSetup(preferencesConfig);
+                Preferences.pp.isQuickSetup = Xml.getQuickSetup(preferencesConfig);
                 Preferences.pp.zipCreatorName = Xml.getZipCreatorName(preferencesConfig);
                 Preferences.pp.zipVersion = Xml.getZipVersion(preferencesConfig);
                 Preferences.pp.saveLogs = Xml.getLogsIndicator(preferencesConfig);

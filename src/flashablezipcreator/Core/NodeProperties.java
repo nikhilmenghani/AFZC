@@ -190,7 +190,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
-                location = "/system/media/alarms";
+                location = "/system/media/audio/alarms";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_alarms";
                 break;
@@ -200,7 +200,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
-                location = "/system/media/notifications";
+                location = "/system/media/audio/notifications";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_notifications";
                 break;
@@ -210,7 +210,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
-                location = "/system/media/ringtones";
+                location = "/system/media/audio/ringtones";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_ringtones";
                 break;
@@ -220,7 +220,7 @@ public final class NodeProperties {
                 owner = "0";
                 group = "0";
                 perm = "0644";
-                location = "/system/media/ui";
+                location = "/system/media/audio/ui";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_ui";
                 break;
