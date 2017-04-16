@@ -23,21 +23,24 @@ public class Types {
     public static final int PROJECT_MOD = 13;
     public static final int PROJECT_THEMES = 14;
     
-    public static final int GROUP_SYSTEM_APK = 21;
-    public static final int GROUP_SYSTEM_PRIV_APK = 22;
-    public static final int GROUP_SYSTEM_MEDIA_AUDIO_ALARMS = 23;
-    public static final int GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS = 24;
-    public static final int GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES = 25;
-    public static final int GROUP_SYSTEM_MEDIA_AUDIO_UI = 26;
-    public static final int GROUP_SYSTEM_MEDIA = 27;
-    public static final int GROUP_SYSTEM_FONTS = 28;
-    public static final int GROUP_DATA_APP = 29;
-    public static final int GROUP_DATA_LOCAL = 30;
-    public static final int GROUP_CUSTOM = 31;
-    public static final int GROUP_MOD = 32;
-    public static final int GROUP_AROMA_THEMES = 33;
-    public static final int GROUP_DELETE_FILES = 34;
-    public static final int GROUP_SCRIPT = 35;
-    
+    public static final int GROUP_SYSTEM = 21;
+    public static final int GROUP_SYSTEM_APK = 22;
+    public static final int GROUP_SYSTEM_PRIV_APK = 23;
+    public static final int GROUP_SYSTEM_MEDIA_AUDIO_ALARMS = 24;
+    public static final int GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS = 25;
+    public static final int GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES = 26;
+    public static final int GROUP_SYSTEM_MEDIA_AUDIO_UI = 27;
+    public static final int GROUP_SYSTEM_MEDIA = 28;
+    public static final int GROUP_SYSTEM_FONTS = 29;
+    public static final int GROUP_SYSTEM_BIN = 30;
+    public static final int GROUP_SYSTEM_ETC = 31;
+    public static final int GROUP_SYSTEM_FRAMEWORK = 32;
+    public static final int GROUP_DATA_APP = 33;
+    public static final int GROUP_DATA_LOCAL = 34;
+    public static final int GROUP_CUSTOM = 35;
+    public static final int GROUP_MOD = 36;
+    public static final int GROUP_AROMA_THEMES = 37;
+    public static final int GROUP_DELETE_FILES = 38;
+    public static final int GROUP_SCRIPT = 39;
     
 }

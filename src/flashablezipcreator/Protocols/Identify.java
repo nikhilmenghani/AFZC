@@ -5,8 +5,6 @@
  */
 package flashablezipcreator.Protocols;
 
-import flashablezipcreator.Core.GroupNode;
-import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.DiskOperations.ReadZip;
 import java.io.File;
 import java.io.IOException;
@@ -181,8 +179,8 @@ public class Identify {
     }
 
     public static String getPermissions(String customOriginalGroupType) {
-        String str = customOriginalGroupType.substring(customOriginalGroupType.indexOf(permSeparator) + permSeparator.length()
-                , customOriginalGroupType.length());
+        String str = customOriginalGroupType.substring(customOriginalGroupType.indexOf(permSeparator) + permSeparator.length(),
+                 customOriginalGroupType.length());
         return str;
     }
 
@@ -203,10 +201,18 @@ public class Identify {
         String str = path.substring(path.indexOf(typeSeparator) + typeSeparator.length(), path.length());
         str = str.substring(0, str.indexOf("/"));
         switch (str) {
+            case "system":
+                return Types.GROUP_SYSTEM;
             case "system_app":
                 return Types.GROUP_SYSTEM_APK;
             case "system_priv_app":
                 return Types.GROUP_SYSTEM_PRIV_APK;
+            case "system_bin":
+                return Types.GROUP_SYSTEM_BIN;
+            case "system_etc":
+                return Types.GROUP_SYSTEM_ETC;
+            case "system_framework":
+                return Types.GROUP_SYSTEM_FRAMEWORK;
             case "script":
                 return Types.GROUP_SCRIPT;
             case "system_media_alarms":

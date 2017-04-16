@@ -84,6 +84,12 @@ public class MyPopup {
 
     public static JPopupMenu getProjectMenu(ArrayList<ProjectItemNode> nodeList) {
         ProjectNode node = (ProjectNode) nodeList.get(0);
+
+        JMenuItem mitemSystem = new JMenuItem("system");
+        mitemSystem.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_SYSTEM, node, "System Files");
+        });
+
         JMenuItem mitemSystemApp = new JMenuItem("system/app");
         mitemSystemApp.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_SYSTEM_APK, node, "System Apps");
@@ -92,6 +98,21 @@ public class MyPopup {
         mitemPrivApp.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_SYSTEM_PRIV_APK, node, "Priv Apps");
         });
+        JMenuItem mitemSystemEtc = new JMenuItem("system/etc");
+        mitemSystemEtc.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_SYSTEM_ETC, node, "System Etc");
+        });
+
+        JMenuItem mitemSystemBin = new JMenuItem("system/bin");
+        mitemSystemBin.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_SYSTEM_BIN, node, "System Bin");
+        });
+
+        JMenuItem mitemSystemFramework = new JMenuItem("system/framework");
+        mitemSystemFramework.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_SYSTEM_FRAMEWORK, node, "System Framework");
+        });
+
         JMenuItem mitemDataApp = new JMenuItem("data/app");
         mitemDataApp.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_DATA_APP, node, "Data Apps");
@@ -140,8 +161,12 @@ public class MyPopup {
             } else {
                 JMenu addGroupMenu = new JMenu("Add Group");
                 JMenu addSystemGroupMenu = new JMenu("System Group");
+                addSystemGroupMenu.add(mitemSystem);
                 addSystemGroupMenu.add(mitemSystemApp);
                 addSystemGroupMenu.add(mitemPrivApp);
+                addSystemGroupMenu.add(mitemSystemBin);
+                addSystemGroupMenu.add(mitemSystemEtc);
+                addSystemGroupMenu.add(mitemSystemFramework);
                 JMenu addDataGroupMenu = new JMenu("Data Group");
                 addDataGroupMenu.add(mitemDataApp);
                 JMenu addFontsGroupMenu = new JMenu("Fonts Group");
@@ -229,13 +254,17 @@ public class MyPopup {
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
             switch (((GroupNode) node).prop.groupType) {
+                case Types.GROUP_SYSTEM:
                 case Types.GROUP_SYSTEM_APK:
                 case Types.GROUP_SYSTEM_PRIV_APK:
+                case Types.GROUP_SYSTEM_ETC:
+                case Types.GROUP_SYSTEM_FRAMEWORK:
                 case Types.GROUP_DATA_APP:
                 case Types.GROUP_CUSTOM:
                     popup.add(mitemAddFolder);
                     popup.add(mitemAddFile);
                     break;
+                case Types.GROUP_SYSTEM_BIN:
                 case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
                 case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:

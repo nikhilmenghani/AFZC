@@ -16,6 +16,7 @@ import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
+import static flashablezipcreator.Operations.UpdateBinaryOperations.copyString;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Types;
@@ -121,15 +122,31 @@ public class UpdaterScriptOperations {
             int count = 1;
             if (Preferences.pp.IsFromLollipop) {
                 str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
-                for (ProjectItemNode folder : node.prop.children) {
-                    str += addPrintString(folder.prop.title, installString);
-                    str = getFolderScript(str, folder);
+                for (ProjectItemNode child : node.prop.children) {
+                    if (child.prop.type == Types.NODE_FOLDER) {
+                        str += addPrintString(child.prop.title, installString);
+                        str = getFolderScript(str, child);
+                    } else if (child.prop.type == Types.NODE_FILE) {
+                        str += addPrintString(child.prop.title, copyString);
+                        str += "package_extract_file(\"" + ((FileNode) child).prop.fileZipPath + "\", \"" + ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title + "\");\n";
+                        if (((FileNode) child).prop.setPermissions) {
+                            str += "set_perm(" + ((FileNode) child).prop.filePermission + ");\n";
+                        }
+                    }
                 }
                 str += "endif;\n\n";
-                for (ProjectItemNode folder : node.prop.children) {
+                for (ProjectItemNode child : node.prop.children) {
                     str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
-                    str += addPrintString(folder.prop.title, installString);
-                    str = getFolderScript(str, folder);
+                    if (child.prop.type == Types.NODE_FOLDER) {
+                        str += addPrintString(child.prop.title, installString);
+                        str = getFolderScript(str, child);
+                    } else if (child.prop.type == Types.NODE_FILE) {
+                        str += addPrintString(child.prop.title, copyString);
+                        str += "package_extract_file(\"" + ((FileNode) child).prop.fileZipPath + "\", \"" + ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title + "\");\n";
+                        if (((FileNode) child).prop.setPermissions) {
+                            str += "set_perm(" + ((FileNode) child).prop.filePermission + ");\n";
+                        }
+                    }
                     str += "endif;\n\n";
                 }
             } else {
@@ -300,9 +317,13 @@ public class UpdaterScriptOperations {
     public String generateUpdaterScript(GroupNode node) {
         switch (node.prop.groupType) {
             //Group of predefined locations
+            case Types.GROUP_SYSTEM:
             case Types.GROUP_SYSTEM_APK:
             case Types.GROUP_SYSTEM_PRIV_APK:
             case Types.GROUP_DATA_APP:
+            case Types.GROUP_SYSTEM_BIN:
+            case Types.GROUP_SYSTEM_ETC:
+            case Types.GROUP_SYSTEM_FRAMEWORK:
                 return predefinedFolderGroupScript(node);
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:

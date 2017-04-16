@@ -57,6 +57,14 @@ public class AddGroup extends javax.swing.JFrame {
                 break;
         }
         switch (groupType) {
+            case Types.GROUP_SYSTEM:
+                location = "/system";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "System Group";
+                headerWidth = 26;
+                break;
             case Types.GROUP_SYSTEM_APK:
                 location = "/system/app";
                 owner = "0";
@@ -71,6 +79,28 @@ public class AddGroup extends javax.swing.JFrame {
                 group = "0";
                 perm = "0644";
                 title = "Priv Apps Group";
+                break;
+            case Types.GROUP_SYSTEM_BIN:
+                location = "/system/bin";
+                owner = "0";
+                group = "2000";
+                perm = "0755";
+                title = "System Bin Group";
+                break;
+            case Types.GROUP_SYSTEM_ETC:
+                location = "/system/etc";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "System Etc Group";
+                break;
+            case Types.GROUP_SYSTEM_FRAMEWORK:
+                location = "/system/framework";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "System Framework Group";
+                headerWidth = 24;
                 break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 location = "/system/media/audio/alarms";
@@ -612,7 +642,7 @@ public class AddGroup extends javax.swing.JFrame {
         boolean flag = false;
         if (customcbPermissions.isSelected()) {
             flag = true;
-        } else if(modifyPerms){
+        } else if (modifyPerms) {
             customcbGroupR.setSelected(flag);
             customcbGroupW.setSelected(flag);
             customcbGroupX.setSelected(flag);

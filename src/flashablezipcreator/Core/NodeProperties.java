@@ -164,6 +164,15 @@ public final class NodeProperties {
         projectName = parent.prop.projectName;
         projectParent = parent;
         switch (type) {
+            case Types.GROUP_SYSTEM:
+                propFile = getProp("system");
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/system";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "system";
+                break;
             case Types.GROUP_SYSTEM_APK:
                 propFile = getProp("system_app");
                 extension = "apk";
@@ -183,6 +192,33 @@ public final class NodeProperties {
                 location = "/system/priv-app";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_priv_app";
+                break;
+            case Types.GROUP_SYSTEM_BIN:
+                propFile = getProp("system_bin");
+                owner = "0";
+                group = "2000";
+                perm = "0755";
+                location = "/system/bin";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "system_bin";
+                break;
+            case Types.GROUP_SYSTEM_ETC:
+                propFile = getProp("system_etc");
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/system/etc";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "system_etc";
+                break;
+            case Types.GROUP_SYSTEM_FRAMEWORK:
+                propFile = getProp("system_framework");
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/system/framework";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "system_framework";
                 break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 propFile = getProp("system_media_alarms");

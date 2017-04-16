@@ -232,9 +232,13 @@ public class AromaScriptOperations {
     public String addCheckBox(GroupNode node) {
         String str = "";
         switch (node.prop.groupType) {
+            case Types.GROUP_SYSTEM:
             case Types.GROUP_SYSTEM_APK:
             case Types.GROUP_SYSTEM_PRIV_APK:
             case Types.GROUP_DATA_APP:
+            case Types.GROUP_SYSTEM_BIN:
+            case Types.GROUP_SYSTEM_ETC:
+            case Types.GROUP_SYSTEM_FRAMEWORK:
                 str += "\ncheckbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                         + "\"Select files from the list\", \"\", 2,\n"
                         + "\"Select All\",\"Installs All Files.\", 1";

@@ -34,7 +34,7 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
     public ImageIcon iconFontsSubGroup = new ImageIcon(FlashableZipCreator.class.getResource("res/folder.png"));
     public ImageIcon iconBASubGroup = new ImageIcon(FlashableZipCreator.class.getResource("res/folder.png"));
     public ImageIcon iconFolder = new ImageIcon(FlashableZipCreator.class.getResource("res/folder.png"));
-    
+
     public ImageIcon iconFile = new ImageIcon(FlashableZipCreator.class.getResource("res/file.png"));
     public ImageIcon iconFontFile = new ImageIcon(FlashableZipCreator.class.getResource("res/folder.png"));
 
@@ -59,11 +59,14 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
                 GroupNode gNode = (GroupNode) node;
                 if (((ProjectNode) gNode.prop.parent).prop.projectType == Types.PROJECT_THEMES) {
                     setIcon(iconThemeGroup);
-                }
-                else {
+                } else {
                     switch (gNode.prop.groupType) {
+                        case Types.GROUP_SYSTEM:
                         case Types.GROUP_SYSTEM_APK:
                         case Types.GROUP_SYSTEM_PRIV_APK:
+                        case Types.GROUP_SYSTEM_BIN:
+                        case Types.GROUP_SYSTEM_ETC:
+                        case Types.GROUP_SYSTEM_FRAMEWORK:
                             setIcon(iconSystemGroup);
                             break;
                         case Types.GROUP_DATA_APP:
