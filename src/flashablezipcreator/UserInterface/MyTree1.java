@@ -126,7 +126,7 @@ public class MyTree1 extends JFrame {
         });
 
         lblVersion.setForeground(new java.awt.Color(255, 255, 255));
-        lblVersion.setText(Preferences.currentVersion + " " + Preferences.versionType);
+        lblVersion.setText(Preferences.pp.currentVersion + " " + Preferences.pp.versionType);
 
         javax.swing.GroupLayout panel_logoLayout = new javax.swing.GroupLayout(panel_logo);
         panel_logo.setLayout(panel_logoLayout);

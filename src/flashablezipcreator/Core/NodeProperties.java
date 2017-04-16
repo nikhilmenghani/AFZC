@@ -101,7 +101,7 @@ public final class NodeProperties {
         group = parent.prop.group;
         perm = parent.prop.perm;
         setPermissions = parent.prop.setPermissions;
-        defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
+        defaultFolderPerm = (Preferences.pp.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
                 : "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
         projectName = parent.prop.projectName;
@@ -124,7 +124,7 @@ public final class NodeProperties {
         group = parent.prop.group;
         perm = parent.prop.perm;
         setPermissions = parent.prop.setPermissions;
-        defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
+        defaultFolderPerm = (Preferences.pp.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
                 : "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
         projectName = parent.prop.projectName;
@@ -151,7 +151,7 @@ public final class NodeProperties {
                 break;
         }
 
-        androidVersion = Preferences.IsFromLollipop ? "5.x+" : "4.x+";
+        androidVersion = Preferences.pp.IsFromLollipop ? "5.x+" : "4.x+";
     }
 
     public NodeProperties(String title, int type, ProjectNode parent) {
@@ -416,7 +416,7 @@ public final class NodeProperties {
     public void setPermissions() {
         folderPermission = defaultFolderPerm + "\"" + folderLocation + "\"";
         folderPermission = folderPermission.replaceAll("\\\\", "/");
-        if (Preferences.useUniversalBinary) {
+        if (Preferences.pp.useUniversalBinary) {
             permission = owner + " " + group + " " + perm + " ";
         } else {
             permission = owner + ", " + group + ", " + perm + ", ";
@@ -431,7 +431,7 @@ public final class NodeProperties {
         owner = o;
         group = g;
         perm = p;
-        if (Preferences.useUniversalBinary) {
+        if (Preferences.pp.useUniversalBinary) {
             permission = owner + " " + group + " " + perm + " ";
         } else {
             permission = owner + ", " + group + ", " + perm + ", ";
@@ -442,7 +442,7 @@ public final class NodeProperties {
         owner = o;
         group = g;
         perm = p;
-        if (Preferences.useUniversalBinary) {
+        if (Preferences.pp.useUniversalBinary) {
             permission = owner + " " + group + " " + perm + " ";
         } else {
             permission = owner + ", " + group + ", " + perm + ", ";

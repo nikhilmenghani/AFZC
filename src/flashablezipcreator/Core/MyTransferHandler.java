@@ -140,7 +140,7 @@ public class MyTransferHandler extends TransferHandler {
                 case Types.GROUP_SYSTEM_APK:
                 case Types.GROUP_SYSTEM_PRIV_APK:
                 case Types.GROUP_DATA_APP:
-                    if (Preferences.IsFromLollipop) {
+                    if (Preferences.pp.IsFromLollipop) {
                         addFolderNode(groupNode, f);
                     } else {
                         addFileNode(groupNode, f);

@@ -74,17 +74,25 @@ public class Xml {
         xo.initializeProjectData(data);
     }
 
-    public static String getPreferenceConfigString(String aromaVersion, boolean androidVersionAboveLP,
-            boolean quickProjectSetup, boolean checkUpdatesOnStartUp, String zipCreatorName, String ZipVersion, boolean saveLogs)
+    public static String getPreferenceConfigString(PreferenceProperties pp)
             throws ParserConfigurationException, TransformerException {
         xo = new XmlOperations();
-        xo.createConfigurationConfig(aromaVersion, androidVersionAboveLP, quickProjectSetup, checkUpdatesOnStartUp, zipCreatorName, ZipVersion, saveLogs);
+        xo.createConfigurationConfig(pp.aromaVersion, pp.androidVersionAboveLP, pp.isQuickSetup, pp.checkUpdatesOnStartUp, pp.zipCreatorName,
+                pp.zipVersion, pp.saveLogs);
         return xo.getXML();
     }
 
+//    public static String getPreferenceConfigString(String aromaVersion, boolean androidVersionAboveLP,
+//            boolean quickProjectSetup, boolean checkUpdatesOnStartUp, String zipCreatorName, String ZipVersion, boolean saveLogs)
+//            throws ParserConfigurationException, TransformerException {
+//        xo = new XmlOperations();
+//        xo.createConfigurationConfig(aromaVersion, androidVersionAboveLP, quickProjectSetup, checkUpdatesOnStartUp, zipCreatorName, ZipVersion, saveLogs);
+//        return xo.getXML();
+//    }
+
     public static String getAromaVersion(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
-        return xo.getStringConfigValue(configData,"AromaVersion");
+        return xo.getStringConfigValue(configData, "AromaVersion");
     }
 
     public static boolean getAndroidVersionDetail(String configData) throws ParserConfigurationException, SAXException, IOException {
@@ -111,12 +119,12 @@ public class Xml {
         xo = new XmlOperations();
         return xo.getStringConfigValue(configData, "zipVersion");
     }
-    
+
     public static boolean getLogsIndicator(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
         return xo.getBoolConfigValue(configData, "saveLogs");
     }
-    
+
     public static boolean getCheckUpdatesIndicator(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
         return xo.getBoolConfigValue(configData, "CheckUpdates");

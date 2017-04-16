@@ -15,7 +15,6 @@ import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.MyTree;
 import flashablezipcreator.UserInterface.Preferences;
-import static flashablezipcreator.UserInterface.Preferences.preferencesConfig;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -89,25 +88,26 @@ public class FlashableZipCreator {
             Read r = new Read();
             Logs.logFile = "Logs_" + Logs.getTime() + ".log";
             if (f.exists()) {
-                Preferences.preferencesFilePresent = true;
-                Preferences.preferencesConfig = r.getFileString("Preferences.config");
-                Preferences.themes = Xml.getThemes(preferencesConfig);
-                Preferences.aromaVersion = Xml.getAromaVersion(preferencesConfig);
-                Preferences.IsFromLollipop = Xml.getAndroidVersionDetail(preferencesConfig);
-                Preferences.IsQuickSetup = Xml.getQuickProjectSetup(preferencesConfig);
-                Preferences.zipCreatorName = Xml.getZipCreatorName(preferencesConfig);
-                Preferences.zipVersion = Xml.getZipVersion(preferencesConfig);
-                Preferences.saveLogs = Xml.getLogsIndicator(preferencesConfig);
-                Preferences.checkUpdatesOnStartUp = Xml.getCheckUpdatesIndicator(preferencesConfig);
+                Preferences.pp.preferencesFilePresent = true;
+                Preferences.pp.preferencesConfig = r.getFileString("Preferences.config");
+                String preferencesConfig = Preferences.pp.preferencesConfig;
+                Preferences.pp.themes = Xml.getThemes(preferencesConfig);
+                Preferences.pp.aromaVersion = Xml.getAromaVersion(preferencesConfig);
+                Preferences.pp.IsFromLollipop = Xml.getAndroidVersionDetail(preferencesConfig);
+                Preferences.pp.isQuickSetup = Xml.getQuickProjectSetup(preferencesConfig);
+                Preferences.pp.zipCreatorName = Xml.getZipCreatorName(preferencesConfig);
+                Preferences.pp.zipVersion = Xml.getZipVersion(preferencesConfig);
+                Preferences.pp.saveLogs = Xml.getLogsIndicator(preferencesConfig);
+                Preferences.pp.checkUpdatesOnStartUp = Xml.getCheckUpdatesIndicator(preferencesConfig);
                 Logs.write("Created Logs File..");
                 Logs.write(OS + " Operating System Found..!!");
                 Logs.write("Preferences.config Found");
                 Logs.write("Preferences Loaded");
             }
-            if (Preferences.themes.isEmpty()) {
-                Preferences.themes.add("Nikhil");
-                Preferences.themes.add("Ics");
-                Preferences.themes.add("RedBlack");
+            if (Preferences.pp.themes.isEmpty()) {
+                Preferences.pp.themes.add("Nikhil");
+                Preferences.pp.themes.add("Ics");
+                Preferences.pp.themes.add("RedBlack");
             }
 
 //            Control.check();
@@ -120,10 +120,10 @@ public class FlashableZipCreator {
             if ((new File("update-binary").exists())) {
                 Device.binary = (new Read()).getFileBytes("update-binary");
                 Logs.write("update-binary found");
-                Preferences.useUniversalBinary = false;
+                Preferences.pp.useUniversalBinary = false;
             } else {
                 Logs.write("update-binary not found, using Universal Binary");
-                Preferences.useUniversalBinary = true;
+                Preferences.pp.useUniversalBinary = true;
             }
 
             if (Jar.isExecutingThrough()) {

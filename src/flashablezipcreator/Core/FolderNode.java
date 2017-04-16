@@ -40,7 +40,7 @@ public class FolderNode extends ProjectItemNode {
         prop.folderLocation = parent.prop.location + File.separator + title;
         prop.permission = parent.prop.permission;
         prop.setPermissions = parent.prop.setPermissions;
-        prop.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
+        prop.defaultFolderPerm = (Preferences.pp.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
                 : "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
         prop.projectName = parent.prop.projectName;
@@ -58,7 +58,7 @@ public class FolderNode extends ProjectItemNode {
         prop.folderLocation = parent.prop.folderLocation + File.separator + title;
         prop.permission = parent.prop.permission;
         prop.setPermissions = parent.prop.setPermissions;
-        prop.defaultFolderPerm = (Preferences.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
+        prop.defaultFolderPerm = (Preferences.pp.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
                 : "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
         prop.projectName = parent.prop.projectName;

@@ -239,7 +239,7 @@ public class AromaScriptOperations {
                         + "\"Select files from the list\", \"\", 2,\n"
                         + "\"Select All\",\"Installs All Files.\", 1";
                 for (int i = 0; i < node.getChildCount(); i++) {
-                    if (Preferences.IsFromLollipop) {
+                    if (Preferences.pp.IsFromLollipop) {
                         switch (node.getChildAt(i).prop.type) {
                             case Types.NODE_FOLDER:
                                 str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FolderNode) node.getChildAt(i)).prop.description + "\", 0";

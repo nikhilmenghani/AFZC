@@ -394,7 +394,7 @@ public class MyPopup {
                 GroupNode gNode = (GroupNode) node;
                 for (File tempFile : MyFileFilter.getSelectedFiles(gNode.prop.extension)) {
                     FileNode fnode;
-                    if (Preferences.IsFromLollipop) {
+                    if (Preferences.pp.IsFromLollipop) {
                         switch (gNode.prop.groupType) {
                             case Types.GROUP_SYSTEM_APK:
                             case Types.GROUP_SYSTEM_PRIV_APK:

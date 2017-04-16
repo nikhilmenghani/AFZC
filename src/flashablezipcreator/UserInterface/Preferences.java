@@ -7,6 +7,7 @@ package flashablezipcreator.UserInterface;
 
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.Write;
+import flashablezipcreator.Protocols.PreferenceProperties;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Xml;
 import java.awt.event.WindowAdapter;
@@ -29,20 +30,9 @@ import org.xml.sax.SAXException;
  * @author Nikhil
  */
 public class Preferences extends javax.swing.JFrame {
-    
-    public static ArrayList<String> themes = new ArrayList<>();
-    public static boolean IsFromLollipop = true;
-    public static boolean useUniversalBinary = true;
-    public static boolean checkUpdatesOnStartUp = true;
-    public static boolean IsQuickSetup = true;
-    public static boolean saveLogs = false;
-    public static boolean preferencesFilePresent = false;
-    public static String preferencesConfig;
-    public static String aromaVersion = "Version 3.00b1 - MELATI";
-    public static String zipCreatorName = "Nikhil";
-    public static String zipVersion = "1.0";
-    public static String currentVersion = "v4.1";
-    public static String versionType = "stable";
+
+    public static PreferenceProperties pp = new PreferenceProperties();
+
     Write w;
     Read r;
     public JDialog dialog;
@@ -91,14 +81,14 @@ public class Preferences extends javax.swing.JFrame {
 
         File f = new File("Preferences.config");
         if (f.exists()) {
-            preferencesFilePresent = true;
-            preferencesConfig = r.getFileString("Preferences.config");
+            pp.preferencesFilePresent = true;
+            pp.preferencesConfig = r.getFileString("Preferences.config");
         }
 
-        themes = new ArrayList<>();
-        themes.add("Nikhil");
-        themes.add("Ics");
-        themes.add("RedBlack");
+        pp.themes = new ArrayList<>();
+        pp.themes.add("Nikhil");
+        pp.themes.add("Ics");
+        pp.themes.add("RedBlack");
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -166,12 +156,12 @@ public class Preferences extends javax.swing.JFrame {
         lblAndroidVersion.setText("Android Version");
 
         cbAndroidVersion.setBackground(new java.awt.Color(255, 255, 255));
-        if (preferencesFilePresent) {
-            cbAndroidVersion.setSelected(Xml.getAndroidVersionDetail(preferencesConfig));
-            IsFromLollipop = cbAndroidVersion.isSelected();
+        if (pp.preferencesFilePresent) {
+            cbAndroidVersion.setSelected(Xml.getAndroidVersionDetail(pp.preferencesConfig));
+            pp.IsFromLollipop = cbAndroidVersion.isSelected();
         } else {
             cbAndroidVersion.setSelected(true);
-            IsFromLollipop = true;
+            pp.IsFromLollipop = true;
         }
         cbAndroidVersion.setText("Android 5.x+");
         cbAndroidVersion.setToolTipText("Enable Support for 5.x+ based Roms");
@@ -188,22 +178,22 @@ public class Preferences extends javax.swing.JFrame {
         cbAromaVersion.setOpaque(false);
         cbAromaVersion.setToolTipText("Choose which Aroma Binary to use.");
 
-        if (preferencesFilePresent) {
-            String av = Xml.getAromaVersion(preferencesConfig);
+        if (pp.preferencesFilePresent) {
+            String av = Xml.getAromaVersion(pp.preferencesConfig);
             cbAromaVersion.setSelectedItem(av);
-            aromaVersion = av;
+            pp.aromaVersion = av;
         }
 
         lblProjectSetup.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblProjectSetup.setText("Quick Project Setup");
 
         cbProjectSetup.setBackground(new java.awt.Color(255, 255, 255));
-        if (preferencesFilePresent) {
-            cbProjectSetup.setSelected(Xml.getQuickProjectSetup(preferencesConfig));
-            IsQuickSetup = cbProjectSetup.isSelected();
+        if (pp.preferencesFilePresent) {
+            cbProjectSetup.setSelected(Xml.getQuickProjectSetup(pp.preferencesConfig));
+            pp.isQuickSetup = cbProjectSetup.isSelected();
         } else {
             cbProjectSetup.setSelected(true);
-            IsQuickSetup = true;
+            pp.isQuickSetup = true;
         }
         cbProjectSetup.setText("Open dialog box automatically");
         cbProjectSetup.setToolTipText("Enabling this will Open Add Project Dialog Box on Start up for quick project creation.");
@@ -212,30 +202,30 @@ public class Preferences extends javax.swing.JFrame {
         lblZipCreatorName.setText("Zip Creator Name");
 
         txtZipCreatorName.setToolTipText("This Name will reflect in Aroma as Zip Creator");
-        if (preferencesFilePresent) {
-            txtZipCreatorName.setText(Xml.getZipCreatorName(preferencesConfig));
-            zipCreatorName = txtZipCreatorName.getText();
+        if (pp.preferencesFilePresent) {
+            txtZipCreatorName.setText(Xml.getZipCreatorName(pp.preferencesConfig));
+            pp.zipCreatorName = txtZipCreatorName.getText();
         } else {
-            txtZipCreatorName.setText(zipCreatorName);
+            txtZipCreatorName.setText(pp.zipCreatorName);
         }
 
         lblZipVersion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblZipVersion.setText("Release Version");
 
         txtZipVersion.setToolTipText("This Version will reflect in Aroma as Release Version");
-        if (preferencesFilePresent) {
-            txtZipVersion.setText(Xml.getZipVersion(preferencesConfig));
-            zipVersion = txtZipVersion.getText();
+        if (pp.preferencesFilePresent) {
+            txtZipVersion.setText(Xml.getZipVersion(pp.preferencesConfig));
+            pp.zipVersion = txtZipVersion.getText();
         } else {
-            txtZipVersion.setText(zipVersion);
+            txtZipVersion.setText(pp.zipVersion);
         }
 
         lblLogging.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblLogging.setText("Logging");
 
         cbSaveLogs.setBackground(new java.awt.Color(255, 255, 255));
-        if (preferencesFilePresent) {
-            cbSaveLogs.setSelected(Xml.getLogsIndicator(preferencesConfig));
+        if (pp.preferencesFilePresent) {
+            cbSaveLogs.setSelected(Xml.getLogsIndicator(pp.preferencesConfig));
         }
 
         cbSaveLogs.setText("Save Logs");
@@ -246,10 +236,10 @@ public class Preferences extends javax.swing.JFrame {
         lblUpdates.setToolTipText("Enabling this will check for updates on start of the application");
 
         cbUpdates.setBackground(new java.awt.Color(255, 255, 255));
-        if (preferencesFilePresent) {
-            cbUpdates.setSelected(Xml.getCheckUpdatesIndicator(preferencesConfig));
+        if (pp.preferencesFilePresent) {
+            cbUpdates.setSelected(Xml.getCheckUpdatesIndicator(pp.preferencesConfig));
         } else {
-            cbUpdates.setSelected(checkUpdatesOnStartUp);
+            cbUpdates.setSelected(pp.checkUpdatesOnStartUp);
         }
         cbUpdates.setText("Check updates on startup");
         cbUpdates.setToolTipText("Enabling this will check for updates on start of the application.");
@@ -502,16 +492,16 @@ public class Preferences extends javax.swing.JFrame {
 
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, TransformerException, IOException {
         String xml = null;
-        aromaVersion = cbAromaVersion.getSelectedItem().toString();
-        IsFromLollipop = cbAndroidVersion.isSelected();
-        IsQuickSetup = cbProjectSetup.isSelected();
-        zipCreatorName = txtZipCreatorName.getText();
-        checkUpdatesOnStartUp = cbUpdates.isSelected();
-        Project.zipCreator = zipCreatorName;
-        zipVersion = txtZipVersion.getText();
-        Project.releaseVersion = zipVersion;
-        saveLogs = cbSaveLogs.isSelected();
-        xml = Xml.getPreferenceConfigString(aromaVersion, IsFromLollipop, IsQuickSetup, checkUpdatesOnStartUp, zipCreatorName, zipVersion, saveLogs);
+        pp.aromaVersion = cbAromaVersion.getSelectedItem().toString();
+        pp.IsFromLollipop = cbAndroidVersion.isSelected();
+        pp.isQuickSetup = cbProjectSetup.isSelected();
+        pp.zipCreatorName = txtZipCreatorName.getText();
+        pp.checkUpdatesOnStartUp = cbUpdates.isSelected();
+        Project.zipCreator = pp.zipCreatorName;
+        pp.zipVersion = txtZipVersion.getText();
+        Project.releaseVersion = pp.zipVersion;
+        pp.saveLogs = cbSaveLogs.isSelected();
+        xml = Xml.getPreferenceConfigString(pp);
         Write w = new Write();
         w.writeStringToFile(xml, "Preferences.config");
         dialog.dispose();

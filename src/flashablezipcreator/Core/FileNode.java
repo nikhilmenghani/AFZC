@@ -67,7 +67,7 @@ public final class FileNode extends ProjectItemNode {
         prop.description = prop.parent.prop.description;
         if (parent.prop.isBootAnimationGroup) {
             prop.setPermissions(parent.prop.permission, "bootanimation.zip");
-        } else if (((GroupNode) parent.prop.originalParent).prop.groupType == Types.GROUP_DATA_APP && Preferences.IsFromLollipop) {
+        } else if (((GroupNode) parent.prop.originalParent).prop.groupType == Types.GROUP_DATA_APP && Preferences.pp.IsFromLollipop) {
             prop.setPermissions(parent.prop.permission, "base.apk");
         } else {
             prop.setPermissions(parent.prop.permission, prop.title);

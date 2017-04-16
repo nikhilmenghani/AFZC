@@ -16,7 +16,6 @@ import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
-import static flashablezipcreator.Operations.UpdateBinaryOperations.installString;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Types;
@@ -120,7 +119,7 @@ public class UpdaterScriptOperations {
         String str = "";
         if (node.isCheckBox()) {
             int count = 1;
-            if (Preferences.IsFromLollipop) {
+            if (Preferences.pp.IsFromLollipop) {
                 str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
                 for (ProjectItemNode folder : node.prop.children) {
                     str += addPrintString(folder.prop.title, installString);

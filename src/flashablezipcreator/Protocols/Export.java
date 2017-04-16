@@ -129,7 +129,7 @@ public class Export implements Runnable {
             increaseProgressBar(fileIndex, "Updater-Script");
             fileIndex++;
             try {
-                if (Preferences.useUniversalBinary) {
+                if (Preferences.pp.useUniversalBinary) {
                     Logs.write("Writing updater-script");
                     wz.writeStringToZip("# This is a dummy file. Magic happens in binary file", UpdaterScript.updaterScriptPath);  //updater-script
                     Logs.write("Building update-binary-installer");

@@ -20,7 +20,7 @@ public class Logs {
     public static String newLine = "\n";
 
     public static void write(String strToWrite) {
-        if (Preferences.saveLogs) {
+        if (Preferences.pp.saveLogs) {
             Write w = new Write();
             w.appendStringToFile(strToWrite + newLine, logFile);
         }
