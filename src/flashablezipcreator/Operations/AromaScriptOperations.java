@@ -149,7 +149,7 @@ public class AromaScriptOperations {
             str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", " + 0 + "";
         }
         str += ");\n";
-        str += "writetmpfile(\"" + node.prop.propFile.replace(".prop", "_temp.prop") + "\",\"init=no\\n\");\n";//initialize temp.prop.
+        str += "writetmpfile(\"" + node.prop.propFile.replace(".prop", "_" + node.prop.title + ".prop") + "\",\"init=no\\n\");\n";//initialize temp.prop.
 
         str += "if prop(\"" + node.prop.propFile + "\", \"selected.0\")==\"" + 1 + "\" then\n";
         str += "setvar(\"fontname\",\"" + "default" + "\");\n";
@@ -167,7 +167,7 @@ public class AromaScriptOperations {
                     }
                 }
                 str += "setvar(\"fontname\",\"" + sgnode.toString() + "\");\n";
-                str += "writetmpfile(\"" + node.prop.propFile.replace(".prop", "_temp.prop") + "\",\"" + sgnode + "=yes\\n\");\n";
+                str += "writetmpfile(\"" + node.prop.propFile.replace(".prop", "_" + node.prop.title + ".prop") + "\",\"" + sgnode + "=yes\\n\");\n";
                 str += "endif;\n";
             }
             str += addFontsViewBoxString();

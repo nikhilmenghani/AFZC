@@ -132,7 +132,7 @@ public class UpdateBinaryOperations {
         if (node.isCheckBox()) {
             int count = 1;
             if (Preferences.pp.IsFromLollipop) {
-                str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " item.1." + count++ + ") == 1 ]; then\n";
+                str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item.1." + count++ + ") == 1 ]; then\n";
                 for (ProjectItemNode child : node.prop.children) {
                     if (child.prop.type == Types.NODE_FOLDER) {
                         str += addPrintString(child.prop.title, installString);
@@ -147,7 +147,7 @@ public class UpdateBinaryOperations {
                 }
                 str += "fi;\n";
                 for (ProjectItemNode child : node.prop.children) {
-                    str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " item.1." + count++ + ") == 1 ]; then\n";
+                    str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item.1." + count++ + ") == 1 ]; then\n";
                     str += addPrintString(child.prop.title, installString);
                     if (child.prop.type == Types.NODE_FOLDER) {
                         str += addPrintString(child.prop.title, installString);
@@ -173,7 +173,7 @@ public class UpdateBinaryOperations {
         if (node.isCheckBox()) {
             int count = 1;
 //            str += getPackageExtractDirString(node);
-            str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " item.1." + count++ + ") == 1 ]; then\n";
+            str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item.1." + count++ + ") == 1 ]; then\n";
             for (ProjectItemNode fnode : node.prop.children) {
                 FileNode file = (FileNode) fnode;
                 if (node.prop.groupType == Types.GROUP_DELETE_FILES) {
@@ -189,7 +189,7 @@ public class UpdateBinaryOperations {
             }
             str += "fi;\n";
             for (ProjectItemNode file : node.prop.children) {
-                str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " item.1." + count++ + ") == 1 ]; then\n";
+                str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item.1." + count++ + ") == 1 ]; then\n";
                 if (node.prop.groupType == Types.GROUP_DELETE_FILES) {
                     str += addPrintString(((FileNode) file).prop.title, deleteString);
                     str += "delete /" + ((FileNode) file).getDeleteLocation() + "\n";
@@ -205,7 +205,7 @@ public class UpdateBinaryOperations {
         } else if (node.isSelectBox() && node.prop.groupType == Types.GROUP_SCRIPT) {
             int count = 2;
             for (ProjectItemNode file : node.prop.children) {
-                str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " selected.1 ) == " + count++ + " ]; then\n";
+                str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" selected.1 ) == " + count++ + " ]; then\n";
                 str += addPrintString("@Running script : " + ((FileNode) file).prop.title);
                 str += "package_extract_file \"" + ((FileNode) file).prop.fileZipPath + "\" /tmp/script\n"
                         + "set_perm 0 0 0777 /tmp/script\n"
@@ -234,9 +234,9 @@ public class UpdateBinaryOperations {
 //            str += getPackageExtractDirString(node);
             for (ProjectItemNode subGroup : node.prop.children) {
                 if (node.prop.groupType == Types.GROUP_SYSTEM_FONTS) {
-                    str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile.replace(".prop", "_temp.prop") + " " + subGroup.toString() + ") == \"" + "yes" + "\" ]; then\n";
+                    str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile.replace(".prop", "_" + node.prop.title + ".prop\"") + " \"" + subGroup.toString() + "\") == \"" + "yes" + "\" ]; then\n";
                 } else {
-                    str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " selected.1 ) == " + count++ + " ]; then\n";
+                    str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" selected.1 ) == " + count++ + " ]; then\n";
                 }
                 str += addPrintString(((SubGroupNode) subGroup).prop.title, installString);
                 for (ProjectItemNode file : subGroup.prop.children) {
@@ -267,7 +267,7 @@ public class UpdateBinaryOperations {
         String str = "";
         if (node.isCheckBox()) {
             int count = 1;
-            str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " item.1." + count++ + ") == 1 ]; then\n";
+            str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item.1." + count++ + ") == 1 ]; then\n";
             for (ProjectItemNode tempNode : node.prop.children) {
                 switch (tempNode.prop.type) {
                     case Types.NODE_FOLDER:
@@ -286,13 +286,13 @@ public class UpdateBinaryOperations {
             for (ProjectItemNode tempNode : node.prop.children) {
                 switch (tempNode.prop.type) {
                     case Types.NODE_FOLDER:
-                        str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " item.1." + count++ + ") == 1 ]; then\n";
+                        str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item.1." + count++ + ") == 1 ]; then\n";
                         str += addPrintString(((FolderNode) tempNode).prop.title, installString);
                         str = getFolderScript(str, (FolderNode) tempNode);
                         str += "fi;\n";
                         break;
                     case Types.NODE_FILE:
-                        str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " item.1." + count++ + ") == 1 ]; then\n";
+                        str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item.1." + count++ + ") == 1 ]; then\n";
                         str += addPrintString(((FileNode) tempNode).prop.title, installString);
                         str += "package_extract_file \"" + ((FileNode) tempNode).prop.fileZipPath + "\" \"" + ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title + "\"\n";
                         if (((FileNode) tempNode).prop.setPermissions) {
@@ -306,13 +306,13 @@ public class UpdateBinaryOperations {
             for (ProjectItemNode tempNode : node.prop.children) {
                 switch (tempNode.prop.type) {
                     case Types.NODE_FOLDER:
-                        str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " selected.1 ) == " + count++ + " ]; then\n";
+                        str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" selected.1 ) == " + count++ + " ]; then\n";
                         str += addPrintString(((FolderNode) tempNode).prop.title, installString);
                         str = getFolderScript(str, (FolderNode) tempNode);
                         str += "fi;\n";
                         break;
                     case Types.NODE_FILE:
-                        str += "if [ $(file_getprop /tmp/aroma/" + node.prop.propFile + " selected.1 ) ==  " + count++ + " ]; then\n";
+                        str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" selected.1 ) ==  " + count++ + " ]; then\n";
                         str += addPrintString(((FileNode) tempNode).prop.title, installString);
                         str += "package_extract_file \"" + ((FileNode) tempNode).prop.fileZipPath + "\" \"" + ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title + "\"\n";
                         if (((FileNode) tempNode).prop.setPermissions) {

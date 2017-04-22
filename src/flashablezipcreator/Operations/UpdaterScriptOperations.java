@@ -222,7 +222,7 @@ public class UpdaterScriptOperations {
 //            str += getPackageExtractDirString(node);
             for (ProjectItemNode subGroup : node.prop.children) {
                 if (node.prop.groupType == Types.GROUP_SYSTEM_FONTS) {
-                    str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile.replace(".prop", "_temp.prop") + "\", \"" + subGroup.toString() + "\")==\"" + "yes" + "\") then \n";
+                    str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile.replace(".prop", "_" + node.prop.title + ".prop") + "\", \"" + subGroup.toString() + "\")==\"" + "yes" + "\") then \n";
                 } else {
                     str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"selected.1\")==\"" + count++ + "\") then \n";
                 }
