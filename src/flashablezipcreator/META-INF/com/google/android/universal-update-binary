@@ -34,7 +34,7 @@ greater_than_int() { test $1 -gt $2 && echo 1 || echo 0; }
 # format(fs_type, partition_type, device, fs_size, mountpoint) {} is unneeded since specific format/wipe commands may be run directly
 # mount <partition> exists in shell
 # unmount <partition>
-unmount() { umount $1; }
+unmount() { umount "$1"; }
 # is_mounted <partition>
 is_mounted() {
   case `mount` in
@@ -45,7 +45,7 @@ is_mounted() {
 # tune2fs(device[, arg, …]) {} should be done directly with the tune2fs command
 
 # write_raw_image <file> <block>
-write_raw_image() { dd if=$1 of=$2; }
+write_raw_image() { dd if="$1" of="$2"; }
 # write_firmware_image() {} is a manufacturer command to apply further OEM update zips with hboot/uboot functions, so can't be duplicated
 # wipe_block_device(block_dev, len) {} should be done directly with dd or nanderase
 # wipe_cache() {} should be done directly with format or rm -rf
@@ -58,22 +58,22 @@ package_extract_dir() {
 	cd $1;
 	find . -mindepth 1 -maxdepth 1 -type d | while read -r dir
 	do
-		cp -r $dir $2/
+		cp -r "$dir" $2/
 	done;
 	rm -rf *;
 	cd /tmp/zipContent
 }
 
 # rename <file> <destination_file>
-rename() { mv -f $1 $2; }
+rename() { mv -f "$1" "$2"; }
 
 # delete <file> [<file2> ...]
-delete() { rm -f $*; }
+delete() { rm -f "$@"; }
 # delete_recursive <dir> [<dir2> ...]
-delete_recursive() { rm -rf $*; }
+delete_recursive() { rm -rf "$@"; }
 
 # symlink <file/dir> <link> [<link2> ...]
-symlink() { ln -s $*; }
+symlink() { ln -s "$@"; }
 
 # set_metadata <file> <uid|gid|mode|capabilities|selabel> <value> [<uid|gid|mode|capabilities|selabel_2> <value2> ...]
 set_metadata() {
@@ -81,17 +81,17 @@ set_metadata() {
   shift;
   until [ ! "$2" ]; do
     case $1 in
-      uid) chown $2 $file;;
-      gid) chown :$2 $file;;
-      mode) chmod $2 $file;;
-      capabilities) twrp setcap $2 $file;;
+      uid) chown $2 "$file";;
+      gid) chown :$2 "$file";;
+      mode) chmod $2 "$file";;
+      capabilities) twrp setcap $2 "$file";;
       selabel)
         for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
-          LD_LIBRARY_PATH=/system/lib $i chcon -h $2 $file;
-          LD_LIBRARY_PATH=/system/lib $i chcon $2 $file;
+          LD_LIBRARY_PATH=/system/lib $i chcon -h $2 "$file";
+          LD_LIBRARY_PATH=/system/lib $i chcon $2 "$file";
         done;
-        chcon -h $2 $file;
-        chcon $2 $file;
+        chcon -h $2 "$file";
+        chcon $2 "$file";
       ;;
       *) ;;
     esac;
@@ -104,8 +104,8 @@ set_metadata_recursive() {
   shift;
   until [ ! "$2" ]; do
     case $1 in
-      uid) chown -R $2 $dir;;
-      gid) chown -R :$2 $dir;;
+      uid) chown -R $2 "$dir";;
+      gid) chown -R :$2 "$dir";;
       dmode) find "$dir" -type d -exec chmod $2 {} +;;
       fmode) find "$dir" -type f -exec chmod $2 {} +;;
       capabilities) find "$dir" -exec twrp setcap $2 {} +;;
@@ -136,7 +136,7 @@ set_perm_recursive() {
   uid=$1; gid=$2; dmod=$3; fmod=$4;
   shift 4;
   until [ ! "$1" ]; do
-    chown -R $uid.$gid $1; chown -R $uid:$gid $1;
+    chown -R $uid.$gid "$1"; chown -R $uid:$gid "$1";
     find "$1" -type d -exec chmod $dmod {} +;
     find "$1" -type f -exec chmod $fmod {} +;
     shift;
@@ -148,11 +148,11 @@ ch_con() {
   con=$1;
   shift;
   for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
-    LD_LIBRARY_PATH=/system/lib $i chcon -h u:object_r:$con:s0 $*;
-    LD_LIBRARY_PATH=/system/lib $i chcon u:object_r:$con:s0 $*;
+    LD_LIBRARY_PATH=/system/lib $i chcon -h u:object_r:$con:s0 "$@";
+    LD_LIBRARY_PATH=/system/lib $i chcon u:object_r:$con:s0 "$@";
   done;
-  chcon -h u:object_r:$con:s0 $*;
-  chcon u:object_r:$con:s0 $*;
+  chcon -h u:object_r:$con:s0 "$@";
+  chcon u:object_r:$con:s0 "$@";
 }
 # ch_con_recursive <dir_context> <file_context> <dir> [<dir2> ...]
 ch_con_recursive() {
@@ -175,9 +175,9 @@ ch_con_recursive() {
 # restore_con <file/dir> [<file2/dir2> ...]
 restore_con() { 
   for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
-    LD_LIBRARY_PATH=/system/lib $i restorecon -R $*;
+    LD_LIBRARY_PATH=/system/lib $i restorecon -R "$@";
   done;
-  restorecon -R $*;
+  restorecon -R "$@";
 }
 
 # read_file(filename) {} is unneeded since file contents can be read directly with the cat command
@@ -187,7 +187,7 @@ restore_con() {
 # file_getprop <file> <property>
 file_getprop() { grep "^$2" "$1" | head -n1 | cut -d= -f2; }
 # getprop <property>
-getprop() { test -e /sbin/getprop && /sbin/getprop $1 || grep "^$1" /default.prop; }
+getprop() { test -e /sbin/getprop && /sbin/getprop $1 || grep "^$1" /default.prop | head -n1 | cut -d= -f2; }
 
 # sha1_check <file> [<sha1_hex> [<sha1_hex2> ...]]
 sha1_check() {
@@ -199,11 +199,11 @@ sha1_check() {
 
 # apply_patch <src_file> <tgt_file> <tgt_sha1> <tgt_size> [<src_sha1_1>:<patch1> [<src_sha1_2>:<patch2> ...]]
 apply_patch() {
-  LD_LIBRARY_PATH=/system/lib applypatch $*;
+  LD_LIBRARY_PATH=/system/lib applypatch "$@";
 }
 # apply_patch_check <file> [<sha1_hex> [<sha1_hex2> ...]]
 apply_patch_check() {
-  LD_LIBRARY_PATH=/system/lib applypatch -c $*;
+  LD_LIBRARY_PATH=/system/lib applypatch -c "$@";
 }
 # apply_patch_space <bytes>
 apply_patch_space() {
