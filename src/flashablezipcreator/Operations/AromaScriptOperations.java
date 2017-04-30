@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Operations;
 
+import flashablezipcreator.Core.DeleteNode;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
@@ -263,12 +264,21 @@ public class AromaScriptOperations {
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-            case Types.GROUP_DELETE_FILES:
                 str += "\ncheckbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                         + "\"Select files from the list\", \"\", 2,\n"
                         + "\"Select All\",\"Installs All Files.\", 1";
                 for (int i = 0; i < node.getChildCount(); i++) {
                     str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", 0";
+                }
+                str += ");\n";
+                str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
+                break;
+            case Types.GROUP_DELETE_FILES:
+                str += "\ncheckbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
+                        + "\"Select files from the list\", \"\", 2,\n"
+                        + "\"Select All\",\"Delete All.\", 1";
+                for (int i = 0; i < node.getChildCount(); i++) {
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((DeleteNode) node.getChildAt(i)).prop.description + "\", 0";
                 }
                 str += ");\n";
                 str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";

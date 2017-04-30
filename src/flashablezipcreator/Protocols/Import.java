@@ -5,14 +5,18 @@
  */
 package flashablezipcreator.Protocols;
 
+import flashablezipcreator.Core.DeleteNode;
 import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.NodeProperties;
 import flashablezipcreator.Core.ProjectItemNode;
+import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
 import static flashablezipcreator.UserInterface.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.TreeOperations;
+import static flashablezipcreator.UserInterface.MyTree.rootNode;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,6 +92,10 @@ public class Import implements Runnable {
                 String filePath = name;
                 String projectName = Identify.getProjectName(name);
                 int projectType = Identify.getProjectType(filePath);
+                if(name.endsWith("DeleteFilesPath")){
+                    importDeleteNodes(filePath, projectName, in);
+                    continue;
+                }
                 switch (projectType) {
                     case Types.PROJECT_AROMA:
                         importAromaZip(filePath, projectName, in);
@@ -189,6 +197,18 @@ public class Import implements Runnable {
         file.prop.fileSourcePath = file.prop.path;
         rz.writeFileFromZip(in, file.prop.fileSourcePath);
         Logs.write("Written File: " + fName);
+    }
+
+    public static void importDeleteNodes(String filePath, String projectName, InputStream in) throws IOException {
+        String groupName = Identify.getGroupName(filePath);
+        int groupType = Identify.getGroupType(filePath);
+        NodeProperties np = new NodeProperties(projectName, Types.PROJECT_AROMA, Mod.MOD_LESS, MyTree.rootNode);
+        ProjectNode pNode = (ProjectNode) MyTree.rootNode.addChild(new ProjectNode(np), false);
+        np = new NodeProperties(groupName, groupType, pNode);
+        GroupNode gNode = (GroupNode) pNode.addChild(new GroupNode(np), false);
+        for(String path : rz.getStringFromFile(in).split("\n")){
+            gNode.addChild(new DeleteNode(path, gNode), true);
+        }
     }
 
     public static void setProgressBar(String value) {

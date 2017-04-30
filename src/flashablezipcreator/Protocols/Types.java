@@ -17,6 +17,7 @@ public class Types {
     public static final int NODE_SUBGROUP = 3;
     public static final int NODE_FOLDER = 4;
     public static final int NODE_FILE = 5;
+    public static final int NODE_DELETE = 6;
     
     public static final int PROJECT_AROMA = 11;
     public static final int PROJECT_CUSTOM = 12;

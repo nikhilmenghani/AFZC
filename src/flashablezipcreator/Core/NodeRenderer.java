@@ -106,6 +106,7 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
                 setIcon(iconFolder);
                 break;
             case Types.NODE_FILE:
+            case Types.NODE_DELETE:
                 setIcon(iconFile);
                 break;
         }

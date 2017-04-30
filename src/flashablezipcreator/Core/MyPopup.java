@@ -16,6 +16,7 @@ import flashablezipcreator.Operations.MyFileFilter;
 import flashablezipcreator.Protocols.Mod;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.AddGroup;
+import flashablezipcreator.UserInterface.Delete;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.model;
@@ -179,6 +180,10 @@ public class MyPopup {
                 JMenu addBootAnimationGroupMenu = new JMenu("Boot Animation Group");
                 addBootAnimationGroupMenu.add(mitemBootAnimSystem);
                 addBootAnimationGroupMenu.add(mitemBootAnimLocal);
+                JMenuItem mitemDeleteGroup = new JMenuItem("Delete Files Group");
+                mitemDeleteGroup.addActionListener((ActionEvent ae) -> {
+                    addQuickGroupObject(Types.GROUP_DELETE_FILES, node, "Delete Files Group");
+                });
                 JMenuItem mitemCustomGroup = new JMenuItem("Custom Group");
                 mitemCustomGroup.addActionListener((ActionEvent ae) -> {
                     addName(Types.GROUP_CUSTOM, node);
@@ -188,6 +193,7 @@ public class MyPopup {
                 addGroupMenu.add(addFontsGroupMenu);
                 addGroupMenu.add(addTonesGroupMenu);
                 addGroupMenu.add(addBootAnimationGroupMenu);
+                addGroupMenu.add(mitemDeleteGroup);
                 addGroupMenu.add(mitemCustomGroup);
                 popup.add(addGroupMenu);
             }
@@ -210,6 +216,9 @@ public class MyPopup {
             case Types.GROUP_SYSTEM_MEDIA:
                 mitemAddSubGroup = new JMenuItem("Add Boot Animations");
                 break;
+            case Types.GROUP_DELETE_FILES:
+                mitemAddSubGroup = new JMenuItem("Add Files/Folders to Delete");
+                break;
             default:
                 mitemAddSubGroup = new JMenuItem("Add SubGroup");
         }
@@ -224,6 +233,9 @@ public class MyPopup {
                             break;
                         case Types.GROUP_SYSTEM_MEDIA:
                             addQuickSubGroupObject(Types.GROUP_SYSTEM_MEDIA, node, "Boot Animation");
+                            break;
+                        case Types.GROUP_DELETE_FILES:
+                            Delete d = new Delete(node);
                             break;
                     }
                 }
@@ -275,6 +287,7 @@ public class MyPopup {
                 case Types.GROUP_SYSTEM_FONTS:
                 case Types.GROUP_DATA_LOCAL:
                 case Types.GROUP_SYSTEM_MEDIA:
+                case Types.GROUP_DELETE_FILES:
                     popup.add(mitemAddSubGroup);
                     break;
             }
@@ -438,7 +451,7 @@ public class MyPopup {
     }
 
     public static void addQuickGroupObject(int type, ProjectNode parent, String defaultName) {
-        if (!Preferences.pp.isQuickSetup) {
+        if (!Preferences.pp.isQuickSetup && type != Types.GROUP_DELETE_FILES) {
             addName(type, parent);
         } else {
             if (parent.contains(defaultName)) {

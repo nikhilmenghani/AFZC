@@ -58,6 +58,7 @@ public final class NodeProperties {
     public String filePermission;
     public String fileZipPath;
     public String value;
+    public String deletePath;
     public int type;
     public int projectType;
     public int groupType;

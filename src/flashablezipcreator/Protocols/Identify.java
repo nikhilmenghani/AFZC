@@ -235,6 +235,8 @@ public class Identify {
                 return Types.GROUP_CUSTOM;
             case "mod":
                 return Types.GROUP_MOD;
+            case "delete":
+                return Types.GROUP_DELETE_FILES;
             default:
                 return Types.GROUP_CUSTOM;
         }

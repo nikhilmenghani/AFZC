@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Protocols;
 
+import flashablezipcreator.Core.DeleteNode;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
@@ -20,6 +21,7 @@ import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.UserInterface.Preferences;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,44 +68,50 @@ public class Export implements Runnable {
                             Logs.write("Removing " + groupNode.prop.title + " as it is empty");
                             groupNode.removeMe();
                         }
-                        for (ProjectItemNode node : ((GroupNode) groupNode).prop.children) {
-                            if (node.prop.children.isEmpty() && node.prop.type != Types.NODE_FILE) {
-                                Logs.write("Removing " + node.prop.title + " as it is empty");
-                                node.removeMe();
-                            }
-                            switch (node.prop.type) {
-                                case Types.NODE_SUBGROUP:
-                                    for (ProjectItemNode fileNode : ((SubGroupNode) node).prop.children) {
-                                        if (((FileNode) fileNode).prop.title.equals("DroidSans.ttf")
-                                                || ((FileNode) fileNode).prop.title.equals("Roboto-Regular.ttf")) {
+                        if (groupNode.prop.groupType != Types.GROUP_DELETE_FILES) {
+                            for (ProjectItemNode node : ((GroupNode) groupNode).prop.children) {
+                                if (node.prop.children.isEmpty() && node.prop.type != Types.NODE_FILE) {
+                                    Logs.write("Removing " + node.prop.title + " as it is empty");
+                                    node.removeMe();
+                                }
+                                switch (node.prop.type) {
+                                    case Types.NODE_SUBGROUP:
+                                        for (ProjectItemNode fileNode : ((SubGroupNode) node).prop.children) {
+                                            if (((FileNode) fileNode).prop.title.equals("DroidSans.ttf")
+                                                    || ((FileNode) fileNode).prop.title.equals("Roboto-Regular.ttf")) {
+                                                increaseProgressBar(fileIndex, ((FileNode) fileNode).prop.fileSourcePath);
+                                                fileIndex++;
+                                                wz.writeFileToZip(((FileNode) fileNode).prop.fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).prop.title + ".ttf");
+                                            }
                                             increaseProgressBar(fileIndex, ((FileNode) fileNode).prop.fileSourcePath);
                                             fileIndex++;
-                                            wz.writeFileToZip(((FileNode) fileNode).prop.fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).prop.title + ".ttf");
+                                            wz.writeFileToZip(((FileNode) fileNode).prop.fileSourcePath, ((FileNode) fileNode).prop.fileZipPath);
                                         }
-                                        increaseProgressBar(fileIndex, ((FileNode) fileNode).prop.fileSourcePath);
+                                        break;
+                                    case Types.NODE_FILE:
+                                        increaseProgressBar(fileIndex, ((FileNode) node).prop.fileSourcePath);
                                         fileIndex++;
-                                        wz.writeFileToZip(((FileNode) fileNode).prop.fileSourcePath, ((FileNode) fileNode).prop.fileZipPath);
-                                    }
-                                    break;
-                                case Types.NODE_FILE:
-                                    increaseProgressBar(fileIndex, ((FileNode) node).prop.fileSourcePath);
-                                    fileIndex++;
-                                    wz.writeFileToZip(((FileNode) node).prop.fileSourcePath, ((FileNode) node).prop.fileZipPath);
-                                    break;
-                                case Types.NODE_FOLDER:
-                                    ArrayList<FileNode> files = new ArrayList<FileNode>();
-                                    for (FileNode file : getFilesOfFolder((FolderNode) node, files)) {
-                                        increaseProgressBar(fileIndex, file.prop.fileSourcePath);
-                                        fileIndex++;
-                                        wz.writeFileToZip(file.prop.fileSourcePath, file.prop.fileZipPath);
-                                    }
-                                    break;
-                                default:
-                                    break;
+                                        wz.writeFileToZip(((FileNode) node).prop.fileSourcePath, ((FileNode) node).prop.fileZipPath);
+                                        break;
+                                    case Types.NODE_FOLDER:
+                                        ArrayList<FileNode> files = new ArrayList<FileNode>();
+                                        for (FileNode file : getFilesOfFolder((FolderNode) node, files)) {
+                                            increaseProgressBar(fileIndex, file.prop.fileSourcePath);
+                                            fileIndex++;
+                                            wz.writeFileToZip(file.prop.fileSourcePath, file.prop.fileZipPath);
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
                         }
                         if (((GroupNode) groupNode).prop.groupType == Types.GROUP_CUSTOM) {
                             isCustomGroupPresent = true;
+                        }
+                        if (((GroupNode) groupNode).prop.groupType == Types.GROUP_DELETE_FILES) {
+                            String writeAt = ((GroupNode) groupNode).prop.zipPath + "/DeleteFilesPath";
+                            wz.writeStringToZip(getDeleteData((GroupNode) groupNode), writeAt);
                         }
                     }
                 } else {
@@ -176,6 +184,15 @@ public class Export implements Runnable {
             Logs.write(Logs.getExceptionTrace(e));
             MyTree.setCardLayout(1);
         }
+    }
+
+    public static String getDeleteData(GroupNode dNode) {
+        String str = "";
+        for (Iterator<ProjectItemNode> it = dNode.prop.children.iterator(); it.hasNext();) {
+            DeleteNode node = (DeleteNode) it.next();
+            str += node.getDeleteLocation() + "\n";
+        }
+        return str.substring(0, str.length() - 1);
     }
 
     public static ArrayList<FileNode> getFilesOfFolder(FolderNode folder, ArrayList<FileNode> fileList) {

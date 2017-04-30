@@ -127,7 +127,7 @@ set_metadata_recursive() {
 set_perm() {
   uid=$1; gid=$2; mod=$3;
   shift 3;
-  ui_print "Setting ""$mod"" permissions to ""$@";
+  #ui_print "Setting ""$mod"" permissions to ""$@";
   chown $uid.$gid "$@"; chown $uid:$gid "$@";
   chmod $mod "$@";
 }

@@ -13,6 +13,7 @@ import javax.swing.tree.TreeNode;
 import flashablezipcreator.UserInterface.MyTree;
 import java.io.File;
 import java.util.Collections;
+import javax.swing.tree.TreePath;
 
 /**
  *
@@ -71,6 +72,32 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
         return child;
     }
 
+    public ProjectItemNode addChild(ProjectItemNode child, boolean overwrite, boolean expandRow) {
+        boolean childExists = false;
+        Logs.write("checking if children exists");
+        for (ProjectItemNode childNode : prop.children) {
+            if (childNode.prop.title.equals(child.prop.title)) {
+                childExists = true;
+                child = childNode;
+            }
+        }
+        Logs.write("over writing");
+        if (overwrite) {
+            if (childExists) {
+                prop.children.remove(child);
+            }
+            prop.children.add(child);
+        } else if (!childExists) {
+            prop.children.add(child);
+        }
+        Logs.write("added children" + child.prop.title);
+        if (expandRow) {
+            MyTree.tree.expandPath(new TreePath(this.getPath()));
+        }
+        MyTree.model.reload(this);
+        return child;
+    }
+
     public void removeChild(ProjectItemNode child) {
         prop.children.remove(child);
         MyTree.model.reload(prop.parent);
@@ -103,8 +130,9 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
 
     public boolean contains(String title) {
         for (ProjectItemNode node : prop.children) {
-            if(node.prop.title.equals(title))
+            if (node.prop.title.equals(title)) {
                 return true;
+            }
         }
         return false;
     }

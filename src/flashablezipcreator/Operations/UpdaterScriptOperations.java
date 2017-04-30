@@ -11,12 +11,14 @@
  */
 package flashablezipcreator.Operations;
 
+import flashablezipcreator.Core.DeleteNode;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
 import static flashablezipcreator.Operations.UpdateBinaryOperations.copyString;
+import static flashablezipcreator.Operations.UpdateBinaryOperations.deleteString;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Types;
@@ -160,14 +162,14 @@ public class UpdaterScriptOperations {
         String str = "";
         if (node.isCheckBox()) {
             int count = 1;
-//            str += getPackageExtractDirString(node);
             str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
-            for (ProjectItemNode fnode : node.prop.children) {
-                FileNode file = (FileNode) fnode;
+            for (ProjectItemNode cnode : node.prop.children) {
                 if (node.prop.groupType == Types.GROUP_DELETE_FILES) {
-                    str += addPrintString(((FileNode) file).prop.title, deleteString);
-                    str += "delete(\"/" + ((FileNode) file).getDeleteLocation() + "\");\n";
+                    DeleteNode file = (DeleteNode) cnode;
+                    str += addPrintString(file.prop.title, deleteString);
+                    str += "delete_recursive(\"" + file.getDeleteLocation() + "\");\n";
                 } else {
+                    FileNode file = (FileNode) cnode;
                     str += addPrintString(file.prop.title, copyString);
                     str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\");\n";
                     if (((FileNode) file).prop.setPermissions) {
@@ -180,7 +182,7 @@ public class UpdaterScriptOperations {
                 str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
                 if (node.prop.groupType == Types.GROUP_DELETE_FILES) {
                     str += addPrintString(((FileNode) file).prop.title, deleteString);
-                    str += "delete(\"/" + ((FileNode) file).getDeleteLocation() + "\");\n";
+                    str += "delete_recursive(\"" + ((FileNode) file).getDeleteLocation() + "\");\n";
                 } else {
                     str += addPrintString(((FileNode) file).prop.title, copyString);
                     str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\");\n";

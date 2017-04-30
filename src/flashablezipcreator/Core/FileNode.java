@@ -9,8 +9,6 @@ import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.Preferences;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 
 /**
  *

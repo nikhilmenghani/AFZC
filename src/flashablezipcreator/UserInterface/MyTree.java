@@ -112,7 +112,7 @@ public class MyTree extends javax.swing.JFrame {
 
         lblVersion.setForeground(new java.awt.Color(255, 255, 255));
         lblVersion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblVersion.setText("v4.0 beta 2");
+        lblVersion.setText("v4.1 beta");
 
         javax.swing.GroupLayout panel_logoLayout = new javax.swing.GroupLayout(panel_logo);
         panel_logo.setLayout(panel_logoLayout);
