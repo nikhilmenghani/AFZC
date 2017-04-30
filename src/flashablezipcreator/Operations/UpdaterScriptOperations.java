@@ -181,8 +181,8 @@ public class UpdaterScriptOperations {
             for (ProjectItemNode file : node.prop.children) {
                 str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
                 if (node.prop.groupType == Types.GROUP_DELETE_FILES) {
-                    str += addPrintString(((FileNode) file).prop.title, deleteString);
-                    str += "delete_recursive(\"" + ((FileNode) file).getDeleteLocation() + "\");\n";
+                    str += addPrintString(((DeleteNode) file).prop.title, deleteString);
+                    str += "delete_recursive(\"" + ((DeleteNode) file).getDeleteLocation() + "\");\n";
                 } else {
                     str += addPrintString(((FileNode) file).prop.title, copyString);
                     str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\");\n";
