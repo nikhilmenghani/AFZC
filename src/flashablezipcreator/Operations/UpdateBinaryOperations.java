@@ -15,6 +15,7 @@ import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.FlashableZipCreator;
+import flashablezipcreator.Protocols.Script;
 import flashablezipcreator.Protocols.Types;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -71,6 +72,18 @@ public class UpdateBinaryOperations {
         return str;
     }
 
+    public String addAddonDString() {
+        String str = "";
+        str += "if [ $(file_getprop /tmp/aroma/addond_choices.prop true) ==  yes ]; then\n"
+                + "ui_print \"@Generating addon.d script\"\n"
+                + getAddonBinaryString()
+                + "ui_print \"@Executing addon.d script\"\n"
+                + getExecuteScriptString(Script.addonScriptTempPath, "-di", Script.logDataPath)
+                + "ui_print \"@Done!\"\n"
+                + "fi;\n";
+        return str;
+    }
+
     public String getMountMethod(int type) {
         switch (type) {
             case 1:
@@ -123,6 +136,7 @@ public class UpdateBinaryOperations {
                 if (file.prop.setPermissions) {
                     str += "set_perm " + file.prop.filePermission + "\n";  //TODO: Inspect filePermission for removal of commas
                 }
+                str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", file.prop.fileInstallLocation + "/" + file.prop.title);
             }
         }
         return str;
@@ -144,6 +158,7 @@ public class UpdateBinaryOperations {
                         if (((FileNode) child).prop.setPermissions) {
                             str += "set_perm " + ((FileNode) child).prop.filePermission + "\n";
                         }
+                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
                     }
                 }
                 str += "fi;\n";
@@ -158,6 +173,7 @@ public class UpdateBinaryOperations {
                         if (((FileNode) child).prop.setPermissions) {
                             str += "set_perm " + ((FileNode) child).prop.filePermission + "\n";
                         }
+                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
                     }
                     str += "fi;\n";
                 }
@@ -178,6 +194,7 @@ public class UpdateBinaryOperations {
                     DeleteNode file = (DeleteNode) cnode;
                     str += addPrintString(file.prop.title, deleteString);
                     str += "delete_recursive \"" + file.getDeleteLocation() + "\"\n";
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-di", file.getDeleteLocation());
                 } else {
                     FileNode file = (FileNode) cnode;
                     str += addPrintString(file.prop.title, copyString);
@@ -185,6 +202,7 @@ public class UpdateBinaryOperations {
                     if (((FileNode) file).prop.setPermissions) {
                         str += "set_perm " + ((FileNode) file).prop.filePermission + "\n";
                     }
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title);
                 }
             }
             str += "fi;\n";
@@ -194,12 +212,14 @@ public class UpdateBinaryOperations {
                     DeleteNode dfile = (DeleteNode) file;
                     str += addPrintString(dfile.prop.title, deleteString);
                     str += "delete_recursive \"" + dfile.getDeleteLocation() + "\"\n";
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-di", dfile.getDeleteLocation());
                 } else {
                     str += addPrintString(((FileNode) file).prop.title, copyString);
                     str += "package_extract_file \"" + ((FileNode) file).prop.fileZipPath + "\" \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\"\n";
                     if (((FileNode) file).prop.setPermissions) {
                         str += "set_perm " + ((FileNode) file).prop.filePermission + "\n";
                     }
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title);
                 }
                 str += "fi;\n";
             }
@@ -257,6 +277,7 @@ public class UpdateBinaryOperations {
                             }
                             break;
                     }
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title);
                 }
                 str += "fi;\n";
             }
@@ -281,6 +302,7 @@ public class UpdateBinaryOperations {
                         if (((FileNode) tempNode).prop.setPermissions) {
                             str += "set_perm " + ((FileNode) tempNode).prop.filePermission + "\n";
                         }
+                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title);
                 }
             }
             str += "fi;\n";
@@ -299,6 +321,7 @@ public class UpdateBinaryOperations {
                         if (((FileNode) tempNode).prop.setPermissions) {
                             str += "set_perm " + ((FileNode) tempNode).prop.filePermission + "\n";
                         }
+                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title);
                         str += "fi;\n";
                 }
             }
@@ -319,6 +342,7 @@ public class UpdateBinaryOperations {
                         if (((FileNode) tempNode).prop.setPermissions) {
                             str += "set_perm " + ((FileNode) tempNode).prop.filePermission + "\n";
                         }
+                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title);
                         str += "fi;\n";
                 }
             }
@@ -392,5 +416,61 @@ public class UpdateBinaryOperations {
     //following is not needed as of now as creating directory is handled in newer update-binary-installer
     public String createDirectory(String dir) {
         return "mkdir -p \"" + dir + "\"\n";
+    }
+
+    public String getExecuteScriptString(String scriptPath, String command, String data) {
+        String str = "";
+        switch (command) {
+            case "-ei":
+                if (data.startsWith("/system/")) {
+                    data = data.substring(8, data.length());
+                    str = scriptPath + " \"$OUTFD\" \"" + command + "\" \"" + data + "\"\n";
+                }
+                break;
+            case "-di":
+                str = scriptPath + " \"$OUTFD\" \"" + command + "\" \"" + data + "\"\n";
+                break;
+        }
+        return str;
+    }
+
+    public String delete_recursive(String location) {
+        return "delete_recursive \"" + location + "\"\n";
+    }
+
+    public String package_extract_file(String source, String dest) {
+        return "package_extract_file \"" + source + "\" \"" + dest + "\"\n";
+    }
+
+    public String deleteAddonBackupData() {
+        return delete_recursive(Script.logDataPath);
+    }
+
+    public String getAfzcBinaryString() {
+        String str = "\n";
+        str += package_extract_file(Script.afzcScriptZipPath, Script.afzcScriptTempPath);
+        str += "chmod 755 \"" + Script.afzcScriptTempPath + "\";\n";
+        return str;
+    }
+
+    public String getAddonBinaryString() {
+        String str = "\n";
+        str += package_extract_file(Script.addonScriptZipPath, Script.addonScriptTempPath);
+        str += "chmod 755 \"" + Script.addonScriptTempPath + "\";\n";
+        return str;
+    }
+
+    //following function is for future reference
+    public String getModString() {
+        String str = "";
+        str += "package_extract_dir \"Install\" \"/tmp/Install\"";
+        str += "tmpzipdir = /tmp/Install;";
+        str += "b = $tmpzipdir/busybox.zip";
+        str += "metadir = META-INF/com/google/android;";
+        str += "unzip \"$b\" -d \"$tmpzipdir\" \"$metadir/*\"";
+        str += "chmod 755 \"$tmpzipdir/$metadir/update-binary\";";
+        str += "\"$tmpzipdir/$metadir/update-binary\" 1 1 \"$b\" >> $OUTFD;";
+        str += "rm - rf \"$tmpzipdir\";";
+        return str;
     }
 }

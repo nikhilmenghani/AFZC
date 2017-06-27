@@ -73,6 +73,8 @@ public class XmlOperations {
         zipVersionElem.setTextContent(pp.zipVersion);
         Element saveLogsElem = document.createElement("saveLogs");
         saveLogsElem.setTextContent(String.valueOf(pp.saveLogs));
+        Element addonDSupport = document.createElement("addonDSupport");
+        addonDSupport.setTextContent(String.valueOf(pp.hasAddonDSupport));
         root.appendChild(aromaVersionElem);
         root.appendChild(androidVersionElem);
         root.appendChild(quickProjectSetupElem);
@@ -80,6 +82,7 @@ public class XmlOperations {
         root.appendChild(zipCreatorNameElem);
         root.appendChild(zipVersionElem);
         root.appendChild(saveLogsElem);
+        root.appendChild(addonDSupport);
     }
 
     public String getStringConfigValue(String configData, String elementName) throws ParserConfigurationException, SAXException, IOException {

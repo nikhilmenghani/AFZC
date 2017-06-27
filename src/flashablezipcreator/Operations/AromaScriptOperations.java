@@ -293,22 +293,46 @@ public class AromaScriptOperations {
         return str;
     }
 
-    public String addCheckViewBox() {
-        String str = "\ncheckviewbox(\n"
-                + "\"Ready to Install\",\n"
-                + "    \"The wizard is ready to begin installation.\\n\\n\"+\n"
-                + "	\"Press <b>Next</b> to begin the installation.\\n\\n\"+\n"
-                + "	\"If you want to review or change any of your installation settings, press <b>Back</b>. Press Left Hard Button -> Quit Installation to exit the wizard.\\n\\n\\n\\n\\n\\n\\n\",\n"
-                + "    \"@alert\",\n"
-                + "\"<b>Clear Dalvik Cache</b> After Installation.\",\n"
-                + "\"0\",\n"
-                + "\"clear_it\");\n"
-                + "writetmpfile(\"dalvik_choices.prop\",\"init=no\\n\");\n"
-                + "if\n"
-                + "  getvar(\"clear_it\")==\"1\"\n"
-                + "then\n"
-                + "  writetmpfile(\"dalvik_choices.prop\",\"true=yes\");\n"
-                + "endif;\n";
+    public String addCheckViewBox(String type) {
+        String str = "";
+        switch (type) {
+            case "dalvik-cache":
+                str = "\ncheckviewbox(\n"
+                        + "\"Ready to Install\",\n"
+                        + "    \"The wizard is ready to begin installation.\\n\\n\"+\n"
+                        + "	\"Press <b>Next</b> to begin the installation.\\n\\n\"+\n"
+                        + "	\"If you want to review or change any of your installation settings, press <b>Back</b>. Press Left Hard Button -> Quit Installation to exit the wizard.\\n\\n\\n\\n\\n\\n\\n\",\n"
+                        + "    \"@alert\",\n"
+                        + "\"<b>Clear Dalvik Cache</b> After Installation.\",\n"
+                        + "\"0\",\n"
+                        + "\"clear_it\");\n"
+                        + "writetmpfile(\"dalvik_choices.prop\",\"init=no\\n\");\n"
+                        + "if\n"
+                        + "  getvar(\"clear_it\")==\"1\"\n"
+                        + "then\n"
+                        + "  writetmpfile(\"dalvik_choices.prop\",\"true=yes\");\n"
+                        + "endif;\n";
+                break;
+            case "addon.d":
+                str = "\ncheckviewbox(\n"
+                        + "\"Backup your choices!\",\n"
+                        + "    \"Check this to take backup of all the system files your have selected, "
+                        + "checking this will generate addon.d script to backup all your choices.\\n\\n\"+\n"
+                        + "	\"Press <b>Next</b> to Proceed ahead.\\n\\n\"+\n"
+                        + "	\"If you want to review or change any of your installation settings, press <b>Back</b>. Press Left Hard Button -> Quit Installation to exit the wizard.\\n\\n\\n\\n\\n\\n\\n\",\n"
+                        + "    \"@alert\",\n"
+                        + "\"<b>Generate Addon.d Script</b> After Installation.\",\n"
+                        + "\"0\",\n"
+                        + "\"addond\");\n"
+                        + "writetmpfile(\"addond_choices.prop\",\"init=no\\n\");\n"
+                        + "if\n"
+                        + "  getvar(\"addond\")==\"1\"\n"
+                        + "then\n"
+                        + "  writetmpfile(\"addond_choices.prop\",\"true=yes\");\n"
+                        + "endif;\n";
+                break;
+        }
+
         return str;
     }
 

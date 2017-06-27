@@ -1,0 +1,24 @@
+#!/sbin/sh
+#afzc script to perform various operations
+#
+
+OUTFD=$1;
+
+echo "executing afzc with parameters $0" >> $OUTFD
+shift 1;
+case "$1" in
+  "-d")
+	shift 1;
+	rm -rf "$@"
+  ;;
+  "-ei")
+	shift 1;
+	mkdir -p /tmp/zipContent
+	echo "install=$@" >> /tmp/zipContent/addondbackupdata
+  ;;
+  "-di")
+    shift 1;
+	mkdir -p /tmp/zipContent
+	echo "delete=$@" >> /tmp/zipContent/addondbackupdata
+  ;;
+esac

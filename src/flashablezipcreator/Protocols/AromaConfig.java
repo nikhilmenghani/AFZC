@@ -47,8 +47,11 @@ public class AromaConfig {
                 }
             }
         }
+        if (Preferences.pp.hasAddonDSupport) {
+            aromaConfig += op.addCheckViewBox("addon.d");
+        }
         aromaConfig += op.setNextText("Install");
-        aromaConfig += op.addCheckViewBox();
+        aromaConfig += op.addCheckViewBox("dalvik-cache");
         aromaConfig += op.setNextText("Finish");
         aromaConfig += op.addInstallString();
 //        aromaConfig += op.setNextText("Finish");

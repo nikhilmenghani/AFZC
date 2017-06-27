@@ -10,6 +10,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Operations.UpdaterScriptOperations;
+import flashablezipcreator.UserInterface.Preferences;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -30,6 +31,10 @@ public class UpdaterScript {
         updaterScript = "";
         to = new TreeOperations();
         updaterScript += op.initiateUpdaterScript();
+        if (Preferences.pp.hasAddonDSupport) {
+            updaterScript += op.deleteAddonBackupData();
+            updaterScript += op.getAfzcBinaryString();
+        }
         for (ProjectItemNode project : to.getProjectsSorted(rootNode)) {
             if (((ProjectNode) project).prop.createZip) {
                 switch (((ProjectNode) project).prop.projectType) {
@@ -40,6 +45,9 @@ public class UpdaterScript {
                         break;
                 }
             }
+        }
+        if (Preferences.pp.hasAddonDSupport) {
+            updaterScript += op.addAddonDString();
         }
         updaterScript += op.addWipeDalvikCacheString();
         updaterScript += op.addPrintString("@Finished Install");

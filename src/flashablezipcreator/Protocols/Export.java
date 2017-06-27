@@ -164,6 +164,12 @@ public class Export implements Runnable {
                 wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
                 increaseProgressBar(fileIndex, "Jar Items");
                 fileIndex++;
+                Logs.write("Writing AFZC Binary");
+                increaseProgressBar(fileIndex, "AFZC Binary");
+                wz.writeStringToZip(Script.getAfzcString(), Script.afzcScriptZipPath);
+                Logs.write("Writing Addon Binary");
+                increaseProgressBar(fileIndex, "Addon Binary");
+                wz.writeStringToZip(Script.getAddonString(), Script.addonScriptZipPath);
                 Logs.write("Writing Rest of Jar Files");
                 for (String file : Jar.getOtherFileList()) {
                     wz.writeFileToZip(JarOperations.getInputStream(file), file);

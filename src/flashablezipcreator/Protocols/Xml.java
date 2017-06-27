@@ -94,6 +94,11 @@ public class Xml {
         xo = new XmlOperations();
         return xo.getBoolConfigValue(configData, "IsQuickSetup");
     }
+    
+    public static boolean getAddonDSupport(String configData) throws ParserConfigurationException, SAXException, IOException{
+        xo = new XmlOperations();
+        return xo.getBoolConfigValue(configData, "addonDSupport");
+    }
 
     public static ArrayList<String> getThemes(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();

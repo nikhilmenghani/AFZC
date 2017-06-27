@@ -21,6 +21,7 @@ import static flashablezipcreator.Operations.UpdateBinaryOperations.copyString;
 import static flashablezipcreator.Operations.UpdateBinaryOperations.deleteString;
 import flashablezipcreator.UserInterface.Preferences;
 import flashablezipcreator.Protocols.Project;
+import flashablezipcreator.Protocols.Script;
 import flashablezipcreator.Protocols.Types;
 
 /**
@@ -72,6 +73,18 @@ public class UpdaterScriptOperations {
         return str;
     }
 
+    public String addAddonDString() {
+        String str = "";
+        str += "if(file_getprop(\"/tmp/aroma/addond_choices.prop\", \"true\")==\"yes\") then\n"
+                + "ui_print(\"@Generating addon.d script\");\n"
+                + getAddonBinaryString()
+                + "ui_print(\"@Executing addon.d script\");\n"
+                + getExecuteScriptString(Script.addonScriptTempPath, "-di", Script.logDataPath)
+                + "ui_print(\"@Done!\");\n"
+                + "endif;\n";
+        return str;
+    }
+
     public String getMountMethod(int type) {
         switch (type) {
             case 1:
@@ -113,6 +126,7 @@ public class UpdaterScriptOperations {
                 if (file.prop.setPermissions) {
                     str += "set_perm(" + file.prop.filePermission + ");\n";
                 }
+                str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", file.prop.fileInstallLocation + "/" + file.prop.title);
             }
         }
         return str;
@@ -134,6 +148,7 @@ public class UpdaterScriptOperations {
                         if (((FileNode) child).prop.setPermissions) {
                             str += "set_perm(" + ((FileNode) child).prop.filePermission + ");\n";
                         }
+                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
                     }
                 }
                 str += "endif;\n\n";
@@ -148,6 +163,7 @@ public class UpdaterScriptOperations {
                         if (((FileNode) child).prop.setPermissions) {
                             str += "set_perm(" + ((FileNode) child).prop.filePermission + ");\n";
                         }
+                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
                     }
                     str += "endif;\n\n";
                 }
@@ -168,6 +184,7 @@ public class UpdaterScriptOperations {
                     DeleteNode file = (DeleteNode) cnode;
                     str += addPrintString(file.prop.title, deleteString);
                     str += "delete_recursive(\"" + file.getDeleteLocation() + "\");\n";
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-di", file.getDeleteLocation());
                 } else {
                     FileNode file = (FileNode) cnode;
                     str += addPrintString(file.prop.title, copyString);
@@ -175,6 +192,7 @@ public class UpdaterScriptOperations {
                     if (((FileNode) file).prop.setPermissions) {
                         str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
                     }
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title);
                 }
             }
             str += "endif;\n";
@@ -183,12 +201,14 @@ public class UpdaterScriptOperations {
                 if (node.prop.groupType == Types.GROUP_DELETE_FILES) {
                     str += addPrintString(((DeleteNode) file).prop.title, deleteString);
                     str += "delete_recursive(\"" + ((DeleteNode) file).getDeleteLocation() + "\");\n";
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-di", ((DeleteNode) file).getDeleteLocation());
                 } else {
                     str += addPrintString(((FileNode) file).prop.title, copyString);
                     str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title + "\");\n";
                     if (((FileNode) file).prop.setPermissions) {
                         str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
                     }
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title);
                 }
                 str += "endif;\n";
             }
@@ -242,10 +262,11 @@ public class UpdaterScriptOperations {
                             //this will rename any zip package to bootamination.zip allowing users to add bootanimation.zip with custom names.
                             str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + ((FileNode) file).prop.fileInstallLocation + "/" + "bootanimation.zip" + "\");\n";
                             if (((FileNode) file).prop.setPermissions) {
-                                str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n\n";
+                                str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
                             }
                             break;
                     }
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title);
                 }
                 str += "endif;\n";
             }
@@ -270,6 +291,7 @@ public class UpdaterScriptOperations {
                         if (((FileNode) tempNode).prop.setPermissions) {
                             str += "set_perm(" + ((FileNode) tempNode).prop.filePermission + ");\n";
                         }
+                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title);
                 }
             }
             str += "endif;\n";
@@ -288,6 +310,7 @@ public class UpdaterScriptOperations {
                         if (((FileNode) tempNode).prop.setPermissions) {
                             str += "set_perm(" + ((FileNode) tempNode).prop.filePermission + ");\n";
                         }
+                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title);
                         str += "endif;\n";
                 }
             }
@@ -308,6 +331,7 @@ public class UpdaterScriptOperations {
                         if (((FileNode) tempNode).prop.setPermissions) {
                             str += "set_perm(" + ((FileNode) tempNode).prop.filePermission + ");\n";
                         }
+                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) tempNode).prop.fileInstallLocation + "/" + ((FileNode) tempNode).prop.title);
                         str += "endif;\n";
                 }
             }
@@ -380,5 +404,58 @@ public class UpdaterScriptOperations {
 
     public String createDirectory(String dir) {
         return "run_program(\"/sbin/busybox\", \"mkdir\", \"-p\", \"" + dir + "\");\n";
+    }
+
+    public String getExecuteScriptString(String scriptPath, String command, String data) {
+        String str = "";
+        switch (command) {
+            case "-ei":
+                if (data.startsWith("/system/")) {
+                    data = data.substring(8, data.length());
+                    str = "run_program(\"" + scriptPath + "\", \"$OUTFD\", \"" + command + "\", \"" + data + "\");\n";
+                }
+                break;
+            case "-di":
+                str = "run_program(\"" + scriptPath + "\", \"$OUTFD\", \"" + command + "\", \"" + data + "\");\n";
+                break;
+        }
+        return str;
+    }
+
+    public String delete_recursive(String location) {
+        return "delete_recursive(\"" + location + "\");\n";
+    }
+
+    public String package_extract_file(String source, String dest) {
+        return "package_extract_file(\"" + source + "\", \"" + dest + "\");\n";
+    }
+
+    public String deleteAddonBackupData() {
+        return delete_recursive(Script.logDataPath);
+    }
+
+    public String getAfzcBinaryString() {
+        String str = "\n";
+        str += createDirectory(Script.afzcScriptTempPath.substring(0,Script.afzcScriptTempPath.lastIndexOf("/")));
+        str += package_extract_file(Script.afzcScriptZipPath, Script.afzcScriptTempPath);
+        str += "set_perm(0, 0, 0755, \"" + Script.afzcScriptTempPath + "\");\n";
+        return str;
+    }
+
+    public String getAddonBinaryString() {
+        String str = "\n";
+        str += createDirectory(Script.addonScriptTempPath.substring(0,Script.addonScriptTempPath.lastIndexOf("/")));
+        str += package_extract_file(Script.addonScriptZipPath, Script.addonScriptTempPath);
+        str += "set_perm(0, 0, 0755, \"" + Script.addonScriptTempPath + "\");\n";
+        return str;
+    }
+
+    //following function is for future reference
+    public String getModString() {
+        String str = "";
+        str = "package_extract_dir(\"Install\", \"/tmp/Install\");\n";
+        str += "run_program(\"/sbin/busybox\", \"unzip\", \"/tmp/Install/busybox.zip\", \"META-INF/com/google/android/*\", \"-d\", \"/tmp/Install\");\n";
+        str += "run_program(\"/sbin/sh\", \"/tmp/Install/META-INF/com/google/android/update-binary\", \"dummy\", \"1\", \"/tmp/Install/busybox.zip\");";
+        return str;
     }
 }

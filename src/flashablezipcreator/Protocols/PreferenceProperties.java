@@ -27,4 +27,5 @@ public class PreferenceProperties {
     public ArrayList<String> themes = new ArrayList<>();
     public boolean IsFromLollipop = true;
     public boolean useUniversalBinary = true;
+    public boolean hasAddonDSupport = true;
 }

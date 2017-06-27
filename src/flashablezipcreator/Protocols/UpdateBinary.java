@@ -10,6 +10,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Operations.UpdateBinaryOperations;
+import flashablezipcreator.UserInterface.Preferences;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -18,13 +19,19 @@ import java.io.IOException;
  * @author Nikhil
  */
 public class UpdateBinary {
+
     public static String updateBinaryInstaller = "";
     public static TreeOperations to;
     public static UpdateBinaryOperations ubo = new UpdateBinaryOperations();
+
     public static String build(ProjectItemNode rootNode) throws FileNotFoundException, IOException {
         updateBinaryInstaller = "";
         to = new TreeOperations();
         updateBinaryInstaller += ubo.initiateUpdaterScript();
+        if (Preferences.pp.hasAddonDSupport) {
+            updateBinaryInstaller += ubo.deleteAddonBackupData();
+            updateBinaryInstaller += ubo.getAfzcBinaryString();
+        }
         for (ProjectItemNode project : to.getProjectsSorted(rootNode)) {
             if (((ProjectNode) project).prop.createZip) {
                 switch (((ProjectNode) project).prop.projectType) {
@@ -35,6 +42,9 @@ public class UpdateBinary {
                         break;
                 }
             }
+        }
+        if (Preferences.pp.hasAddonDSupport) {
+            updateBinaryInstaller += ubo.addAddonDString();
         }
         updateBinaryInstaller += ubo.addWipeDalvikCacheString();
         updateBinaryInstaller += ubo.addPrintString("@Finished Install");

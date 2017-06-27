@@ -1,0 +1,79 @@
+#!/sbin/sh
+
+OUTFD=$1;
+
+echo "executing addon" >> $OUTFD
+shift 2;
+destDir=/system/addon.d
+dest=$destDir/99-Afzc.sh
+source=$1
+mkdir -p $destDir;
+run(){
+echo "#!/sbin/sh"
+echo "#"
+echo "#Addon.d script created by AFZC tool"
+echo "#"
+echo ""
+echo ". /tmp/backuptool.functions"
+echo ""
+echo "list_files() {"
+echo "cat <<EOF"
+
+OLD_IFS="$IFS"
+IFS="$(printf '%b_' ' \n')"; IFS="${IFS%_}"
+g=$( grep "install" $source | cut -d= -f2 )
+#read -r && printf '%s' "$g" | grep array
+for i in $g ; do
+    echo "$i"
+  done
+IFS="$OLD_IFS"
+
+echo "EOF"
+echo "}"
+
+echo ""
+
+echo "case \"\$1\" in"
+echo " backup)"
+echo "   echo \"Starting the Backup Process\""
+echo "   list_files | while read FILE DUMMY; do"
+echo "     backup_file \$S/\"\$FILE\""
+echo "   done"
+echo "   ls -al /tmp"
+echo "   echo \"Ending the Backup Process\""
+echo " ;;"
+echo " restore)"
+echo "   echo \"Starting the Restore Process\""
+echo "   list_files | while read FILE REPLACEMENT; do"
+echo "     R=\"\""
+echo "     [ -n \"\$REPLACEMENT\" ] && R=\"\$S/\$REPLACEMENT\""
+echo "     [ -f \"\$C/\$S/\$FILE\" ] && restore_file \$S/\"\$FILE\" \"\$R\""
+echo "	   echo \$S/\$FILE \$( ls -alZ \$S/\$FILE )"
+echo "   done"
+echo "   echo \"Ending the Restore Process\""
+OLD_IFS="$IFS"
+IFS="$(printf '%b_' ' \n')"; IFS="${IFS%_}"
+g=$( grep "delete" $source | cut -d= -f2 )
+#read -r && printf '%s' "$g" | grep array
+for i in $g ; do
+    echo "rm -rf \"$i\""
+  done
+IFS="$OLD_IFS"
+echo " ;;"
+echo " pre-backup)"
+echo "   # Stub"
+echo " ;;"
+echo " post-backup)"
+echo "   # Stub"
+echo " ;;"
+echo " pre-restore)"
+echo "   # Stub"
+echo " ;;"
+echo " post-restore)"
+echo "   # Stub"
+echo " ;;"
+echo "esac"
+}
+rm -rf $dest
+run > $dest
+chmod 755 $dest;
