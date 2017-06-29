@@ -24,6 +24,7 @@ public class AromaConfig {
     public static String aromaConfigPath = "META-INF/com/google/android/aroma-config";
 
     public static String build(ProjectItemNode rootNode) {
+        Logs.write("Building Aroma.config");
         aromaConfig = "";
         to = new TreeOperations();
         if (!Preferences.pp.aromaVersion.equals("Version 2.56 - EDELWEIS")) {

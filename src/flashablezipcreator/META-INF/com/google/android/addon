@@ -1,8 +1,8 @@
 #!/sbin/sh
 
-OUTFD=$1;
+#OUTFD=$1;
 
-echo "executing addon" >> $OUTFD
+#echo "executing addon" >> $OUTFD
 shift 2;
 destDir=/system/addon.d
 dest=$destDir/99-Afzc.sh

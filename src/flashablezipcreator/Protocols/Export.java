@@ -77,27 +77,24 @@ public class Export implements Runnable {
                                 switch (node.prop.type) {
                                     case Types.NODE_SUBGROUP:
                                         for (ProjectItemNode fileNode : ((SubGroupNode) node).prop.children) {
-                                            if (((FileNode) fileNode).prop.title.equals("DroidSans.ttf")
-                                                    || ((FileNode) fileNode).prop.title.equals("Roboto-Regular.ttf")) {
-                                                increaseProgressBar(fileIndex, ((FileNode) fileNode).prop.fileSourcePath);
-                                                fileIndex++;
+                                            if (Preferences.pp.createZipType.equals("Aroma")
+                                                    && (((FileNode) fileNode).prop.title.equals("DroidSans.ttf")
+                                                    || ((FileNode) fileNode).prop.title.equals("Roboto-Regular.ttf"))) {
+                                                increaseProgressBar(fileIndex++, ((FileNode) fileNode).prop.fileSourcePath);
                                                 wz.writeFileToZip(((FileNode) fileNode).prop.fileSourcePath, "META-INF/com/google/android/aroma/ttf/" + ((SubGroupNode) node).prop.title + ".ttf");
                                             }
-                                            increaseProgressBar(fileIndex, ((FileNode) fileNode).prop.fileSourcePath);
-                                            fileIndex++;
+                                            increaseProgressBar(fileIndex++, ((FileNode) fileNode).prop.fileSourcePath);
                                             wz.writeFileToZip(((FileNode) fileNode).prop.fileSourcePath, ((FileNode) fileNode).prop.fileZipPath);
                                         }
                                         break;
                                     case Types.NODE_FILE:
-                                        increaseProgressBar(fileIndex, ((FileNode) node).prop.fileSourcePath);
-                                        fileIndex++;
+                                        increaseProgressBar(fileIndex++, ((FileNode) node).prop.fileSourcePath);
                                         wz.writeFileToZip(((FileNode) node).prop.fileSourcePath, ((FileNode) node).prop.fileZipPath);
                                         break;
                                     case Types.NODE_FOLDER:
                                         ArrayList<FileNode> files = new ArrayList<FileNode>();
                                         for (FileNode file : getFilesOfFolder((FolderNode) node, files)) {
-                                            increaseProgressBar(fileIndex, file.prop.fileSourcePath);
-                                            fileIndex++;
+                                            increaseProgressBar(fileIndex++, file.prop.fileSourcePath);
                                             wz.writeFileToZip(file.prop.fileSourcePath, file.prop.fileZipPath);
                                         }
                                         break;
@@ -114,66 +111,73 @@ public class Export implements Runnable {
                             wz.writeStringToZip(getDeleteData((GroupNode) groupNode), writeAt);
                         }
                     }
-                } else {
+                } else if (Preferences.pp.createZipType.equals("Aroma")) {
                     for (ProjectItemNode groupNode : ((ProjectNode) project).prop.children) {
                         for (ProjectItemNode node : ((GroupNode) groupNode).prop.children) {
-                            increaseProgressBar(fileIndex, ((FileNode) node).prop.fileSourcePath);
-                            fileIndex++;
+                            increaseProgressBar(fileIndex++, ((FileNode) node).prop.fileSourcePath);
                             wz.writeFileToZip(JarOperations.getInputStream(((FileNode) node).prop.fileSourcePath), ((FileNode) node).prop.fileZipPath);
                         }
                     }
                 }
             }
-            increaseProgressBar(fileIndex, "Zip Data");
-            fileIndex++;
+            increaseProgressBar(fileIndex++, "Zip Data");
             Logs.write("Writing zip data to " + Xml.data_path);
             wz.writeStringToZip(Xml.generateFileDataXml(), Xml.data_path);
-            increaseProgressBar(fileIndex, "Aroma Config");
-            fileIndex++;
-            Logs.write("Building Aroma.config");
-            String ac = AromaConfig.build(rootNode);
-            Logs.write("Writing Aroma.config");
-            wz.writeStringToZip(ac, AromaConfig.aromaConfigPath);
-            increaseProgressBar(fileIndex, "Updater-Script");
-            fileIndex++;
-            try {
-                if (Preferences.pp.useUniversalBinary) {
-                    Logs.write("Writing updater-script");
-                    wz.writeStringToZip("# This is a dummy file. Magic happens in binary file", UpdaterScript.updaterScriptPath);  //updater-script
-                    Logs.write("Building update-binary-installer");
-                    String ubi = UpdateBinary.build(rootNode);
-                    increaseProgressBar(fileIndex, "Update Binary Installer");
-                    fileIndex++;
-                    Logs.write("Writing update-binary-installer");
-                    wz.writeStringToZip(ubi, Binary.updateBinaryInstallerPath); //update-binary-installer
-                } else {
-                    Logs.write("Building updater-script");
-                    String us = UpdaterScript.build(rootNode);
-                    Logs.write("Writing updater-script");
-                    wz.writeStringToZip(us, UpdaterScript.updaterScriptPath); //updater-script
-                    increaseProgressBar(fileIndex, "Update Binary Installer");
-                    fileIndex++;
-                    Logs.write("Writing update-binary-installer");
-                    wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath); //update-binary-installer
-                }
-                increaseProgressBar(fileIndex, "Update Binary Installer");
-                fileIndex++;
-                increaseProgressBar(fileIndex, "Update Binary");
-                fileIndex++;
-                Logs.write("Writing update-binary");
-                wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
-                increaseProgressBar(fileIndex, "Jar Items");
-                fileIndex++;
-                Logs.write("Writing AFZC Binary");
-                increaseProgressBar(fileIndex, "AFZC Binary");
-                wz.writeStringToZip(Script.getAfzcString(), Script.afzcScriptZipPath);
-                Logs.write("Writing Addon Binary");
-                increaseProgressBar(fileIndex, "Addon Binary");
-                wz.writeStringToZip(Script.getAddonString(), Script.addonScriptZipPath);
+            if (Preferences.pp.createZipType.equals("Aroma")) {
                 Logs.write("Writing Rest of Jar Files");
                 for (String file : Jar.getOtherFileList()) {
                     wz.writeFileToZip(JarOperations.getInputStream(file), file);
                 }
+                increaseProgressBar(fileIndex++, "Aroma Config");
+                String ac = AromaConfig.build(rootNode);
+                Logs.write("Writing Aroma.config");
+                wz.writeStringToZip(ac, AromaConfig.aromaConfigPath);
+            }
+            increaseProgressBar(fileIndex++, "Updater-Script");
+            try {
+                if (Preferences.pp.useUniversalBinary) {
+                    Logs.write("Writing updater-script");
+                    wz.writeStringToZip("# This is a dummy file. Magic happens in binary file", UpdaterScript.updaterScriptPath);  //updater-script
+                    increaseProgressBar(fileIndex++, "Update Binary");
+                    Logs.write("Writing update-binary");
+                    switch (Preferences.pp.createZipType) {
+                        case "Aroma":
+                            wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
+                            increaseProgressBar(fileIndex++, "Update Binary Installer");
+                            Logs.write("Writing update-binary-installer");
+                            wz.writeStringToZip(UpdateBinary.build(rootNode), Binary.updateBinaryInstallerPath); //update-binary-installer
+                            break;
+                        case "Normal":
+                            wz.writeStringToZip(UpdateBinary.build(rootNode), Binary.updateBinaryPath); //update-binary-installer
+                            break;
+                    }
+
+                } else {
+                    String us = UpdaterScript.build(rootNode);
+                    Logs.write("Writing updater-script");
+                    wz.writeStringToZip(us, UpdaterScript.updaterScriptPath); //updater-script
+                    increaseProgressBar(fileIndex++, "Update Binary");
+                    Logs.write("Writing update-binary");
+                    switch (Preferences.pp.createZipType) {
+                        case "Aroma":
+                            wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
+                            increaseProgressBar(fileIndex++, "Update Binary Installer");
+                            Logs.write("Writing update-binary-installer");
+                            wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath); //update-binary-installer
+                            break;
+                        case "Normal":
+                            wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryPath); //update-binary-installer
+                            break;
+                    }
+                }
+                increaseProgressBar(fileIndex++, "Update Binary Installer");
+                increaseProgressBar(fileIndex++, "Jar Items");
+                Logs.write("Writing AFZC Binary");
+                increaseProgressBar(fileIndex++, "AFZC Binary");
+                wz.writeStringToZip(Script.getAfzcString(), Script.afzcScriptZipPath);
+                Logs.write("Writing Addon Binary");
+                increaseProgressBar(fileIndex++, "Addon Binary");
+                wz.writeStringToZip(Script.getAddonString(), Script.addonScriptZipPath);
             } catch (NullPointerException npe) {
                 System.out.println("Executing through Netbeans hence skipping Jar Operations");
             }

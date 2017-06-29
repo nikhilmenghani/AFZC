@@ -2,9 +2,9 @@
 #afzc script to perform various operations
 #
 
-OUTFD=$1;
+#OUTFD=$1;
 
-echo "executing afzc with parameters $0" >> $OUTFD
+#echo "executing afzc with parameters $0" >> $OUTFD
 shift 1;
 case "$1" in
   "-d")

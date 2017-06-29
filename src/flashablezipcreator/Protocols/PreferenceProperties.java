@@ -28,4 +28,5 @@ public class PreferenceProperties {
     public boolean IsFromLollipop = true;
     public boolean useUniversalBinary = true;
     public boolean hasAddonDSupport = true;
+    public String createZipType = "Normal";
 }

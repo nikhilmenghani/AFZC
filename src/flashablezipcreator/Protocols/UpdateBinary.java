@@ -25,6 +25,7 @@ public class UpdateBinary {
     public static UpdateBinaryOperations ubo = new UpdateBinaryOperations();
 
     public static String build(ProjectItemNode rootNode) throws FileNotFoundException, IOException {
+        Logs.write("Building update-binary-installer");
         updateBinaryInstaller = "";
         to = new TreeOperations();
         updateBinaryInstaller += ubo.initiateUpdaterScript();
@@ -38,21 +39,39 @@ public class UpdateBinary {
                     case Types.PROJECT_AROMA:
                     case Types.PROJECT_CUSTOM:
                     case Types.PROJECT_MOD:
-                        updateBinaryInstaller += buildAromaScript((ProjectNode) project);
+                        if (Preferences.pp.createZipType.equals("Aroma")) {
+                            updateBinaryInstaller += buildAromaScript((ProjectNode) project);
+                        } else if (Preferences.pp.createZipType.equals("Normal")) {
+                            updateBinaryInstaller += buildNormalScript((ProjectNode) project);
+                        }
                         break;
                 }
             }
         }
         if (Preferences.pp.hasAddonDSupport) {
-            updateBinaryInstaller += ubo.addAddonDString();
+            if (Preferences.pp.createZipType.equals("Aroma")) {
+                updateBinaryInstaller += ubo.addAromaAddonDString();
+            } else if (Preferences.pp.createZipType.equals("Normal")) {
+                updateBinaryInstaller += ubo.addNormalAddonDString();
+            }
         }
-        updateBinaryInstaller += ubo.addWipeDalvikCacheString();
+        if (Preferences.pp.createZipType.equals("Aroma")) {
+            updateBinaryInstaller += ubo.addWipeDalvikCacheString();
+        }
         updateBinaryInstaller += ubo.addPrintString("@Finished Install");
         return updateBinaryInstaller;
     }
 
     public static String buildNormalScript(ProjectNode project) {
         String str = "";
+        str += ubo.getMountMethod(1);
+        str += "set_progress 0\n";
+        for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {
+            if (((ProjectNode) group.prop.parent).prop.projectType == project.prop.projectType && ((ProjectNode) group.prop.parent).prop.title.equals(project.prop.title)) {
+                str += ubo.generateUpdaterScript((GroupNode) group);
+            }
+        }
+        str += "set_progress 1\n";
         return str;
     }
 

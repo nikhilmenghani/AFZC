@@ -124,4 +124,9 @@ public class Xml {
         xo = new XmlOperations();
         return xo.getBoolConfigValue(configData, "CheckUpdates");
     }
+    
+    public static String getCreateZipType(String configData) throws ParserConfigurationException, SAXException, IOException{
+        xo = new XmlOperations();
+        return xo.getStringConfigValue(configData, "createZipType");
+    }
 }

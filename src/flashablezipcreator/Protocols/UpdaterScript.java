@@ -28,6 +28,7 @@ public class UpdaterScript {
     public static String symlinkScript = op.getSymlinkScript();
 
     public static String build(ProjectItemNode rootNode) throws FileNotFoundException, IOException {
+        Logs.write("Building updater-script");
         updaterScript = "";
         to = new TreeOperations();
         updaterScript += op.initiateUpdaterScript();
@@ -41,21 +42,40 @@ public class UpdaterScript {
                     case Types.PROJECT_AROMA:
                     case Types.PROJECT_CUSTOM:
                     case Types.PROJECT_MOD:
-                        updaterScript += buildAromaScript((ProjectNode) project);
+                        if (Preferences.pp.createZipType.equals("Aroma")) {
+                            updaterScript += buildAromaScript((ProjectNode) project);
+                        } else if (Preferences.pp.createZipType.equals("Normal")) {
+                            updaterScript += buildNormalScript((ProjectNode) project);
+                        }
+
                         break;
                 }
             }
         }
         if (Preferences.pp.hasAddonDSupport) {
-            updaterScript += op.addAddonDString();
+            if (Preferences.pp.createZipType.equals("Aroma")) {
+                updaterScript += op.addAromaAddonDString();
+            } else if (Preferences.pp.createZipType.equals("Normal")) {
+                updaterScript += op.addNormalAddonDString();
+            }
         }
-        updaterScript += op.addWipeDalvikCacheString();
+        if (Preferences.pp.createZipType.equals("Aroma")) {
+            updaterScript += op.addWipeDalvikCacheString();
+        }
         updaterScript += op.addPrintString("@Finished Install");
         return updaterScript;
     }
 
     public static String buildNormalScript(ProjectNode project) {
         String str = "";
+        str += op.getMountMethod(1);
+        str += "set_progress(0);\n";
+        for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {
+            if (((ProjectNode) group.prop.parent).prop.projectType == project.prop.projectType && ((ProjectNode) group.prop.parent).prop.title.equals(project.prop.title)) {
+                str += op.generateUpdaterScript((GroupNode) group);
+            }
+        }
+        str += "set_progress(1);\n";
         return str;
     }
 
