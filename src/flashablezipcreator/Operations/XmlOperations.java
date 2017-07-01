@@ -73,8 +73,10 @@ public class XmlOperations {
         zipVersionElem.setTextContent(pp.zipVersion);
         Element saveLogsElem = document.createElement("saveLogs");
         saveLogsElem.setTextContent(String.valueOf(pp.saveLogs));
-        Element addonDSupport = document.createElement("addonDSupport");
-        addonDSupport.setTextContent(String.valueOf(pp.hasAddonDSupport));
+        Element displayAddonDSupportElem = document.createElement("displayAddonDSupport");
+        displayAddonDSupportElem.setTextContent(String.valueOf(pp.displayAddonDSupport));
+        Element enableAddonDSupportElem = document.createElement("enableAddonDSupport");
+        enableAddonDSupportElem.setTextContent(String.valueOf(pp.enableAddonDSupport));
         Element createZipTypeElem = document.createElement("createZipType");
         createZipTypeElem.setTextContent(pp.createZipType);
         root.appendChild(aromaVersionElem);
@@ -84,7 +86,8 @@ public class XmlOperations {
         root.appendChild(zipCreatorNameElem);
         root.appendChild(zipVersionElem);
         root.appendChild(saveLogsElem);
-        root.appendChild(addonDSupport);
+        root.appendChild(displayAddonDSupportElem);
+        root.appendChild(enableAddonDSupportElem);
         root.appendChild(createZipTypeElem);
     }
 

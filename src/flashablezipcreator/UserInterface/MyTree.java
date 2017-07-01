@@ -438,7 +438,7 @@ public class MyTree extends javax.swing.JFrame {
     }
 
     private void menuItemPreferencesActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, SAXException, IOException {
-        new Preferences();
+        new Preference();
     }
 
     private void menuItemDevelopersActionPerformed(java.awt.event.ActionEvent evt) {

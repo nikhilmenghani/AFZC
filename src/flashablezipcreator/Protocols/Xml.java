@@ -95,9 +95,14 @@ public class Xml {
         return xo.getBoolConfigValue(configData, "IsQuickSetup");
     }
     
-    public static boolean getAddonDSupport(String configData) throws ParserConfigurationException, SAXException, IOException{
+    public static boolean getDisplayAddonDSupport(String configData) throws ParserConfigurationException, SAXException, IOException{
         xo = new XmlOperations();
-        return xo.getBoolConfigValue(configData, "addonDSupport");
+        return xo.getBoolConfigValue(configData, "displayAddonDSupport");
+    }
+    
+    public static boolean getEnableAddonDSupport(String configData) throws ParserConfigurationException, SAXException, IOException{
+        xo = new XmlOperations();
+        return xo.getBoolConfigValue(configData, "enableAddonDSupport");
     }
 
     public static ArrayList<String> getThemes(String configData) throws ParserConfigurationException, SAXException, IOException {

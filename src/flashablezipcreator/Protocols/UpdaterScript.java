@@ -32,7 +32,7 @@ public class UpdaterScript {
         updaterScript = "";
         to = new TreeOperations();
         updaterScript += op.initiateUpdaterScript();
-        if (Preferences.pp.hasAddonDSupport) {
+        if (Preferences.pp.enableAddonDSupport || Preferences.pp.displayAddonDSupport) {
             updaterScript += op.deleteAddonBackupData();
             updaterScript += op.getAfzcBinaryString();
         }
@@ -52,7 +52,7 @@ public class UpdaterScript {
                 }
             }
         }
-        if (Preferences.pp.hasAddonDSupport) {
+        if (Preferences.pp.enableAddonDSupport || Preferences.pp.displayAddonDSupport) {
             if (Preferences.pp.createZipType.equals("Aroma")) {
                 updaterScript += op.addAromaAddonDString();
             } else if (Preferences.pp.createZipType.equals("Normal")) {

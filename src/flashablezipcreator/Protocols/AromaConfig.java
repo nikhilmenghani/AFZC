@@ -48,7 +48,7 @@ public class AromaConfig {
                 }
             }
         }
-        if (Preferences.pp.hasAddonDSupport) {
+        if (Preferences.pp.displayAddonDSupport) {
             aromaConfig += op.addCheckViewBox("addon.d");
         }
         aromaConfig += op.setNextText("Install");

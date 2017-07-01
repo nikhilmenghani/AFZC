@@ -99,7 +99,8 @@ public class FlashableZipCreator {
                 Preferences.pp.zipVersion = Xml.getZipVersion(preferencesConfig);
                 Preferences.pp.saveLogs = Xml.getLogsIndicator(preferencesConfig);
                 Preferences.pp.checkUpdatesOnStartUp = Xml.getCheckUpdatesIndicator(preferencesConfig);
-                Preferences.pp.hasAddonDSupport = Xml.getAddonDSupport(preferencesConfig);
+                Preferences.pp.displayAddonDSupport = Xml.getDisplayAddonDSupport(preferencesConfig);
+                Preferences.pp.enableAddonDSupport = Xml.getEnableAddonDSupport(preferencesConfig);
                 Preferences.pp.createZipType = Xml.getCreateZipType(preferencesConfig);
                 Logs.write("Created Logs File..");
                 Logs.write(OS + " Operating System Found..!!");

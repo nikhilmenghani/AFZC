@@ -29,7 +29,7 @@ public class UpdateBinary {
         updateBinaryInstaller = "";
         to = new TreeOperations();
         updateBinaryInstaller += ubo.initiateUpdaterScript();
-        if (Preferences.pp.hasAddonDSupport) {
+        if (Preferences.pp.enableAddonDSupport || Preferences.pp.displayAddonDSupport) {
             updateBinaryInstaller += ubo.deleteAddonBackupData();
             updateBinaryInstaller += ubo.getAfzcBinaryString();
         }
@@ -48,7 +48,7 @@ public class UpdateBinary {
                 }
             }
         }
-        if (Preferences.pp.hasAddonDSupport) {
+        if (Preferences.pp.enableAddonDSupport || Preferences.pp.displayAddonDSupport) {
             if (Preferences.pp.createZipType.equals("Aroma")) {
                 updateBinaryInstaller += ubo.addAromaAddonDString();
             } else if (Preferences.pp.createZipType.equals("Normal")) {
