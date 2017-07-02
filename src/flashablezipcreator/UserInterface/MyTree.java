@@ -89,7 +89,7 @@ public class MyTree extends javax.swing.JFrame {
         circularProgressBar = new flashablezipcreator.UserInterface.CircularProgressBar();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
-        menuItemPreferences = new javax.swing.JMenuItem();
+        menuItemPreference = new javax.swing.JMenuItem();
         menuItemExit = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenu();
         menuItemDevelopers = new javax.swing.JMenuItem();
@@ -334,11 +334,11 @@ public class MyTree extends javax.swing.JFrame {
 
         menuFile.setText("File");
 
-        menuItemPreferences.setText("Preferences");
-        menuItemPreferences.addActionListener(new java.awt.event.ActionListener() {
+        menuItemPreference.setText("Preference");
+        menuItemPreference.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    menuItemPreferencesActionPerformed(evt);
+                    menuItemPreferenceActionPerformed(evt);
                 } catch (ParserConfigurationException ex) {
                     Logger.getLogger(MyTree.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SAXException ex) {
@@ -348,7 +348,7 @@ public class MyTree extends javax.swing.JFrame {
                 }
             }
         });
-        menuFile.add(menuItemPreferences);
+        menuFile.add(menuItemPreference);
 
         menuItemExit.setText("Exit");
         menuItemExit.addActionListener(new java.awt.event.ActionListener() {
@@ -443,7 +443,7 @@ public class MyTree extends javax.swing.JFrame {
         }
     }
 
-    private void menuItemPreferencesActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, SAXException, IOException {
+    private void menuItemPreferenceActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, SAXException, IOException {
         new Preference();
     }
 
@@ -486,7 +486,7 @@ public class MyTree extends javax.swing.JFrame {
         String availableVersion = "";
         if (Control.forceCheckOnStartUp) {
             availableVersion = Update.runUpdateCheck();
-        } else if (Preferences.pp.checkUpdatesOnStartUp) {
+        } else if (Preference.pp.checkUpdatesOnStartUp) {
             availableVersion = Update.runUpdateCheck();
         }
         if (!availableVersion.equals("")) {
@@ -609,7 +609,7 @@ public class MyTree extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemDevelopers;
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemInstructions;
-    private javax.swing.JMenuItem menuItemPreferences;
+    private javax.swing.JMenuItem menuItemPreference;
     private javax.swing.JPanel panelCreateZip;
     private javax.swing.JPanel panelImportZip;
     public static javax.swing.JPanel panelLower;

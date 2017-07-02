@@ -7,9 +7,10 @@ package flashablezipcreator.UserInterface;
 
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.Write;
+import flashablezipcreator.Protocols.PreferenceProperties;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Xml;
-import static flashablezipcreator.UserInterface.Preferences.pp;
+import static flashablezipcreator.UserInterface.Preference.pp;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -33,6 +34,7 @@ public class Preference extends javax.swing.JFrame {
      * Creates new form PreferenceUI
      */
     public JDialog dialog;
+    public static PreferenceProperties pp = new PreferenceProperties();
     Write w;
     Read r;
 

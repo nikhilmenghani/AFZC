@@ -17,7 +17,7 @@ import flashablezipcreator.Protocols.Mod;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.AddGroup;
 import flashablezipcreator.UserInterface.Delete;
-import flashablezipcreator.UserInterface.Preferences;
+import flashablezipcreator.UserInterface.Preference;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.model;
 import static flashablezipcreator.UserInterface.MyTree.rootNode;
@@ -373,7 +373,7 @@ public class MyPopup {
                 GroupNode gNode = (GroupNode) node;
                 for (File tempFile : MyFileFilter.getSelectedFiles(gNode.prop.extension)) {
                     FileNode fnode;
-                    if (Preferences.pp.IsFromLollipop) {
+                    if (Preference.pp.IsFromLollipop) {
                         switch (gNode.prop.groupType) {
                             case Types.GROUP_SYSTEM_APK:
                             case Types.GROUP_SYSTEM_PRIV_APK:
@@ -451,7 +451,7 @@ public class MyPopup {
     }
 
     public static void addQuickGroupObject(int type, ProjectNode parent, String defaultName) {
-        if (!Preferences.pp.isQuickSetup && type != Types.GROUP_DELETE_FILES) {
+        if (!Preference.pp.isQuickSetup && type != Types.GROUP_DELETE_FILES) {
             addName(type, parent);
         } else {
             if (parent.contains(defaultName)) {
@@ -480,7 +480,7 @@ public class MyPopup {
     }
 
     public static void addQuickSubGroupObject(int type, GroupNode parent, String defaultName) {
-        if (!Preferences.pp.isQuickSetup) {
+        if (!Preference.pp.isQuickSetup) {
             addName(type, parent);
         } else {
             if (parent.contains(defaultName)) {

@@ -14,7 +14,7 @@ import flashablezipcreator.FlashableZipCreator;
 import flashablezipcreator.UserInterface.MyTree;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
-import flashablezipcreator.UserInterface.Preferences;
+import flashablezipcreator.UserInterface.Preference;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -35,7 +35,7 @@ public class Jar {
             themesProject.prop.children = new ArrayList<>();
             for (String theme : JarOperations.themesList) {
                 Logs.write(theme);
-                if (Preferences.pp.themes.contains(theme)) {
+                if (Preference.pp.themes.contains(theme)) {
                     NodeProperties np = new NodeProperties(theme, Types.GROUP_AROMA_THEMES, themesProject);
                     GroupNode themeGroup = (GroupNode) themesProject.addChild(new GroupNode(np), true);
                     String themePath = "META-INF/com/google/android/aroma/themes/" + theme + "/";
@@ -65,8 +65,8 @@ public class Jar {
     }
 
     public static byte[] getAromaBinary() {
-        Logs.write("Aroma Binary Selected: " + Preferences.pp.aromaVersion);
-        switch (Preferences.pp.aromaVersion) {
+        Logs.write("Aroma Binary Selected: " + Preference.pp.aromaVersion);
+        switch (Preference.pp.aromaVersion) {
             case "Version 3.00b1 - MELATI":
                 return JarOperations.binary_MELATI;
             case "Version 2.70 RC2 - FLAMBOYAN":

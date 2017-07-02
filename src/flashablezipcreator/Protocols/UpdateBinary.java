@@ -10,7 +10,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Operations.UpdateBinaryOperations;
-import flashablezipcreator.UserInterface.Preferences;
+import flashablezipcreator.UserInterface.Preference;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ public class UpdateBinary {
         updateBinaryInstaller = "";
         to = new TreeOperations();
         updateBinaryInstaller += ubo.initiateUpdaterScript();
-        if (Preferences.pp.enableAddonDSupport || Preferences.pp.displayAddonDSupport) {
+        if (Preference.pp.enableAddonDSupport || Preference.pp.displayAddonDSupport) {
             updateBinaryInstaller += ubo.deleteAddonBackupData();
             updateBinaryInstaller += ubo.getAfzcBinaryString();
         }
@@ -39,23 +39,23 @@ public class UpdateBinary {
                     case Types.PROJECT_AROMA:
                     case Types.PROJECT_CUSTOM:
                     case Types.PROJECT_MOD:
-                        if (Preferences.pp.createZipType.equals("Aroma")) {
+                        if (Preference.pp.createZipType.equals("Aroma")) {
                             updateBinaryInstaller += buildAromaScript((ProjectNode) project);
-                        } else if (Preferences.pp.createZipType.equals("Normal")) {
+                        } else if (Preference.pp.createZipType.equals("Normal")) {
                             updateBinaryInstaller += buildNormalScript((ProjectNode) project);
                         }
                         break;
                 }
             }
         }
-        if (Preferences.pp.enableAddonDSupport || Preferences.pp.displayAddonDSupport) {
-            if (Preferences.pp.createZipType.equals("Aroma")) {
+        if (Preference.pp.enableAddonDSupport || Preference.pp.displayAddonDSupport) {
+            if (Preference.pp.createZipType.equals("Aroma")) {
                 updateBinaryInstaller += ubo.addAromaAddonDString();
-            } else if (Preferences.pp.createZipType.equals("Normal")) {
+            } else if (Preference.pp.createZipType.equals("Normal")) {
                 updateBinaryInstaller += ubo.addNormalAddonDString();
             }
         }
-        if (Preferences.pp.createZipType.equals("Aroma")) {
+        if (Preference.pp.createZipType.equals("Aroma")) {
             updateBinaryInstaller += ubo.addWipeDalvikCacheString();
         }
         updateBinaryInstaller += ubo.addPrintString("@Finished Install");

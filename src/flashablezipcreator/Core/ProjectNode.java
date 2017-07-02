@@ -7,7 +7,7 @@ package flashablezipcreator.Core;
 
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Types;
-import flashablezipcreator.UserInterface.Preferences;
+import flashablezipcreator.UserInterface.Preference;
 import java.io.File;
 
 /**
@@ -38,7 +38,7 @@ public class ProjectNode extends ProjectItemNode {
                 prop.zipPath = "customize" + "/" + "mod_" + modType + "/" + prop.projectZipPathPrefix + title;
                 break;
         }
-        prop.androidVersion = Preferences.pp.IsFromLollipop ? "5.x+" : "4.x+";
+        prop.androidVersion = Preference.pp.IsFromLollipop ? "5.x+" : "4.x+";
         Logs.write("done adding project");
     }
 

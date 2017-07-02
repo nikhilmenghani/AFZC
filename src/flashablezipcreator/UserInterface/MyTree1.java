@@ -17,9 +17,6 @@ import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.Protocols.Web;
-import flashablezipcreator.UserInterface.About;
-import flashablezipcreator.UserInterface.Instructions;
-import flashablezipcreator.UserInterface.Preferences;
 import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
@@ -96,7 +93,7 @@ public class MyTree1 extends JFrame {
         lblVersion = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
-        menuItemPreferences = new javax.swing.JMenuItem();
+        menuItemPreference = new javax.swing.JMenuItem();
         menuItemExit = new javax.swing.JMenuItem();
         menuAboutTool = new javax.swing.JMenuItem();
         menuAboutDeveloper = new javax.swing.JMenuItem();
@@ -126,7 +123,7 @@ public class MyTree1 extends JFrame {
         });
 
         lblVersion.setForeground(new java.awt.Color(255, 255, 255));
-        lblVersion.setText(Preferences.pp.currentVersion + " " + Preferences.pp.versionType);
+        lblVersion.setText(Preference.pp.currentVersion + " " + Preference.pp.versionType);
 
         javax.swing.GroupLayout panel_logoLayout = new javax.swing.GroupLayout(panel_logo);
         panel_logo.setLayout(panel_logoLayout);
@@ -292,11 +289,11 @@ public class MyTree1 extends JFrame {
 
         menuFile.setText("File");
 
-        menuItemPreferences.setText("Preferences");
-        menuItemPreferences.addActionListener(new java.awt.event.ActionListener() {
+        menuItemPreference.setText("Preference");
+        menuItemPreference.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
-                    menuItemPreferencesActionPerformed(evt);
+                    menuItemPreferenceActionPerformed(evt);
                 } catch (ParserConfigurationException ex) {
                     Logger.getLogger(MyTree1.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SAXException ex) {
@@ -306,7 +303,7 @@ public class MyTree1 extends JFrame {
                 }
             }
         });
-        menuFile.add(menuItemPreferences);
+        menuFile.add(menuItemPreference);
 
         menuItemExit.setText("Exit");
         menuItemExit.addActionListener(new java.awt.event.ActionListener() {
@@ -563,8 +560,8 @@ public class MyTree1 extends JFrame {
         new About().setVisible(true);
     }
 
-    private void menuItemPreferencesActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, SAXException, IOException {
-        new Preferences().setVisible(true);
+    private void menuItemPreferenceActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, SAXException, IOException {
+        new Preference().setVisible(true);
     }
 
     private void menuItemExitActionPerformed(java.awt.event.ActionEvent evt) {
@@ -629,7 +626,7 @@ public class MyTree1 extends JFrame {
     private javax.swing.JMenu menuUpdate;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem menuItemExit;
-    private javax.swing.JMenuItem menuItemPreferences;
+    private javax.swing.JMenuItem menuItemPreference;
     private javax.swing.JMenuItem menuAboutTool;
     private javax.swing.JMenuItem menuAboutDeveloper;
     private javax.swing.JMenuItem menuUpdateBeta;

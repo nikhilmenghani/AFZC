@@ -6,7 +6,7 @@
 package flashablezipcreator.Core;
 
 import flashablezipcreator.Protocols.Types;
-import flashablezipcreator.UserInterface.Preferences;
+import flashablezipcreator.UserInterface.Preference;
 import java.io.File;
 import java.io.IOException;
 
@@ -40,7 +40,7 @@ public class FolderNode extends ProjectItemNode {
         prop.folderLocation = parent.prop.location + File.separator + title;
         prop.permission = parent.prop.permission;
         prop.setPermissions = parent.prop.setPermissions;
-        prop.defaultFolderPerm = (Preferences.pp.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
+        prop.defaultFolderPerm = (Preference.pp.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
                 : "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
         prop.projectName = parent.prop.projectName;
@@ -58,7 +58,7 @@ public class FolderNode extends ProjectItemNode {
         prop.folderLocation = parent.prop.folderLocation + File.separator + title;
         prop.permission = parent.prop.permission;
         prop.setPermissions = parent.prop.setPermissions;
-        prop.defaultFolderPerm = (Preferences.pp.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
+        prop.defaultFolderPerm = (Preference.pp.useUniversalBinary) ? "1000" + " " + "1000" + " " + "0755" + " "
                 : "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
         prop.projectName = parent.prop.projectName;

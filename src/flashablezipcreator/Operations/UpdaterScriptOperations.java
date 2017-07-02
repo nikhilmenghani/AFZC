@@ -17,7 +17,7 @@ import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
-import flashablezipcreator.UserInterface.Preferences;
+import flashablezipcreator.UserInterface.Preference;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Script;
 import flashablezipcreator.Protocols.Types;
@@ -162,7 +162,7 @@ public class UpdaterScriptOperations {
         String str = "";
         if (node.isCheckBox()) {
             int count = 1;
-            if (Preferences.pp.IsFromLollipop) {
+            if (Preference.pp.IsFromLollipop) {
                 str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
                 for (ProjectItemNode child : node.prop.children) {
                     if (child.prop.type == Types.NODE_FOLDER) {
@@ -444,9 +444,9 @@ public class UpdaterScriptOperations {
             case Types.GROUP_SYSTEM_BIN:
             case Types.GROUP_SYSTEM_ETC:
             case Types.GROUP_SYSTEM_FRAMEWORK:
-                if (Preferences.pp.createZipType.equals("Aroma")) {
+                if (Preference.pp.createZipType.equals("Aroma")) {
                     return predefinedAromaFolderGroupScript(node);
-                } else if (Preferences.pp.createZipType.equals("Normal")) {
+                } else if (Preference.pp.createZipType.equals("Normal")) {
                     return predefinedNormalFolderGroupScript(node);
                 }
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
@@ -455,25 +455,25 @@ public class UpdaterScriptOperations {
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
             case Types.GROUP_DELETE_FILES:
             case Types.GROUP_SCRIPT:
-                if (Preferences.pp.createZipType.equals("Aroma")) {
+                if (Preference.pp.createZipType.equals("Aroma")) {
                     return predefinedAromaGroupScript(node);
-                } else if (Preferences.pp.createZipType.equals("Normal")) {
+                } else if (Preference.pp.createZipType.equals("Normal")) {
                     return predefinedNormalGroupScript(node);
                 }
             //Group of predefined locations that need subgroups
             case Types.GROUP_SYSTEM_FONTS:
             case Types.GROUP_DATA_LOCAL:
             case Types.GROUP_SYSTEM_MEDIA:
-                if (Preferences.pp.createZipType.equals("Aroma")) {
+                if (Preference.pp.createZipType.equals("Aroma")) {
                     return predefinedAromaSubGroupsScript(node);
-                } else if (Preferences.pp.createZipType.equals("Normal")) {
+                } else if (Preference.pp.createZipType.equals("Normal")) {
                     return predefinedNormalSubGroupsScript(node);
                 }
             //Group of custom location.
             case Types.GROUP_CUSTOM:
-                if (Preferences.pp.createZipType.equals("Aroma")) {
+                if (Preference.pp.createZipType.equals("Aroma")) {
                     return customAromaGroupScript(node);
-                } else if (Preferences.pp.createZipType.equals("Normal")) {
+                } else if (Preference.pp.createZipType.equals("Normal")) {
                     return customNormalGroupScript(node);
                 }
         }

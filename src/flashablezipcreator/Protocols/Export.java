@@ -20,7 +20,7 @@ import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
 import static flashablezipcreator.Protocols.Import.progressValue;
 import static flashablezipcreator.UserInterface.MyTree.circularProgressBar;
-import flashablezipcreator.UserInterface.Preferences;
+import flashablezipcreator.UserInterface.Preference;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -79,7 +79,7 @@ public class Export implements Runnable {
                                 switch (node.prop.type) {
                                     case Types.NODE_SUBGROUP:
                                         for (ProjectItemNode fileNode : ((SubGroupNode) node).prop.children) {
-                                            if (Preferences.pp.createZipType.equals("Aroma")
+                                            if (Preference.pp.createZipType.equals("Aroma")
                                                     && (((FileNode) fileNode).prop.title.equals("DroidSans.ttf")
                                                     || ((FileNode) fileNode).prop.title.equals("Roboto-Regular.ttf"))) {
                                                 increaseProgressBar(fileIndex++, ((FileNode) fileNode).prop.fileSourcePath);
@@ -113,7 +113,7 @@ public class Export implements Runnable {
                             wz.writeStringToZip(getDeleteData((GroupNode) groupNode), writeAt);
                         }
                     }
-                } else if (Preferences.pp.createZipType.equals("Aroma")) {
+                } else if (Preference.pp.createZipType.equals("Aroma")) {
                     for (ProjectItemNode groupNode : ((ProjectNode) project).prop.children) {
                         for (ProjectItemNode node : ((GroupNode) groupNode).prop.children) {
                             increaseProgressBar(fileIndex++, ((FileNode) node).prop.fileSourcePath);
@@ -125,7 +125,7 @@ public class Export implements Runnable {
             increaseProgressBar(fileIndex++, "Zip Data");
             Logs.write("Writing zip data to " + Xml.data_path);
             wz.writeStringToZip(Xml.generateFileDataXml(), Xml.data_path);
-            if (Preferences.pp.createZipType.equals("Aroma")) {
+            if (Preference.pp.createZipType.equals("Aroma")) {
                 Logs.write("Writing Rest of Jar Files");
                 for (String file : Jar.getOtherFileList()) {
                     wz.writeFileToZip(JarOperations.getInputStream(file), file);
@@ -137,12 +137,12 @@ public class Export implements Runnable {
             }
             increaseProgressBar(fileIndex++, "Updater-Script");
             try {
-                if (Preferences.pp.useUniversalBinary) {
+                if (Preference.pp.useUniversalBinary) {
                     Logs.write("Writing updater-script");
                     wz.writeStringToZip("# This is a dummy file. Magic happens in binary file", UpdaterScript.updaterScriptPath);  //updater-script
                     increaseProgressBar(fileIndex++, "Update Binary");
                     Logs.write("Writing update-binary");
-                    switch (Preferences.pp.createZipType) {
+                    switch (Preference.pp.createZipType) {
                         case "Aroma":
                             wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
                             increaseProgressBar(fileIndex++, "Update Binary Installer");
@@ -160,7 +160,7 @@ public class Export implements Runnable {
                     wz.writeStringToZip(us, UpdaterScript.updaterScriptPath); //updater-script
                     increaseProgressBar(fileIndex++, "Update Binary");
                     Logs.write("Writing update-binary");
-                    switch (Preferences.pp.createZipType) {
+                    switch (Preference.pp.createZipType) {
                         case "Aroma":
                             wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
                             increaseProgressBar(fileIndex++, "Update Binary Installer");

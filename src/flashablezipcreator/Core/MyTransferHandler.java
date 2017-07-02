@@ -8,7 +8,7 @@ package flashablezipcreator.Core;
 import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Types;
-import flashablezipcreator.UserInterface.Preferences;
+import flashablezipcreator.UserInterface.Preference;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -144,7 +144,7 @@ public class MyTransferHandler extends TransferHandler {
                 case Types.GROUP_SYSTEM_BIN:
                 case Types.GROUP_SYSTEM_ETC:
                 case Types.GROUP_SYSTEM_FRAMEWORK:
-                    if (Preferences.pp.IsFromLollipop) {
+                    if (Preference.pp.IsFromLollipop) {
                         addFolderNode(groupNode, f);
                     } else {
                         addFileNode(groupNode, f);

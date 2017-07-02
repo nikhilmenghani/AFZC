@@ -12,7 +12,7 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
-import flashablezipcreator.UserInterface.Preferences;
+import flashablezipcreator.UserInterface.Preference;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Types;
 
@@ -244,7 +244,7 @@ public class AromaScriptOperations {
                         + "\"Select files from the list\", \"\", 2,\n"
                         + "\"Select All\",\"Installs All Files.\", 1";
                 for (int i = 0; i < node.getChildCount(); i++) {
-                    if (Preferences.pp.IsFromLollipop) {
+                    if (Preference.pp.IsFromLollipop) {
                         switch (node.getChildAt(i).prop.type) {
                             case Types.NODE_FOLDER:
                                 str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FolderNode) node.getChildAt(i)).prop.description + "\", 0";
@@ -304,7 +304,7 @@ public class AromaScriptOperations {
                         + "	\"If you want to review or change any of your installation settings, press <b>Back</b>. Press Left Hard Button -> Quit Installation to exit the wizard.\\n\\n\\n\\n\\n\\n\\n\",\n"
                         + "    \"@alert\",\n"
                         + "\"<b>Clear Dalvik Cache</b> After Installation.\",\n"
-                        + "\"" + (Preferences.pp.enableAddonDSupport ? "1" : "0") + "\",\n"
+                        + "\"" + (Preference.pp.enableAddonDSupport ? "1" : "0") + "\",\n"
                         + "\"clear_it\");\n"
                         + "writetmpfile(\"dalvik_choices.prop\",\"init=no\\n\");\n"
                         + "if\n"

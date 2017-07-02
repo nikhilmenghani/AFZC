@@ -10,7 +10,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Operations.UpdaterScriptOperations;
-import flashablezipcreator.UserInterface.Preferences;
+import flashablezipcreator.UserInterface.Preference;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ public class UpdaterScript {
         updaterScript = "";
         to = new TreeOperations();
         updaterScript += op.initiateUpdaterScript();
-        if (Preferences.pp.enableAddonDSupport || Preferences.pp.displayAddonDSupport) {
+        if (Preference.pp.enableAddonDSupport || Preference.pp.displayAddonDSupport) {
             updaterScript += op.deleteAddonBackupData();
             updaterScript += op.getAfzcBinaryString();
         }
@@ -42,9 +42,9 @@ public class UpdaterScript {
                     case Types.PROJECT_AROMA:
                     case Types.PROJECT_CUSTOM:
                     case Types.PROJECT_MOD:
-                        if (Preferences.pp.createZipType.equals("Aroma")) {
+                        if (Preference.pp.createZipType.equals("Aroma")) {
                             updaterScript += buildAromaScript((ProjectNode) project);
-                        } else if (Preferences.pp.createZipType.equals("Normal")) {
+                        } else if (Preference.pp.createZipType.equals("Normal")) {
                             updaterScript += buildNormalScript((ProjectNode) project);
                         }
 
@@ -52,14 +52,14 @@ public class UpdaterScript {
                 }
             }
         }
-        if (Preferences.pp.enableAddonDSupport || Preferences.pp.displayAddonDSupport) {
-            if (Preferences.pp.createZipType.equals("Aroma")) {
+        if (Preference.pp.enableAddonDSupport || Preference.pp.displayAddonDSupport) {
+            if (Preference.pp.createZipType.equals("Aroma")) {
                 updaterScript += op.addAromaAddonDString();
-            } else if (Preferences.pp.createZipType.equals("Normal")) {
+            } else if (Preference.pp.createZipType.equals("Normal")) {
                 updaterScript += op.addNormalAddonDString();
             }
         }
-        if (Preferences.pp.createZipType.equals("Aroma")) {
+        if (Preference.pp.createZipType.equals("Aroma")) {
             updaterScript += op.addWipeDalvikCacheString();
         }
         updaterScript += op.addPrintString("@Finished Install");
