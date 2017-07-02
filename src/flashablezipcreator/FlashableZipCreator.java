@@ -9,9 +9,11 @@ import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.ReadZip;
 import flashablezipcreator.Operations.JarOperations;
+import flashablezipcreator.Protocols.Control;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
+import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.Protocols.Xml;
 import flashablezipcreator.UserInterface.MyTree;
 import flashablezipcreator.UserInterface.Preferences;
@@ -44,9 +46,8 @@ public class FlashableZipCreator {
      * @throws javax.xml.parsers.ParserConfigurationException
      * @throws org.xml.sax.SAXException
      */
-    
     public static String OS = "Windoes";
-            
+
     public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException, URISyntaxException, TransformerException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -78,11 +79,11 @@ public class FlashableZipCreator {
             java.util.logging.Logger.getLogger(JTreeDemo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         letsBegin();
     }
-    
-    public static void letsBegin(){
+
+    public static void letsBegin() throws URISyntaxException {
         try {
             File f = new File("Preferences.config");
             Read r = new Read();
@@ -113,12 +114,16 @@ public class FlashableZipCreator {
                 Preferences.pp.themes.add("RedBlack");
             }
 
-//            Control.check();
-//            if(Control.forceCheckOnStartUp){
-//                Update.runUpdateCheck();
-//            }else if (Preferences.checkUpdatesOnStartUp) {
-//                Update.runUpdateCheck();
-//            }
+            Control.check();
+            String availableVersion = "";
+            if (Control.forceCheckOnStartUp) {
+                availableVersion = Update.runUpdateCheck();
+            } else if (Preferences.pp.checkUpdatesOnStartUp) {
+                availableVersion = Update.runUpdateCheck();
+            }
+            if (!availableVersion.equals("")) {
+                Update.executeDownload();
+            }
             //Device Configuration
             if ((new File("update-binary").exists())) {
                 Device.binary = (new Read()).getFileBytes("update-binary");
