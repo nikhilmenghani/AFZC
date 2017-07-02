@@ -25,9 +25,9 @@ public class Update {
     public static String RawChangeLogStable = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/ChangeLogStable";
     public static String RawChangeLogTest = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/ChangeLogTest";
     public static String RawUpcomingFeatures = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/UpcomingFeatures";
-    public static float CurrentMainVersion = 4;
-    public static float CurrentBetaVersion = 2;
-    public static float CurrentTestVersion = 0;
+    public static float CurrentMainVersion = 4.1f;
+    public static float CurrentBetaVersion = 1;
+    public static float CurrentTestVersion = 3;
     public static String CurrentVersionType = "Test";
     public static boolean isBetaUpdateAvailable = false;
     public static boolean isStableUpdateAvailable = false;
@@ -36,71 +36,81 @@ public class Update {
     public static String stableDownloadLink = "";
     public static String testDownloadLink = "";
 
-    public static void runUpdateCheck() throws URISyntaxException {
+    public static String runUpdateCheck() throws URISyntaxException {
         if (Web.netIsAvailable()) {
             Logs.write("Running Update Check");
             switch (CurrentVersionType) {
                 case "Stable":
                     if (Control.forceStableUpdate && Update.isStableUpdateAvailable()) {
                         isStableUpdateAvailable = true;
+                        return "Stable";
                     }
                     break;
                 case "Beta":
                     if (Control.forceBetaUpdate) {
-                        if (Update.isBetaUpdateAvailable()) {
-                            isBetaUpdateAvailable = true;
-                        }
                         if (Update.isStableUpdateAvailable()) {
                             isStableUpdateAvailable = true;
+                            return "Stable";
+                        }
+                        if (Update.isBetaUpdateAvailable()) {
+                            isBetaUpdateAvailable = true;
+                            return "Beta";
                         }
                     }
                     break;
                 case "Test":
                     if (Control.forceTestUpdate) {
-                        if (Update.isTestUpdateAvailable()) {
-                            isTestUpdateAvailable = true;
+                        if (Update.isStableUpdateAvailable()) {
+                            isStableUpdateAvailable = true;
+                            return "Stable";
                         }
                         if (Update.isBetaUpdateAvailable()) {
                             isBetaUpdateAvailable = true;
+                            return "Beta";
                         }
-                        if (Update.isStableUpdateAvailable()) {
-                            isStableUpdateAvailable = true;
+                        if (Update.isTestUpdateAvailable()) {
+                            isTestUpdateAvailable = true;
+                            return "Test";
                         }
                     }
                     break;
             }
-            if (isStableUpdateAvailable) {
-                String changelog = Update.getStableChangelog();
-                Logs.write("Stable Changelog: " + changelog);
-                String message = "A new update is available with following changelog\n" + changelog;
-                int dialogResult = JOptionPane.showConfirmDialog(null, message, "Stable Update Changelog", JOptionPane.YES_NO_OPTION);
-                if (dialogResult == JOptionPane.YES_OPTION) {
-                    Update.downloadStableVersion();
-                    System.exit(0);
-                }
-            } else if (isBetaUpdateAvailable) {
-                String changelog = Update.getBetaChangelog();
-                Logs.write("Beta Changelog: " + changelog);
-                String message = "A new update is available with following changelog\n" + changelog;
-                int dialogResult = JOptionPane.showConfirmDialog(null, message, "Beta Update Changelog", JOptionPane.YES_NO_OPTION);
-                if (dialogResult == JOptionPane.YES_OPTION) {
-                    Update.downloadBetaVersion();
-                    System.exit(0);
-                }
-            } else if (isTestUpdateAvailable) {
-                String changelog = Update.getTestChangelog();
-                Logs.write("Test Changelog: " + changelog);
-                String message = "A new update is available with following changelog\n" + changelog;
-                int dialogResult = JOptionPane.showConfirmDialog(null, message, "Test Update Changelog", JOptionPane.YES_NO_OPTION);
-                if (dialogResult == JOptionPane.YES_OPTION) {
-                    Update.downloadTestVersion();
-                    System.exit(0);
-                }
-            }
-            Logs.write("Beta update status: " + Update.isBetaUpdateAvailable);
-            Logs.write("Stable update status: " + Update.isStableUpdateAvailable);
-            Logs.write("Test update status: " + Update.isTestUpdateAvailable);
         }
+        return "";
+    }
+
+    public static void executeDownload() throws URISyntaxException {
+        if (isStableUpdateAvailable) {
+            String changelog = Update.getStableChangelog();
+            Logs.write("Stable Changelog: " + changelog);
+            String message = "A new update is available with following changelog\n" + changelog;
+            int dialogResult = JOptionPane.showConfirmDialog(null, message, "Stable Update Changelog", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                Update.downloadStableVersion();
+                System.exit(0);
+            }
+        } else if (isBetaUpdateAvailable) {
+            String changelog = Update.getBetaChangelog();
+            Logs.write("Beta Changelog: " + changelog);
+            String message = "A new update is available with following changelog\n" + changelog;
+            int dialogResult = JOptionPane.showConfirmDialog(null, message, "Beta Update Changelog", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                Update.downloadBetaVersion();
+                System.exit(0);
+            }
+        } else if (isTestUpdateAvailable) {
+            String changelog = Update.getTestChangelog();
+            Logs.write("Test Changelog: " + changelog);
+            String message = "A new update is available with following changelog\n" + changelog;
+            int dialogResult = JOptionPane.showConfirmDialog(null, message, "Test Update Changelog", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                Update.downloadTestVersion();
+                System.exit(0);
+            }
+        }
+        Logs.write("Beta update status: " + Update.isBetaUpdateAvailable);
+        Logs.write("Stable update status: " + Update.isStableUpdateAvailable);
+        Logs.write("Test update status: " + Update.isTestUpdateAvailable);
     }
 
     public static void runTestUpdateCheck() {
@@ -192,8 +202,12 @@ public class Update {
             String[] version = data.split(" ");
             float mainVersion = Float.valueOf(version[0]);
             float betaVersion = Float.valueOf(version[1].substring(4, version[1].length()));
-            if (CurrentMainVersion <= mainVersion && CurrentBetaVersion < betaVersion) {
-                updateStatus = true;
+            if (CurrentMainVersion <= mainVersion) {
+                if (CurrentBetaVersion < betaVersion) {
+                    updateStatus = true;
+                } else if (CurrentBetaVersion == betaVersion && CurrentMainVersion < mainVersion) {
+                    updateStatus = true;
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Take logs and Contact Developer! Couldn't check Beta update");
@@ -224,8 +238,13 @@ public class Update {
             float mainVersion = Float.valueOf(version[0]);
             float betaVersion = Float.valueOf(version[1].substring(4, version[1].length()));
             float testVersion = Float.valueOf(version[2].substring(4, version[2].length()));
-            if (CurrentMainVersion <= mainVersion && CurrentBetaVersion <= betaVersion && CurrentTestVersion < testVersion) {
-                updateStatus = true;
+
+            if (CurrentMainVersion <= mainVersion && CurrentBetaVersion <= betaVersion) {
+                if (CurrentTestVersion < testVersion) {
+                    updateStatus = true;
+                } else if (CurrentTestVersion == testVersion && (CurrentMainVersion < mainVersion || CurrentBetaVersion < betaVersion)) {
+                    updateStatus = true;
+                }
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Take logs and Contact Developer! Couldn't check Test update");

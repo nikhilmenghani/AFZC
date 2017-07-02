@@ -57,8 +57,10 @@ public class PreferenceUI extends javax.swing.JFrame {
         lblZipOptions.setForeground(new java.awt.Color(255, 255, 255));
         lblZipOptions.setText("Zip Options");
 
+        btnAromaZip.setForeground(new java.awt.Color(186, 194, 198));
         btnAromaZip.setText("<html>Create Zip Type<br><p align='center'>Aroma</p></html>");
         btnAromaZip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnAromaZip.setContentAreaFilled(false);
         btnAromaZip.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAromaZip.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,8 +80,10 @@ public class PreferenceUI extends javax.swing.JFrame {
             }
         });
 
+        btnQuickSetup.setForeground(new java.awt.Color(186, 194, 198));
         btnQuickSetup.setText("Quick Setup");
         btnQuickSetup.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnQuickSetup.setContentAreaFilled(false);
         btnQuickSetup.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnQuickSetup.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -99,8 +103,10 @@ public class PreferenceUI extends javax.swing.JFrame {
             }
         });
 
+        btnCheckUpdates.setForeground(new java.awt.Color(186, 194, 198));
         btnCheckUpdates.setText("<html>Check For<br><p align='center'>Updates</p></html>");
         btnCheckUpdates.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnCheckUpdates.setContentAreaFilled(false);
         btnCheckUpdates.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCheckUpdates.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,8 +122,10 @@ public class PreferenceUI extends javax.swing.JFrame {
         lblAddonDOptions.setForeground(new java.awt.Color(255, 255, 255));
         lblAddonDOptions.setText("Addon.d Options");
 
+        btnEnableAddon.setForeground(new java.awt.Color(186, 194, 198));
         btnEnableAddon.setText("<html>Enable Support<br><p align='center'>by default</p></html>");
         btnEnableAddon.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnEnableAddon.setContentAreaFilled(false);
         btnEnableAddon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEnableAddon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,8 +156,10 @@ public class PreferenceUI extends javax.swing.JFrame {
 
         panelAromaBinary.setBackground(new java.awt.Color(35, 77, 110));
 
+        btnMelati.setForeground(new java.awt.Color(186, 194, 198));
         btnMelati.setText("<html>Version 3.00b1<br><p align='center'>MELATI</p></html>");
         btnMelati.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnMelati.setContentAreaFilled(false);
         btnMelati.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnMelati.setPreferredSize(new java.awt.Dimension(115, 37));
         btnMelati.addActionListener(new java.awt.event.ActionListener() {
