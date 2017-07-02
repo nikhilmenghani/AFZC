@@ -16,7 +16,7 @@ import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
 import static flashablezipcreator.UserInterface.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.TreeOperations;
-import static flashablezipcreator.UserInterface.MyTree.rootNode;
+import static flashablezipcreator.UserInterface.MyTree.circularProgressBar;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,6 +75,7 @@ public class Import implements Runnable {
                 Logs.write("Reading: " + name);
                 progressValue = (fileIndex * 100) / maxSize;
                 progressBarImportExport.setValue(progressValue);
+                circularProgressBar.updateProgress(progressValue);
                 setProgressBar("Importing " + (new File(name)).getName() + "");
                 if (name.endsWith("/") || Project.getTempFilesList().contains(name)
                         || name.startsWith("META-INF")
@@ -92,7 +93,7 @@ public class Import implements Runnable {
                 String filePath = name;
                 String projectName = Identify.getProjectName(name);
                 int projectType = Identify.getProjectType(filePath);
-                if(name.endsWith("DeleteFilesPath")){
+                if (name.endsWith("DeleteFilesPath")) {
                     importDeleteNodes(filePath, projectName, in);
                     continue;
                 }
@@ -121,9 +122,13 @@ public class Import implements Runnable {
 
             }
             progressBarImportExport.setString("Successfully Imported");
+            circularProgressBar.updateProgress("Successfully Imported");
+            circularProgressBar.updateProgress(100);
             progressBarImportExport.setValue(100);
             Logs.write("File Imported Successfully");
             JOptionPane.showMessageDialog(null, "Successfully Imported");
+            circularProgressBar.updateProgress("0%");
+            circularProgressBar.updateProgress(0);
             progressBarImportExport.setString("0%");
             progressBarImportExport.setValue(0);
             progressBarFlag = 0;
@@ -206,12 +211,14 @@ public class Import implements Runnable {
         ProjectNode pNode = (ProjectNode) MyTree.rootNode.addChild(new ProjectNode(np), false);
         np = new NodeProperties(groupName, groupType, pNode);
         GroupNode gNode = (GroupNode) pNode.addChild(new GroupNode(np), false);
-        for(String path : rz.getStringFromFile(in).split("\n")){
+        for (String path : rz.getStringFromFile(in).split("\n")) {
             gNode.addChild(new DeleteNode(path, gNode), true);
         }
     }
 
     public static void setProgressBar(String value) {
+        circularProgressBar.updateProgress(value);
+        circularProgressBar.updateProgress(progressValue);
         switch (MyTree.progressBarFlag) {
             case 0:
                 progressBarImportExport.setString(progressValue + "%");

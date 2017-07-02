@@ -18,6 +18,8 @@ import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
 import static flashablezipcreator.UserInterface.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
+import static flashablezipcreator.Protocols.Import.progressValue;
+import static flashablezipcreator.UserInterface.MyTree.circularProgressBar;
 import flashablezipcreator.UserInterface.Preferences;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -183,11 +185,13 @@ public class Export implements Runnable {
             }
             wz.close();
             Logs.write("Zip Created Successfully..");
+            circularProgressBar.updateProgress(100);
             progressBarImportExport.setValue(100);
             progressBarImportExport.setString("Zip Created Successfully..!!");
             JOptionPane.showMessageDialog(null, "Zip Created Successfully..!!");
             progressBarImportExport.setString("0%");
             progressBarImportExport.setValue(0);
+            circularProgressBar.updateProgress(0);
             progressBarFlag = 0;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n" + Logs.getExceptionTrace(e));
@@ -237,6 +241,7 @@ public class Export implements Runnable {
         if (progressValue > 99) {
             progressValue = 99;
         }
+        circularProgressBar.updateProgress(progressValue);
         progressBarImportExport.setValue(progressValue);
         switch (MyTree.progressBarFlag) {
             case 0:

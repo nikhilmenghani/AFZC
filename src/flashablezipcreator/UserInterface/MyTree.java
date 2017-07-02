@@ -17,6 +17,8 @@ import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Update;
+import static flashablezipcreator.UserInterface.MyTreeUI.panelLower;
+import static flashablezipcreator.UserInterface.MyTreeUI.progressBarImportExport;
 import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
@@ -84,7 +86,7 @@ public class MyTree extends javax.swing.JFrame {
         progressBarImportExport = new javax.swing.JProgressBar();
         layeredPaneProgress = new javax.swing.JLayeredPane();
         panelProgressBar = new javax.swing.JPanel();
-        panelProgress = new flashablezipcreator.UserInterface.CircularProgressBar();
+        circularProgressBar = new flashablezipcreator.UserInterface.CircularProgressBar();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuItemPreferences = new javax.swing.JMenuItem();
@@ -105,7 +107,7 @@ public class MyTree extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new java.awt.CardLayout());
 
-        panel_logo.setBackground(new java.awt.Color(78, 52, 46));
+        panel_logo.setBackground(new java.awt.Color(0, 121, 107));
         panel_logo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblHeader.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -221,7 +223,7 @@ public class MyTree extends javax.swing.JFrame {
         panelLower.add(layeredPaneButtons, "card1");
 
         progressBarImportExport.setBackground(new java.awt.Color(255, 255, 255));
-        progressBarImportExport.setForeground(new java.awt.Color(78, 52, 46));
+        progressBarImportExport.setForeground(new java.awt.Color(0, 121, 107));
         progressBarImportExport.setToolTipText("Click To Change Progress Mode");
         progressBarImportExport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         progressBarImportExport.setDoubleBuffered(true);
@@ -238,12 +240,12 @@ public class MyTree extends javax.swing.JFrame {
         javax.swing.GroupLayout layeredPaneProgressBarLayout = new javax.swing.GroupLayout(layeredPaneProgressBar);
         layeredPaneProgressBar.setLayout(layeredPaneProgressBarLayout);
         layeredPaneProgressBarLayout.setHorizontalGroup(
-                layeredPaneProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(progressBarImportExport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
+            layeredPaneProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(progressBarImportExport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
         );
         layeredPaneProgressBarLayout.setVerticalGroup(
-                layeredPaneProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(progressBarImportExport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+            layeredPaneProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(progressBarImportExport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
         );
 
         panelLower.add(layeredPaneProgressBar, "card2");
@@ -251,21 +253,21 @@ public class MyTree extends javax.swing.JFrame {
         javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
         panelMain.setLayout(panelMainLayout);
         panelMainLayout.setHorizontalGroup(
-                panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelMainLayout.createSequentialGroup()
-                                .addComponent(panelLower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                        .addComponent(panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(SP_tree)
+            panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMainLayout.createSequentialGroup()
+                .addComponent(panelLower, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(panel_logo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(SP_tree)
         );
         panelMainLayout.setVerticalGroup(
-                panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelMainLayout.createSequentialGroup()
-                                .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(SP_tree, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, 0)
-                                .addComponent(panelLower, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+            panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMainLayout.createSequentialGroup()
+                .addComponent(panel_logo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(SP_tree, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(panelLower, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         layeredPaneHome.setLayer(panelMain, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -273,46 +275,46 @@ public class MyTree extends javax.swing.JFrame {
         javax.swing.GroupLayout layeredPaneHomeLayout = new javax.swing.GroupLayout(layeredPaneHome);
         layeredPaneHome.setLayout(layeredPaneHomeLayout);
         layeredPaneHomeLayout.setHorizontalGroup(
-                layeredPaneHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            layeredPaneHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layeredPaneHomeLayout.setVerticalGroup(
-                layeredPaneHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            layeredPaneHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         getContentPane().add(layeredPaneHome, "L2");
 
-        javax.swing.GroupLayout panelProgressLayout = new javax.swing.GroupLayout(panelProgress);
-        panelProgress.setLayout(panelProgressLayout);
-        panelProgressLayout.setHorizontalGroup(
-                panelProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 0, Short.MAX_VALUE)
+        panelProgressBar.setBackground(new java.awt.Color(255, 255, 255));
+
+        circularProgressBar.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout circularProgressBarLayout = new javax.swing.GroupLayout(circularProgressBar);
+        circularProgressBar.setLayout(circularProgressBarLayout);
+        circularProgressBarLayout.setHorizontalGroup(
+            circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 252, Short.MAX_VALUE)
         );
-        panelProgressLayout.setVerticalGroup(
-                panelProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 275, Short.MAX_VALUE)
+        circularProgressBarLayout.setVerticalGroup(
+            circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 275, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout panelProgressBarLayout = new javax.swing.GroupLayout(panelProgressBar);
         panelProgressBar.setLayout(panelProgressBarLayout);
         panelProgressBarLayout.setHorizontalGroup(
-                panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 423, Short.MAX_VALUE)
-                        .addGroup(panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(panelProgressBarLayout.createSequentialGroup()
-                                        .addGap(85, 85, 85)
-                                        .addComponent(panelProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(86, 86, 86)))
+            panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelProgressBarLayout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(circularProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(88, 88, 88))
         );
         panelProgressBarLayout.setVerticalGroup(
-                panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 517, Short.MAX_VALUE)
-                        .addGroup(panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(panelProgressBarLayout.createSequentialGroup()
-                                        .addGap(121, 121, 121)
-                                        .addComponent(panelProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addGap(121, 121, 121)))
+            panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelProgressBarLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(circularProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(198, 198, 198))
         );
 
         layeredPaneProgress.setLayer(panelProgressBar, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -320,12 +322,12 @@ public class MyTree extends javax.swing.JFrame {
         javax.swing.GroupLayout layeredPaneProgressLayout = new javax.swing.GroupLayout(layeredPaneProgress);
         layeredPaneProgress.setLayout(layeredPaneProgressLayout);
         layeredPaneProgressLayout.setHorizontalGroup(
-                layeredPaneProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(panelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            layeredPaneProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layeredPaneProgressLayout.setVerticalGroup(
-                layeredPaneProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(panelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            layeredPaneProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         getContentPane().add(layeredPaneProgress, "L1");
@@ -489,7 +491,7 @@ public class MyTree extends javax.swing.JFrame {
         }
         if (!availableVersion.equals("")) {
             Update.executeDownload();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Your version is Up-to-date!");
         }
     }
@@ -523,6 +525,16 @@ public class MyTree extends javax.swing.JFrame {
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc=" Functions ">
     public static void setCardLayout(int cardNo) {
+        switch (cardNo) {
+            case 1:
+                layeredPaneHome.setVisible(true);
+                layeredPaneProgress.setVisible(false);
+                break;
+            case 2:
+                layeredPaneHome.setVisible(false);
+                layeredPaneProgress.setVisible(true);
+                break;
+        }
         CardLayout cardLayout = (CardLayout) panelLower.getLayout();
         cardLayout.show(panelLower, "card" + Integer.toString(cardNo));
     }
@@ -584,8 +596,8 @@ public class MyTree extends javax.swing.JFrame {
     private javax.swing.JButton btnCreateZip;
     private javax.swing.JButton btnImportZip;
     private javax.swing.JLayeredPane layeredPaneButtons;
-    private javax.swing.JLayeredPane layeredPaneHome;
-    private javax.swing.JLayeredPane layeredPaneProgress;
+    public static javax.swing.JLayeredPane layeredPaneHome;
+    public static javax.swing.JLayeredPane layeredPaneProgress;
     private javax.swing.JLayeredPane layeredPaneProgressBar;
     private javax.swing.JLabel lblHeader;
     private javax.swing.JLabel lblVersion;
@@ -602,8 +614,8 @@ public class MyTree extends javax.swing.JFrame {
     private javax.swing.JPanel panelImportZip;
     public static javax.swing.JPanel panelLower;
     private javax.swing.JPanel panelMain;
-    private flashablezipcreator.UserInterface.CircularProgressBar panelProgress;
-    private javax.swing.JPanel panelProgressBar;
+    public static flashablezipcreator.UserInterface.CircularProgressBar circularProgressBar;
+    public static javax.swing.JPanel panelProgressBar;
     private javax.swing.JPanel panel_logo;
     public static javax.swing.JProgressBar progressBarImportExport;
     public static javax.swing.JTree tree;

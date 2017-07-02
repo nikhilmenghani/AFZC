@@ -47,7 +47,7 @@ public class MyTreeUI extends javax.swing.JFrame {
         progressBarImportExport = new javax.swing.JProgressBar();
         layeredPaneProgress = new javax.swing.JLayeredPane();
         panelProgressBar = new javax.swing.JPanel();
-        panelProgress = new flashablezipcreator.UserInterface.CircularProgressBar();
+        circularProgressBar = new flashablezipcreator.UserInterface.CircularProgressBar();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuItemPreferences = new javax.swing.JMenuItem();
@@ -68,7 +68,7 @@ public class MyTreeUI extends javax.swing.JFrame {
         });
         getContentPane().setLayout(new java.awt.CardLayout());
 
-        panel_logo.setBackground(new java.awt.Color(78, 52, 46));
+        panel_logo.setBackground(new java.awt.Color(0, 121, 107));
         panel_logo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         lblHeader.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -185,7 +185,7 @@ public class MyTreeUI extends javax.swing.JFrame {
         panelLower.add(layeredPaneButtons, "card1");
 
         progressBarImportExport.setBackground(new java.awt.Color(255, 255, 255));
-        progressBarImportExport.setForeground(new java.awt.Color(78, 52, 46));
+        progressBarImportExport.setForeground(new java.awt.Color(0, 121, 107));
         progressBarImportExport.setToolTipText("Click To Change Progress Mode");
         progressBarImportExport.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         progressBarImportExport.setDoubleBuffered(true);
@@ -247,14 +247,18 @@ public class MyTreeUI extends javax.swing.JFrame {
 
         getContentPane().add(layeredPaneHome, "L2");
 
-        javax.swing.GroupLayout panelProgressLayout = new javax.swing.GroupLayout(panelProgress);
-        panelProgress.setLayout(panelProgressLayout);
-        panelProgressLayout.setHorizontalGroup(
-            panelProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+        panelProgressBar.setBackground(new java.awt.Color(255, 255, 255));
+
+        circularProgressBar.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout circularProgressBarLayout = new javax.swing.GroupLayout(circularProgressBar);
+        circularProgressBar.setLayout(circularProgressBarLayout);
+        circularProgressBarLayout.setHorizontalGroup(
+            circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 252, Short.MAX_VALUE)
         );
-        panelProgressLayout.setVerticalGroup(
-            panelProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        circularProgressBarLayout.setVerticalGroup(
+            circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 275, Short.MAX_VALUE)
         );
 
@@ -262,21 +266,17 @@ public class MyTreeUI extends javax.swing.JFrame {
         panelProgressBar.setLayout(panelProgressBarLayout);
         panelProgressBarLayout.setHorizontalGroup(
             panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 423, Short.MAX_VALUE)
-            .addGroup(panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelProgressBarLayout.createSequentialGroup()
-                    .addGap(85, 85, 85)
-                    .addComponent(panelProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(86, 86, 86)))
+            .addGroup(panelProgressBarLayout.createSequentialGroup()
+                .addGap(83, 83, 83)
+                .addComponent(circularProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(88, 88, 88))
         );
         panelProgressBarLayout.setVerticalGroup(
             panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 517, Short.MAX_VALUE)
-            .addGroup(panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelProgressBarLayout.createSequentialGroup()
-                    .addGap(121, 121, 121)
-                    .addComponent(panelProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(121, 121, 121)))
+            .addGroup(panelProgressBarLayout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addComponent(circularProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(198, 198, 198))
         );
 
         layeredPaneProgress.setLayer(panelProgressBar, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -285,7 +285,7 @@ public class MyTreeUI extends javax.swing.JFrame {
         layeredPaneProgress.setLayout(layeredPaneProgressLayout);
         layeredPaneProgressLayout.setHorizontalGroup(
             layeredPaneProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(panelProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layeredPaneProgressLayout.setVerticalGroup(
             layeredPaneProgressLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -429,6 +429,7 @@ public class MyTreeUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane SP_tree;
     private javax.swing.JButton btnCreateZip;
     private javax.swing.JButton btnImportZip;
+    private flashablezipcreator.UserInterface.CircularProgressBar circularProgressBar;
     private javax.swing.JLayeredPane layeredPaneButtons;
     private javax.swing.JLayeredPane layeredPaneHome;
     private javax.swing.JLayeredPane layeredPaneProgress;
@@ -448,7 +449,6 @@ public class MyTreeUI extends javax.swing.JFrame {
     private javax.swing.JPanel panelImportZip;
     public static javax.swing.JPanel panelLower;
     private javax.swing.JPanel panelMain;
-    private flashablezipcreator.UserInterface.CircularProgressBar panelProgress;
     private javax.swing.JPanel panelProgressBar;
     private javax.swing.JPanel panel_logo;
     public static javax.swing.JProgressBar progressBarImportExport;

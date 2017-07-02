@@ -40,14 +40,13 @@ public class PreferenceUI extends javax.swing.JFrame {
         btnEnableAddon = new javax.swing.JToggleButton();
         btnDisplayAddon = new javax.swing.JToggleButton();
         btnSave = new javax.swing.JButton();
-        panelAromaBinary = new javax.swing.JPanel();
-        btnMelati = new javax.swing.JToggleButton();
-        btnFlamboyan = new javax.swing.JToggleButton();
-        btnEdelweis = new javax.swing.JToggleButton();
+        btnMelati = new javax.swing.JButton();
+        btnFlamboyan = new javax.swing.JButton();
+        btnEdelweis = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        mainPanel.setBackground(new java.awt.Color(35, 77, 110));
+        mainPanel.setBackground(new java.awt.Color(66, 66, 66));
 
         lblAromaOptions.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lblAromaOptions.setForeground(new java.awt.Color(255, 255, 255));
@@ -146,22 +145,20 @@ public class PreferenceUI extends javax.swing.JFrame {
         });
 
         btnSave.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("Save");
         btnSave.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnSave.setContentAreaFilled(false);
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveActionPerformed(evt);
             }
         });
 
-        panelAromaBinary.setBackground(new java.awt.Color(35, 77, 110));
-
         btnMelati.setForeground(new java.awt.Color(186, 194, 198));
-        btnMelati.setText("<html>Version 3.00b1<br><p align='center'>MELATI</p></html>");
+        btnMelati.setText("<html>Version 3.00<br><p align='center'>MELATI</p></html>");
         btnMelati.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
         btnMelati.setContentAreaFilled(false);
-        btnMelati.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnMelati.setPreferredSize(new java.awt.Dimension(115, 37));
         btnMelati.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMelatiActionPerformed(evt);
@@ -169,10 +166,9 @@ public class PreferenceUI extends javax.swing.JFrame {
         });
 
         btnFlamboyan.setForeground(new java.awt.Color(186, 194, 198));
-        btnFlamboyan.setText("<html>Version 2.70 RC2<br>&nbsp;&nbsp;&nbsp;&nbsp;FLAMBOYAN</html>");
+        btnFlamboyan.setText("<html>Version 2.70<br><p align='center'>FLAMBOYAN</p></html>");
         btnFlamboyan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
         btnFlamboyan.setContentAreaFilled(false);
-        btnFlamboyan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFlamboyan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFlamboyanActionPerformed(evt);
@@ -183,32 +179,11 @@ public class PreferenceUI extends javax.swing.JFrame {
         btnEdelweis.setText("<html>Version 2.56<br><p align='center'>EDELWEIS</p></html>");
         btnEdelweis.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
         btnEdelweis.setContentAreaFilled(false);
-        btnEdelweis.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEdelweis.setPreferredSize(new java.awt.Dimension(115, 37));
         btnEdelweis.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEdelweisActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout panelAromaBinaryLayout = new javax.swing.GroupLayout(panelAromaBinary);
-        panelAromaBinary.setLayout(panelAromaBinaryLayout);
-        panelAromaBinaryLayout.setHorizontalGroup(
-            panelAromaBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelAromaBinaryLayout.createSequentialGroup()
-                .addComponent(btnMelati, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(btnFlamboyan, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(btnEdelweis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        panelAromaBinaryLayout.setVerticalGroup(
-            panelAromaBinaryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnFlamboyan, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(btnEdelweis, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btnMelati, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
@@ -219,12 +194,10 @@ public class PreferenceUI extends javax.swing.JFrame {
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblZipOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblToolOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblAddonDOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblAromaOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(panelAromaBinary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(125, Short.MAX_VALUE))
+                            .addComponent(lblAromaOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -235,31 +208,37 @@ public class PreferenceUI extends javax.swing.JFrame {
                                     .addComponent(btnCheckUpdates)
                                     .addGap(30, 30, 30)))
                             .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addComponent(btnDisplayAddon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnDisplayAddon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(lblZipOptions, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnMelati))
                                 .addGap(29, 29, 29)))
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnAromaZip, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)
                             .addComponent(btnQuickSetup, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnEnableAddon))
+                            .addComponent(btnEnableAddon)
+                            .addComponent(btnFlamboyan))
+                        .addGap(29, 29, 29)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(mainPanelLayout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(btnSaveTools, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(25, 25, 25))))))
+                            .addComponent(btnSaveTools, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEdelweis, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25))))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(lblAromaOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelAromaBinary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMelati, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFlamboyan, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEdelweis, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblZipOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(14, 14, 14)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnNormalZip, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnAromaZip, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -278,9 +257,9 @@ public class PreferenceUI extends javax.swing.JFrame {
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnDisplayAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnEnableAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(56, Short.MAX_VALUE))
+                        .addContainerGap(61, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                         .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(22, 22, 22))))
         );
@@ -289,7 +268,9 @@ public class PreferenceUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -298,18 +279,6 @@ public class PreferenceUI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnMelatiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMelatiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnMelatiActionPerformed
-
-    private void btnFlamboyanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFlamboyanActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnFlamboyanActionPerformed
-
-    private void btnEdelweisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEdelweisActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEdelweisActionPerformed
 
     private void btnAromaZipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAromaZipActionPerformed
         // TODO add your handling code here:
@@ -342,6 +311,18 @@ public class PreferenceUI extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnMelatiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMelatiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMelatiActionPerformed
+
+    private void btnFlamboyanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFlamboyanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFlamboyanActionPerformed
+
+    private void btnEdelweisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEdelweisActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEdelweisActionPerformed
 
     /**
      * @param args the command line arguments
@@ -382,10 +363,10 @@ public class PreferenceUI extends javax.swing.JFrame {
     private javax.swing.JToggleButton btnAromaZip;
     private javax.swing.JToggleButton btnCheckUpdates;
     private javax.swing.JToggleButton btnDisplayAddon;
-    private javax.swing.JToggleButton btnEdelweis;
+    private javax.swing.JButton btnEdelweis;
     private javax.swing.JToggleButton btnEnableAddon;
-    private javax.swing.JToggleButton btnFlamboyan;
-    private javax.swing.JToggleButton btnMelati;
+    private javax.swing.JButton btnFlamboyan;
+    private javax.swing.JButton btnMelati;
     private javax.swing.JToggleButton btnNormalZip;
     private javax.swing.JToggleButton btnQuickSetup;
     private javax.swing.JButton btnSave;
@@ -395,6 +376,5 @@ public class PreferenceUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblToolOptions;
     private javax.swing.JLabel lblZipOptions;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JPanel panelAromaBinary;
     // End of variables declaration//GEN-END:variables
 }
