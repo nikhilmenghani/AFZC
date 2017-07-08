@@ -1,6 +1,15 @@
 
-v4.0 b2 test 7
--fixed: folders with spaces in path not working
--added support for devices on which universal-update-binary was not working
--many fixes in aroma
--changed the aroma theme
+v4.1 b1 test 3
+-Feature: Addon.d support
+-Feature: added Normal flashable zip
+-Many fixes in aroma
+-Fix: data apps not getting installed in some scenario
+-Revamped Progress bar
+-Revamped Preferences bar
+-Added back Check for Update Functionality
+
+v4.1 b1 test 2
+-Feature: Delete any file/folder
+
+v4.1 b1 test 1
+-Feature: Add Custom Groups

@@ -242,7 +242,7 @@ public class Update {
             if (CurrentMainVersion <= mainVersion && CurrentBetaVersion <= betaVersion) {
                 if (CurrentTestVersion < testVersion) {
                     updateStatus = true;
-                } else if (CurrentTestVersion == testVersion && (CurrentMainVersion < mainVersion || CurrentBetaVersion < betaVersion)) {
+                } else if (CurrentTestVersion == testVersion && (CurrentMainVersion <= mainVersion || CurrentBetaVersion < betaVersion)) {
                     updateStatus = true;
                 }
             }
