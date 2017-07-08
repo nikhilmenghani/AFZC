@@ -145,10 +145,8 @@ public class PreferenceUI extends javax.swing.JFrame {
         });
 
         btnSave.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
-        btnSave.setForeground(new java.awt.Color(255, 255, 255));
         btnSave.setText("Save");
         btnSave.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
-        btnSave.setContentAreaFilled(false);
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSaveActionPerformed(evt);

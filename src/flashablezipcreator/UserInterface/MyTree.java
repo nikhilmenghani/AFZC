@@ -17,8 +17,6 @@ import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Update;
-import static flashablezipcreator.UserInterface.MyTreeUI.panelLower;
-import static flashablezipcreator.UserInterface.MyTreeUI.progressBarImportExport;
 import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
@@ -87,6 +85,7 @@ public class MyTree extends javax.swing.JFrame {
         layeredPaneProgress = new javax.swing.JLayeredPane();
         panelProgressBar = new javax.swing.JPanel();
         circularProgressBar = new flashablezipcreator.UserInterface.CircularProgressBar();
+        txtProgress = new javax.swing.JTextField();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuItemPreference = new javax.swing.JMenuItem();
@@ -293,28 +292,34 @@ public class MyTree extends javax.swing.JFrame {
         circularProgressBar.setLayout(circularProgressBarLayout);
         circularProgressBarLayout.setHorizontalGroup(
             circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 252, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         circularProgressBarLayout.setVerticalGroup(
             circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 275, Short.MAX_VALUE)
+            .addGap(0, 364, Short.MAX_VALUE)
         );
+
+        txtProgress.setEditable(false);
+        txtProgress.setBackground(new java.awt.Color(255, 255, 255));
+        txtProgress.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtProgress.setForeground(new java.awt.Color(0, 121, 107));
+        txtProgress.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtProgress.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         javax.swing.GroupLayout panelProgressBarLayout = new javax.swing.GroupLayout(panelProgressBar);
         panelProgressBar.setLayout(panelProgressBarLayout);
         panelProgressBarLayout.setHorizontalGroup(
             panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelProgressBarLayout.createSequentialGroup()
-                .addGap(83, 83, 83)
-                .addComponent(circularProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(88, 88, 88))
+            .addComponent(circularProgressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(txtProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
         );
         panelProgressBarLayout.setVerticalGroup(
             panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelProgressBarLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addComponent(circularProgressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(198, 198, 198))
+                .addComponent(circularProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(txtProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         layeredPaneProgress.setLayer(panelProgressBar, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -619,5 +624,6 @@ public class MyTree extends javax.swing.JFrame {
     private javax.swing.JPanel panel_logo;
     public static javax.swing.JProgressBar progressBarImportExport;
     public static javax.swing.JTree tree;
+    public static javax.swing.JTextField txtProgress;
     // End of variables declaration                   
 }

@@ -144,11 +144,7 @@ public class MyTransferHandler extends TransferHandler {
                 case Types.GROUP_SYSTEM_BIN:
                 case Types.GROUP_SYSTEM_ETC:
                 case Types.GROUP_SYSTEM_FRAMEWORK:
-                    if (Preference.pp.IsFromLollipop) {
-                        addFolderNode(groupNode, f);
-                    } else {
-                        addFileNode(groupNode, f);
-                    }
+                    addFolderNode(groupNode, f);
                     break;
                 case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:

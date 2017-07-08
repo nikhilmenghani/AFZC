@@ -162,39 +162,35 @@ public class UpdaterScriptOperations {
         String str = "";
         if (node.isCheckBox()) {
             int count = 1;
-            if (Preference.pp.IsFromLollipop) {
-                str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
-                for (ProjectItemNode child : node.prop.children) {
-                    if (child.prop.type == Types.NODE_FOLDER) {
-                        str += addPrintString(child.prop.title, installString);
-                        str = getFolderScript(str, child);
-                    } else if (child.prop.type == Types.NODE_FILE) {
-                        str += addPrintString(child.prop.title, copyString);
-                        str += "package_extract_file(\"" + ((FileNode) child).prop.fileZipPath + "\", \"" + ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title + "\");\n";
-                        if (((FileNode) child).prop.setPermissions) {
-                            str += "set_perm(" + ((FileNode) child).prop.filePermission + ");\n";
-                        }
-                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
+            str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
+            for (ProjectItemNode child : node.prop.children) {
+                if (child.prop.type == Types.NODE_FOLDER) {
+                    str += addPrintString(child.prop.title, installString);
+                    str = getFolderScript(str, child);
+                } else if (child.prop.type == Types.NODE_FILE) {
+                    str += addPrintString(child.prop.title, copyString);
+                    str += "package_extract_file(\"" + ((FileNode) child).prop.fileZipPath + "\", \"" + ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title + "\");\n";
+                    if (((FileNode) child).prop.setPermissions) {
+                        str += "set_perm(" + ((FileNode) child).prop.filePermission + ");\n";
                     }
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
+                }
+            }
+            str += "endif;\n\n";
+            for (ProjectItemNode child : node.prop.children) {
+                str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
+                if (child.prop.type == Types.NODE_FOLDER) {
+                    str += addPrintString(child.prop.title, installString);
+                    str = getFolderScript(str, child);
+                } else if (child.prop.type == Types.NODE_FILE) {
+                    str += addPrintString(child.prop.title, copyString);
+                    str += "package_extract_file(\"" + ((FileNode) child).prop.fileZipPath + "\", \"" + ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title + "\");\n";
+                    if (((FileNode) child).prop.setPermissions) {
+                        str += "set_perm(" + ((FileNode) child).prop.filePermission + ");\n";
+                    }
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
                 }
                 str += "endif;\n\n";
-                for (ProjectItemNode child : node.prop.children) {
-                    str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item.1." + count++ + "\")==\"1\") then \n";
-                    if (child.prop.type == Types.NODE_FOLDER) {
-                        str += addPrintString(child.prop.title, installString);
-                        str = getFolderScript(str, child);
-                    } else if (child.prop.type == Types.NODE_FILE) {
-                        str += addPrintString(child.prop.title, copyString);
-                        str += "package_extract_file(\"" + ((FileNode) child).prop.fileZipPath + "\", \"" + ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title + "\");\n";
-                        if (((FileNode) child).prop.setPermissions) {
-                            str += "set_perm(" + ((FileNode) child).prop.filePermission + ");\n";
-                        }
-                        str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
-                    }
-                    str += "endif;\n\n";
-                }
-            } else {
-                str = predefinedAromaGroupScript(node);
             }
         }
         return str;

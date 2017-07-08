@@ -373,28 +373,23 @@ public class MyPopup {
                 GroupNode gNode = (GroupNode) node;
                 for (File tempFile : MyFileFilter.getSelectedFiles(gNode.prop.extension)) {
                     FileNode fnode;
-                    if (Preference.pp.IsFromLollipop) {
-                        switch (gNode.prop.groupType) {
-                            case Types.GROUP_SYSTEM_APK:
-                            case Types.GROUP_SYSTEM_PRIV_APK:
-                            case Types.GROUP_DATA_APP:
-                                String folderName = tempFile.getName().replaceFirst("[.][^.]+$", "");
-                                //it is okay to remove following condition as this is handled directly while creating folder node
-                                if (gNode.prop.groupType == Types.GROUP_DATA_APP) {
-                                    folderName = tempFile.getName().replaceFirst("[.][^.]+$", "") + "-1";
-                                }
-                                FolderNode folderNode = new FolderNode(folderName, gNode);
-                                fnode = new FileNode(tempFile.getAbsolutePath(), folderNode);
-                                folderNode.addChild(fnode, true);
-                                gNode.addChild(folderNode, false);
-                                break;
-                            default:
-                                fnode = new FileNode(tempFile.getAbsolutePath(), gNode);
-                                gNode.addChild(fnode, true);
-                        }
-                    } else {
-                        fnode = new FileNode(tempFile.getAbsolutePath(), gNode);
-                        gNode.addChild(fnode, true);
+                    switch (gNode.prop.groupType) {
+                        case Types.GROUP_SYSTEM_APK:
+                        case Types.GROUP_SYSTEM_PRIV_APK:
+                        case Types.GROUP_DATA_APP:
+                            String folderName = tempFile.getName().replaceFirst("[.][^.]+$", "");
+                            //it is okay to remove following condition as this is handled directly while creating folder node
+                            if (gNode.prop.groupType == Types.GROUP_DATA_APP) {
+                                folderName = tempFile.getName().replaceFirst("[.][^.]+$", "") + "-1";
+                            }
+                            FolderNode folderNode = new FolderNode(folderName, gNode);
+                            fnode = new FileNode(tempFile.getAbsolutePath(), folderNode);
+                            folderNode.addChild(fnode, true);
+                            gNode.addChild(folderNode, false);
+                            break;
+                        default:
+                            fnode = new FileNode(tempFile.getAbsolutePath(), gNode);
+                            gNode.addChild(fnode, true);
                     }
                 }
                 break;

@@ -46,6 +46,8 @@ public class Project {
         tempArray.add("data/local/afzc_temp");
         tempArray.add("data/app/afzc_temp");
         tempArray.add("preload/symlink/system/app/afzc_temp");
+        tempArray.add("afzc/afzc");
+        tempArray.add("afzc/addon");
         return tempArray;
     }
     

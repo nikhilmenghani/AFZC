@@ -152,7 +152,7 @@ public final class NodeProperties {
                 break;
         }
 
-        androidVersion = Preference.pp.IsFromLollipop ? "5.x+" : "4.x+";
+        androidVersion = "5.x+";
     }
 
     public NodeProperties(String title, int type, ProjectNode parent) {
@@ -437,7 +437,7 @@ public final class NodeProperties {
     public void reloadZipPath() {
         zipPath = parent.prop.zipPath + "/" + originalGroupType + "/" + groupZipPathPrefix + title;
     }
-    
+
     public void reloadZipPath(String newTitle) {
         zipPath = parent.prop.zipPath + "/" + originalGroupType + "/" + groupZipPathPrefix + newTitle;
     }
@@ -445,7 +445,7 @@ public final class NodeProperties {
     public void updateFileZipPath() {
         fileZipPath = parent.prop.zipPath + "/" + title;
     }
-    
+
     public void updateFileInstallLocation() {
         fileInstallLocation = parent.prop.location.replaceAll("\\\\", "/");
     }

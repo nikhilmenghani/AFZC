@@ -25,9 +25,8 @@ public class PreferenceProperties {
     public boolean preferencesFilePresent = false;
     public String preferencesConfig;
     public ArrayList<String> themes = new ArrayList<>();
-    public boolean IsFromLollipop = true;
     public boolean useUniversalBinary = true;
     public boolean enableAddonDSupport = true;
     public boolean displayAddonDSupport = true;
-    public String createZipType = "Normal";
+    public String createZipType = "Aroma";
 }

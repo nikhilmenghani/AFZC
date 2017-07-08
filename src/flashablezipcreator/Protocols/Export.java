@@ -18,9 +18,10 @@ import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
 import static flashablezipcreator.UserInterface.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.TreeOperations;
-import static flashablezipcreator.Protocols.Import.progressValue;
 import static flashablezipcreator.UserInterface.MyTree.circularProgressBar;
+import static flashablezipcreator.UserInterface.MyTree.txtProgress;
 import flashablezipcreator.UserInterface.Preference;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -58,6 +59,7 @@ public class Export implements Runnable {
         to = new TreeOperations();
         boolean isCustomGroupPresent = false;
         boolean isDeleteGroupPresent = false;
+        txtProgress.setText("");
         int fileIndex = 0;
 //        ArrayList<String> tempPaths = new ArrayList<>();
         List<ProjectItemNode> projectNodeList = to.getProjectsSorted(rootNode);
@@ -185,13 +187,16 @@ public class Export implements Runnable {
             }
             wz.close();
             Logs.write("Zip Created Successfully..");
+            txtProgress.setText("Zip Created Successfully..");
             circularProgressBar.updateProgress(100);
             progressBarImportExport.setValue(100);
             progressBarImportExport.setString("Zip Created Successfully..!!");
             JOptionPane.showMessageDialog(null, "Zip Created Successfully..!!");
             progressBarImportExport.setString("0%");
             progressBarImportExport.setValue(0);
+            txtProgress.setText("");
             circularProgressBar.updateProgress(0);
+
             progressBarFlag = 0;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n" + Logs.getExceptionTrace(e));
@@ -241,6 +246,13 @@ public class Export implements Runnable {
         if (progressValue > 99) {
             progressValue = 99;
         }
+        String str = (new File(fileName)).getName();
+        if (str.length() > 60) {
+            str = str.substring(0, str.length() / 3) + "..." + str.substring(str.length() - 10, str.length());
+        } else if (str.length() > 40) {
+            str = str.substring(0, str.length() / 2) + "..." + str.substring(str.length() - 10, str.length());
+        }
+        txtProgress.setText("Exporting " + str);
         circularProgressBar.updateProgress(progressValue);
         progressBarImportExport.setValue(progressValue);
         switch (MyTree.progressBarFlag) {

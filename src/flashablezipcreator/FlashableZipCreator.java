@@ -87,16 +87,15 @@ public class FlashableZipCreator {
 
     public static void letsBegin() throws URISyntaxException, TransformerException {
         try {
-            File f = new File("Preference.config");
+            File f = new File("Preferences.config");
             Read r = new Read();
             Logs.logFile = "Logs_" + Logs.getTime() + ".log";
             if (f.exists()) {
                 Preference.pp.preferencesFilePresent = true;
-                Preference.pp.preferencesConfig = r.getFileString("Preference.config");
+                Preference.pp.preferencesConfig = r.getFileString("Preferences.config");
                 String preferencesConfig = Preference.pp.preferencesConfig;
                 Preference.pp.themes = Xml.getThemes(preferencesConfig);
                 Preference.pp.aromaVersion = Xml.getAromaVersion(preferencesConfig);
-                Preference.pp.IsFromLollipop = Xml.getAndroidVersionDetail(preferencesConfig);
                 Preference.pp.isQuickSetup = Xml.getQuickSetup(preferencesConfig);
                 Preference.pp.zipCreatorName = Xml.getZipCreatorName(preferencesConfig);
                 Preference.pp.zipVersion = Xml.getZipVersion(preferencesConfig);
@@ -107,12 +106,12 @@ public class FlashableZipCreator {
                 Preference.pp.createZipType = Xml.getCreateZipType(preferencesConfig);
                 Logs.write("Created Logs File..");
                 Logs.write(OS + " Operating System Found..!!");
-                Logs.write("Preference.config Found");
+                Logs.write("Preferences.config Found");
                 Logs.write("Preference Loaded");
             } else {
                 String xml = Xml.getPreferenceConfigString(pp);
                 Write w = new Write();
-                w.writeStringToFile(xml, "Preference.config");
+                w.writeStringToFile(xml, "Preferences.config");
             }
             if (Preference.pp.themes.isEmpty()) {
                 Preference.pp.themes.add("Nikhil");

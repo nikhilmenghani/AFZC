@@ -158,10 +158,8 @@ public class Preferences extends javax.swing.JFrame {
         cbAndroidVersion.setBackground(new java.awt.Color(255, 255, 255));
         if (pp.preferencesFilePresent) {
             cbAndroidVersion.setSelected(Xml.getAndroidVersionDetail(pp.preferencesConfig));
-            pp.IsFromLollipop = cbAndroidVersion.isSelected();
         } else {
             cbAndroidVersion.setSelected(true);
-            pp.IsFromLollipop = true;
         }
         cbAndroidVersion.setText("Android 5.x+");
         cbAndroidVersion.setToolTipText("Enable Support for 5.x+ based Roms");
@@ -493,7 +491,6 @@ public class Preferences extends javax.swing.JFrame {
     private void btnOKActionPerformed(java.awt.event.ActionEvent evt) throws ParserConfigurationException, TransformerException, IOException {
         String xml = null;
         pp.aromaVersion = cbAromaVersion.getSelectedItem().toString();
-        pp.IsFromLollipop = cbAndroidVersion.isSelected();
         pp.isQuickSetup = cbQuickSetup.isSelected();
         pp.zipCreatorName = txtZipCreatorName.getText();
         pp.checkUpdatesOnStartUp = cbUpdates.isSelected();

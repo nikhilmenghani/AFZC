@@ -38,7 +38,7 @@ public class ProjectNode extends ProjectItemNode {
                 prop.zipPath = "customize" + "/" + "mod_" + modType + "/" + prop.projectZipPathPrefix + title;
                 break;
         }
-        prop.androidVersion = Preference.pp.IsFromLollipop ? "5.x+" : "4.x+";
+        prop.androidVersion = "5.x+";
         Logs.write("done adding project");
     }
 
