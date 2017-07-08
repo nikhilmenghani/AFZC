@@ -58,7 +58,7 @@ public class UpdateBinary {
         if (Preference.pp.createZipType.equals("Aroma")) {
             updateBinaryInstaller += ubo.addWipeDalvikCacheString();
         }
-        updateBinaryInstaller += ubo.addPrintString("@Finished Install");
+        updateBinaryInstaller += ubo.addPrintString("" + (Preference.pp.createZipType.equals("Normal") ? "" : "@") + "Finished Install");
         return updateBinaryInstaller;
     }
 

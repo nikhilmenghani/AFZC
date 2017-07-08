@@ -35,11 +35,11 @@ public class UpdateBinaryOperations {
     public String addPrintString(String str, int type) {
         switch (type) {
             case installString:
-                return "ui_print \"@Installing " + str + "\"\n";
+                return "ui_print \"" + (Preference.pp.createZipType.equals("Normal") ? "" : "@") + "Installing " + str + "\"\n";
             case deleteString:
-                return "ui_print \"@Deleting " + str + "\"\n";
+                return "ui_print \"" + (Preference.pp.createZipType.equals("Normal") ? "" : "@") + "Deleting " + str + "\"\n";
             case copyString:
-                return "ui_print \"@Copying " + str + "\"\n";
+                return "ui_print \"" + (Preference.pp.createZipType.equals("Normal") ? "" : "@") + "Copying " + str + "\"\n";
         }
         return "ui_print \"" + str + "\"\n";
     }
@@ -51,7 +51,7 @@ public class UpdateBinaryOperations {
     public String initiateUpdaterScript() throws FileNotFoundException, IOException {
         Read reader = new Read();
         String initShellScript = reader.getStringFromFile(FlashableZipCreator.class.getResourceAsStream(universalUpdateBinaryFilePath));
-        return initShellScript + addPrintString("@Starting the install process")
+        return initShellScript + addPrintString("" + (Preference.pp.createZipType.equals("Normal") ? "" : "@") + "Starting the install process")
                 + addPrintString("Setting up required tools...");
     }
 
@@ -74,11 +74,11 @@ public class UpdateBinaryOperations {
 
     public String addNormalAddonDString() {
         String str = "";
-        str += "ui_print \"@Generating addon.d script\"\n"
+        str += "ui_print \"Generating addon.d script\"\n"
                 + getAddonBinaryString()
-                + "ui_print \"@Executing addon.d script\"\n"
+                + "ui_print \"Executing addon.d script\"\n"
                 + getExecuteScriptString(Script.addonScriptTempPath, "-di", Script.logDataPath)
-                + "ui_print \"@Done!\"\n";
+                + "ui_print \"Done!\"\n";
         return str;
     }
 
@@ -97,7 +97,7 @@ public class UpdateBinaryOperations {
     public String getMountMethod(int type) {
         switch (type) {
             case 1:
-                return addPrintString("@Mounting Partitions...")
+                return addPrintString("" + (Preference.pp.createZipType.equals("Normal") ? "" : "@") + "Mounting Partitions...")
                         + "mount /system\n"
                         + "mount /data\n"
                         + "mount -o rw,remount /system\n"

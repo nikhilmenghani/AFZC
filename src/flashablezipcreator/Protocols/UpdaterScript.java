@@ -62,7 +62,7 @@ public class UpdaterScript {
         if (Preference.pp.createZipType.equals("Aroma")) {
             updaterScript += op.addWipeDalvikCacheString();
         }
-        updaterScript += op.addPrintString("@Finished Install");
+        updaterScript += op.addPrintString("" + (Preference.pp.createZipType.equals("Normal") ? "" : "@") + "Finished Install");
         return updaterScript;
     }
 

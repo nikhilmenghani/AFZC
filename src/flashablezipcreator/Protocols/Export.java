@@ -21,6 +21,7 @@ import flashablezipcreator.Operations.TreeOperations;
 import static flashablezipcreator.UserInterface.MyTree.circularProgressBar;
 import static flashablezipcreator.UserInterface.MyTree.txtProgress;
 import flashablezipcreator.UserInterface.Preference;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -97,7 +98,7 @@ public class Export implements Runnable {
                                             wz.writeFileToZip(((FileNode) node).prop.fileSourcePath, ((FileNode) node).prop.fileZipPath);
                                             break;
                                         case Types.NODE_FOLDER:
-                                            ArrayList<FileNode> files = new ArrayList<FileNode>();
+                                            ArrayList<FileNode> files = new ArrayList<>();
                                             for (FileNode file : getFilesOfFolder((FolderNode) node, files)) {
                                                 increaseProgressBar(fileIndex++, file.prop.fileSourcePath);
                                                 wz.writeFileToZip(file.prop.fileSourcePath, file.prop.fileZipPath);
@@ -199,7 +200,7 @@ public class Export implements Runnable {
                 circularProgressBar.updateProgress(0);
                 progressBarFlag = 0;
             }
-        } catch (Exception e) {
+        } catch (HeadlessException | IOException | ParserConfigurationException | TransformerException e) {
             JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n" + Logs.getExceptionTrace(e));
             Logs.write(Logs.getExceptionTrace(e));
             MyTree.setCardLayout(1);
