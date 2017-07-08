@@ -187,6 +187,7 @@ public class Export implements Runnable {
                 } catch (NullPointerException npe) {
                     System.out.println("Executing through Netbeans hence skipping Jar Operations");
                 }
+                txtProgress.setText("Just a moment!");
                 wz.close();
                 Logs.write("Zip Created Successfully..");
                 txtProgress.setText("Zip Created Successfully..");
