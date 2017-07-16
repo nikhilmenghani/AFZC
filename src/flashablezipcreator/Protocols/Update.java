@@ -202,10 +202,15 @@ public class Update {
             String[] version = data.split(" ");
             float mainVersion = Float.valueOf(version[0]);
             float betaVersion = Float.valueOf(version[1].substring(4, version[1].length()));
+            if (CurrentBetaVersion == betaVersion && CurrentMainVersion == mainVersion) {
+                return false;
+            }
             if (CurrentMainVersion <= mainVersion) {
                 if (CurrentBetaVersion < betaVersion) {
                     updateStatus = true;
                 } else if (CurrentBetaVersion == betaVersion && CurrentMainVersion < mainVersion) {
+                    updateStatus = true;
+                } else if (CurrentMainVersion < mainVersion) {
                     updateStatus = true;
                 }
             }
@@ -239,11 +244,21 @@ public class Update {
             float betaVersion = Float.valueOf(version[1].substring(4, version[1].length()));
             float testVersion = Float.valueOf(version[2].substring(4, version[2].length()));
 
+            if (CurrentTestVersion == testVersion && CurrentMainVersion == mainVersion && CurrentBetaVersion == betaVersion) {
+                return false;
+            }
             if (CurrentMainVersion <= mainVersion && CurrentBetaVersion <= betaVersion) {
+                if (CurrentMainVersion == mainVersion && CurrentBetaVersion < betaVersion) {
+                    return true;
+                }
+                if (CurrentMainVersion < mainVersion && CurrentBetaVersion == betaVersion) {
+                    return true;
+                }
+                if (CurrentMainVersion < mainVersion && CurrentBetaVersion < betaVersion) {
+                    return true;
+                }
                 if (CurrentTestVersion < testVersion) {
-                    updateStatus = true;
-                } else if (CurrentTestVersion == testVersion && (CurrentMainVersion <= mainVersion || CurrentBetaVersion < betaVersion)) {
-                    updateStatus = true;
+                    return true;
                 }
             }
         } catch (Exception e) {
