@@ -1,0 +1,51 @@
+Instructions
+Steps to Create a Flashable Zip
+
+1. Add a Project, give it a name.(A project can have multiple groups)
+A popup appears on start up, you can change the settings in File->Preferences.
+2. Add a Group. (A group will contain specific type of files in it)
+For eg. you create a group (say xyz) with install location (system/app), then xyz group will include all the apk files that needs to be pushed to system/app
+3. Add a Subgroup if required (When you need furthur grouping. It is required for bootanimations and fonts)
+For eg. 2 Boot Animations will have their own bootanimation.zip. You cannot add file with same name twice. Hence you need subgroup to further distinguish the file.
+4. Add a Folder. (From android 5.x+, we have apk files placed in folder which contains optional lib files as well with it. To build the same directory structure, you need to add folders)
+5. Add Files to Groups/Subgroups/Folders.
+6. Click on Export Zip to choose the destination and Click OK to generate zip.
+
+How to add objects
+
+1. To add a Project
+-> Right Click on AFZC Projects -> Give a unique name to project -> Click on Add.
+
+2. To add a Group
+-> Right Click on the Project that you want your group to be added in -> Hover on Add group and proceed ahead with selecting location to which you want to push your files to -> Give a unique name -> Click on Add
+
+3. To add a SubGroup
+-> Right Click on Group -> Click on Add Fonts/Boot Animations-> Give a unique name -> Click on Add.
+Note: You will get an option to add subgroup only for Boot Animation and Fonts group as only they require it.
+
+4. To add a Folder
+-> Right Click on Group -> Click on Add Folder -> Give a unique name -> Click on Add.
+-> Right Click on Folder -> Click on Add Folder to further add folder -> Give an appropriate name -> Click on Add.
+
+Tip: You can also drag and drop folders from your drive to the group. All the sub folders (if any) and files will be added automatically.
+
+5. To add a File
+-> Right Click on Group/Folder/SubGroup -> Click on Add Files -> Import the files.
+
+Tip: You can also drag and drop files from your drive to the Group/SubGroup/Folder. All the files will be imported.
+
+6. To add a Theme
+-> Right on Themes Project -> Add Theme -> Give appropriate name -> Add required files to it
+
+How to rename objects 
+
+-> To rename a Project/Group/SubGroup/Folder/File, triple click on the object and change the name. Alternatively you can use F2 key to edit the object name.
+
+Finding it tedious to create again and again?
+
+Don't worry, once you create a zip, you can import the created zip to make further changes to existing zip file.
+To do so, use Import Zip button to add an already created zip OR drag the zip and add it to the tool.
+
+Explore yourself to identify more hidden features.
+
+Note: If universal-update-binary doesn't work for your device, fetch the update-binary from any working Rom of your device and place that update-binary in the same directory as of jar file. The tool will pick up that update-binary and create zip using that binary.

@@ -39,7 +39,7 @@
     <Container class="javax.swing.JPanel" name="mainPanel">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="42" green="42" red="42" type="rgb"/>
+          <Color blue="90" green="6b" red="17" type="rgb"/>
         </Property>
       </Properties>
 
@@ -86,11 +86,13 @@
                           </Group>
                           <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnSaveTools" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="btnSaveTools" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace pref="16" max="32767" attributes="0"/>
+                                  <Component id="btnSave" min="-2" pref="90" max="-2" attributes="0"/>
+                              </Group>
                               <Component id="btnEdelweis" alignment="0" min="-2" pref="110" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="btnSave" min="-2" pref="90" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -102,7 +104,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   <Component id="lblAromaOptions" min="-2" pref="33" max="-2" attributes="0"/>
-                  <EmptySpace pref="8" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnMelati" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
                       <Component id="btnFlamboyan" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
@@ -125,21 +127,14 @@
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="lblAddonDOptions" min="-2" pref="33" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="btnDisplayAddon" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
-                              <Component id="btnEnableAddon" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace pref="61" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="48" max="32767" attributes="0"/>
-                          <Component id="btnSave" min="-2" pref="47" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
-                      </Group>
+                  <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btnDisplayAddon" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
+                      <Component id="btnEnableAddon" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
                   </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="btnSave" min="-2" pref="33" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -170,13 +165,13 @@
         <Component class="javax.swing.JToggleButton" name="btnAromaZip">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c6" green="c2" red="ba" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;Create Zip Type&lt;br&gt;&lt;p align=&apos;center&apos;&gt;Aroma&lt;/p&gt;&lt;/html&gt;"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
-                  <Color PropertyName="color" blue="c6" green="c2" red="ba" type="rgb"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -190,13 +185,13 @@
         <Component class="javax.swing.JToggleButton" name="btnNormalZip">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c6" green="c2" red="ba" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;Create Zip Type&lt;br&gt;&lt;p align=&apos;center&apos;&gt;Normal&lt;/p&gt;&lt;/html&gt;"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
-                  <Color PropertyName="color" blue="c6" green="c2" red="ba" type="rgb"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -213,13 +208,13 @@
         <Component class="javax.swing.JToggleButton" name="btnQuickSetup">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c6" green="c2" red="ba" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Quick Setup"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
-                  <Color PropertyName="color" blue="c6" green="c2" red="ba" type="rgb"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -233,13 +228,13 @@
         <Component class="javax.swing.JToggleButton" name="btnSaveTools">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c6" green="c2" red="ba" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Enable Logging"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
-                  <Color PropertyName="color" blue="c6" green="c2" red="ba" type="rgb"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -256,13 +251,13 @@
         <Component class="javax.swing.JToggleButton" name="btnCheckUpdates">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c6" green="c2" red="ba" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;Check For&lt;br&gt;&lt;p align=&apos;center&apos;&gt;Updates&lt;/p&gt;&lt;/html&gt;"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
-                  <Color PropertyName="color" blue="c6" green="c2" red="ba" type="rgb"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -298,13 +293,13 @@
         <Component class="javax.swing.JToggleButton" name="btnEnableAddon">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c6" green="c2" red="ba" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;Enable Support&lt;br&gt;&lt;p align=&apos;center&apos;&gt;by default&lt;/p&gt;&lt;/html&gt;"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
-                  <Color PropertyName="color" blue="c6" green="c2" red="ba" type="rgb"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -318,13 +313,13 @@
         <Component class="javax.swing.JToggleButton" name="btnDisplayAddon">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c6" green="c2" red="ba" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;Display Addon.d&lt;br&gt;&lt;p align=&apos;center&apos;&gt;Menu in Aroma&lt;/p&gt;&lt;/html&gt;"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
-                  <Color PropertyName="color" blue="c6" green="c2" red="ba" type="rgb"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -359,13 +354,13 @@
         <Component class="javax.swing.JButton" name="btnMelati">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c6" green="c2" red="ba" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;Version 3.00&lt;br&gt;&lt;p align=&apos;center&apos;&gt;MELATI&lt;/p&gt;&lt;/html&gt;"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
-                  <Color PropertyName="color" blue="c6" green="c2" red="ba" type="rgb"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -378,13 +373,13 @@
         <Component class="javax.swing.JButton" name="btnFlamboyan">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c6" green="c2" red="ba" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;Version 2.70&lt;br&gt;&lt;p align=&apos;center&apos;&gt;FLAMBOYAN&lt;/p&gt;&lt;/html&gt;"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
-                  <Color PropertyName="color" blue="c6" green="c2" red="ba" type="rgb"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>
@@ -397,13 +392,13 @@
         <Component class="javax.swing.JButton" name="btnEdelweis">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="c6" green="c2" red="ba" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;Version 2.56&lt;br&gt;&lt;p align=&apos;center&apos;&gt;EDELWEIS&lt;/p&gt;&lt;/html&gt;"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder>
-                  <Color PropertyName="color" blue="c6" green="c2" red="ba" type="rgb"/>
+                  <Color PropertyName="color" blue="ff" green="ff" red="ff" type="rgb"/>
                 </LineBorder>
               </Border>
             </Property>

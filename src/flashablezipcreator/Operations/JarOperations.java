@@ -18,7 +18,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.jar.JarFile;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -34,6 +33,7 @@ public class JarOperations {
     public static byte[] binary_FLAMBOYAN = null;
     public static byte[] binary_EDELWEIS = null;
     public static String supported_devices = null;
+    public static String instructions = null;
 
     public static InputStream getInputStream(String path) {
         //this will shortern the absolute path of file to required path.
@@ -72,6 +72,8 @@ public class JarOperations {
                                 supported_devices = r.getStringFromFile(getInputStream(s));
                             } else if (s.startsWith("META-INF/com/google/android/binary-files/")) {
                                 binaryList.add(s);
+                            } else if(s.startsWith("META-INF/com/google/android/Instructions")){
+                                instructions = r.getStringFromFile(getInputStream(s));
                             }
                         }
                     }

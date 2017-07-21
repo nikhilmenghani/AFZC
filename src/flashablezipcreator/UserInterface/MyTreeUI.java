@@ -55,6 +55,7 @@ public class MyTreeUI extends javax.swing.JFrame {
         menuItemExit = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenu();
         menuItemDevelopers = new javax.swing.JMenuItem();
+        menuItemDonate = new javax.swing.JMenuItem();
         menuHelp = new javax.swing.JMenu();
         menuItemInstructions = new javax.swing.JMenuItem();
         menuItemCheckForUpdates = new javax.swing.JMenuItem();
@@ -331,6 +332,14 @@ public class MyTreeUI extends javax.swing.JFrame {
         });
         menuAbout.add(menuItemDevelopers);
 
+        menuItemDonate.setText("Donate");
+        menuItemDonate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemDonateActionPerformed(evt);
+            }
+        });
+        menuAbout.add(menuItemDonate);
+
         menuBar.add(menuAbout);
 
         menuHelp.setText("Help");
@@ -397,6 +406,10 @@ public class MyTreeUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
 
+    private void menuItemDonateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemDonateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuItemDonateActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -449,6 +462,7 @@ public class MyTreeUI extends javax.swing.JFrame {
     private javax.swing.JMenu menuHelp;
     private javax.swing.JMenuItem menuItemCheckForUpdates;
     private javax.swing.JMenuItem menuItemDevelopers;
+    private javax.swing.JMenuItem menuItemDonate;
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemInstructions;
     private javax.swing.JMenuItem menuItemPreferences;

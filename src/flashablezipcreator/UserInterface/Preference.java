@@ -85,7 +85,7 @@ public class Preference extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        mainPanel.setBackground(new java.awt.Color(66, 66, 66));
+        mainPanel.setBackground(new java.awt.Color(23, 107, 144));
 
         lblAromaOptions.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         lblAromaOptions.setForeground(new java.awt.Color(255, 255, 255));
@@ -95,9 +95,9 @@ public class Preference extends javax.swing.JFrame {
         lblZipOptions.setForeground(new java.awt.Color(255, 255, 255));
         lblZipOptions.setText("Zip Options");
 
-        btnAromaZip.setForeground(new java.awt.Color(186, 194, 198));
+        btnAromaZip.setForeground(new java.awt.Color(255, 255, 255));
         btnAromaZip.setText("<html>Create Zip Type<br><p align='center'>Aroma</p></html>");
-        btnAromaZip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnAromaZip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnAromaZip.setContentAreaFilled(false);
         btnAromaZip.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnAromaZip.addActionListener(new java.awt.event.ActionListener() {
@@ -106,9 +106,9 @@ public class Preference extends javax.swing.JFrame {
             }
         });
 
-        btnNormalZip.setForeground(new java.awt.Color(186, 194, 198));
+        btnNormalZip.setForeground(new java.awt.Color(255, 255, 255));
         btnNormalZip.setText("<html>Create Zip Type<br><p align='center'>Normal</p></html>");
-        btnNormalZip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnNormalZip.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnNormalZip.setContentAreaFilled(false);
         btnNormalZip.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnNormalZip.setPreferredSize(new java.awt.Dimension(115, 37));
@@ -133,9 +133,9 @@ public class Preference extends javax.swing.JFrame {
             pp.createZipType = czt;
         }
 
-        btnQuickSetup.setForeground(new java.awt.Color(186, 194, 198));
+        btnQuickSetup.setForeground(new java.awt.Color(255, 255, 255));
         btnQuickSetup.setText("Quick Setup");
-        btnQuickSetup.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnQuickSetup.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnQuickSetup.setContentAreaFilled(false);
         btnQuickSetup.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnQuickSetup.addActionListener(new java.awt.event.ActionListener() {
@@ -150,9 +150,9 @@ public class Preference extends javax.swing.JFrame {
             pp.isQuickSetup = true;
         }
 
-        btnSaveTools.setForeground(new java.awt.Color(186, 194, 198));
+        btnSaveTools.setForeground(new java.awt.Color(255, 255, 255));
         btnSaveTools.setText("Enable Logging");
-        btnSaveTools.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnSaveTools.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnSaveTools.setContentAreaFilled(false);
         btnSaveTools.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnSaveTools.setPreferredSize(new java.awt.Dimension(100, 37));
@@ -168,9 +168,9 @@ public class Preference extends javax.swing.JFrame {
             pp.saveLogs = true;
         }
 
-        btnCheckUpdates.setForeground(new java.awt.Color(186, 194, 198));
+        btnCheckUpdates.setForeground(new java.awt.Color(255, 255, 255));
         btnCheckUpdates.setText("<html>Check For<br><p align='center'>Updates</p></html>");
-        btnCheckUpdates.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnCheckUpdates.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnCheckUpdates.setContentAreaFilled(false);
         btnCheckUpdates.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnCheckUpdates.addActionListener(new java.awt.event.ActionListener() {
@@ -193,9 +193,9 @@ public class Preference extends javax.swing.JFrame {
         lblAddonDOptions.setForeground(new java.awt.Color(255, 255, 255));
         lblAddonDOptions.setText("Addon.d Options");
 
-        btnEnableAddon.setForeground(new java.awt.Color(186, 194, 198));
+        btnEnableAddon.setForeground(new java.awt.Color(255, 255, 255));
         btnEnableAddon.setText("<html>Enable Support<br><p align='center'>by default</p></html>");
-        btnEnableAddon.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnEnableAddon.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnEnableAddon.setContentAreaFilled(false);
         btnEnableAddon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEnableAddon.addActionListener(new java.awt.event.ActionListener() {
@@ -210,9 +210,9 @@ public class Preference extends javax.swing.JFrame {
             pp.enableAddonDSupport = true;
         }
 
-        btnDisplayAddon.setForeground(new java.awt.Color(186, 194, 198));
+        btnDisplayAddon.setForeground(new java.awt.Color(255, 255, 255));
         btnDisplayAddon.setText("<html>Display Addon.d<br><p align='center'>Menu in Aroma</p></html>");
-        btnDisplayAddon.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnDisplayAddon.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnDisplayAddon.setContentAreaFilled(false);
         btnDisplayAddon.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnDisplayAddon.setPreferredSize(new java.awt.Dimension(115, 37));
@@ -230,7 +230,7 @@ public class Preference extends javax.swing.JFrame {
 
         btnSave.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         btnSave.setText("Save");
-        btnSave.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnSave.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
@@ -247,9 +247,9 @@ public class Preference extends javax.swing.JFrame {
 
         panelAromaBinary.setBackground(new java.awt.Color(66, 66, 66));
 
-        btnMelati.setForeground(new java.awt.Color(186, 194, 198));
+        btnMelati.setForeground(new java.awt.Color(255, 255, 255));
         btnMelati.setText("<html>Version 3.00b1<br><p align='center'>MELATI</p></html>");
-        btnMelati.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnMelati.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnMelati.setContentAreaFilled(false);
         btnMelati.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnMelati.setPreferredSize(new java.awt.Dimension(115, 37));
@@ -259,9 +259,9 @@ public class Preference extends javax.swing.JFrame {
             }
         });
 
-        btnFlamboyan.setForeground(new java.awt.Color(186, 194, 198));
+        btnFlamboyan.setForeground(new java.awt.Color(255, 255, 255));
         btnFlamboyan.setText("<html>Version 2.70 RC2<br>&nbsp;&nbsp;&nbsp;&nbsp;FLAMBOYAN</html>");
-        btnFlamboyan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnFlamboyan.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnFlamboyan.setContentAreaFilled(false);
         btnFlamboyan.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnFlamboyan.addActionListener(new java.awt.event.ActionListener() {
@@ -270,9 +270,9 @@ public class Preference extends javax.swing.JFrame {
             }
         });
 
-        btnEdelweis.setForeground(new java.awt.Color(186, 194, 198));
+        btnEdelweis.setForeground(new java.awt.Color(255, 255, 255));
         btnEdelweis.setText("<html>Version 2.56<br><p align='center'>EDELWEIS</p></html>");
-        btnEdelweis.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(186, 194, 198)));
+        btnEdelweis.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         btnEdelweis.setContentAreaFilled(false);
         btnEdelweis.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         btnEdelweis.setPreferredSize(new java.awt.Dimension(115, 37));
@@ -336,10 +336,11 @@ public class Preference extends javax.swing.JFrame {
                             .addComponent(btnFlamboyan))
                         .addGap(29, 29, 29)
                         .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnSaveTools, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(mainPanelLayout.createSequentialGroup()
+                                .addComponent(btnSaveTools, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(btnEdelweis, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(25, 25, 25))))
         );
         mainPanelLayout.setVerticalGroup(
@@ -347,7 +348,7 @@ public class Preference extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(lblAromaOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnMelati, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFlamboyan, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -367,17 +368,13 @@ public class Preference extends javax.swing.JFrame {
                     .addComponent(btnQuickSetup, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblAddonDOptions, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(mainPanelLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnDisplayAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEnableAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(61, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                        .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22))))
+                .addGap(10, 10, 10)
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnDisplayAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEnableAddon, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnSave, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -410,47 +407,47 @@ public class Preference extends javax.swing.JFrame {
         btnMelati.setContentAreaFilled(true);
         btnMelati.setForeground(new java.awt.Color(0, 0, 0));
         btnFlamboyan.setContentAreaFilled(false);
-        btnFlamboyan.setForeground(new java.awt.Color(186, 194, 198));
+        btnFlamboyan.setForeground(new java.awt.Color(255, 255, 255));
         btnEdelweis.setContentAreaFilled(false);
-        btnEdelweis.setForeground(new java.awt.Color(186, 194, 198));
+        btnEdelweis.setForeground(new java.awt.Color(255, 255, 255));
     }
 
     private void btnFlamboyanActionPerformed(java.awt.event.ActionEvent evt) {
         btnFlamboyan.setContentAreaFilled(true);
         btnFlamboyan.setForeground(new java.awt.Color(0, 0, 0));
         btnMelati.setContentAreaFilled(false);
-        btnMelati.setForeground(new java.awt.Color(186, 194, 198));
+        btnMelati.setForeground(new java.awt.Color(255, 255, 255));
         btnEdelweis.setContentAreaFilled(false);
-        btnEdelweis.setForeground(new java.awt.Color(186, 194, 198));
+        btnEdelweis.setForeground(new java.awt.Color(255, 255, 255));
     }
 
     private void btnEdelweisActionPerformed(java.awt.event.ActionEvent evt) {
         btnEdelweis.setContentAreaFilled(true);
         btnEdelweis.setForeground(new java.awt.Color(0, 0, 0));
         btnFlamboyan.setContentAreaFilled(false);
-        btnFlamboyan.setForeground(new java.awt.Color(186, 194, 198));
+        btnFlamboyan.setForeground(new java.awt.Color(255, 255, 255));
         btnMelati.setContentAreaFilled(false);
-        btnMelati.setForeground(new java.awt.Color(186, 194, 198));
+        btnMelati.setForeground(new java.awt.Color(255, 255, 255));
     }
 
     private void btnAromaZipActionPerformed(java.awt.event.ActionEvent evt) {
         btnAromaZip.setContentAreaFilled(true);
         btnAromaZip.setForeground(new java.awt.Color(0, 0, 0));
         btnNormalZip.setContentAreaFilled(false);
-        btnNormalZip.setForeground(new java.awt.Color(186, 194, 198));
+        btnNormalZip.setForeground(new java.awt.Color(255, 255, 255));
     }
 
     private void btnNormalZipActionPerformed(java.awt.event.ActionEvent evt) {
         btnNormalZip.setContentAreaFilled(true);
         btnNormalZip.setForeground(new java.awt.Color(0, 0, 0));
         btnAromaZip.setContentAreaFilled(false);
-        btnAromaZip.setForeground(new java.awt.Color(186, 194, 198));
+        btnAromaZip.setForeground(new java.awt.Color(255, 255, 255));
     }
 
     private void btnCheckUpdatesActionPerformed(java.awt.event.ActionEvent evt) {
         if (btnCheckUpdates.isContentAreaFilled()) {
             btnCheckUpdates.setContentAreaFilled(false);
-            btnCheckUpdates.setForeground(new java.awt.Color(186, 194, 198));
+            btnCheckUpdates.setForeground(new java.awt.Color(255, 255, 255));
         } else {
             btnCheckUpdates.setContentAreaFilled(true);
             btnCheckUpdates.setForeground(new java.awt.Color(0, 0, 0));
@@ -460,7 +457,7 @@ public class Preference extends javax.swing.JFrame {
     private void btnQuickSetupActionPerformed(java.awt.event.ActionEvent evt) {
         if (btnQuickSetup.isContentAreaFilled()) {
             btnQuickSetup.setContentAreaFilled(false);
-            btnQuickSetup.setForeground(new java.awt.Color(186, 194, 198));
+            btnQuickSetup.setForeground(new java.awt.Color(255, 255, 255));
         } else {
             btnQuickSetup.setContentAreaFilled(true);
             btnQuickSetup.setForeground(new java.awt.Color(0, 0, 0));
@@ -470,7 +467,7 @@ public class Preference extends javax.swing.JFrame {
     private void btnSaveToolsActionPerformed(java.awt.event.ActionEvent evt) {
         if (btnSaveTools.isContentAreaFilled()) {
             btnSaveTools.setContentAreaFilled(false);
-            btnSaveTools.setForeground(new java.awt.Color(186, 194, 198));
+            btnSaveTools.setForeground(new java.awt.Color(255, 255, 255));
         } else {
             btnSaveTools.setContentAreaFilled(true);
             btnSaveTools.setForeground(new java.awt.Color(0, 0, 0));
@@ -480,7 +477,7 @@ public class Preference extends javax.swing.JFrame {
     private void btnDisplayAddonActionPerformed(java.awt.event.ActionEvent evt) {
         if (btnDisplayAddon.isContentAreaFilled()) {
             btnDisplayAddon.setContentAreaFilled(false);
-            btnDisplayAddon.setForeground(new java.awt.Color(186, 194, 198));
+            btnDisplayAddon.setForeground(new java.awt.Color(255, 255, 255));
         } else {
             btnDisplayAddon.setContentAreaFilled(true);
             btnDisplayAddon.setForeground(new java.awt.Color(0, 0, 0));
@@ -490,7 +487,7 @@ public class Preference extends javax.swing.JFrame {
     private void btnEnableAddonActionPerformed(java.awt.event.ActionEvent evt) {
         if (btnEnableAddon.isContentAreaFilled()) {
             btnEnableAddon.setContentAreaFilled(false);
-            btnEnableAddon.setForeground(new java.awt.Color(186, 194, 198));
+            btnEnableAddon.setForeground(new java.awt.Color(255, 255, 255));
         } else {
             btnEnableAddon.setContentAreaFilled(true);
             btnEnableAddon.setForeground(new java.awt.Color(0, 0, 0));

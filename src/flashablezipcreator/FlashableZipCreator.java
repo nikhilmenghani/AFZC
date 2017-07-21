@@ -49,6 +49,7 @@ public class FlashableZipCreator {
      * @throws org.xml.sax.SAXException
      */
     public static String OS = "Windoes";
+    public static String VERSION = "v4.1 Stable";
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException, URISyntaxException, TransformerException {
         /* Set the Nimbus look and feel */

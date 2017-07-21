@@ -129,65 +129,67 @@ public class Export implements Runnable {
                 increaseProgressBar(fileIndex++, "Zip Data");
                 Logs.write("Writing zip data to " + Xml.data_path);
                 wz.writeStringToZip(Xml.generateFileDataXml(), Xml.data_path);
-                if (Preference.pp.createZipType.equals("Aroma")) {
-                    Logs.write("Writing Rest of Jar Files");
-                    for (String file : Jar.getOtherFileList()) {
-                        wz.writeFileToZip(JarOperations.getInputStream(file), file);
-                    }
-                    increaseProgressBar(fileIndex++, "Aroma Config");
-                    String ac = AromaConfig.build(rootNode);
-                    Logs.write("Writing Aroma.config");
-                    wz.writeStringToZip(ac, AromaConfig.aromaConfigPath);
-                }
-                increaseProgressBar(fileIndex++, "Updater-Script");
-                try {
-                    if (Preference.pp.useUniversalBinary) {
-                        Logs.write("Writing updater-script");
-                        wz.writeStringToZip("# This is a dummy file. Magic happens in binary file", UpdaterScript.updaterScriptPath);  //updater-script
-                        increaseProgressBar(fileIndex++, "Update Binary");
-                        Logs.write("Writing update-binary");
-                        switch (Preference.pp.createZipType) {
-                            case "Aroma":
-                                wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
-                                increaseProgressBar(fileIndex++, "Update Binary Installer");
-                                Logs.write("Writing update-binary-installer");
-                                wz.writeStringToZip(UpdateBinary.build(rootNode), Binary.updateBinaryInstallerPath); //update-binary-installer
-                                break;
-                            case "Normal":
-                                wz.writeStringToZip(UpdateBinary.build(rootNode), Binary.updateBinaryPath); //update-binary-installer
-                                break;
+                if (projectNodeList.size() > 0) {
+                    if (Preference.pp.createZipType.equals("Aroma")) {
+                        Logs.write("Writing Rest of Jar Files");
+                        for (String file : Jar.getOtherFileList()) {
+                            wz.writeFileToZip(JarOperations.getInputStream(file), file);
                         }
+                        increaseProgressBar(fileIndex++, "Aroma Config");
+                        String ac = AromaConfig.build(rootNode);
+                        Logs.write("Writing Aroma.config");
+                        wz.writeStringToZip(ac, AromaConfig.aromaConfigPath);
+                    }
+                    increaseProgressBar(fileIndex++, "Updater-Script");
+                    try {
+                        if (Preference.pp.useUniversalBinary) {
+                            Logs.write("Writing updater-script");
+                            wz.writeStringToZip("# This is a dummy file. Magic happens in binary file", UpdaterScript.updaterScriptPath);  //updater-script
+                            increaseProgressBar(fileIndex++, "Update Binary");
+                            Logs.write("Writing update-binary");
+                            switch (Preference.pp.createZipType) {
+                                case "Aroma":
+                                    wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
+                                    increaseProgressBar(fileIndex++, "Update Binary Installer");
+                                    Logs.write("Writing update-binary-installer");
+                                    wz.writeStringToZip(UpdateBinary.build(rootNode), Binary.updateBinaryInstallerPath); //update-binary-installer
+                                    break;
+                                case "Normal":
+                                    wz.writeStringToZip(UpdateBinary.build(rootNode), Binary.updateBinaryPath); //update-binary-installer
+                                    break;
+                            }
 
-                    } else {
-                        String us = UpdaterScript.build(rootNode);
-                        Logs.write("Writing updater-script");
-                        wz.writeStringToZip(us, UpdaterScript.updaterScriptPath); //updater-script
-                        increaseProgressBar(fileIndex++, "Update Binary");
-                        Logs.write("Writing update-binary");
-                        switch (Preference.pp.createZipType) {
-                            case "Aroma":
-                                wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
-                                increaseProgressBar(fileIndex++, "Update Binary Installer");
-                                Logs.write("Writing update-binary-installer");
-                                wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath); //update-binary-installer
-                                break;
-                            case "Normal":
-                                wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryPath); //update-binary-installer
-                                break;
+                        } else {
+                            String us = UpdaterScript.build(rootNode);
+                            Logs.write("Writing updater-script");
+                            wz.writeStringToZip(us, UpdaterScript.updaterScriptPath); //updater-script
+                            increaseProgressBar(fileIndex++, "Update Binary");
+                            Logs.write("Writing update-binary");
+                            switch (Preference.pp.createZipType) {
+                                case "Aroma":
+                                    wz.writeByteToFile(Binary.getUpdateBinary(rootNode), Binary.updateBinaryPath);
+                                    increaseProgressBar(fileIndex++, "Update Binary Installer");
+                                    Logs.write("Writing update-binary-installer");
+                                    wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryInstallerPath); //update-binary-installer
+                                    break;
+                                case "Normal":
+                                    wz.writeByteToFile(Binary.getInstallerBinary(rootNode), Binary.updateBinaryPath); //update-binary-installer
+                                    break;
+                            }
                         }
+                        increaseProgressBar(fileIndex++, "Update Binary Installer");
+                        increaseProgressBar(fileIndex++, "Jar Items");
+                        Logs.write("Writing AFZC Binary");
+                        increaseProgressBar(fileIndex++, "AFZC Binary");
+                        wz.writeStringToZip(Script.getAfzcString(), Script.afzcScriptZipPath);
+                        Logs.write("Writing Addon Binary");
+                        increaseProgressBar(fileIndex++, "Addon Binary");
+                        wz.writeStringToZip(Script.getAddonString(), Script.addonScriptZipPath);
+                    } catch (NullPointerException npe) {
+                        System.out.println("Executing through Netbeans hence skipping Jar Operations");
                     }
-                    increaseProgressBar(fileIndex++, "Update Binary Installer");
-                    increaseProgressBar(fileIndex++, "Jar Items");
-                    Logs.write("Writing AFZC Binary");
-                    increaseProgressBar(fileIndex++, "AFZC Binary");
-                    wz.writeStringToZip(Script.getAfzcString(), Script.afzcScriptZipPath);
-                    Logs.write("Writing Addon Binary");
-                    increaseProgressBar(fileIndex++, "Addon Binary");
-                    wz.writeStringToZip(Script.getAddonString(), Script.addonScriptZipPath);
-                } catch (NullPointerException npe) {
-                    System.out.println("Executing through Netbeans hence skipping Jar Operations");
+                    txtProgress.setText("Just a moment!");
                 }
-                txtProgress.setText("Just a moment!");
                 wz.close();
                 Logs.write("Zip Created Successfully..");
                 txtProgress.setText("Zip Created Successfully..");
