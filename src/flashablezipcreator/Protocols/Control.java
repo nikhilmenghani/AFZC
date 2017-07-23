@@ -15,7 +15,7 @@ public class Control {
     public static boolean forceBetaUpdate = false;
     public static boolean forceStableUpdate = false;
     public static boolean forceCheckOnStartUp = false;
-    public static boolean forceFTP = true;
+    public static boolean forceFTP = false;
     public static String RawControlUrl = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/Control";
 
     public static void check() {

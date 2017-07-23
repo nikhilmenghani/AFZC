@@ -58,8 +58,6 @@ public class Export implements Runnable {
         ProjectItemNode rootNode = MyTree.rootNode;
         wz = new WriteZip(Project.outputPath);
         to = new TreeOperations();
-        boolean isCustomGroupPresent = false;
-        boolean isDeleteGroupPresent = false;
         txtProgress.setText("");
         int fileIndex = 0;
 //        ArrayList<String> tempPaths = new ArrayList<>();
@@ -108,9 +106,6 @@ public class Export implements Runnable {
                                             break;
                                     }
                                 }
-                            }
-                            if (((GroupNode) groupNode).prop.groupType == Types.GROUP_CUSTOM) {
-                                isCustomGroupPresent = true;
                             }
                             if (((GroupNode) groupNode).prop.groupType == Types.GROUP_DELETE_FILES) {
                                 String writeAt = ((GroupNode) groupNode).prop.zipPath + "/DeleteFilesPath";

@@ -122,9 +122,7 @@ public class FlashableZipCreator {
 
             Control.check();
             String availableVersion = "";
-            if (Control.forceCheckOnStartUp) {
-                availableVersion = Update.runUpdateCheck();
-            } else if (Preference.pp.checkUpdatesOnStartUp) {
+            if (Control.forceCheckOnStartUp || Preference.pp.checkUpdatesOnStartUp) {
                 availableVersion = Update.runUpdateCheck();
             }
             if (!availableVersion.equals("")) {

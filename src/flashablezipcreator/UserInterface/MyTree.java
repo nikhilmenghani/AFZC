@@ -345,7 +345,7 @@ public class MyTree extends javax.swing.JFrame {
 
         menuFile.setText("File");
 
-        menuItemPreference.setText("Preference");
+        menuItemPreference.setText("Preferences");
         menuItemPreference.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 try {
@@ -516,15 +516,19 @@ public class MyTree extends javax.swing.JFrame {
     private void menuItemCheckForUpdatesActionPerformed(java.awt.event.ActionEvent evt) throws URISyntaxException {
         Control.check();
         String availableVersion = "";
-        if (Control.forceCheckOnStartUp) {
-            availableVersion = Update.runUpdateCheck();
-        } else if (Preference.pp.checkUpdatesOnStartUp) {
-            availableVersion = Update.runUpdateCheck();
-        }
-        if (!availableVersion.equals("")) {
-            Update.executeDownload();
-        } else {
-            JOptionPane.showMessageDialog(this, "Your version is Up-to-date!");
+        if (Web.netIsAvailable()) {
+            if (Control.forceCheckOnStartUp) {
+                availableVersion = Update.runUpdateCheck();
+            } else if (Preference.pp.checkUpdatesOnStartUp) {
+                availableVersion = Update.runUpdateCheck();
+            }
+            if (!availableVersion.equals("")) {
+                Update.executeDownload();
+            } else {
+                JOptionPane.showMessageDialog(this, "Your version is Up-to-date!");
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "Please Check Yout Internet Connection!!");
         }
     }
 

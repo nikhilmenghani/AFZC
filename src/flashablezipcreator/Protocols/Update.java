@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Protocols;
 
+import flashablezipcreator.UserInterface.Preference;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.JOptionPane;
@@ -28,7 +29,7 @@ public class Update {
     public static float CurrentMainVersion = 4.1f;
     public static float CurrentBetaVersion = 1;
     public static float CurrentTestVersion = 3;
-    public static String CurrentVersionType = "Test";
+    public static String CurrentVersionType = "Stable";
     public static boolean isBetaUpdateAvailable = false;
     public static boolean isStableUpdateAvailable = false;
     public static boolean isTestUpdateAvailable = false;
@@ -41,7 +42,7 @@ public class Update {
             Logs.write("Running Update Check");
             switch (CurrentVersionType) {
                 case "Stable":
-                    if (Control.forceStableUpdate && Update.isStableUpdateAvailable()) {
+                    if ((Control.forceStableUpdate || Preference.pp.checkUpdatesOnStartUp) && Update.isStableUpdateAvailable()) {
                         isStableUpdateAvailable = true;
                         return "Stable";
                     }
