@@ -20,8 +20,8 @@ public class Update {
     public static String RawLatestStableVersion = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/LatestStableVersion";
     public static String RawLatestTestVersion = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/LatestTestVersion";
     public static String RawDownloadLatestBetaVersion = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/DownloadLatestBetaVersion";
-    public static String RawDownloadLatestStableVersion = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/DownloadLatestTestVersion";
-    public static String RawDownloadLatestTestVersion = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/DownloadLatestStableVersion";
+    public static String RawDownloadLatestStableVersion = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/DownloadLatestStableVersion";
+    public static String RawDownloadLatestTestVersion = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/DownloadLatestTestVersion";
     public static String RawChangeLogBeta = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/ChangeLogBeta";
     public static String RawChangeLogStable = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/ChangeLogStable";
     public static String RawChangeLogTest = "https://raw.githubusercontent.com/nikhilmenghani/AFZC/v4.0/src/flashablezipcreator/Update/ChangeLogTest";

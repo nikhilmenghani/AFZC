@@ -1,5 +1,23 @@
 
-v3.2
--Added support for 11 more devices
--Added a new menu for Instructions
--Added OTA updates for tool
+v4.1
+-Custom Group
+   --Push any file/folder to any location with your custom permission
+-Delete Group
+   --Delete file/folder from any location
+-Addon.d Support
+   --Flash the zip once and you won't need to flash it again while flashing nightlies
+   --It will backup only those files that you choose in Aroma installer
+   --Now taking backup is in your control, you will get an option in tool as well as in recovery
+-Normal Flashable Zip
+   --Flash all the files in one go without having to choose the same options every time in Aroma
+   --Comes with Addon.d support
+-OTA updates
+   --Improved OTA updates
+-UI
+   --Revamped Preferences UI
+   --Revamped Progress Bar (added circular bar)
+   --Changed theme of the tool
+-Bug Fixes
+   --Fixed Data apps not getting installed in some scenarios
+-Donate
+   --Added Donate option for those who would like to buy me a coffee or appreciate my hard work after making this tool

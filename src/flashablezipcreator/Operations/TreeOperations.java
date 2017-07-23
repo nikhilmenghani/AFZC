@@ -16,6 +16,7 @@ import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.Protocols.Identify;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
+import flashablezipcreator.UserInterface.Preference;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -145,6 +146,9 @@ public class TreeOperations {
                         }
                         break;
                     case Types.NODE_FILE:
+                        if (Preference.pp.createZipType.equals("Normal") && node.prop.groupType == Types.GROUP_AROMA_THEMES) {
+                            continue;
+                        }
                         if (!list.contains((ProjectItemNode) node.getChildAt(i))) {
                             list.add((ProjectItemNode) node.getChildAt(i));
                         }
