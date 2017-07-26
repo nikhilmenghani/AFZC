@@ -103,6 +103,7 @@ public class AromaScriptOperations {
                     break;
                 }
                 str += configCustomGroup(node, node.isSelectBox());
+                break;
             case Types.GROUP_SYSTEM_FONTS:
                 str += configFonts(node);
                 break;
