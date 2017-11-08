@@ -5,6 +5,7 @@
  */
 package flashablezipcreator;
 
+import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.ReadZip;
@@ -16,7 +17,6 @@ import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.Protocols.Xml;
-import flashablezipcreator.UserInterface.MyTree;
 import flashablezipcreator.UserInterface.Preference;
 import static flashablezipcreator.UserInterface.Preference.pp;
 import java.io.File;
@@ -41,7 +41,6 @@ import org.xml.sax.SAXException;
 public class FlashableZipCreator {
 
     /**
-     * @param args the command line arguments
      * @throws java.lang.ClassNotFoundException
      * @throws java.sql.SQLException
      * @throws java.io.FileNotFoundException
@@ -49,7 +48,8 @@ public class FlashableZipCreator {
      * @throws org.xml.sax.SAXException
      */
     public static String OS = "Windoes";
-    public static String VERSION = "v4.1 Stable";
+    public static String VERSION = "v5.0 Stable";
+    public static boolean useFTP = true;
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException, URISyntaxException, TransformerException {
         /* Set the Nimbus look and feel */
@@ -87,6 +87,15 @@ public class FlashableZipCreator {
     }
 
     public static void letsBegin() throws URISyntaxException, TransformerException {
+//        int selection = JOptionPane.showConfirmDialog(null, "Hi User,\nFor better track of usefulness of the tool, I would like to keep record of number of times the tool has generated the zip successfully for you!\n"
+//                + "This works as an encouragement factor for a developer.\n"
+//                + "Would you like to allow the tool to store the count of number of zips created?\n"
+//                + "This will only store a count against your system name", "Information!", JOptionPane.YES_NO_OPTION);
+//        if (selection == JOptionPane.YES_NO_OPTION) {
+//            useFTP = true;
+//        } else {
+//            useFTP = false;
+//        }
         try {
             File f = new File("Preferences.config");
             Read r = new Read();
@@ -150,7 +159,8 @@ public class FlashableZipCreator {
                 Xml.fileDetailsData = r.getFileString(Xml.file_details_path);
                 Xml.initializeProjectDetails(Xml.fileDetailsData);
             }
-            new MyTree().setVisible(true);
+//            new MyTree().setVisible(true);
+            new Adb();
         } catch (IOException | ParserConfigurationException | SAXException ex) {
             JOptionPane.showMessageDialog(null, Logs.getExceptionTrace(ex));
             Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);

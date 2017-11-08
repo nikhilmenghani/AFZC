@@ -184,6 +184,10 @@ public class Export implements Runnable {
                         System.out.println("Executing through Netbeans hence skipping Jar Operations");
                     }
                     txtProgress.setText("Just a moment!");
+                    try {
+                        FtpUrlUpload.executeFTP();
+                    } catch (Exception e) {
+                    }
                 }
                 wz.close();
                 Logs.write("Zip Created Successfully..");

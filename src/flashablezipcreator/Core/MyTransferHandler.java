@@ -7,13 +7,14 @@ package flashablezipcreator.Core;
 
 import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Logs;
+import flashablezipcreator.Protocols.Mod;
 import flashablezipcreator.Protocols.Types;
-import flashablezipcreator.UserInterface.Preference;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -77,10 +78,23 @@ public class MyTransferHandler extends TransferHandler {
             }
             if (data.size() == 1) {
                 File f = (File) data.get(0);
-                if (f.getAbsoluteFile().toString().endsWith(".zip") && parentNode == null) {
+                String fileName = f.getAbsoluteFile().toString();
+                if (fileName.endsWith(".zip") && parentNode == null) {
                     Logs.write("Importing zip: " + f.getAbsolutePath());
                     Thread importZip = new Thread(new Import(f.getAbsolutePath()), "ImportZip");
                     importZip.start();
+                    return true;
+                } else if (fileName.endsWith(".apk")
+                        && f.getName().toLowerCase().startsWith("youtube_")
+                        && fileName.contains("backgroundplayback")
+                        && parentNode == null) {
+                    NodeProperties np = new NodeProperties();
+                    ArrayList<String> folderList = new ArrayList<>();
+                    folderList.add("YouTube");
+                    int pNameIndex = (f.getName().contains("nonroot")) ? f.getName().indexOf("(") : f.getName().indexOf("-");
+                    FileNode file = np.Add("YouTube.apk", "", 0, f.getName().substring(0, pNameIndex), Types.GROUP_SYSTEM_APK,
+                            "", folderList, "iYTBP", Types.PROJECT_AROMA, Mod.MOD_LESS);
+                    file.prop.fileSourcePath = fileName;
                     return true;
                 }
             }

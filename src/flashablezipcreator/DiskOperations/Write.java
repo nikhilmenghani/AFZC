@@ -5,7 +5,6 @@
  */
 package flashablezipcreator.DiskOperations;
 
-import flashablezipcreator.Protocols.Logs;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +18,6 @@ import java.nio.file.Path;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -110,6 +108,14 @@ public class Write {
         File file = new File(name);
         if (!file.exists()) {
             file.mkdir();
+            System.out.println("Folder created at : " + name);
+        }
+    }
+    
+    public void createFolders(String name) {
+        File file = new File(name);
+        if (!file.exists()) {
+            file.mkdirs();
             System.out.println("Folder created at : " + name);
         }
     }

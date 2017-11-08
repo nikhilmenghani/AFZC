@@ -5,12 +5,7 @@
  */
 package flashablezipcreator.Protocols;
 
-import flashablezipcreator.DiskOperations.Read;
-import flashablezipcreator.Operations.JarOperations;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import javax.swing.JOptionPane;
 
 /**
  *

@@ -88,9 +88,11 @@ public final class NodeProperties {
         this.parent = parent;
         originalParent = parent;
         groupParent = parent;
-        if (!title.endsWith("-1") && parent.prop.groupType == Types.GROUP_DATA_APP) {
-            this.title += "-1";
-            title = this.title;
+        if (parent.prop.groupType == Types.GROUP_DATA_APP) {
+            if (!(title.contains("-"))) {
+                this.title += "-1";
+                title = this.title;
+            }
         }
         folderName = title;
         path = parent.prop.path + File.separator + title;
