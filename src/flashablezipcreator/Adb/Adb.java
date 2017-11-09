@@ -109,8 +109,7 @@ public class Adb extends JFrame {
         cbSystemAlarms = new javax.swing.JCheckBox();
         cbSystemUI = new javax.swing.JCheckBox();
         btnContinue = new javax.swing.JButton();
-        btnIgnoreSelected = new javax.swing.JButton();
-        btnImportSelected = new javax.swing.JButton();
+        btnAdvancedFilter = new javax.swing.JButton();
         cbUseFilteredList = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -186,23 +185,13 @@ public class Adb extends JFrame {
             }
         });
 
-        btnIgnoreSelected.setBackground(new java.awt.Color(255, 255, 255));
-        btnIgnoreSelected.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnIgnoreSelected.setText("Ignore Selected");
-        btnIgnoreSelected.setContentAreaFilled(false);
-        btnIgnoreSelected.addActionListener(new java.awt.event.ActionListener() {
+        btnAdvancedFilter.setBackground(new java.awt.Color(255, 255, 255));
+        btnAdvancedFilter.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnAdvancedFilter.setText("Advanced Filter");
+        btnAdvancedFilter.setContentAreaFilled(false);
+        btnAdvancedFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIgnoreSelectedActionPerformed(evt);
-            }
-        });
-
-        btnImportSelected.setBackground(new java.awt.Color(255, 255, 255));
-        btnImportSelected.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnImportSelected.setText("Import Selected");
-        btnImportSelected.setContentAreaFilled(false);
-        btnImportSelected.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImportSelectedActionPerformed(evt);
+                btnAdvancedFilterActionPerformed(evt);
             }
         });
 
@@ -217,81 +206,81 @@ public class Adb extends JFrame {
         javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
         panelMain.setLayout(panelMainLayout);
         panelMainLayout.setHorizontalGroup(
-            panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMainLayout.createSequentialGroup()
-                .addGap(49, 49, 49)
-                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelMainLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnIgnoreSelected)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnImportSelected)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelMainLayout.createSequentialGroup()
-                        .addComponent(lblDeviceIdentified)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                        .addComponent(lblDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelMainLayout.createSequentialGroup()
-                        .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cbSystemUI, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbSystemAlarms, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbSystemNotifications, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbSystemRingtones, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbSystemMedia, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbSystemPrivApp, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbSystemApp, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblChoose, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbDataApp, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbSystemFonts, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(29, 29, 29))
+                panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelMainLayout.createSequentialGroup()
+                                .addGap(49, 49, 49)
+                                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(panelMainLayout.createSequentialGroup()
+                                                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addGroup(panelMainLayout.createSequentialGroup()
+                                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                                .addComponent(btnAdvancedFilter)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelMainLayout.createSequentialGroup()
+                                                                .addComponent(lblDeviceIdentified)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                                                                .addComponent(lblDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelMainLayout.createSequentialGroup()
+                                                                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                        .addComponent(cbSystemUI, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(cbSystemAlarms, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(cbSystemNotifications, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(cbSystemRingtones, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(cbSystemMedia, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(cbSystemPrivApp, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(lblChoose, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(cbDataApp, javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(cbSystemFonts, javax.swing.GroupLayout.Alignment.LEADING))
+                                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                                .addGap(29, 29, 29))
+                                        .addGroup(panelMainLayout.createSequentialGroup()
+                                                .addComponent(cbSystemApp)
+                                                .addGap(76, 452, Short.MAX_VALUE))))
         );
         panelMainLayout.setVerticalGroup(
-            panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelMainLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblDeviceIdentified, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15)
-                .addComponent(cbSystemApp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbSystemPrivApp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbDataApp)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbSystemFonts)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbSystemMedia)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbSystemRingtones)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbSystemNotifications)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbSystemAlarms)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbSystemUI)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnIgnoreSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnImportSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19))
+                panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelMainLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblDeviceName, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(lblDeviceIdentified, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(15, 15, 15)
+                                .addComponent(cbSystemApp)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbSystemPrivApp)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbDataApp)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbSystemFonts)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbSystemMedia)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbSystemRingtones)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbSystemNotifications)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbSystemAlarms)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbSystemUI)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnAdvancedFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(19, 19, 19))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelMain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(panelMain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         dialog.getContentPane().add(panelMain);
@@ -312,12 +301,37 @@ public class Adb extends JFrame {
         dialog.setVisible(true);
     }// </editor-fold>                        
 
-    private void btnIgnoreSelectedActionPerformed(java.awt.event.ActionEvent evt) {                                                  
-        new FilterList("Ignore");
-    }
-    
-    private void btnImportSelectedActionPerformed(java.awt.event.ActionEvent evt) {                                                  
-        new FilterList("Import");
+    private void btnAdvancedFilterActionPerformed(java.awt.event.ActionEvent evt) {
+        ArrayList<String> filteredPartitionPath = new ArrayList<>();
+        if (cbSystemApp.isSelected()) {
+            filteredPartitionPath.add("/system/app");
+        }
+        if (cbSystemPrivApp.isSelected()) {
+            filteredPartitionPath.add("/system/priv-app");
+        }
+        if (cbSystemFonts.isSelected()) {
+            filteredPartitionPath.add("/system/fonts");
+        }
+        if (cbSystemMedia.isSelected()) {
+            filteredPartitionPath.add("/system/media");
+        }
+        if (cbSystemRingtones.isSelected()) {
+            filteredPartitionPath.add("/system/media/audio/ringtones");
+        }
+        if (cbSystemNotifications.isSelected()) {
+            filteredPartitionPath.add("/system/media/audio/notifications");
+        }
+        if (cbSystemAlarms.isSelected()) {
+            filteredPartitionPath.add("/system/media/audio/alarms");
+        }
+        if (cbSystemUI.isSelected()) {
+            filteredPartitionPath.add("/system/media/audio/ui");
+        }
+        if (cbDataApp.isSelected()) {
+            filteredPartitionPath.add("/data/app");
+        }
+        FilterList filterList;
+        filterList = new FilterList(filteredPartitionPath);
     }
 
     private void btnContinueActionPerformed(java.awt.event.ActionEvent evt) {
@@ -460,8 +474,7 @@ public class Adb extends JFrame {
         }
     }
 
-    private javax.swing.JButton btnIgnoreSelected;
-    private javax.swing.JButton btnImportSelected;
+    private javax.swing.JButton btnAdvancedFilter;
     private javax.swing.JButton btnContinue;
     private javax.swing.JCheckBox cbDataApp;
     private javax.swing.JCheckBox cbSystemAlarms;

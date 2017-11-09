@@ -41,9 +41,7 @@ public class AdbUI extends javax.swing.JFrame {
         cbSystemAlarms = new javax.swing.JCheckBox();
         cbSystemUI = new javax.swing.JCheckBox();
         btnContinue = new javax.swing.JButton();
-        btnIgnoreSelected = new javax.swing.JButton();
-        btnImportSelected = new javax.swing.JButton();
-        btnFilterSystemApp = new javax.swing.JButton();
+        btnAdvancedFilter = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,30 +116,15 @@ public class AdbUI extends javax.swing.JFrame {
             }
         });
 
-        btnIgnoreSelected.setBackground(new java.awt.Color(255, 255, 255));
-        btnIgnoreSelected.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnIgnoreSelected.setText("Ignore Selected");
-        btnIgnoreSelected.setContentAreaFilled(false);
-        btnIgnoreSelected.addActionListener(new java.awt.event.ActionListener() {
+        btnAdvancedFilter.setBackground(new java.awt.Color(255, 255, 255));
+        btnAdvancedFilter.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnAdvancedFilter.setText("Advanced Filter");
+        btnAdvancedFilter.setContentAreaFilled(false);
+        btnAdvancedFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnIgnoreSelectedActionPerformed(evt);
+                btnAdvancedFilterActionPerformed(evt);
             }
         });
-
-        btnImportSelected.setBackground(new java.awt.Color(255, 255, 255));
-        btnImportSelected.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnImportSelected.setText("Import Selected");
-        btnImportSelected.setContentAreaFilled(false);
-        btnImportSelected.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImportSelectedActionPerformed(evt);
-            }
-        });
-
-        btnFilterSystemApp.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btnFilterSystemApp.setText("<HTML><FONT color=\\\"#000099\\\"><U>Advanced Filter</U></FONT></HTML>");
-        btnFilterSystemApp.setContentAreaFilled(false);
-        btnFilterSystemApp.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
         panelMain.setLayout(panelMainLayout);
@@ -153,9 +136,8 @@ public class AdbUI extends javax.swing.JFrame {
                     .addGroup(panelMainLayout.createSequentialGroup()
                         .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(panelMainLayout.createSequentialGroup()
-                                .addComponent(btnIgnoreSelected)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnImportSelected)
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnAdvancedFilter)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelMainLayout.createSequentialGroup()
@@ -177,9 +159,7 @@ public class AdbUI extends javax.swing.JFrame {
                         .addGap(29, 29, 29))
                     .addGroup(panelMainLayout.createSequentialGroup()
                         .addComponent(cbSystemApp)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnFilterSystemApp, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(76, 76, 76))))
+                        .addGap(76, 452, Short.MAX_VALUE))))
         );
         panelMainLayout.setVerticalGroup(
             panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,9 +171,7 @@ public class AdbUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblChoose, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15)
-                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbSystemApp)
-                    .addComponent(btnFilterSystemApp, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(cbSystemApp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbSystemPrivApp)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -210,12 +188,10 @@ public class AdbUI extends javax.swing.JFrame {
                 .addComponent(cbSystemAlarms)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cbSystemUI)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnIgnoreSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnImportSelected, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnContinue, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdvancedFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19))
         );
 
@@ -233,17 +209,13 @@ public class AdbUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnIgnoreSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIgnoreSelectedActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnIgnoreSelectedActionPerformed
-
     private void btnContinueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinueActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnContinueActionPerformed
 
-    private void btnImportSelectedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportSelectedActionPerformed
+    private void btnAdvancedFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdvancedFilterActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnImportSelectedActionPerformed
+    }//GEN-LAST:event_btnAdvancedFilterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,10 +253,8 @@ public class AdbUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdvancedFilter;
     private javax.swing.JButton btnContinue;
-    private javax.swing.JButton btnFilterSystemApp;
-    private javax.swing.JButton btnIgnoreSelected;
-    private javax.swing.JButton btnImportSelected;
     private javax.swing.JCheckBox cbDataApp;
     private javax.swing.JCheckBox cbSystemAlarms;
     private javax.swing.JCheckBox cbSystemApp;
