@@ -150,6 +150,14 @@ public class MyPopup {
         mitemDeleteProject.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList);
         });
+        JMenuItem mItemMoveUp = new JMenuItem("Move Up");
+        mItemMoveUp.addActionListener((ActionEvent ae) -> {
+            ((ProjectNode) node).prop.parent.moveUp(node);
+        });
+        JMenuItem mItemMoveDown = new JMenuItem("Move Down");
+        mItemMoveDown.addActionListener((ActionEvent ae) -> {
+            ((ProjectNode) node).prop.parent.moveDown(node);
+        });
 
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
@@ -196,6 +204,14 @@ public class MyPopup {
                 addGroupMenu.add(mitemDeleteGroup);
                 addGroupMenu.add(mitemCustomGroup);
                 popup.add(addGroupMenu);
+            }
+        }
+        if (node.prop.parent.getChildCount() != 1) {
+            if (node.prop.parent.getIndex(node) != 0) {
+                popup.add(mItemMoveUp);
+            }
+            if (node.prop.parent.getIndex(node) != node.prop.parent.getChildCount() - 1) {
+                popup.add(mItemMoveDown);
             }
         }
         popup.add(mitemDeleteProject);
@@ -263,6 +279,14 @@ public class MyPopup {
         if (((GroupNode) node).prop.groupType == Types.GROUP_AROMA_THEMES) {
             mitemDeleteGroup.setText("Delete Theme(s)");
         }
+        JMenuItem mItemMoveUp = new JMenuItem("Move Up");
+        mItemMoveUp.addActionListener((ActionEvent ae) -> {
+            ((GroupNode) node).prop.parent.moveUp(node);
+        });
+        JMenuItem mItemMoveDown = new JMenuItem("Move Down");
+        mItemMoveDown.addActionListener((ActionEvent ae) -> {
+            ((GroupNode) node).prop.parent.moveDown(node);
+        });
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
             switch (((GroupNode) node).prop.groupType) {
@@ -292,6 +316,14 @@ public class MyPopup {
                     break;
             }
 
+        }
+        if (node.prop.parent.getChildCount() != 1) {
+            if (node.prop.parent.getIndex(node) != 0) {
+                popup.add(mItemMoveUp);
+            }
+            if (node.prop.parent.getIndex(node) != node.prop.parent.getChildCount() - 1) {
+                popup.add(mItemMoveDown);
+            }
         }
         popup.add(mitemDeleteGroup);
         return popup;

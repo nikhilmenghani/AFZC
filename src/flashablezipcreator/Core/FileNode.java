@@ -6,7 +6,6 @@
 package flashablezipcreator.Core;
 
 import flashablezipcreator.Protocols.Types;
-import flashablezipcreator.UserInterface.Preference;
 import java.io.File;
 import java.io.IOException;
 

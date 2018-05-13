@@ -7,7 +7,6 @@ package flashablezipcreator.Core;
 
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Types;
-import flashablezipcreator.UserInterface.Preference;
 import java.io.File;
 
 /**
@@ -61,6 +60,7 @@ public class ProjectNode extends ProjectItemNode {
         this.updateChildrenZipPath();
     }
 
+    @Override
     public void updateChildrenPath() {
         super.updateChildrenPath();
     }

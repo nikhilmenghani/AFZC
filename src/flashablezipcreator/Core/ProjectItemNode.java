@@ -136,6 +136,24 @@ public class ProjectItemNode extends DefaultMutableTreeNode implements TreeNode 
         }
         return false;
     }
+    
+    public void moveUp(ProjectItemNode node){
+        int index = getIndex(node);
+        ProjectItemNode replaceChild = getChildAt(index-1);
+        prop.children.set(index-1, node);
+        prop.children.set(index, replaceChild);
+        MyTree.tree.expandPath(new TreePath(this.getPath()));
+        MyTree.model.reload(this);
+    }
+    
+    public void moveDown(ProjectItemNode node){
+        int index = getIndex(node);
+        ProjectItemNode replaceChild = getChildAt(index+1);
+        prop.children.set(index+1, node);
+        prop.children.set(index, replaceChild);
+        MyTree.tree.expandPath(new TreePath(this.getPath()));
+        MyTree.model.reload(this);
+    }
 
     /**
      *
