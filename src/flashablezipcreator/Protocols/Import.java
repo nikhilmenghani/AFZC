@@ -203,8 +203,8 @@ public class Import implements Runnable {
         String subGroupName = Identify.getSubGroupName(groupName, filePath);
         int subGroupType = groupType; //Groups that have subGroups have same type.
         String fName = (new File(filePath)).getName();
-        NodeProperties np = new NodeProperties();
-        FileNode file = np.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_AROMA, Mod.MOD_LESS);
+        TreeOperations to = new TreeOperations();
+        FileNode file = to.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_AROMA, Mod.MOD_LESS);
         file.prop.fileSourcePath = file.prop.path;
         rz.writeFileFromZip(in, file.prop.fileSourcePath);
         Logs.write("Written File: " + fName);

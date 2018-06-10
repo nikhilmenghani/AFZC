@@ -14,9 +14,12 @@ import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.Protocols.Identify;
+import flashablezipcreator.Protocols.Mod;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
+import static flashablezipcreator.UserInterface.MyTree.rootNode;
 import flashablezipcreator.UserInterface.Preference;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -72,6 +75,62 @@ public class TreeOperations {
 
     public void removeNode(ProjectItemNode node) {
         node.removeMe();
+    }
+    
+    public FileNode Add(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, String originalGroupType,
+            ArrayList<String> folders, String projectName, int projectType, int modType) {
+        NodeProperties np = new NodeProperties(projectName, projectType, modType, rootNode);
+        ProjectNode pNode = (ProjectNode) rootNode.addChild(new ProjectNode(np), false);
+        np = new NodeProperties(groupName, groupType, pNode);
+        if (groupType == Types.GROUP_CUSTOM && !originalGroupType.equals("")) {
+            np.location = Identify.getLocation(originalGroupType);
+            String str = Identify.getPermissions(originalGroupType);
+            String[] perms = str.split("-");
+            if (perms.length > 2) {
+                np.owner = perms[0];
+                np.group = perms[1];
+                np.perm = perms[2];
+                np.setPermissions(np.owner, np.group, np.perm);
+            } else {
+                np.setPermissions = false;
+            }
+            np.reloadOriginalStringType();
+            np.reloadZipPath();
+        }
+        GroupNode gNode = (GroupNode) pNode.addChild(new GroupNode(np), false);
+        SubGroupNode sgNode = null;
+        if (!subGroupName.equals("")) {
+            np = new NodeProperties(subGroupName, subGroupType, gNode);
+            sgNode = (SubGroupNode) gNode.addChild(new SubGroupNode(np), false);
+        }
+        FolderNode folNode = null;
+        if (folders.size() > 0) {
+            int count = 1;
+            for (String folder : folders) {
+                FolderNode fNode = null;
+                if (count++ == 1) {
+                    np = new NodeProperties(folder, gNode);
+                    fNode = (FolderNode) gNode.addChild(new FolderNode(np), false);
+                } else if (folNode != null) {
+                    np = new NodeProperties(folder, folNode);
+                    fNode = (FolderNode) folNode.addChild(new FolderNode(np), false);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Something went wrong!");
+                }
+                folNode = fNode;
+            }
+        }
+        FileNode fileNode = null;
+        if (folNode == null) {
+            if (sgNode != null) {
+                fileNode = (FileNode) sgNode.addChild(new FileNode(fileName, sgNode), true);
+            } else {
+                fileNode = (FileNode) (FileNode) gNode.addChild(new FileNode(fileName, gNode), true);
+            }
+        } else {
+            fileNode = (FileNode) (FileNode) folNode.addChild(new FileNode(fileName, folNode), true);
+        }
+        return fileNode;
     }
 
     public FileNode addFileToTree(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, String originalGroupType,
@@ -343,6 +402,47 @@ public class TreeOperations {
         return null;
     }
 
+    //get the missing nodes and add them
+    public FileNode addFileNode(String zipPath, ProjectItemNode parent) throws IOException{
+        String projectName = Identify.getProjectName(zipPath);
+        String groupName = Identify.getGroupName(zipPath);
+        int groupType = Identify.getGroupType(zipPath);
+        String originalGroupType = "";
+        if (groupType == Types.GROUP_CUSTOM) {
+            try {
+                originalGroupType = Identify.getOriginalGroupType(zipPath);
+            } catch (Exception e) {
+                originalGroupType = "";
+            }
+        }
+        ArrayList<String> folderList = Identify.getFolderNames(zipPath, Types.PROJECT_AROMA);
+        String subGroupName = Identify.getSubGroupName(groupName, zipPath);
+        int subGroupType = groupType; //Groups that have subGroups have same type.
+        String fName = (new File(zipPath)).getName();
+        TreeOperations to = new TreeOperations();
+        switch(parent.prop.type){
+            case Types.NODE_PROJECT:
+                projectName = parent.prop.projectName;
+                break;
+            case Types.NODE_GROUP:
+                projectName = parent.prop.projectName;
+                groupName = parent.prop.groupName;
+                groupType = parent.prop.groupType;
+                break;
+            case Types.NODE_SUBGROUP:
+                projectName = parent.prop.projectName;
+                groupName = parent.prop.groupName;
+                groupType = parent.prop.groupType;
+                subGroupName = parent.prop.subGroupName;
+                subGroupType = parent.prop.subGroupType;
+                break;
+                
+        }
+        FileNode file = to.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_AROMA, Mod.MOD_LESS);
+        file.prop.fileSourcePath = file.prop.path;
+        return file;
+    }
+    
     public void expandDirectories(JTree tree) {
         for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);

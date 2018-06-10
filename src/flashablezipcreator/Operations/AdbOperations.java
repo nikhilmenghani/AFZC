@@ -6,7 +6,7 @@
 package flashablezipcreator.Operations;
 
 import flashablezipcreator.Adb.Adb;
-import flashablezipcreator.Adb.App;
+import flashablezipcreator.Adb.Package;
 import flashablezipcreator.Protocols.Commands;
 import flashablezipcreator.Protocols.Logs;
 import java.io.BufferedReader;
@@ -103,11 +103,11 @@ public class AdbOperations {
         return fileList;
     }
 
-    public static ArrayList<App> getAppList(ArrayList<String> partitionList) {
-        ArrayList<App> appList = new ArrayList<>();
+    public static ArrayList<Package> getAppList(ArrayList<String> partitionList) {
+        ArrayList<Package> appList = new ArrayList<>();
         ArrayList<String> list = runProcess(true, false, Commands.COMMAND_LIST_PACKAGES_EXTENDED);
         for (String packages : list) {
-            App app = new App();
+            Package app = new Package();
             String str = packages.substring(packages.indexOf(":") + 1, packages.length());
             String packageName = str.substring(str.lastIndexOf("=") + 1, str.length());
             String installedPath = str.substring(0, str.lastIndexOf("="));

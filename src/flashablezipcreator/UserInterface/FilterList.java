@@ -8,7 +8,6 @@ package flashablezipcreator.UserInterface;
 import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.Write;
-import flashablezipcreator.Operations.JarOperations;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -77,19 +76,6 @@ public class FilterList extends javax.swing.JFrame {
 
         listPath.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jspListPath.setViewportView(listPath);
-        Adb.filteredFilePath = new ArrayList<>();
-        File f = new File("FilterList");
-        if (f.exists()) {
-            Read r = new Read();
-            try {
-                String strToRead = r.getFileString(f.getAbsolutePath());
-                for (String str : strToRead.split("\n")) {
-                    Adb.filteredFilePath.add(str);
-                }
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(FilterList.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
         Adb.filteredFilePath.forEach((path) -> {
             model.addElement(path);
         });

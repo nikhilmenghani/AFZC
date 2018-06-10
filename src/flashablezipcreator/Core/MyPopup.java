@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Core;
 
+import flashablezipcreator.Adb.Adb;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -74,12 +75,19 @@ public class MyPopup {
     }
 
     public static JPopupMenu getRootMenu() {
-        JMenuItem mitemAddProject = new JMenuItem("Add Project");
-        mitemAddProject.addActionListener((ActionEvent ae) -> {
-            addQuickProjectObject();
+        JMenu addProjectMenu = new JMenu("Add Project");
+        JMenuItem mitemAddAromaProject = new JMenuItem("Files");
+        mitemAddAromaProject.addActionListener((ActionEvent ae) -> {
+            addQuickProjectObject(Types.PROJECT_AROMA);
         });
+        JMenuItem mitemAddGappsProject = new JMenuItem("Gapps");
+        mitemAddGappsProject.addActionListener((ActionEvent ae) -> {
+            addQuickProjectObject(Types.PROJECT_GAPPS);
+        });
+        addProjectMenu.add(mitemAddAromaProject);
+        addProjectMenu.add(mitemAddGappsProject);
         popup = new JPopupMenu();
-        popup.add(mitemAddProject);
+        popup.add(addProjectMenu);
         return popup;
     }
 
@@ -221,16 +229,17 @@ public class MyPopup {
     public static JPopupMenu getGroupMenu(ArrayList<ProjectItemNode> nodeList, JTree myTree) {
         GroupNode node = (GroupNode) nodeList.get(0);
         JMenuItem mitemAddSubGroup = null;
+        JMenuItem mitemAddFromDevice = null;
         int groupType = ((GroupNode) node).prop.groupType;
         switch (groupType) {
             case Types.GROUP_SYSTEM_FONTS:
                 mitemAddSubGroup = new JMenuItem("Add Fonts");
                 break;
             case Types.GROUP_DATA_LOCAL:
-                mitemAddSubGroup = new JMenuItem("Add Boot Animations");
+                mitemAddSubGroup = new JMenuItem("Add Boot Animation");
                 break;
             case Types.GROUP_SYSTEM_MEDIA:
-                mitemAddSubGroup = new JMenuItem("Add Boot Animations");
+                mitemAddSubGroup = new JMenuItem("Add Boot Animation");
                 break;
             case Types.GROUP_DELETE_FILES:
                 mitemAddSubGroup = new JMenuItem("Add Files/Folders to Delete");
@@ -315,7 +324,58 @@ public class MyPopup {
                     popup.add(mitemAddSubGroup);
                     break;
             }
-
+            switch (((GroupNode) node).prop.groupType) {
+                case Types.GROUP_SYSTEM:
+                    break;
+                case Types.GROUP_SYSTEM_APK:
+                    mitemAddFromDevice = new JMenuItem("Add System Apps From Device");
+                    break;
+                case Types.GROUP_SYSTEM_PRIV_APK:
+                    mitemAddFromDevice = new JMenuItem("Add Priv-Apps From Device");
+                    break;
+                case Types.GROUP_SYSTEM_ETC:
+                    break;
+                case Types.GROUP_SYSTEM_FRAMEWORK:
+                    break;
+                case Types.GROUP_DATA_APP:
+                    mitemAddFromDevice = new JMenuItem("Add Data Apps From Device");
+                    break;
+                case Types.GROUP_CUSTOM:
+                    break;
+                case Types.GROUP_SYSTEM_BIN:
+                    break;
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
+                    mitemAddFromDevice = new JMenuItem("Add Alarm Tones From Device");
+                    break;
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
+                    mitemAddFromDevice = new JMenuItem("Add Notification Tones From Device");
+                    break;
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
+                    mitemAddFromDevice = new JMenuItem("Add Ringtones From Device");
+                    break;
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+                    mitemAddFromDevice = new JMenuItem("Add UI Tones From Device");
+                    break;
+                case Types.GROUP_AROMA_THEMES:
+                    break;
+                case Types.GROUP_SYSTEM_FONTS:
+                    mitemAddFromDevice = new JMenuItem("Add Fonts From Device");
+                    break;
+                case Types.GROUP_DATA_LOCAL:
+                case Types.GROUP_SYSTEM_MEDIA:
+                    mitemAddFromDevice = new JMenuItem("Add Boot Animation From Device");
+                    break;
+                case Types.GROUP_DELETE_FILES:
+                    break;
+            }
+            if (mitemAddFromDevice != null) {
+                mitemAddFromDevice.addActionListener(
+                        (ActionEvent ae) -> {
+                            new Adb(groupType, node);
+                        }
+                );
+                popup.add(mitemAddFromDevice);
+            }
         }
         if (node.prop.parent.getChildCount() != 1) {
             if (node.prop.parent.getIndex(node) != 0) {
@@ -452,7 +512,7 @@ public class MyPopup {
         addGroup = new AddGroup(type, node);
     }
 
-    public static void addQuickProjectObject() {
+    public static void addQuickProjectObject(int type) {
         String defaultProjName = "My Project";
         if (rootNode.contains(defaultProjName)) {
             for (int i = 1;; i++) {
@@ -465,7 +525,7 @@ public class MyPopup {
         }
         ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
         if (selNode != null) {
-            ProjectNode newNode = new ProjectNode(defaultProjName, Types.PROJECT_AROMA, Mod.MOD_LESS, rootNode);
+            ProjectNode newNode = new ProjectNode(defaultProjName, type, Mod.MOD_LESS, rootNode);
             rootNode.addChild(newNode, false);
             TreeNode[] nodes = model.getPathToRoot(newNode);
             TreePath path = new TreePath(nodes);

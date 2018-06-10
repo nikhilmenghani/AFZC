@@ -5,20 +5,30 @@
  */
 package flashablezipcreator.Adb;
 
+import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.ProjectItemNode;
+import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.Write;
 import static flashablezipcreator.Operations.AdbOperations.checkDeviceConnectivity;
 import static flashablezipcreator.Operations.AdbOperations.getAppList;
 import static flashablezipcreator.Operations.AdbOperations.getDeviceName;
 import static flashablezipcreator.Operations.AdbOperations.getFileList;
 import static flashablezipcreator.Operations.AdbOperations.runProcess;
+import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Protocols.Commands;
+import flashablezipcreator.Protocols.Identify;
+import flashablezipcreator.Protocols.Logs;
+import flashablezipcreator.Protocols.Mod;
+import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.FilterList;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.setCardLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -87,6 +97,133 @@ public class Adb extends JFrame {
                         + " Cannot proceed with ADB process"
                         + " Do you still want to proceed ahead with manual project creation?");
             }
+        }
+    }
+
+    public Adb(int type, ProjectItemNode parent) {
+        new Thread(() -> {
+            importFiles(type, parent);
+        }).start();
+
+    }
+
+    public void importFiles(int type, ProjectItemNode parent) {
+        int connectivityFlag = checkDeviceConnectivity();
+        switch (connectivityFlag) {
+            case 0:
+                continueAdbProcessCheck("The device is not identified,"
+                        + " Cannot proceed with ADB process"
+                        + " Do you still want to proceed ahead with manual project creation?");
+                break;
+            case 2:
+                JOptionPane.showMessageDialog(null, "The device is unauthorized!\nGive Adb permissions in your mobile phone and try again.");
+                break;
+        }
+        if (connectivityFlag == 1) {
+            MyTree.setCardLayout(2);
+            index = 0;
+            String partition = "";
+            ArrayList<String> fileList = new ArrayList<>();
+            switch (type) {
+                case Types.GROUP_SYSTEM_FONTS:
+                    partition = "/system/fonts";
+                    fileList = getFileList(partition);
+                    break;
+                case Types.GROUP_DATA_LOCAL:
+                    partition = "/data/local";
+                    fileList = getFileList(partition);
+                    break;
+                case Types.GROUP_SYSTEM_MEDIA:
+                    partition = "/system/media";
+                    fileList = getFileList(partition);
+                    break;
+                case Types.GROUP_SYSTEM_APK:
+                    partition = "/system/app";
+                    for (Package app : getAppList(new ArrayList<>(Arrays.asList(partition)))) {
+                        if (app.associatedFileList.size() > 0) {
+                            for (String mPath : app.associatedFileList) {
+                                fileList.add(mPath);
+                            }
+                        }
+                    }
+                    break;
+                case Types.GROUP_SYSTEM_PRIV_APK:
+                    partition = "/system/priv-app";
+                    for (Package app : getAppList(new ArrayList<>(Arrays.asList(partition)))) {
+                        if (app.associatedFileList.size() > 0) {
+                            for (String mPath : app.associatedFileList) {
+                                fileList.add(mPath);
+                            }
+                        }
+                    }
+                    break;
+                case Types.GROUP_DATA_APP:
+                    partition = "/data/app";
+                    for (Package app : getAppList(new ArrayList<>(Arrays.asList(partition)))) {
+                        if (app.associatedFileList.size() > 0) {
+                            for (String mPath : app.associatedFileList) {
+                                fileList.add(mPath);
+                            }
+                        }
+                    }
+                    break;
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
+                    partition = "/system/media/audio/alarms";
+                    fileList = getFileList(partition);
+                    break;
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
+                    partition = "/system/media/audio/notifications";
+                    fileList = getFileList(partition);
+                    break;
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
+                    partition = "/system/media/audio/ringtones";
+                    fileList = getFileList(partition);
+                    break;
+                case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+                    partition = "/system/media/audio/ui";
+                    fileList = getFileList(partition);
+                    break;
+            }
+            int fileListSize = fileList.size();
+            if (fileListSize > 0) {
+                for (String mPath : fileList) {
+                    int fileIndex = (index * 100 / fileListSize);
+                    Package f = new Package();
+                    f.installedPath = mPath;
+                    String sPath = f.getImportFilePath(mPath);
+                    System.out.println(sPath);
+                    if (!sPath.equals("")) {
+                        java.io.File sFile = new java.io.File(sPath);
+                        Write w = new Write();
+                        String absolutePath = sFile.getAbsolutePath();
+                        sFile = new java.io.File(absolutePath);
+                        w.createFolders(sFile.getParent());
+                        updateProgress("Pulling " + mPath, fileIndex, false);
+                        ArrayList<String> pullList = runProcess(true, false, Commands.getAdbPull(mPath, sPath));
+                        for (String str : pullList) {
+                            System.out.println(str);
+                        }
+                        FileNode fileNode = null;
+                        TreeOperations to = new TreeOperations();
+                        try {
+                            fileNode = to.addFileNode(f.getZipPath(mPath), parent);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Adb.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        updateProgress("Pulled " + sFile.getName(), fileIndex, true);
+                    } else {
+                        index += 1;
+                    }
+                }
+            }
+            if (fileListSize > 0) {
+                updateProgress("Files Successfully Imported", 100, false);
+                JOptionPane.showMessageDialog(null, "Files Successfully Imported!");
+                updateProgress("", 0, false);
+            }
+            setCardLayout(1);
+        } else {
+            JOptionPane.showMessageDialog(null, "Device Not Compatible!");
         }
     }
 
@@ -184,6 +321,20 @@ public class Adb extends JFrame {
                 btnContinueActionPerformed(evt);
             }
         });
+
+        Adb.filteredFilePath = new ArrayList<>();
+        java.io.File f = new java.io.File("FilterList");
+        if (f.exists()) {
+            Read r = new Read();
+            try {
+                String strToRead = r.getFileString(f.getAbsolutePath());
+                for (String str : strToRead.split("\n")) {
+                    Adb.filteredFilePath.add(str);
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(FilterList.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
         btnAdvancedFilter.setBackground(new java.awt.Color(255, 255, 255));
         btnAdvancedFilter.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -370,7 +521,7 @@ public class Adb extends JFrame {
                 @Override
                 public void run() {
                     try {
-                        letsBegin(filteredPartitionPath);
+                        letsBegin(filteredPartitionPath, filteredFilePath);
                     } catch (IOException ex) {
                         Logger.getLogger(Adb.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -382,10 +533,9 @@ public class Adb extends JFrame {
         }
     }
 
-    public static void letsBegin(ArrayList<String> pList) throws IOException {
+    public static void letsBegin(ArrayList<String> pList, ArrayList<String> fList) throws IOException {
         index = 0;
-        int totalSize = 0;
-        ArrayList<App> appList = new ArrayList<>();
+        ArrayList<Package> appList = new ArrayList<>();
         updateProgress("Scanning Files from your device", 0, false);
         if (pList.contains("/system/app")
                 || pList.contains("/system/priv-app")
@@ -401,36 +551,44 @@ public class Adb extends JFrame {
                 fileList.add(list);
             }
         }
-        totalSize = appList.size() + fileList.size();
-        if (appList.size() > 0) {
-            for (App app : appList) {
-                int fileIndex = (index * 100 / totalSize);
-                updateProgress("Pulling " + app.packageName, fileIndex, false);
+        int appListSize = appList.size();
+        int fileListSize = fileList.size();
+        if (appListSize > 0) {
+            for (Package app : appList) {
                 if (app.associatedFileList.size() > 0) {
                     for (String mPath : app.associatedFileList) {
-                        String sPath = app.getImportFilePath(mPath);
-                        System.out.println(sPath);
-                        java.io.File sFile = new java.io.File(sPath);
-                        Write w = new Write();
-                        String absolutePath = sFile.getAbsolutePath();
-                        sFile = new java.io.File(absolutePath);
-                        w.createFolders(sFile.getParent());
-                        updateProgress("" + mPath, fileIndex, false);
-                        ArrayList<String> pullList = runProcess(true, false, Commands.getAdbPull(mPath, sPath));
-                        pullList.forEach((str) -> {
-                            System.out.println(str);
-                        });
-                        app.importFilePath(mPath);
-
+                        fileList.add(mPath);
                     }
                 }
-                updateProgress("Pulled " + app.packageName, fileIndex, true);
             }
         }
-        if (fileList.size() > 0) {
+        for (String path : filteredFilePath) {
+            boolean removeFlag = true;
+            if (path.startsWith("+")) {
+                removeFlag = false;
+            }
+            path = path.substring(2, path.length());
+            path = path.replaceAll("\"", "");
+            if (removeFlag) {
+                if (path.contains("*")) {
+                    for (String removePath : filteredFilePath) {
+                        if (removePath.startsWith(path.substring(0, path.length() - 1))) {
+                            filteredFilePath.remove(removePath);
+                        }
+                    }
+                } else {
+                    fileList.remove(path);
+                }
+            } else {
+                fileList.remove("all other from that partition");
+            }
+        }
+        fileListSize = fileList.size();
+
+        if (fileListSize > 0) {
             for (String mPath : fileList) {
-                int fileIndex = (index * 100 / totalSize);
-                File f = new File();
+                int fileIndex = (index * 100 / fileListSize);
+                Package f = new Package();
                 f.installedPath = mPath;
                 String sPath = f.getImportFilePath(mPath);
                 System.out.println(sPath);
@@ -445,14 +603,35 @@ public class Adb extends JFrame {
                     for (String str : pullList) {
                         System.out.println(str);
                     }
-                    f.importFilePath(mPath);
+                    String filePath = f.getZipPath(mPath);
+                    if (!filePath.equals("")) {
+                        String projectName = Identify.getProjectName(filePath);
+                        String groupName = Identify.getGroupName(filePath);
+                        int groupType = Identify.getGroupType(filePath);
+                        String originalGroupType = "";
+                        if (groupType == Types.GROUP_CUSTOM) {
+                            try {
+                                originalGroupType = Identify.getOriginalGroupType(filePath);
+                            } catch (Exception e) {
+                                originalGroupType = "";
+                            }
+                        }
+                        ArrayList<String> folderList = Identify.getFolderNames(filePath, Types.PROJECT_AROMA);
+                        String subGroupName = Identify.getSubGroupName(groupName, filePath);
+                        int subGroupType = groupType; //Groups that have subGroups have same type.
+                        String fName = (new java.io.File(filePath)).getName();
+                        TreeOperations to = new TreeOperations();
+                        FileNode file = to.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_AROMA, Mod.MOD_LESS);
+                        file.prop.fileSourcePath = file.prop.path;
+                        Logs.write("Written File: " + fName);
+                    }
                     updateProgress("Pulled " + sFile.getName(), fileIndex, true);
                 } else {
-                    index += 2;
+                    index += 1;
                 }
             }
         }
-        if (totalSize > 0) {
+        if (fileListSize > 0) {
             updateProgress("Files Successfully Imported", 100, false);
             JOptionPane.showMessageDialog(null, "Files Successfully Imported!");
             updateProgress("", 0, false);

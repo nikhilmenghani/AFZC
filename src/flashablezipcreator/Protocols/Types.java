@@ -23,6 +23,7 @@ public class Types {
     public static final int PROJECT_CUSTOM = 12;
     public static final int PROJECT_MOD = 13;
     public static final int PROJECT_THEMES = 14;
+    public static final int PROJECT_GAPPS = 15;
     
     public static final int GROUP_SYSTEM = 21;
     public static final int GROUP_SYSTEM_APK = 22;

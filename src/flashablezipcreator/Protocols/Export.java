@@ -185,7 +185,7 @@ public class Export implements Runnable {
                     }
                     txtProgress.setText("Just a moment!");
                     try {
-                        FtpUrlUpload.executeFTP();
+                        //FtpUrlUpload.executeFTP();
                     } catch (Exception e) {
                     }
                 }

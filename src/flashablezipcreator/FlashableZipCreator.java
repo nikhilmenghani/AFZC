@@ -17,6 +17,7 @@ import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.Protocols.Xml;
+import flashablezipcreator.UserInterface.MyTree;
 import flashablezipcreator.UserInterface.Preference;
 import static flashablezipcreator.UserInterface.Preference.pp;
 import java.io.File;
@@ -48,7 +49,7 @@ public class FlashableZipCreator {
      * @throws org.xml.sax.SAXException
      */
     public static String OS = "Windoes";
-    public static String VERSION = "v5.0 Stable";
+    public static String VERSION = "v5.0 alpha";
     public static boolean useFTP = true;
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException, URISyntaxException, TransformerException {
@@ -129,10 +130,10 @@ public class FlashableZipCreator {
                 Preference.pp.themes.add("RedBlack");
             }
 
-            Control.check();
+            //Control.check();
             String availableVersion = "";
             if (Control.forceCheckOnStartUp || Preference.pp.checkUpdatesOnStartUp) {
-                availableVersion = Update.runUpdateCheck();
+                //availableVersion = Update.runUpdateCheck();
             }
             if (!availableVersion.equals("")) {
                 Update.executeDownload();
@@ -159,8 +160,8 @@ public class FlashableZipCreator {
                 Xml.fileDetailsData = r.getFileString(Xml.file_details_path);
                 Xml.initializeProjectDetails(Xml.fileDetailsData);
             }
-//            new MyTree().setVisible(true);
-            new Adb();
+            new MyTree().setVisible(true);
+//            new Adb();
         } catch (IOException | ParserConfigurationException | SAXException ex) {
             JOptionPane.showMessageDialog(null, Logs.getExceptionTrace(ex));
             Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);

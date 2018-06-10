@@ -6,7 +6,7 @@
 package flashablezipcreator.Adb;
 
 import flashablezipcreator.Core.FileNode;
-import flashablezipcreator.Core.NodeProperties;
+import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Protocols.Identify;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Mod;
@@ -18,13 +18,16 @@ import java.util.ArrayList;
  *
  * @author Nikhil
  */
-public class File {
+public class Package {
 
     public String installedPath = "";
     public String systemPath = "";
     public String fileName = "";
     public int belongsToGroup = 0;
     public boolean pullFolder = false;
+    public String packageName = "";
+    boolean hasDataPath = false;
+    public ArrayList<String> associatedFileList = new ArrayList<>();
     //customize/aroma_0/Project_My Project/Type_system_fonts/Group_Fonts/SubGroup_ComicSansMS/DroidSansFallback.ttf
 
     public String getZipPath(String installedPath) {
@@ -189,32 +192,8 @@ public class File {
         }
         return filePath;
     }
-
-    public String importFilePath(String installedPath) throws IOException {
-        String filePath = getZipPath(installedPath);
-        String path = "";
-        if (!filePath.equals("")) {
-            String projectName = Identify.getProjectName(filePath);
-            String groupName = Identify.getGroupName(filePath);
-            int groupType = Identify.getGroupType(filePath);
-            String originalGroupType = "";
-            if (groupType == Types.GROUP_CUSTOM) {
-                try {
-                    originalGroupType = Identify.getOriginalGroupType(filePath);
-                } catch (Exception e) {
-                    originalGroupType = "";
-                }
-            }
-            ArrayList<String> folderList = Identify.getFolderNames(filePath, Types.PROJECT_AROMA);
-            String subGroupName = Identify.getSubGroupName(groupName, filePath);
-            int subGroupType = groupType; //Groups that have subGroups have same type.
-            String fName = (new java.io.File(filePath)).getName();
-            NodeProperties np = new NodeProperties();
-            FileNode file = np.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_AROMA, Mod.MOD_LESS);
-            file.prop.fileSourcePath = file.prop.path;
-            systemPath = file.prop.fileSourcePath;
-            Logs.write("Written File: " + fName);
-        }
-        return path;
+    
+    public String getDataPath() {
+        return "/data/app/" + packageName;
     }
 }

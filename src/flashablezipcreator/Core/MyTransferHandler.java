@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Core;
 
+import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Mod;
@@ -88,11 +89,11 @@ public class MyTransferHandler extends TransferHandler {
                         && f.getName().toLowerCase().startsWith("youtube_")
                         && fileName.contains("backgroundplayback")
                         && parentNode == null) {
-                    NodeProperties np = new NodeProperties();
+                    TreeOperations to = new TreeOperations();
                     ArrayList<String> folderList = new ArrayList<>();
                     folderList.add("YouTube");
                     int pNameIndex = (f.getName().contains("nonroot")) ? f.getName().indexOf("(") : f.getName().indexOf("-");
-                    FileNode file = np.Add("YouTube.apk", "", 0, f.getName().substring(0, pNameIndex), Types.GROUP_SYSTEM_APK,
+                    FileNode file = to.Add("YouTube.apk", "", 0, f.getName().substring(0, pNameIndex), Types.GROUP_SYSTEM_APK,
                             "", folderList, "iYTBP", Types.PROJECT_AROMA, Mod.MOD_LESS);
                     file.prop.fileSourcePath = fileName;
                     return true;
