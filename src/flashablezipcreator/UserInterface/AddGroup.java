@@ -123,6 +123,58 @@ public class AddGroup extends javax.swing.JFrame {
                 perm = "0644";
                 title = "System Lib64 Group";
                 break;
+            case Types.GROUP_VENDOR:
+                location = "/vendor";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "Vendor Group";
+                headerWidth = 26;
+                break;
+            case Types.GROUP_VENDOR_APP:
+                location = "/vendor/app";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "Vendor Apps Group";
+                headerWidth = 26;
+                break;
+            case Types.GROUP_VENDOR_BIN:
+                location = "/vendor/bin";
+                owner = "0";
+                group = "2000";
+                perm = "0755";
+                title = "Vendor Bin Group";
+                break;
+            case Types.GROUP_VENDOR_ETC:
+                location = "/vendor/etc";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "Vendor Etc Group";
+                break;
+            case Types.GROUP_VENDOR_FRAMEWORK:
+                location = "/vendor/framework";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "Vendor Framework Group";
+                headerWidth = 24;
+                break;
+            case Types.GROUP_VENDOR_LIB:
+                location = "/vendor/lib";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "Vendor Lib Group";
+                break;
+            case Types.GROUP_VENDOR_LIB64:
+                location = "/vendor/lib64";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "Vendor Lib64 Group";
+                break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 location = "/system/media/audio/alarms";
                 owner = "1000";
