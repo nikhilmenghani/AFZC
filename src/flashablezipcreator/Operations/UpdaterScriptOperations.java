@@ -431,42 +431,31 @@ public class UpdaterScriptOperations {
     }
 
     public String generateUpdaterScript(GroupNode node) {
-        switch (node.prop.groupType) {
+        switch (node.prop.packageType) {
             //Group of predefined locations
-            case Types.GROUP_SYSTEM:
-            case Types.GROUP_SYSTEM_APK:
-            case Types.GROUP_SYSTEM_PRIV_APK:
-            case Types.GROUP_DATA_APP:
-            case Types.GROUP_SYSTEM_BIN:
-            case Types.GROUP_SYSTEM_ETC:
-            case Types.GROUP_SYSTEM_FRAMEWORK:
+            case Types.PACKAGE_FOLDER_FILE:
                 if (Preference.pp.createZipType.equals("Aroma")) {
                     return predefinedAromaFolderGroupScript(node);
                 } else if (Preference.pp.createZipType.equals("Normal")) {
                     return predefinedNormalFolderGroupScript(node);
                 }
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-            case Types.GROUP_DELETE_FILES:
-            case Types.GROUP_SCRIPT:
+            case Types.PACKAGE_FILE:
+            case Types.PACKAGE_DELETE_FILE:
+            case Types.PACKAGE_SCRIPT:
                 if (Preference.pp.createZipType.equals("Aroma")) {
                     return predefinedAromaGroupScript(node);
                 } else if (Preference.pp.createZipType.equals("Normal")) {
                     return predefinedNormalGroupScript(node);
                 }
             //Group of predefined locations that need subgroups
-            case Types.GROUP_SYSTEM_FONTS:
-            case Types.GROUP_DATA_LOCAL:
-            case Types.GROUP_SYSTEM_MEDIA:
+            case Types.PACKAGE_SUBGROUP_FILE:
                 if (Preference.pp.createZipType.equals("Aroma")) {
                     return predefinedAromaSubGroupsScript(node);
                 } else if (Preference.pp.createZipType.equals("Normal")) {
                     return predefinedNormalSubGroupsScript(node);
                 }
             //Group of custom location.
-            case Types.GROUP_CUSTOM:
+            case Types.PACKAGE_CUSTOM:
                 if (Preference.pp.createZipType.equals("Aroma")) {
                     return customAromaGroupScript(node);
                 } else if (Preference.pp.createZipType.equals("Normal")) {

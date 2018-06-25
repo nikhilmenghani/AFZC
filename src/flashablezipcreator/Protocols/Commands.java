@@ -15,12 +15,14 @@ public class Commands {
     public static String[] COMMAND_ADB_PRODUCT_MODEL = {"adb", "shell", "getprop", "ro.product.model"};
     public static String[] COMMAND_ADB_PRODUCT_NAME = {"adb", "shell", "getprop", "ro.product.name"};
     public static String[] COMMAND_ADB_PRODUCT_DEVICE = {"adb", "shell", "getprop", "ro.product.device"};
-    private static String[] COMMAND_ADB_PULL = {"adb", "pull", "source", "destination"};
+    public static String[] COMMAND_ADB_PULL = {"adb", "pull", "source", "destination"};
     public static String[] COMMAND_LIST_PACKAGES = {"adb", "shell", "pm", "list", "packages"};
     public static String[] COMMAND_LIST_FILES = {"adb", "shell", "ls", ""};
     public static String[] COMMAND_LIST_FILES_RECURSIVELY = {"adb", "shell", "ls", "-R", ""};
     public static String[] COMMAND_LIST_PACKAGES_EXTENDED = {"adb", "shell", "pm", "list", "packages", "-f"};
-    private static String[] COMMAND_AAPT_DUMP_BADGING = {"aapt", "dump", "badging", ""};
+    public static String[] COMMAND_LIST_PACKAGES_SYSTEM = {"adb", "shell", "pm", "list", "packages", "-s"};
+    public static String[] COMMAND_PATH_PACKAGES = {"adb", "shell", "pm", "path", "package"};
+    public static String[] COMMAND_AAPT_DUMP_BADGING = {"aapt", "dump", "badging", ""};
     public static String[] COMMAND_LIST_FILES_SU = {"ls", "/data/app"};
     public static String[] COMMAND_ADB_SHELL_SU = {"adb", "shell", "su"};
 
@@ -33,5 +35,10 @@ public class Commands {
     public static String[] getAaptDumpBadging(String apkPath) {
         COMMAND_AAPT_DUMP_BADGING[3] = apkPath;
         return COMMAND_AAPT_DUMP_BADGING;
+    }
+
+    public static String[] getAdbPackagePath(String Package) {
+        COMMAND_PATH_PACKAGES[4] = Package;
+        return COMMAND_PATH_PACKAGES;
     }
 }

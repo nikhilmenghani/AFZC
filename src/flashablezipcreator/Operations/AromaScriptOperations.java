@@ -233,14 +233,9 @@ public class AromaScriptOperations {
 
     public String addCheckBox(GroupNode node) {
         String str = "";
-        switch (node.prop.groupType) {
-            case Types.GROUP_SYSTEM:
-            case Types.GROUP_SYSTEM_APK:
-            case Types.GROUP_SYSTEM_PRIV_APK:
-            case Types.GROUP_DATA_APP:
-            case Types.GROUP_SYSTEM_BIN:
-            case Types.GROUP_SYSTEM_ETC:
-            case Types.GROUP_SYSTEM_FRAMEWORK:
+        switch (node.prop.packageType) {
+            case Types.PACKAGE_APP:
+            case Types.PACKAGE_FOLDER_FILE:
                 str += "\ncheckbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                         + "\"Select files from the list\", \"\", 2,\n"
                         + "\"Select All\",\"Installs All Files.\", 1";
@@ -261,10 +256,7 @@ public class AromaScriptOperations {
                 str += ");\n";
                 str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
                 break;
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-            case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+            case Types.PACKAGE_FILE:
                 str += "\ncheckbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                         + "\"Select files from the list\", \"\", 2,\n"
                         + "\"Select All\",\"Installs All Files.\", 1";
@@ -274,7 +266,7 @@ public class AromaScriptOperations {
                 str += ");\n";
                 str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
                 break;
-            case Types.GROUP_DELETE_FILES:
+            case Types.PACKAGE_DELETE_FILE:
                 str += "\ncheckbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                         + "\"Select files from the list\", \"\", 2,\n"
                         + "\"Select All\",\"Delete All.\", 1";
@@ -284,7 +276,7 @@ public class AromaScriptOperations {
                 str += ");\n";
                 str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
                 break;
-            case Types.GROUP_CUSTOM:
+            case Types.PACKAGE_CUSTOM:
                 if (!node.isCheckBox()) {
                     break;
                 }

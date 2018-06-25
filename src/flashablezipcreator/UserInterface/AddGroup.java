@@ -102,6 +102,20 @@ public class AddGroup extends javax.swing.JFrame {
                 title = "System Framework Group";
                 headerWidth = 24;
                 break;
+            case Types.GROUP_SYSTEM_LIB:
+                location = "/system/lib";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "System Lib Group";
+                break;
+            case Types.GROUP_SYSTEM_LIB64:
+                location = "/system/lib64";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                title = "System Lib64 Group";
+                break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 location = "/system/media/audio/alarms";
                 owner = "1000";

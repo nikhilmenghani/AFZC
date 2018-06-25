@@ -5,15 +5,12 @@
  */
 package flashablezipcreator.Core;
 
-import flashablezipcreator.Protocols.Identify;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Types;
-import static flashablezipcreator.UserInterface.MyTree.rootNode;
 import flashablezipcreator.UserInterface.Preference;
 import java.io.File;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -59,11 +56,13 @@ public final class NodeProperties {
     public String fileZipPath;
     public String value;
     public String deletePath;
+    public String folderMenuName;
     public int type;
     public int projectType;
     public int groupType;
     public int subGroupType;
     public int modType;
+    public int packageType;
     public boolean createZip = true; //when multiple projects will be loaded, this will help in choosing which one to create zip of.
     public boolean isBootAnimationGroup = false;
     public boolean isSelectBox = false;
@@ -179,6 +178,19 @@ public final class NodeProperties {
                 location = "/system";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "System Files";
+                break;
+            case Types.GROUP_VENDOR:
+                propFile = getProp("vendor");
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/vendor";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "vendor";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "Vendor Files";
                 break;
             case Types.GROUP_SYSTEM_APK:
                 propFile = getProp("system_app");
@@ -189,6 +201,20 @@ public final class NodeProperties {
                 location = "/system/app";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_app";
+                packageType = Types.PACKAGE_APP;
+                folderMenuName = "System Apps";
+                break;
+            case Types.GROUP_VENDOR_APP:
+                propFile = getProp("vendor_app");
+                extension = "apk";
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/vendor/app";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "vendor_app";
+                packageType = Types.PACKAGE_APP;
+                folderMenuName = "Vendor Apps";
                 break;
             case Types.GROUP_SYSTEM_PRIV_APK:
                 propFile = getProp("system_priv");
@@ -199,6 +225,8 @@ public final class NodeProperties {
                 location = "/system/priv-app";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_priv_app";
+                packageType = Types.PACKAGE_APP;
+                folderMenuName = "Priv Apps";
                 break;
             case Types.GROUP_SYSTEM_BIN:
                 propFile = getProp("system_bin");
@@ -208,6 +236,19 @@ public final class NodeProperties {
                 location = "/system/bin";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_bin";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "System Bin";
+                break;
+            case Types.GROUP_VENDOR_BIN:
+                propFile = getProp("vendor_bin");
+                owner = "0";
+                group = "2000";
+                perm = "0755";
+                location = "/vendor/bin";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "vendor_bin";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "Vendor Bin";
                 break;
             case Types.GROUP_SYSTEM_ETC:
                 propFile = getProp("system_etc");
@@ -217,6 +258,19 @@ public final class NodeProperties {
                 location = "/system/etc";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_etc";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "System Etc";
+                break;
+            case Types.GROUP_VENDOR_ETC:
+                propFile = getProp("vendor_etc");
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/vendor/etc";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "vendor_etc";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "Vendor Etc";
                 break;
             case Types.GROUP_SYSTEM_FRAMEWORK:
                 propFile = getProp("system_framework");
@@ -226,6 +280,63 @@ public final class NodeProperties {
                 location = "/system/framework";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_framework";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "System Framework";
+                break;
+            case Types.GROUP_VENDOR_FRAMEWORK:
+                propFile = getProp("vendor_framework");
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/vendor/framework";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "vendor_framework";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "Vendor Framework";
+                break;
+            case Types.GROUP_SYSTEM_LIB:
+                propFile = getProp("system_lib");
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/system/lib";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "system_lib";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "System Lib";
+                break;
+            case Types.GROUP_VENDOR_LIB:
+                propFile = getProp("vendor_lib");
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/vendor/lib";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "vendor_lib";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "Vendor Lib";
+                break;
+            case Types.GROUP_SYSTEM_LIB64:
+                propFile = getProp("system_lib64");
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/system/lib64";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "system_lib64";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "System Lib64";
+                break;
+            case Types.GROUP_VENDOR_LIB64:
+                propFile = getProp("vendor_lib64");
+                owner = "0";
+                group = "0";
+                perm = "0644";
+                location = "/vendor/lib64";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "vendor_lib64";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "Vendor Lib64";
                 break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
                 propFile = getProp("system_media_alarms");
@@ -236,6 +347,8 @@ public final class NodeProperties {
                 location = "/system/media/audio/alarms";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_alarms";
+                packageType = Types.PACKAGE_FILE;
+                folderMenuName = "Alarm Tones";
                 break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
                 propFile = getProp("system_media_notifications");
@@ -246,6 +359,8 @@ public final class NodeProperties {
                 location = "/system/media/audio/notifications";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_notifications";
+                packageType = Types.PACKAGE_FILE;
+                folderMenuName = "Notifications";
                 break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
                 propFile = getProp("system_media_ringtones");
@@ -256,6 +371,8 @@ public final class NodeProperties {
                 location = "/system/media/audio/ringtones";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_ringtones";
+                packageType = Types.PACKAGE_FILE;
+                folderMenuName = "Ringtones";
                 break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
                 propFile = getProp("system_media_ui");
@@ -266,6 +383,8 @@ public final class NodeProperties {
                 location = "/system/media/audio/ui";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_media_ui";
+                packageType = Types.PACKAGE_FILE;
+                folderMenuName = "UI Tones";
                 break;
             case Types.GROUP_SYSTEM_MEDIA:
                 propFile = getProp("system_media");
@@ -278,6 +397,8 @@ public final class NodeProperties {
                 setPermissions(owner, group, perm, "bootanimation.zip");
                 isBootAnimationGroup = true;
                 originalGroupType = typePrefix + "system_media";
+                packageType = Types.PACKAGE_SUBGROUP_FILE;
+                folderMenuName = "Boot Animations";
                 break;
             case Types.GROUP_SYSTEM_FONTS:
                 propFile = getProp("system_fonts");
@@ -289,6 +410,8 @@ public final class NodeProperties {
                 location = "/system/fonts";
                 setPermissions(owner, group, perm);
                 originalGroupType = typePrefix + "system_fonts";
+                packageType = Types.PACKAGE_SUBGROUP_FILE;
+                folderMenuName = "Fonts";
                 break;
             case Types.GROUP_DATA_APP:
                 propFile = getProp("data_app");
@@ -299,6 +422,8 @@ public final class NodeProperties {
                 location = "/data/app";
                 setPermissions(owner, group, perm, "base/apk");
                 originalGroupType = typePrefix + "data_app";
+                packageType = Types.PACKAGE_APP;
+                folderMenuName = "Data Apps";
                 break;
             case Types.GROUP_DATA_LOCAL:
                 propFile = getProp("data_local");
@@ -311,10 +436,14 @@ public final class NodeProperties {
                 setPermissions(owner, group, perm, "bootanimation.zip");
                 isBootAnimationGroup = true;
                 originalGroupType = typePrefix + "data_local";
+                packageType = Types.PACKAGE_SUBGROUP_FILE;
+                folderMenuName = "Boot Animations";
                 break;
             case Types.GROUP_CUSTOM:
                 propFile = getProp("custom");
                 isSelectBox = false;
+                packageType = Types.PACKAGE_CUSTOM;
+                folderMenuName = "Custom Files";
                 break;
             case Types.GROUP_MOD:
                 //following properties not needed but added.
@@ -328,12 +457,16 @@ public final class NodeProperties {
                 isSelectBox = true;
                 path = "META-INF/com/google/android/aroma/themes" + File.separator + title;
                 extension = "themes";
+                packageType = Types.PACKAGE_THEME;
+                folderMenuName = "Themes";
                 break;
             case Types.GROUP_DELETE_FILES:
                 propFile = getProp("delete");
                 isSelectBox = false;
                 extension = "delete";
                 originalGroupType = typePrefix + "delete";
+                packageType = Types.PACKAGE_DELETE_FILE;
+                folderMenuName = "Files/Folders to Delete";
                 break;
             case Types.GROUP_SCRIPT:
                 propFile = getProp("dpi");

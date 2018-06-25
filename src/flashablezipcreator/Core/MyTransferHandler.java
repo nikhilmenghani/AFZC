@@ -151,25 +151,14 @@ public class MyTransferHandler extends TransferHandler {
         Iterator i = data.iterator();
         while (i.hasNext()) {
             File f = (File) i.next();
-            switch (groupNode.prop.groupType) {
-                case Types.GROUP_SYSTEM:
-                case Types.GROUP_SYSTEM_APK:
-                case Types.GROUP_SYSTEM_PRIV_APK:
-                case Types.GROUP_DATA_APP:
-                case Types.GROUP_SYSTEM_BIN:
-                case Types.GROUP_SYSTEM_ETC:
-                case Types.GROUP_SYSTEM_FRAMEWORK:
+            switch (groupNode.prop.packageType) {
+                case Types.PACKAGE_FOLDER_FILE:
                     addFolderNode(groupNode, f);
                     break;
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
+                case Types.PACKAGE_FILE:
                     addFileNode(groupNode, f);
                     break;
-                case Types.GROUP_SYSTEM_FONTS:
-                case Types.GROUP_DATA_LOCAL:
-                case Types.GROUP_SYSTEM_MEDIA:
+                case Types.PACKAGE_SUBGROUP_FILE:
                     addSubGroupNode(groupNode, f);
                     break;
                 default:

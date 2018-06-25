@@ -180,7 +180,7 @@ public class Identify {
 
     public static String getPermissions(String customOriginalGroupType) {
         String str = customOriginalGroupType.substring(customOriginalGroupType.indexOf(permSeparator) + permSeparator.length(),
-                 customOriginalGroupType.length());
+                customOriginalGroupType.length());
         return str;
     }
 
@@ -213,6 +213,24 @@ public class Identify {
                 return Types.GROUP_SYSTEM_ETC;
             case "system_framework":
                 return Types.GROUP_SYSTEM_FRAMEWORK;
+            case "system_lib":
+                return Types.GROUP_SYSTEM_LIB;
+            case "system_lib64":
+                return Types.GROUP_SYSTEM_LIB64;
+            case "vendor":
+                return Types.GROUP_VENDOR;
+            case "vendor_app":
+                return Types.GROUP_VENDOR_APP;
+            case "vendor_bin":
+                return Types.GROUP_VENDOR_BIN;
+            case "vendor_etc":
+                return Types.GROUP_VENDOR_ETC;
+            case "vendor_framework":
+                return Types.GROUP_VENDOR_FRAMEWORK;
+            case "vendor_lib":
+                return Types.GROUP_VENDOR_LIB;
+            case "vendor_lib64":
+                return Types.GROUP_VENDOR_LIB64;
             case "script":
                 return Types.GROUP_SCRIPT;
             case "system_media_alarms":

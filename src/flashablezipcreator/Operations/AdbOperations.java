@@ -126,6 +126,8 @@ public class AdbOperations {
                 location = "/data/app";
             } else if (data[0].startsWith("/system/priv-app/")) {
                 location = "/system/priv-app";
+            } else if (data[0].startsWith("/vendor/app/")) {
+                location = "/vendor/app";
             }
             if (location.equals("") || !partitionList.contains(location)) {
                 continue;
@@ -157,6 +159,11 @@ public class AdbOperations {
         return Name;
     }
 
+    public static String getPackagePath(String pack){
+        ArrayList<String> list = runProcess(true, false, Commands.getAdbPackagePath(pack));
+        return list.get(0);
+    }
+    
     public static ArrayList<String> runProcess(boolean isWin, boolean wait, String... command) {
         System.out.print("command to run: ");
         String[] allCommand = null;

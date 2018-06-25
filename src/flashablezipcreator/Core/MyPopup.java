@@ -6,6 +6,7 @@
 package flashablezipcreator.Core;
 
 import flashablezipcreator.Adb.Adb;
+import flashablezipcreator.Gapps.Pico;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -82,7 +83,8 @@ public class MyPopup {
         });
         JMenuItem mitemAddGappsProject = new JMenuItem("Gapps");
         mitemAddGappsProject.addActionListener((ActionEvent ae) -> {
-            addQuickProjectObject(Types.PROJECT_GAPPS);
+            new Adb(Pico.getList());
+            //addQuickProjectObject(Types.PROJECT_GAPPS);
         });
         addProjectMenu.add(mitemAddAromaProject);
         addProjectMenu.add(mitemAddGappsProject);
@@ -122,6 +124,16 @@ public class MyPopup {
             addQuickGroupObject(Types.GROUP_SYSTEM_FRAMEWORK, node, "System Framework");
         });
 
+        JMenuItem mitemSystemLib = new JMenuItem("system/lib");
+        mitemSystemLib.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_SYSTEM_LIB, node, "System Lib");
+        });
+
+        JMenuItem mitemSystemLib64 = new JMenuItem("system/lib64");
+        mitemSystemLib64.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_SYSTEM_LIB64, node, "System Lib64");
+        });
+
         JMenuItem mitemDataApp = new JMenuItem("data/app");
         mitemDataApp.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_DATA_APP, node, "Data Apps");
@@ -154,6 +166,42 @@ public class MyPopup {
         mitemBootAnimLocal.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_DATA_LOCAL, node, "Boot Animations");
         });
+        
+        JMenuItem mitemVendor = new JMenuItem("vendor");
+        mitemVendor.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_VENDOR, node, "Vendor Files");
+        });
+        
+        JMenuItem mitemVendorApp = new JMenuItem("vendor/app");
+        mitemVendorApp.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_VENDOR_APP, node, "Vendor Apps");
+        });
+        
+        JMenuItem mitemVendorBin = new JMenuItem("vendor/bin");
+        mitemVendorBin.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_VENDOR_BIN, node, "Vendor Bin");
+        });
+        
+        JMenuItem mitemVendorEtc = new JMenuItem("vendor/etc");
+        mitemVendorEtc.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_VENDOR_ETC, node, "Vendor Etc");
+        });
+        
+        JMenuItem mitemVendorLib = new JMenuItem("vendor/lib");
+        mitemVendorLib.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_VENDOR_LIB, node, "Vendor Lib");
+        });
+        
+        JMenuItem mitemVendorLib64 = new JMenuItem("vendor/lib64");
+        mitemVendorLib64.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_VENDOR_LIB64, node, "Vendor Lib64");
+        });
+        
+        JMenuItem mitemVendorFramework = new JMenuItem("vendor/framework");
+        mitemVendorFramework.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_VENDOR_FRAMEWORK, node, "Vendor Framework");
+        });
+        
         JMenuItem mitemDeleteProject = new JMenuItem("Delete Project");
         mitemDeleteProject.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList);
@@ -184,6 +232,16 @@ public class MyPopup {
                 addSystemGroupMenu.add(mitemSystemBin);
                 addSystemGroupMenu.add(mitemSystemEtc);
                 addSystemGroupMenu.add(mitemSystemFramework);
+                addSystemGroupMenu.add(mitemSystemLib);
+                addSystemGroupMenu.add(mitemSystemLib64);
+                JMenu addVendorGroupMenu = new JMenu("Vendor Group");
+                addVendorGroupMenu.add(mitemVendor);
+                addVendorGroupMenu.add(mitemVendorApp);
+                addVendorGroupMenu.add(mitemVendorBin);
+                addVendorGroupMenu.add(mitemVendorEtc);
+                addVendorGroupMenu.add(mitemVendorFramework);
+                addVendorGroupMenu.add(mitemVendorLib);
+                addVendorGroupMenu.add(mitemVendorLib64);
                 JMenu addDataGroupMenu = new JMenu("Data Group");
                 addDataGroupMenu.add(mitemDataApp);
                 JMenu addFontsGroupMenu = new JMenu("Fonts Group");
@@ -205,6 +263,7 @@ public class MyPopup {
                     addName(Types.GROUP_CUSTOM, node);
                 });
                 addGroupMenu.add(addSystemGroupMenu);
+                addGroupMenu.add(addVendorGroupMenu);
                 addGroupMenu.add(addDataGroupMenu);
                 addGroupMenu.add(addFontsGroupMenu);
                 addGroupMenu.add(addTonesGroupMenu);
@@ -230,19 +289,11 @@ public class MyPopup {
         GroupNode node = (GroupNode) nodeList.get(0);
         JMenuItem mitemAddSubGroup = null;
         JMenuItem mitemAddFromDevice = null;
-        int groupType = ((GroupNode) node).prop.groupType;
-        switch (groupType) {
-            case Types.GROUP_SYSTEM_FONTS:
-                mitemAddSubGroup = new JMenuItem("Add Fonts");
-                break;
-            case Types.GROUP_DATA_LOCAL:
-                mitemAddSubGroup = new JMenuItem("Add Boot Animation");
-                break;
-            case Types.GROUP_SYSTEM_MEDIA:
-                mitemAddSubGroup = new JMenuItem("Add Boot Animation");
-                break;
+        int groupType = (node).prop.groupType;
+        switch (node.prop.packageType) {
+            case Types.PACKAGE_SUBGROUP_FILE:
             case Types.GROUP_DELETE_FILES:
-                mitemAddSubGroup = new JMenuItem("Add Files/Folders to Delete");
+                mitemAddSubGroup = new JMenuItem("Add " + node.prop.folderMenuName);
                 break;
             default:
                 mitemAddSubGroup = new JMenuItem("Add SubGroup");
@@ -298,80 +349,28 @@ public class MyPopup {
         });
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
-            switch (((GroupNode) node).prop.groupType) {
-                case Types.GROUP_SYSTEM:
-                case Types.GROUP_SYSTEM_APK:
-                case Types.GROUP_SYSTEM_PRIV_APK:
-                case Types.GROUP_SYSTEM_ETC:
-                case Types.GROUP_SYSTEM_FRAMEWORK:
-                case Types.GROUP_DATA_APP:
-                case Types.GROUP_CUSTOM:
+            switch (node.prop.packageType) {
+                case Types.PACKAGE_APP:
+                case Types.PACKAGE_FOLDER_FILE:
                     popup.add(mitemAddFolder);
+                case Types.PACKAGE_FILE:
+                    mitemAddFromDevice = new JMenuItem("Add " + node.prop.folderMenuName + " From Device");
+                case Types.PACKAGE_THEME:
                     popup.add(mitemAddFile);
                     break;
-                case Types.GROUP_SYSTEM_BIN:
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-                case Types.GROUP_AROMA_THEMES:
-                    popup.add(mitemAddFile);
-                    break;
-                case Types.GROUP_SYSTEM_FONTS:
-                case Types.GROUP_DATA_LOCAL:
-                case Types.GROUP_SYSTEM_MEDIA:
-                case Types.GROUP_DELETE_FILES:
+                case Types.PACKAGE_SUBGROUP_FILE:
+                    mitemAddFromDevice = new JMenuItem("Add " + node.prop.folderMenuName + " From Device");
+                case Types.PACKAGE_DELETE_FILE:
                     popup.add(mitemAddSubGroup);
                     break;
-            }
-            switch (((GroupNode) node).prop.groupType) {
-                case Types.GROUP_SYSTEM:
-                    break;
-                case Types.GROUP_SYSTEM_APK:
-                    mitemAddFromDevice = new JMenuItem("Add System Apps From Device");
-                    break;
-                case Types.GROUP_SYSTEM_PRIV_APK:
-                    mitemAddFromDevice = new JMenuItem("Add Priv-Apps From Device");
-                    break;
-                case Types.GROUP_SYSTEM_ETC:
-                    break;
-                case Types.GROUP_SYSTEM_FRAMEWORK:
-                    break;
-                case Types.GROUP_DATA_APP:
-                    mitemAddFromDevice = new JMenuItem("Add Data Apps From Device");
-                    break;
-                case Types.GROUP_CUSTOM:
-                    break;
-                case Types.GROUP_SYSTEM_BIN:
-                    break;
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                    mitemAddFromDevice = new JMenuItem("Add Alarm Tones From Device");
-                    break;
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                    mitemAddFromDevice = new JMenuItem("Add Notification Tones From Device");
-                    break;
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                    mitemAddFromDevice = new JMenuItem("Add Ringtones From Device");
-                    break;
-                case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-                    mitemAddFromDevice = new JMenuItem("Add UI Tones From Device");
-                    break;
-                case Types.GROUP_AROMA_THEMES:
-                    break;
-                case Types.GROUP_SYSTEM_FONTS:
-                    mitemAddFromDevice = new JMenuItem("Add Fonts From Device");
-                    break;
-                case Types.GROUP_DATA_LOCAL:
-                case Types.GROUP_SYSTEM_MEDIA:
-                    mitemAddFromDevice = new JMenuItem("Add Boot Animation From Device");
-                    break;
-                case Types.GROUP_DELETE_FILES:
+                case Types.PACKAGE_CUSTOM:
+                    popup.add(mitemAddFolder);
                     break;
             }
             if (mitemAddFromDevice != null) {
                 mitemAddFromDevice.addActionListener(
                         (ActionEvent ae) -> {
-                            new Adb(groupType, node);
+                            new Adb(node);
                         }
                 );
                 popup.add(mitemAddFromDevice);
@@ -465,10 +464,8 @@ public class MyPopup {
                 GroupNode gNode = (GroupNode) node;
                 for (File tempFile : MyFileFilter.getSelectedFiles(gNode.prop.extension)) {
                     FileNode fnode;
-                    switch (gNode.prop.groupType) {
-                        case Types.GROUP_SYSTEM_APK:
-                        case Types.GROUP_SYSTEM_PRIV_APK:
-                        case Types.GROUP_DATA_APP:
+                    switch (gNode.prop.packageType) {
+                        case Types.PACKAGE_APP:
                             String folderName = tempFile.getName().replaceFirst("[.][^.]+$", "");
                             //it is okay to remove following condition as this is handled directly while creating folder node
                             if (gNode.prop.groupType == Types.GROUP_DATA_APP) {

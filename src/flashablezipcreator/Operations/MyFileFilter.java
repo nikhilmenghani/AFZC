@@ -28,6 +28,9 @@ public class MyFileFilter {
                     filter = new ThemesFilter();
                     break;
                 case "folder":
+                    fileChooser = new JFileChooser();
+                    fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                    fileChooser.setMultiSelectionEnabled(true);
                     filter = fileChooser.getFileFilter();
                     break;
                 default:

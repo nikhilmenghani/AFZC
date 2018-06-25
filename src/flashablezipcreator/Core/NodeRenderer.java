@@ -67,6 +67,8 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
                         case Types.GROUP_SYSTEM_BIN:
                         case Types.GROUP_SYSTEM_ETC:
                         case Types.GROUP_SYSTEM_FRAMEWORK:
+                        case Types.GROUP_SYSTEM_LIB:
+                        case Types.GROUP_SYSTEM_LIB64:
                             setIcon(iconSystemGroup);
                             break;
                         case Types.GROUP_DATA_APP:

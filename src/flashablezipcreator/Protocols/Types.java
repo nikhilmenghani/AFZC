@@ -44,5 +44,22 @@ public class Types {
     public static final int GROUP_AROMA_THEMES = 37;
     public static final int GROUP_DELETE_FILES = 38;
     public static final int GROUP_SCRIPT = 39;
+    public static final int GROUP_SYSTEM_LIB = 40;
+    public static final int GROUP_SYSTEM_LIB64 = 41;
+    public static final int GROUP_VENDOR = 42;
+    public static final int GROUP_VENDOR_APP = 43;
+    public static final int GROUP_VENDOR_BIN = 44;
+    public static final int GROUP_VENDOR_ETC = 45;
+    public static final int GROUP_VENDOR_LIB = 46;
+    public static final int GROUP_VENDOR_LIB64 = 47;
+    public static final int GROUP_VENDOR_FRAMEWORK = 48;
     
+    public static final int PACKAGE_FILE = 81;
+    public static final int PACKAGE_APP = 82;
+    public static final int PACKAGE_THEME = 83;
+    public static final int PACKAGE_SUBGROUP_FILE = 84;
+    public static final int PACKAGE_DELETE_FILE = 85;
+    public static final int PACKAGE_FOLDER_FILE = 86;
+    public static final int PACKAGE_CUSTOM = 87;
+    public static final int PACKAGE_SCRIPT = 88;
 }

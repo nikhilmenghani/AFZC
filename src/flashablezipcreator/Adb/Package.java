@@ -5,13 +5,6 @@
  */
 package flashablezipcreator.Adb;
 
-import flashablezipcreator.Core.FileNode;
-import flashablezipcreator.Operations.TreeOperations;
-import flashablezipcreator.Protocols.Identify;
-import flashablezipcreator.Protocols.Logs;
-import flashablezipcreator.Protocols.Mod;
-import flashablezipcreator.Protocols.Types;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +20,7 @@ public class Package {
     public boolean pullFolder = false;
     public String packageName = "";
     boolean hasDataPath = false;
+    public String updatedInstalledPath = "";
     public ArrayList<String> associatedFileList = new ArrayList<>();
     //customize/aroma_0/Project_My Project/Type_system_fonts/Group_Fonts/SubGroup_ComicSansMS/DroidSansFallback.ttf
 
@@ -67,6 +61,49 @@ public class Package {
                     ? installedPath.substring("/system/framework/".length(), installedPath.lastIndexOf("/")) : "";
             groupName = "Group_" + "System Framework";
             groupType = "Type_" + "system_framework";
+        } else if (installedPath.startsWith("/system/lib/")) {
+            foldersPath = (installedPath.lastIndexOf("/") > "/system/lib/".length())
+                    ? installedPath.substring("/system/lib/".length(), installedPath.lastIndexOf("/")) : "";
+            groupName = "Group_" + "System Lib";
+            groupType = "Type_" + "system_lib";
+        } else if (installedPath.startsWith("/system/lib64")) {
+            foldersPath = (installedPath.lastIndexOf("/") > "/system/lib64/".length())
+                    ? installedPath.substring("/system/lib64/".length(), installedPath.lastIndexOf("/")) : "";
+            groupName = "Group_" + "System Lib64";
+            groupType = "Type_" + "system_lib64";
+        } else if (folderPath.equals("/vendor")) {
+            groupName = "Group_" + "Vendor Files";
+            groupType = "Type_" + "vendor";
+        } else if (installedPath.startsWith("/vendor/app")) {
+            foldersPath = (installedPath.lastIndexOf("/") > "/vendor/app/".length())
+                    ? installedPath.substring("/vendor/app/".length(), installedPath.lastIndexOf("/")) : "";
+            groupName = "Group_" + "Vendor Apps";
+            groupType = "Type_" + "vendor_app";
+        } else if (installedPath.startsWith("/vendor/bin")) {
+            foldersPath = (installedPath.lastIndexOf("/") > "/vendor/bin/".length())
+                    ? installedPath.substring("/vendor/bin/".length(), installedPath.lastIndexOf("/")) : "";
+            groupName = "Group_" + "Vendor Bin";
+            groupType = "Type_" + "vendor_bin";
+        } else if (installedPath.startsWith("/vendor/etc")) {
+            foldersPath = (installedPath.lastIndexOf("/") > "/vendor/etc/".length())
+                    ? installedPath.substring("/vendor/etc/".length(), installedPath.lastIndexOf("/")) : "";
+            groupName = "Group_" + "Vendor Etc";
+            groupType = "Type_" + "vendor_etc";
+        } else if (installedPath.startsWith("/vendor/framework")) {
+            foldersPath = (installedPath.lastIndexOf("/") > "/vendor/framework/".length())
+                    ? installedPath.substring("/vendor/framework/".length(), installedPath.lastIndexOf("/")) : "";
+            groupName = "Group_" + "Vendor Framework";
+            groupType = "Type_" + "vendor_framework";
+        } else if (installedPath.startsWith("/vendor/lib/")) {
+            foldersPath = (installedPath.lastIndexOf("/") > "/vendor/lib/".length())
+                    ? installedPath.substring("/vendor/lib/".length(), installedPath.lastIndexOf("/")) : "";
+            groupName = "Group_" + "Vendor Lib";
+            groupType = "Type_" + "vendor_lib";
+        } else if (installedPath.startsWith("/vendor/lib64")) {
+            foldersPath = (installedPath.lastIndexOf("/") > "/vendor/lib64/".length())
+                    ? installedPath.substring("/vendor/lib64/".length(), installedPath.lastIndexOf("/")) : "";
+            groupName = "Group_" + "Vendor Lib64";
+            groupType = "Type_" + "vendor_lib64";
         } else if (installedPath.startsWith("/system/media/audio/alarms")) {
             groupName = "Group_" + "Alarm Tones";
             groupType = "Type_" + "system_media_alarms";
@@ -148,9 +185,44 @@ public class Package {
             foldersPath = installedPath.substring("/system/etc/".length(), installedPath.length());
             groupName = "System Etc";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
+        } else if (installedPath.startsWith("/system/lib/")) {
+            foldersPath = installedPath.substring("/system/lib/".length(), installedPath.length());
+            groupName = "System Lib";
+            filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
+        } else if (installedPath.startsWith("/system/lib64")) {
+            foldersPath = installedPath.substring("/system/lib64/".length(), installedPath.length());
+            groupName = "System Lib64";
+            filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/framework")) {
             foldersPath = installedPath.substring("/system/framework/".length(), installedPath.length());
             groupName = "System Framework";
+            filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
+        } else if (folderPath.equals("/vendor")) {
+            groupName = "Vendor Files";
+            filePath += groupName + "\\" + f.getName();
+        } else if (installedPath.startsWith("/vendor/app")) {
+            foldersPath = installedPath.substring("/vendor/app/".length(), installedPath.length());
+            groupName = "Vendor Apps";
+            filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
+        } else if (installedPath.startsWith("/vendor/bin")) {
+            foldersPath = installedPath.substring("/vendor/bin/".length(), installedPath.length());
+            groupName = "Vendor Bin";
+            filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
+        } else if (installedPath.startsWith("/vendor/etc")) {
+            foldersPath = installedPath.substring("/vendor/etc/".length(), installedPath.length());
+            groupName = "Vendor Etc";
+            filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
+        } else if (installedPath.startsWith("/vendor/lib/")) {
+            foldersPath = installedPath.substring("/vendor/lib/".length(), installedPath.length());
+            groupName = "Vendor Lib";
+            filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
+        } else if (installedPath.startsWith("/vendor/lib64")) {
+            foldersPath = installedPath.substring("/vendor/lib64/".length(), installedPath.length());
+            groupName = "Vendor Lib64";
+            filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
+        } else if (installedPath.startsWith("/vendor/framework")) {
+            foldersPath = installedPath.substring("/vendor/framework/".length(), installedPath.length());
+            groupName = "Vendor Framework";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/media/audio/alarms")) {
             groupName = "Alarm Tones";
@@ -192,7 +264,7 @@ public class Package {
         }
         return filePath;
     }
-    
+
     public String getDataPath() {
         return "/data/app/" + packageName;
     }
