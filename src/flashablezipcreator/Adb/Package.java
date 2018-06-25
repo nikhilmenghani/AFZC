@@ -51,6 +51,11 @@ public class Package {
                     ? installedPath.substring("/system/bin/".length(), installedPath.lastIndexOf("/")) : "";
             groupName = "Group_" + "System Bin";
             groupType = "Type_" + "system_bin";
+        } else if (installedPath.startsWith("/system/xbin")) {
+            foldersPath = (installedPath.lastIndexOf("/") > "/system/xbin/".length())
+                    ? installedPath.substring("/system/xbin/".length(), installedPath.lastIndexOf("/")) : "";
+            groupName = "Group_" + "System xBin";
+            groupType = "Type_" + "system_xbin";
         } else if (installedPath.startsWith("/system/etc")) {
             foldersPath = (installedPath.lastIndexOf("/") > "/system/etc/".length())
                     ? installedPath.substring("/system/etc/".length(), installedPath.lastIndexOf("/")) : "";
@@ -180,6 +185,10 @@ public class Package {
         } else if (installedPath.startsWith("/system/bin")) {
             foldersPath = installedPath.substring("/system/bin/".length(), installedPath.length());
             groupName = "System Bin";
+            filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
+        } else if (installedPath.startsWith("/system/xbin")) {
+            foldersPath = installedPath.substring("/system/xbin/".length(), installedPath.length());
+            groupName = "System xBin";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/etc")) {
             foldersPath = installedPath.substring("/system/etc/".length(), installedPath.length());

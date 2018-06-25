@@ -209,6 +209,8 @@ public class Identify {
                 return Types.GROUP_SYSTEM_PRIV_APK;
             case "system_bin":
                 return Types.GROUP_SYSTEM_BIN;
+            case "system_xbin":
+                return Types.GROUP_SYSTEM_XBIN;
             case "system_etc":
                 return Types.GROUP_SYSTEM_ETC;
             case "system_framework":

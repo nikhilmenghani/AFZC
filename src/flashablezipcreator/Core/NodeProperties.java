@@ -239,6 +239,17 @@ public final class NodeProperties {
                 packageType = Types.PACKAGE_FOLDER_FILE;
                 folderMenuName = "System Bin";
                 break;
+            case Types.GROUP_SYSTEM_XBIN:
+                propFile = getProp("system_xbin");
+                owner = "0";
+                group = "2000";
+                perm = "0755";
+                location = "/system/xbin";
+                setPermissions(owner, group, perm);
+                originalGroupType = typePrefix + "system_xbin";
+                packageType = Types.PACKAGE_FOLDER_FILE;
+                folderMenuName = "System xBin";
+                break;
             case Types.GROUP_VENDOR_BIN:
                 propFile = getProp("vendor_bin");
                 owner = "0";

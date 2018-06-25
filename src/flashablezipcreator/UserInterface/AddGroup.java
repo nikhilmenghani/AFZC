@@ -87,6 +87,13 @@ public class AddGroup extends javax.swing.JFrame {
                 perm = "0755";
                 title = "System Bin Group";
                 break;
+            case Types.GROUP_SYSTEM_XBIN:
+                location = "/system/xbin";
+                owner = "0";
+                group = "2000";
+                perm = "0755";
+                title = "System xBin Group";
+                break;
             case Types.GROUP_SYSTEM_ETC:
                 location = "/system/etc";
                 owner = "0";

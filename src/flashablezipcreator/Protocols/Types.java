@@ -53,6 +53,7 @@ public class Types {
     public static final int GROUP_VENDOR_LIB = 46;
     public static final int GROUP_VENDOR_LIB64 = 47;
     public static final int GROUP_VENDOR_FRAMEWORK = 48;
+    public static final int GROUP_SYSTEM_XBIN = 49;
     
     public static final int PACKAGE_FILE = 81;
     public static final int PACKAGE_APP = 82;

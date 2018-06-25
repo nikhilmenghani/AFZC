@@ -118,6 +118,11 @@ public class MyPopup {
         mitemSystemBin.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_SYSTEM_BIN, node, "System Bin");
         });
+        
+        JMenuItem mitemSystemXBin = new JMenuItem("system/xbin");
+        mitemSystemBin.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_SYSTEM_XBIN, node, "System xBin");
+        });
 
         JMenuItem mitemSystemFramework = new JMenuItem("system/framework");
         mitemSystemFramework.addActionListener((ActionEvent ae) -> {
@@ -230,6 +235,7 @@ public class MyPopup {
                 addSystemGroupMenu.add(mitemSystemApp);
                 addSystemGroupMenu.add(mitemPrivApp);
                 addSystemGroupMenu.add(mitemSystemBin);
+                addSystemGroupMenu.add(mitemSystemXBin);
                 addSystemGroupMenu.add(mitemSystemEtc);
                 addSystemGroupMenu.add(mitemSystemFramework);
                 addSystemGroupMenu.add(mitemSystemLib);

@@ -65,6 +65,7 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
                         case Types.GROUP_SYSTEM_APK:
                         case Types.GROUP_SYSTEM_PRIV_APK:
                         case Types.GROUP_SYSTEM_BIN:
+                        case Types.GROUP_SYSTEM_XBIN:
                         case Types.GROUP_SYSTEM_ETC:
                         case Types.GROUP_SYSTEM_FRAMEWORK:
                         case Types.GROUP_SYSTEM_LIB:
