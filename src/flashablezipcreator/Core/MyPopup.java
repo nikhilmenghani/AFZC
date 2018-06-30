@@ -83,7 +83,7 @@ public class MyPopup {
         });
         JMenuItem mitemAddGappsProject = new JMenuItem("Gapps");
         mitemAddGappsProject.addActionListener((ActionEvent ae) -> {
-            new Adb(Pico.getList());
+            new Adb(Pico.getList(), MyTree.rootNode);
             //addQuickProjectObject(Types.PROJECT_GAPPS);
         });
         addProjectMenu.add(mitemAddAromaProject);
@@ -118,7 +118,7 @@ public class MyPopup {
         mitemSystemBin.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_SYSTEM_BIN, node, "System Bin");
         });
-        
+
         JMenuItem mitemSystemXBin = new JMenuItem("system/xbin");
         mitemSystemBin.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_SYSTEM_XBIN, node, "System xBin");
@@ -171,42 +171,42 @@ public class MyPopup {
         mitemBootAnimLocal.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_DATA_LOCAL, node, "Boot Animations");
         });
-        
+
         JMenuItem mitemVendor = new JMenuItem("vendor");
         mitemVendor.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_VENDOR, node, "Vendor Files");
         });
-        
+
         JMenuItem mitemVendorApp = new JMenuItem("vendor/app");
         mitemVendorApp.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_VENDOR_APP, node, "Vendor Apps");
         });
-        
+
         JMenuItem mitemVendorBin = new JMenuItem("vendor/bin");
         mitemVendorBin.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_VENDOR_BIN, node, "Vendor Bin");
         });
-        
+
         JMenuItem mitemVendorEtc = new JMenuItem("vendor/etc");
         mitemVendorEtc.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_VENDOR_ETC, node, "Vendor Etc");
         });
-        
+
         JMenuItem mitemVendorLib = new JMenuItem("vendor/lib");
         mitemVendorLib.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_VENDOR_LIB, node, "Vendor Lib");
         });
-        
+
         JMenuItem mitemVendorLib64 = new JMenuItem("vendor/lib64");
         mitemVendorLib64.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_VENDOR_LIB64, node, "Vendor Lib64");
         });
-        
+
         JMenuItem mitemVendorFramework = new JMenuItem("vendor/framework");
         mitemVendorFramework.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_VENDOR_FRAMEWORK, node, "Vendor Framework");
         });
-        
+
         JMenuItem mitemDeleteProject = new JMenuItem("Delete Project");
         mitemDeleteProject.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList);

@@ -7,6 +7,7 @@ package flashablezipcreator.Operations;
 
 import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.Adb.Package;
+import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.Protocols.Commands;
 import flashablezipcreator.Protocols.Logs;
 import java.io.BufferedReader;
@@ -61,6 +62,24 @@ public class AdbOperations {
         } else {
             return "";
         }
+    }
+
+    public static boolean pullFile(String pullFrom, String pullTo) {
+        java.io.File sFile = new java.io.File(pullTo);
+        Write w = new Write();
+        String absolutePath = sFile.getAbsolutePath();
+        sFile = new java.io.File(absolutePath);
+        w.createFolders(sFile.getParent());
+        ArrayList<String> pullList = runProcess(true, false, Commands.getAdbPull(pullFrom, pullTo));
+        if (pullList.get(0).startsWith("adb: error:")) {
+            Adb.logs += pullFrom + ": " + pullList.get(0) + Logs.newLine;
+            return false;
+        }
+        //adb: error: failed to stat remote object ' not running. starting it now at tcp:5037 *': No such file or directory
+        //for (String str : pullList) {
+            //System.out.println(str);
+        //}
+        return true;
     }
 
     public static ArrayList<String> getFileList(String folderPath) {
@@ -159,11 +178,11 @@ public class AdbOperations {
         return Name;
     }
 
-    public static String getPackagePath(String pack){
+    public static String getPackagePath(String pack) {
         ArrayList<String> list = runProcess(true, false, Commands.getAdbPackagePath(pack));
         return list.get(0);
     }
-    
+
     public static ArrayList<String> runProcess(boolean isWin, boolean wait, String... command) {
         System.out.print("command to run: ");
         String[] allCommand = null;

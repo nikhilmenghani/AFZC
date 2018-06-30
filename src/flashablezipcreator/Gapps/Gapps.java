@@ -61,7 +61,7 @@ public class Gapps {
         files.associatedFileList.add("/system/lib64/libfacenet.so");
         files.associatedFileList.add("/system/lib64/libfilterpack_facedetect.so");
         files.associatedFileList.add("/system/lib64/libfrsdk.so");
-//        files.associatedFileList.add("/vendor/lib/libfrsdk.so");
-//        files.associatedFileList.add("/vendor/lib64/libfrsdk.so");
+        files.associatedFileList.add("/vendor/lib/libfrsdk.so");
+        files.associatedFileList.add("/vendor/lib64/libfrsdk.so");
     }
 }

@@ -5,6 +5,11 @@
  */
 package flashablezipcreator.Adb;
 
+import flashablezipcreator.Core.ProjectItemNode;
+import flashablezipcreator.Operations.TreeOperations;
+import flashablezipcreator.Protocols.Identify;
+import flashablezipcreator.Protocols.Types;
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -164,108 +169,116 @@ public class Package {
         return filePath;
     }
 
-    public String getImportFilePath(String installedPath) {
-        String filePath = "AFZC Projects\\My Device\\";
-        String groupName = "";
-        String subGroupName = "";
+    public String getImportFilePath(String installedPath, ProjectItemNode parent) {
+        String zipPath = getZipPath(installedPath);
+        if (zipPath.equals("")) {
+            return "";
+        }
+        String projectName = Identify.getProjectName(zipPath);
+        String groupName = Identify.getGroupName(zipPath);
+        int groupType = Identify.getGroupType(zipPath);
+        String originalGroupType = "";
+        if (groupType == Types.GROUP_CUSTOM) {
+            try {
+                originalGroupType = Identify.getOriginalGroupType(zipPath);
+            } catch (Exception e) {
+                originalGroupType = "";
+            }
+        }
+        ArrayList<String> folderList = Identify.getFolderNames(zipPath, Types.PROJECT_AROMA);
+        String subGroupName = Identify.getSubGroupName(groupName, zipPath);
+        int subGroupType = groupType; //Groups that have subGroups have same type.
+        String fName = (new File(zipPath)).getName();
+        TreeOperations to = new TreeOperations();
+        switch (parent.prop.type) {
+            case Types.NODE_PROJECT:
+                projectName = parent.prop.projectName;
+                break;
+            case Types.NODE_GROUP:
+                projectName = parent.prop.projectName;
+                groupName = parent.prop.groupName;
+                groupType = parent.prop.groupType;
+                break;
+            case Types.NODE_SUBGROUP:
+                projectName = parent.prop.projectName;
+                groupName = parent.prop.groupName;
+                groupType = parent.prop.groupType;
+                subGroupName = parent.prop.subGroupName;
+                subGroupType = parent.prop.subGroupType;
+                break;
+        }
         java.io.File f = new java.io.File(installedPath);
         String folderPath = f.getParent().replaceAll("\\\\", "/");
         String foldersPath = "";
+        String filePath = "AFZC Projects\\" + projectName + "\\";
         if (folderPath.equals("/system")) {
-            groupName = "System Files";
             filePath += groupName + "\\" + f.getName();
         } else if (installedPath.startsWith("/system/app")) {
             foldersPath = installedPath.substring("/system/app/".length(), installedPath.length());
-            groupName = "System Apps";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/priv-app")) {
             foldersPath = installedPath.substring("/system/priv-app/".length(), installedPath.length());
-            groupName = "Priv Apps";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/bin")) {
             foldersPath = installedPath.substring("/system/bin/".length(), installedPath.length());
-            groupName = "System Bin";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/xbin")) {
             foldersPath = installedPath.substring("/system/xbin/".length(), installedPath.length());
-            groupName = "System xBin";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/etc")) {
             foldersPath = installedPath.substring("/system/etc/".length(), installedPath.length());
-            groupName = "System Etc";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/lib/")) {
             foldersPath = installedPath.substring("/system/lib/".length(), installedPath.length());
-            groupName = "System Lib";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/lib64")) {
             foldersPath = installedPath.substring("/system/lib64/".length(), installedPath.length());
-            groupName = "System Lib64";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/framework")) {
             foldersPath = installedPath.substring("/system/framework/".length(), installedPath.length());
-            groupName = "System Framework";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (folderPath.equals("/vendor")) {
-            groupName = "Vendor Files";
             filePath += groupName + "\\" + f.getName();
         } else if (installedPath.startsWith("/vendor/app")) {
             foldersPath = installedPath.substring("/vendor/app/".length(), installedPath.length());
-            groupName = "Vendor Apps";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/vendor/bin")) {
             foldersPath = installedPath.substring("/vendor/bin/".length(), installedPath.length());
-            groupName = "Vendor Bin";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/vendor/etc")) {
             foldersPath = installedPath.substring("/vendor/etc/".length(), installedPath.length());
-            groupName = "Vendor Etc";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/vendor/lib/")) {
             foldersPath = installedPath.substring("/vendor/lib/".length(), installedPath.length());
-            groupName = "Vendor Lib";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/vendor/lib64")) {
             foldersPath = installedPath.substring("/vendor/lib64/".length(), installedPath.length());
-            groupName = "Vendor Lib64";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/vendor/framework")) {
             foldersPath = installedPath.substring("/vendor/framework/".length(), installedPath.length());
-            groupName = "Vendor Framework";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/media/audio/alarms")) {
-            groupName = "Alarm Tones";
             filePath += groupName + "\\" + f.getName();
         } else if (installedPath.startsWith("/system/media/audio/notifications")) {
-            groupName = "Notifications";
             filePath += groupName + "\\" + f.getName();
         } else if (installedPath.startsWith("/system/media/audio/ringtones")) {
-            groupName = "Ringtones";
             filePath += groupName + "\\" + f.getName();
         } else if (installedPath.startsWith("/system/media/audio/ui")) {
-            groupName = "UI Tones";
             filePath += groupName + "\\" + f.getName();
         } else if (installedPath.startsWith("/system/fonts")) {
-            subGroupName = "System Fonts";
-            groupName = "Fonts";
             filePath += groupName + "\\" + subGroupName + "\\" + f.getName();
         } else if (folderPath.equals("/system/media") && f.getName().equals("bootanimation.zip")) {
-            subGroupName = "System BootAnimation";
-            groupName = "Boot Animations";
             filePath += groupName + "\\" + subGroupName + "\\" + f.getName();
         } else if (installedPath.startsWith("/data/app")) {
             //make changes
             foldersPath = installedPath.substring("/data/app/".length(), installedPath.length());
             if (!foldersPath.contains("/")) {
-                String fName = f.getName();
-                String folderName = fName.contains("-") ? fName.substring(0, fName.indexOf("-")) : fName.replaceFirst("[.][^.]+$", "");
+                String fileName = f.getName();
+                String folderName = fileName.contains("-") ? fileName.substring(0, fileName.indexOf("-")) : fileName.replaceFirst("[.][^.]+$", "");
                 foldersPath = folderName + "-1/" + installedPath.substring("/data/app/".length(), installedPath.length());
             }
-            groupName = "Data Apps";
             filePath += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (folderPath.equals("/data/local")) {
-            subGroupName = "System BootAnimation";
-            groupName = "Boot Animations";
             filePath += groupName + "\\" + subGroupName + "\\" + f.getName();
         } else {
             //Custom Files Not Supported so returning empty
