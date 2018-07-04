@@ -71,7 +71,7 @@ public class AromaConfig {
                 case Types.PROJECT_AROMA:
                 case Types.PROJECT_CUSTOM:
                 case Types.PROJECT_MOD:
-                    str += op.addCheckBox((GroupNode) group);
+                    str += op.addForm((GroupNode) group);
                     str += op.addSelectBox((GroupNode) group);
                     break;
             }
