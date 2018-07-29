@@ -292,6 +292,7 @@ public class AromaScriptOperations {
             case Types.PACKAGE_APP:
             case Types.PACKAGE_FOLDER_FILE:
             case Types.PACKAGE_DELETE_FILE:
+            case Types.PACKAGE_FILE:
                 str += "\nform(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                         + "\"inclorexcl\",\"Choose to include or exclude the files below\",\"\",\"group\",\n"
                         + "\"1\",\"Include\",\"Choose the files you WANT installed from the list below.\",\"select.selected\",\n"
@@ -300,25 +301,12 @@ public class AromaScriptOperations {
                 for (int i = 0; i < node.getChildCount(); i++) {
                     switch (node.getChildAt(i).prop.type) {
                         case Types.NODE_FOLDER:
-                            str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FolderNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
+                            str += ",\n\"" + "item." + (i + 1) + "\", \"" + ((FolderNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
                             break;
                         case Types.NODE_FILE:
-                            str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
+                            str += ",\n\"" + "item." + (i + 1) + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
                             break;
                     }
-                }
-                str += ");\n";
-                str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
-                break;
-            //following might not be required, will try to merge it in above case itself.
-            case Types.PACKAGE_FILE:
-                str += "\nform(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
-                        + "\"inclorexcl\",\"Choose to include or exclude the files below\",\"\",\"group\",\n"
-                        + "\"1\",\"Include\",\"Choose the files you WANT installed from the list below.\",\"select.selected\",\n"
-                        + "\"0\",\"Exclude\",\"Choose the files you DON'T WANT installed from the list below.\",\"select\",\n"
-                        + "\"" + node.prop.title + "\",\"Choose GApps which you want to add on install/exclude list\",\"\", \"group\"";
-                for (int i = 0; i < node.getChildCount(); i++) {
-                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
                 }
                 str += ");\n";
                 str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";

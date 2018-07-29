@@ -15,6 +15,7 @@ import flashablezipcreator.UserInterface.Preference;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.FlashableZipCreator;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Script;
 import flashablezipcreator.Protocols.Types;
 import java.io.FileNotFoundException;
@@ -160,6 +161,29 @@ public class UpdateBinaryOperations {
                     str += "set_perm " + ((FileNode) child).prop.filePermission + "\n";
                 }
                 str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
+            }
+        }
+        return str;
+    }
+
+    public String addAromaFolderGroupScript(GroupNode node) {
+        String str = "";
+        if (node.isCheckBox()) {
+            int count = 1;
+            for (ProjectItemNode child : node.prop.children) {
+                str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item." + count++ + ") == $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" inclorexcl) ]; then\n";
+                if (child.prop.type == Types.NODE_FOLDER) {
+                    str += addPrintString(child.prop.title, installString);
+                    str = getFolderScript(str, child);
+                } else if (child.prop.type == Types.NODE_FILE) {
+                    str += addPrintString(child.prop.title, copyString);
+                    str += "package_extract_file \"" + ((FileNode) child).prop.fileZipPath + "\" \"" + ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title + "\"\n";
+                    if (((FileNode) child).prop.setPermissions) {
+                        str += "set_perm " + ((FileNode) child).prop.filePermission + "\n";
+                    }
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
+                }
+                str += "fi;\n";
             }
         }
         return str;
@@ -439,16 +463,18 @@ public class UpdateBinaryOperations {
     }
 
     public String generateUpdaterScript(GroupNode node) {
+        Logs.write("Generate Updater Script \n" + node.prop.title + " " + node.prop.packageType);
         switch (node.prop.packageType) {
             //Group of predefined locations
             case Types.PACKAGE_FOLDER_FILE:
+            case Types.PACKAGE_APP:
+            case Types.PACKAGE_FILE:
+            case Types.PACKAGE_DELETE_FILE:
                 if (Preference.pp.createZipType.equals("Aroma")) {
-                    return predefinedAromaFolderGroupScript(node);
+                    return addAromaFolderGroupScript(node);
                 } else if (Preference.pp.createZipType.equals("Normal")) {
                     return predefinedNormalFolderGroupScript(node);
                 }
-            case Types.PACKAGE_FILE:
-            case Types.PACKAGE_DELETE_FILE:
             case Types.PACKAGE_SCRIPT:
                 if (Preference.pp.createZipType.equals("Aroma")) {
                     return predefinedAromaGroupScript(node);
