@@ -25,6 +25,7 @@ import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -54,6 +55,10 @@ public class Export implements Runnable {
     }
 
     public static void zip() throws IOException, ParserConfigurationException, TransformerException {
+        if ((new File(Project.outputPath)).exists()) {
+            Project.outputPath = Project.outputPath.replaceAll(".zip", " ");
+            Project.outputPath += Logs.getTime() + ".zip";
+        }
         Logs.write("Trying to export zip to path: " + Project.outputPath);
         ProjectItemNode rootNode = MyTree.rootNode;
         wz = new WriteZip(Project.outputPath);

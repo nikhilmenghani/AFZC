@@ -28,8 +28,8 @@ public class Logs {
 
     public static String getTime() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("DD_MMM_YYYY_HH_mm_ss");
-        System.out.println();
+        SimpleDateFormat sdf = new SimpleDateFormat("d_MMM_y_H_m_s");
+        System.out.println(sdf.format(cal.getTime()));
         return sdf.format(cal.getTime());
     }
 
