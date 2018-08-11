@@ -295,8 +295,8 @@ public class AromaScriptOperations {
             case Types.PACKAGE_FILE:
                 str += "\nform(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                         + "\"inclorexcl\",\"Choose to include or exclude the files below\",\"\",\"group\",\n"
-                        + "\"1\",\"Include\",\"Choose the files you WANT installed from the list below.\",\"select.selected\",\n"
-                        + "\"0\",\"Exclude\",\"Choose the files you DON'T WANT installed from the list below.\",\"select\",\n"
+                        + "\"1\",\"Include\",\"Choose the files you WANT installed from the list below.\",\"select\",\n"
+                        + "\"0\",\"Exclude\",\"Choose the files you DON'T WANT installed from the list below.\",\"select.selected\",\n"
                         + "\"" + node.prop.title + "\",\"Choose files which you want to add on install/exclude list\",\"\", \"group\"";
                 for (int i = 0; i < node.getChildCount(); i++) {
                     switch (node.getChildAt(i).prop.type) {
