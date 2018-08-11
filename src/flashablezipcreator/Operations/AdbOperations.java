@@ -7,9 +7,12 @@ package flashablezipcreator.Operations;
 
 import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.Adb.Package;
+import flashablezipcreator.Core.FileNode;
+import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.Protocols.Commands;
 import flashablezipcreator.Protocols.Logs;
+import flashablezipcreator.Protocols.Types;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -77,7 +80,7 @@ public class AdbOperations {
         }
         //adb: error: failed to stat remote object ' not running. starting it now at tcp:5037 *': No such file or directory
         //for (String str : pullList) {
-            //System.out.println(str);
+        //System.out.println(str);
         //}
         return true;
     }
@@ -173,9 +176,31 @@ public class AdbOperations {
         return appList;
     }
 
-    public static String getAppName(String appPath) {
-        String Name = "";
-        return Name;
+    public static ArrayList<FileNode> getApkFiles(ProjectItemNode parent, ArrayList<FileNode> apkFiles) {
+        if (parent.prop.title.endsWith(".apk")) {
+            apkFiles.add((FileNode) parent);
+            return apkFiles;
+        }
+        for (ProjectItemNode child : parent.prop.children) {
+            switch (child.prop.type) {
+                case Types.NODE_GROUP:
+                case Types.NODE_SUBGROUP:
+                case Types.NODE_FOLDER:
+                    apkFiles = getApkFiles(child, apkFiles);
+                    break;
+                case Types.NODE_FILE:
+                    if (child.prop.title.endsWith(".apk")) {
+                        apkFiles.add((FileNode) child);
+                    }
+                    break;
+            }
+        }
+        return apkFiles;
+    }
+
+    public static String getPackageName(String filePath) {
+        ArrayList<String> list = runProcess(true, false, Commands.getAaptDumpBadging(filePath));
+        return list.get(0);
     }
 
     public static String getPackagePath(String pack) {

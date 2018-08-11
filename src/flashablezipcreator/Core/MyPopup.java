@@ -295,6 +295,13 @@ public class MyPopup {
         GroupNode node = (GroupNode) nodeList.get(0);
         JMenuItem mitemAddSubGroup = null;
         JMenuItem mitemAddFromDevice = null;
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Apk Files");
+        mitemUpdateApp.addActionListener(
+                (ActionEvent ae) -> {
+                    Adb adb = new Adb();
+                    adb.checkForUpdate(node);
+                }
+        );
         int groupType = (node).prop.groupType;
         switch (node.prop.packageType) {
             case Types.PACKAGE_SUBGROUP_FILE:
@@ -357,6 +364,7 @@ public class MyPopup {
         if (nodeList.size() == 1) {
             switch (node.prop.packageType) {
                 case Types.PACKAGE_APP:
+                    popup.add(mitemUpdateApp);
                 case Types.PACKAGE_FOLDER_FILE:
                     popup.add(mitemAddFolder);
                 case Types.PACKAGE_FILE:
@@ -423,6 +431,13 @@ public class MyPopup {
     public static JPopupMenu getFolderMenu(ArrayList<ProjectItemNode> nodeList) {
         ProjectItemNode node = nodeList.get(0);
         JMenuItem mitemAddFile = new JMenuItem("Add File(s)");
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Apk Files");
+        mitemUpdateApp.addActionListener(
+                (ActionEvent ae) -> {
+                    Adb adb = new Adb();
+                    adb.checkForUpdate(node);
+                }
+        );
         mitemAddFile.addActionListener(
                 (ActionEvent ae) -> {
                     try {
@@ -442,6 +457,11 @@ public class MyPopup {
         });
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
+            switch (node.prop.groupParent.prop.packageType) {
+                case Types.PACKAGE_APP:
+                    popup.add(mitemUpdateApp);
+                    break;
+            }
             popup.add(mitemAddFile);
             popup.add(mitemAddFolder);
         }
@@ -455,9 +475,19 @@ public class MyPopup {
         mitemDeleteFile.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList);
         });
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Apk File");
+        mitemUpdateApp.addActionListener(
+                (ActionEvent ae) -> {
+                    Adb adb = new Adb();
+                    adb.checkForUpdate(node);
+                }
+        );
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
             //all other popups will be added here.
+            if (node.prop.title.endsWith(".apk")) {
+                popup.add(mitemUpdateApp);
+            }
         }
         popup.add(mitemDeleteFile);
         return popup;

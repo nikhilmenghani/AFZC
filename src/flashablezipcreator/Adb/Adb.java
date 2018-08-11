@@ -5,12 +5,14 @@
  */
 package flashablezipcreator.Adb;
 
+import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Operations.AdbOperations;
 import static flashablezipcreator.Operations.AdbOperations.checkDeviceConnectivity;
 import static flashablezipcreator.Operations.AdbOperations.getAppList;
 import static flashablezipcreator.Operations.AdbOperations.getFileList;
 import flashablezipcreator.Operations.TreeOperations;
+import flashablezipcreator.Protocols.Commands;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.setCardLayout;
@@ -37,13 +39,16 @@ public class Adb {
     public TreeOperations to = new TreeOperations();
     public static String logs = "";
 
+    public Adb() {
+
+    }
+
     public Adb(ProjectItemNode parent) {
         new Thread(() -> {
             importFiles(parent);
         }).start();
     }
 
-    //streamline later on, this is not a recommended way of using constructor
     public Adb(ArrayList<Package> packages, ProjectItemNode parent) {
         new Thread(() -> {
             importPackages(packages, parent);
@@ -94,6 +99,39 @@ public class Adb {
             updateProgress("", 0, false);
         }
         setCardLayout(1);
+    }
+
+    public void checkForUpdate(ProjectItemNode parent) {
+        new Thread(() -> {
+            ArrayList<FileNode> apkFiles = new ArrayList<>();
+            apkFiles = AdbOperations.getApkFiles(parent, apkFiles);
+            index = 0;
+            int apkFilesSize = apkFiles.size();
+            if (apkFilesSize > 0) {
+                setCardLayout(2);
+                for (FileNode file : apkFiles) {
+                    int fileIndex = (index * 100 / apkFilesSize);
+                    updateProgress("Updating " + file.prop.title, fileIndex, true);
+                    try {
+                        String packageName = AdbOperations.getPackageName(file.prop.fileSourcePath);
+                        packageName = packageName.substring("package: name='".length(), packageName.length());
+                        packageName = packageName.substring(0, packageName.indexOf("'"));
+                        String packagePath = AdbOperations.getPackagePath(packageName);
+                        packagePath = packagePath.substring("package:".length(), packagePath.length());
+                        AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
+                    } catch (Exception e) {
+                        //need to handle exception in a better way! Device disconnecting doesn't break as the exception is handled in ADB functions.
+                        JOptionPane.showMessageDialog(null, "Something went wrong!\nCouldn't update " + file.prop.title + "!");
+                    }
+                }
+                updateProgress("Updating Process Completed", 100, false);
+                JOptionPane.showMessageDialog(null, "Updating Process Completed");
+                updateProgress("", 0, false);
+                setCardLayout(1);
+            } else {
+                JOptionPane.showMessageDialog(null, "No Apk Files Found!");
+            }
+        }).start();
     }
 
     public void importFiles(ProjectItemNode parent) {
@@ -171,7 +209,7 @@ public class Adb {
         String pullTo = f.getImportFilePath(pullFrom, parent);
         pull(pullFrom, pullTo, zipPath, parent);
     }
-    
+
     public void pull(String pullFrom, ProjectItemNode parent) {
         Package f = new Package();
         String pullTo = f.getImportFilePath(pullFrom, parent);
