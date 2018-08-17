@@ -36,23 +36,38 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
     public ImageIcon iconFolder = new ImageIcon(FlashableZipCreator.class.getResource("res/folder.png"));
 
     public ImageIcon iconFile = new ImageIcon(FlashableZipCreator.class.getResource("res/file.png"));
-    public ImageIcon iconFontFile = new ImageIcon(FlashableZipCreator.class.getResource("res/folder.png"));
+    public ImageIcon iconApkFile = new ImageIcon(FlashableZipCreator.class.getResource("res/apk-file-format.png"));
+    public ImageIcon iconAlarmFile = new ImageIcon(FlashableZipCreator.class.getResource("res/alarm.png"));
+    public ImageIcon iconNotificationFile = new ImageIcon(FlashableZipCreator.class.getResource("res/notification.png"));
+    public ImageIcon iconRingtoneFile = new ImageIcon(FlashableZipCreator.class.getResource("res/ringtone.png"));
+    public ImageIcon iconUIFile = new ImageIcon(FlashableZipCreator.class.getResource("res/ui.png"));
+    public ImageIcon iconZipFile = new ImageIcon(FlashableZipCreator.class.getResource("res/Winrar.png"));
+    public ImageIcon iconFontFile = new ImageIcon(FlashableZipCreator.class.getResource("res/text.png"));
 
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
         super.getTreeCellRendererComponent(tree, value, sel, leaf, leaf, row, leaf);
-        ProjectItemNode node = (ProjectItemNode) value;
+        setNodeIcon((ProjectItemNode) value);
+        return this;
+    }
 
-        switch (node.getType()) {
+    private void setNodeIcon(ProjectItemNode node) {
+        switch (node.prop.type) {
             case Types.NODE_ROOT:
                 setIcon(iconRoot);
                 break;
             case Types.NODE_PROJECT:
                 ProjectNode pNode = (ProjectNode) node;
-                if (pNode.prop.projectType == Types.PROJECT_THEMES) {
-                    setIcon(iconThemeProject);
-                } else {
-                    setIcon(iconAromaProject);
+                switch (pNode.prop.projectType) {
+                    case Types.PROJECT_THEMES:
+                        setIcon(iconThemeProject);
+                        break;
+                    case Types.PROJECT_GAPPS:
+                        setIcon(iconAromaProject);
+                        break;
+                    default:
+                        setIcon(iconAromaProject);
+                        break;
                 }
                 break;
             case Types.NODE_GROUP:
@@ -109,10 +124,27 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
                 setIcon(iconFolder);
                 break;
             case Types.NODE_FILE:
+                if (node.prop.title.endsWith(".apk")) {
+                    setIcon(iconApkFile);
+                } else if (node.prop.title.endsWith(".zip")) {
+                    setIcon(iconZipFile);
+                } else if (node.prop.title.endsWith(".ttf")) {
+                    setIcon(iconFontFile);
+                } else if (node.prop.parent.prop.groupType == Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS) {
+                    setIcon(iconAlarmFile);
+                } else if (node.prop.parent.prop.groupType == Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS) {
+                    setIcon(iconNotificationFile);
+                } else if (node.prop.parent.prop.groupType == Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES) {
+                    setIcon(iconRingtoneFile);
+                } else if (node.prop.parent.prop.groupType == Types.GROUP_SYSTEM_MEDIA_AUDIO_UI) {
+                    setIcon(iconUIFile);
+                } else {
+                    setIcon(iconFile);
+                }
+                break;
             case Types.NODE_DELETE:
                 setIcon(iconFile);
                 break;
         }
-        return this;
     }
 }
