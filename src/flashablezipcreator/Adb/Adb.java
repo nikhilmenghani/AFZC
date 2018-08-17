@@ -36,7 +36,7 @@ public class Adb {
     public static ArrayList<String> filteredFilePath = new ArrayList<>();
     public static boolean filteredFileInclude = true;
     public static int index = 0;
-    public TreeOperations to = new TreeOperations();
+
     public static String logs = "";
 
     public Adb() {
@@ -81,12 +81,12 @@ public class Adb {
                 zipPath = p.getZipPath(p.installedPath);
                 updateProgress("Pulling " + pullFrom, fileIndex, true);
                 String pullTo = p.getImportFilePath(p.installedPath, parent);
-                pull(pullFrom, pullTo, zipPath, parent);
+                AdbOperations.pull(pullFrom, pullTo, zipPath, parent);
             } else {
                 for (String file : p.associatedFileList) {
                     pullFrom = file;
                     updateProgress("Pulling " + pullFrom, fileIndex, true);
-                    pull(pullFrom, parent);
+                    AdbOperations.pull(pullFrom, parent);
                 }
             }
         }
@@ -171,7 +171,7 @@ public class Adb {
                 for (String pullFrom : fileList) {
                     int fileIndex = (index * 100 / fileListSize);
                     updateProgress("Pulling " + pullFrom, fileIndex, true);
-                    pull(pullFrom, parent);
+                    AdbOperations.pull(pullFrom, parent);
                 }
             }
             if (!Adb.logs.equals("")) {
@@ -188,33 +188,13 @@ public class Adb {
         }
     }
 
-    public void pull(String pullFrom, String pullTo, String zipPath, ProjectItemNode parent) {
-        Package f = new Package();
-        System.out.println(pullTo);
-        if (!pullTo.equals("")) {
-            try {
-                if (AdbOperations.pullFile(pullFrom, pullTo)) {
-                    to.addFileNode(zipPath, parent);
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(Adb.class.getName()).log(Level.SEVERE, null, ex);
+    public void pushZipToDevice(String source, String destination) {
+        if (checkDeviceConnectivity() == 1) {
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to push file to Device?", "", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                AdbOperations.push(source, destination);
             }
-        } else {
-            index += 1;
         }
-    }
-
-    public void pull(String pullFrom, String zipPath, ProjectItemNode parent) {
-        Package f = new Package();
-        String pullTo = f.getImportFilePath(pullFrom, parent);
-        pull(pullFrom, pullTo, zipPath, parent);
-    }
-
-    public void pull(String pullFrom, ProjectItemNode parent) {
-        Package f = new Package();
-        String pullTo = f.getImportFilePath(pullFrom, parent);
-        String zipPath = f.getZipPath(pullFrom);
-        pull(pullFrom, pullTo, zipPath, parent);
     }
 
     public static void updateProgress(String progressText, int progressValue, boolean increase) {

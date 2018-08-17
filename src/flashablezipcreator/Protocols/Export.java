@@ -5,6 +5,7 @@
  */
 package flashablezipcreator.Protocols;
 
+import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.Core.DeleteNode;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.FolderNode;
@@ -25,7 +26,6 @@ import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -258,6 +258,7 @@ public class Export implements Runnable {
         try {
             MyTree.setCardLayout(2);
             zip();
+            (new Adb()).pushZipToDevice(Project.outputPath, "/sdcard/Afzc/" + (new File(Project.outputPath)).getName());
             MyTree.setCardLayout(1);
         } catch (IOException ex) {
             Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);

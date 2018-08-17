@@ -16,6 +16,7 @@ public class Commands {
     public static String[] COMMAND_ADB_PRODUCT_NAME = {"adb", "shell", "getprop", "ro.product.name"};
     public static String[] COMMAND_ADB_PRODUCT_DEVICE = {"adb", "shell", "getprop", "ro.product.device"};
     public static String[] COMMAND_ADB_PULL = {"adb", "pull", "source", "destination"};
+    public static String[] COMMAND_ADB_PUSH = {"adb", "push", "source", "destination"};
     public static String[] COMMAND_LIST_PACKAGES = {"adb", "shell", "pm", "list", "packages"};
     public static String[] COMMAND_LIST_FILES = {"adb", "shell", "ls", ""};
     public static String[] COMMAND_LIST_FILES_RECURSIVELY = {"adb", "shell", "ls", "-R", ""};
@@ -30,6 +31,12 @@ public class Commands {
         COMMAND_ADB_PULL[2] = "\"" + mPath + "\"";
         COMMAND_ADB_PULL[3] = "\"" + sPath + "\"";
         return COMMAND_ADB_PULL;
+    }
+
+    public static String[] getAdbPush(String mPath, String sPath) {
+        COMMAND_ADB_PUSH[2] = "\"" + mPath + "\"";
+        COMMAND_ADB_PUSH[3] = "\"" + sPath + "\"";
+        return COMMAND_ADB_PUSH;
     }
 
     public static String[] getAaptDumpBadging(String apkPath) {

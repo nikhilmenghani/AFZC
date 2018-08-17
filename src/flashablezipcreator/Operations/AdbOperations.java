@@ -6,6 +6,7 @@
 package flashablezipcreator.Operations;
 
 import flashablezipcreator.Adb.Adb;
+import static flashablezipcreator.Adb.Adb.index;
 import flashablezipcreator.Adb.Package;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.ProjectItemNode;
@@ -29,6 +30,7 @@ public class AdbOperations {
 
     private static final String[] WIN_RUNTIME = {"cmd.exe", "/C"};
     private static final String[] OS_LINUX_RUNTIME = {"/bin/bash", "-l", "-c"};
+    public static TreeOperations to = new TreeOperations();
 
     public static int checkDeviceConnectivity() {
         int flag = 0;
@@ -83,6 +85,44 @@ public class AdbOperations {
         //System.out.println(str);
         //}
         return true;
+    }
+
+    public static boolean push(String pushSource, String pushDestination) {
+        ArrayList<String> pushList = runProcess(true, false, Commands.getAdbPush(pushSource, pushDestination));
+        if (pushList.get(0).startsWith("adb: error:")) {
+            Adb.logs += pushSource + ": " + pushList.get(0) + Logs.newLine;
+            return false;
+        }
+        return true;
+    }
+
+    public static void pull(String pullFrom, String pullTo, String zipPath, ProjectItemNode parent) {
+        Package f = new Package();
+        System.out.println(pullTo);
+        if (!pullTo.equals("")) {
+            try {
+                if (AdbOperations.pullFile(pullFrom, pullTo)) {
+                    to.addFileNode(zipPath, parent);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(Adb.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            index += 1;
+        }
+    }
+
+    public static void pull(String pullFrom, String zipPath, ProjectItemNode parent) {
+        Package f = new Package();
+        String pullTo = f.getImportFilePath(pullFrom, parent);
+        pull(pullFrom, pullTo, zipPath, parent);
+    }
+
+    public static void pull(String pullFrom, ProjectItemNode parent) {
+        Package f = new Package();
+        String pullTo = f.getImportFilePath(pullFrom, parent);
+        String zipPath = f.getZipPath(pullFrom);
+        pull(pullFrom, pullTo, zipPath, parent);
     }
 
     public static ArrayList<String> getFileList(String folderPath) {
