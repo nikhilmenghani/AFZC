@@ -29,6 +29,12 @@ public class Logs {
     public static String getTime() {
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("d_MMM_y_H_m_s");
+        return sdf.format(cal.getTime());
+    }
+    
+    public static String getShortTime() {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("d_MMM_H_m");
         System.out.println(sdf.format(cal.getTime()));
         return sdf.format(cal.getTime());
     }

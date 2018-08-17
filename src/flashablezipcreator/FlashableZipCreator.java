@@ -5,7 +5,6 @@
  */
 package flashablezipcreator;
 
-import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.UserInterface.JTreeDemo;
 import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.ReadZip;

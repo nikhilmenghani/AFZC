@@ -57,7 +57,7 @@ public class Export implements Runnable {
     public static void zip() throws IOException, ParserConfigurationException, TransformerException {
         if ((new File(Project.outputPath)).exists()) {
             Project.outputPath = Project.outputPath.replaceAll(".zip", " ");
-            Project.outputPath += Logs.getTime() + ".zip";
+            Project.outputPath += Logs.getShortTime()+ ".zip";
         }
         Logs.write("Trying to export zip to path: " + Project.outputPath);
         ProjectItemNode rootNode = MyTree.rootNode;
