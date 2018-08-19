@@ -112,20 +112,18 @@ public class AdbOperations {
         }
     }
 
-    public static void pull(String pullFrom, String zipPath, ProjectItemNode parent) {
-        Package f = new Package();
-        String pullTo = f.getImportFilePath(pullFrom, parent);
-        pull(pullFrom, pullTo, zipPath, parent);
-    }
-
     public static void pull(String pullFrom, ProjectItemNode parent) {
         Package f = new Package();
-        String pullTo = f.getImportFilePath(pullFrom, parent);
-        String zipPath = f.getZipPath(pullFrom);
-        pull(pullFrom, pullTo, zipPath, parent);
+        String data[] = f.getImportFilePath(pullFrom, parent);
+        String pullTo = data[0];
+        String zipPath = data[1];
+        if (!pullTo.equals("") && !zipPath.equals("")) {
+            pull(pullFrom, pullTo, zipPath, parent);
+        }
     }
 
     public static ArrayList<String> getFileList(String folderPath) {
+        folderPath = folderPath.replaceAll("\\\\", "/");
         StringBuilder sb = new StringBuilder();
         sb.append('"');
         sb.append(folderPath);
@@ -216,26 +214,24 @@ public class AdbOperations {
         return appList;
     }
 
-    public static ArrayList<FileNode> getApkFiles(ProjectItemNode parent, ArrayList<FileNode> apkFiles) {
-        if (parent.prop.title.endsWith(".apk")) {
-            apkFiles.add((FileNode) parent);
-            return apkFiles;
+    public static ArrayList<FileNode> getFilesToUpdate(ProjectItemNode parent, ArrayList<FileNode> files) {
+        if (parent.prop.type == Types.NODE_FILE) {
+            files.add((FileNode) parent);
+            return files;
         }
         for (ProjectItemNode child : parent.prop.children) {
             switch (child.prop.type) {
                 case Types.NODE_GROUP:
                 case Types.NODE_SUBGROUP:
                 case Types.NODE_FOLDER:
-                    apkFiles = getApkFiles(child, apkFiles);
+                    files = getFilesToUpdate(child, files);
                     break;
                 case Types.NODE_FILE:
-                    if (child.prop.title.endsWith(".apk")) {
-                        apkFiles.add((FileNode) child);
-                    }
+                    files.add((FileNode) child);
                     break;
             }
         }
-        return apkFiles;
+        return files;
     }
 
     public static String getPackageName(String filePath) {

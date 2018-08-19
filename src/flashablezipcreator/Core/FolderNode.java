@@ -34,6 +34,8 @@ public class FolderNode extends ProjectItemNode {
             prop.title = title;
         }
         prop.folderName = title;
+        prop.groupName = parent.prop.groupName;
+        prop.projectName = parent.prop.projectName;
         prop.path = parent.prop.path + File.separator + title;
         prop.zipPath = parent.prop.zipPath + "/" + prop.folderZipPathPrefix + title;
         prop.location = parent.prop.location;
@@ -95,6 +97,10 @@ public class FolderNode extends ProjectItemNode {
         for (ProjectItemNode node : prop.children) {
             switch (node.prop.type) {
                 case Types.NODE_FILE:
+                    ((FileNode) node).prop.projectName = prop.projectName;
+                    ((FileNode) node).prop.groupName = prop.groupName;
+                    ((FileNode) node).prop.subGroupName = prop.subGroupName;
+                    ((FileNode) node).prop.folderName = prop.folderName;
                     ((FileNode) node).prop.updateFileZipPath();
                     ((FileNode) node).prop.updateFileInstallLocation();
                     if (prop.isBootAnimationGroup) {
@@ -102,6 +108,13 @@ public class FolderNode extends ProjectItemNode {
                     } else {
                         ((FileNode) node).prop.setPermissions(prop.owner, prop.group, prop.perm, ((FileNode) node).prop.title);
                     }
+                    break;
+                case Types.NODE_FOLDER:
+                    ((FolderNode) node).prop.projectName = prop.projectName;
+                    ((FolderNode) node).prop.groupName = prop.groupName;
+                    ((FolderNode) node).prop.folderName = prop.folderName;
+                    ((FolderNode) node).updateZipPath();
+                    ((FolderNode) node).updateChildrenZipPath();
                     break;
             }
         }

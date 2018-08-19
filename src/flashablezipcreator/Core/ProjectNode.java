@@ -67,6 +67,7 @@ public class ProjectNode extends ProjectItemNode {
 
     public void updateChildrenZipPath() {
         for (ProjectItemNode node : prop.children) {
+            ((GroupNode) node).prop.projectName = prop.projectName;
             ((GroupNode) node).updateZipPath(); //casting to group node as project node cannot have child of any other type.
             ((GroupNode) node).updateChildrenZipPath();
         }

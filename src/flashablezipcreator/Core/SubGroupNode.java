@@ -65,6 +65,9 @@ public class SubGroupNode extends ProjectItemNode {
         for (ProjectItemNode node : prop.children) {
             switch (node.prop.type) {
                 case Types.NODE_FILE:
+                    ((FileNode) node).prop.subGroupName = prop.subGroupName;
+                    ((FileNode) node).prop.groupName = prop.groupName;
+                    ((FileNode) node).prop.projectName = prop.projectName;
                     ((FileNode) node).prop.updateFileZipPath();
                     break;
             }

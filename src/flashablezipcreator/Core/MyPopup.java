@@ -295,7 +295,7 @@ public class MyPopup {
         GroupNode node = (GroupNode) nodeList.get(0);
         JMenuItem mitemAddSubGroup = null;
         JMenuItem mitemAddFromDevice = null;
-        JMenuItem mitemUpdateApp = new JMenuItem("Update Apk Files");
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Files From Device");
         mitemUpdateApp.addActionListener(
                 (ActionEvent ae) -> {
                     Adb adb = new Adb();
@@ -414,6 +414,13 @@ public class MyPopup {
                     }
                 }
         );
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Files From Device");
+        mitemUpdateApp.addActionListener(
+                (ActionEvent ae) -> {
+                    Adb adb = new Adb();
+                    adb.checkForUpdate(node);
+                }
+        );
         JMenuItem mitemDeleteSubGroup = new JMenuItem("Delete SubGroup(s)");
         mitemDeleteSubGroup.addActionListener(
                 (ActionEvent ae) -> {
@@ -422,6 +429,7 @@ public class MyPopup {
         );
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
+            popup.add(mitemUpdateApp);
             popup.add(mitemAddFile);
         }
         popup.add(mitemDeleteSubGroup);
@@ -431,7 +439,7 @@ public class MyPopup {
     public static JPopupMenu getFolderMenu(ArrayList<ProjectItemNode> nodeList) {
         ProjectItemNode node = nodeList.get(0);
         JMenuItem mitemAddFile = new JMenuItem("Add File(s)");
-        JMenuItem mitemUpdateApp = new JMenuItem("Update Apk Files");
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Files From Device");
         mitemUpdateApp.addActionListener(
                 (ActionEvent ae) -> {
                     Adb adb = new Adb();
@@ -475,7 +483,7 @@ public class MyPopup {
         mitemDeleteFile.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList);
         });
-        JMenuItem mitemUpdateApp = new JMenuItem("Update Apk File");
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Files From Device");
         mitemUpdateApp.addActionListener(
                 (ActionEvent ae) -> {
                     Adb adb = new Adb();
@@ -485,9 +493,7 @@ public class MyPopup {
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
             //all other popups will be added here.
-            if (node.prop.title.endsWith(".apk")) {
-                popup.add(mitemUpdateApp);
-            }
+            popup.add(mitemUpdateApp);
         }
         popup.add(mitemDeleteFile);
         return popup;

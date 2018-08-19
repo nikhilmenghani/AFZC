@@ -53,14 +53,20 @@ public final class GroupNode extends ProjectItemNode {
         for (ProjectItemNode node : prop.children) {
             switch (node.prop.type) {
                 case Types.NODE_SUBGROUP:
+                    ((SubGroupNode) node).prop.groupName = prop.groupName;
+                    ((SubGroupNode) node).prop.projectName = prop.projectName;
                     ((SubGroupNode) node).updateZipPath();
                     ((SubGroupNode) node).updateChildrenZipPath();
                     break;
                 case Types.NODE_FOLDER:
+                    ((FolderNode) node).prop.groupName = prop.groupName;
+                    ((FolderNode) node).prop.projectName = prop.projectName;
                     ((FolderNode) node).updateZipPath();
                     ((FolderNode) node).updateChildrenZipPath();
                     break;
                 case Types.NODE_FILE:
+                    ((FileNode) node).prop.groupName = prop.groupName;
+                    ((FileNode) node).prop.projectName = prop.projectName;
                     ((FileNode) node).prop.updateFileZipPath();
                     break;
             }

@@ -11,16 +11,12 @@ import flashablezipcreator.Operations.AdbOperations;
 import static flashablezipcreator.Operations.AdbOperations.checkDeviceConnectivity;
 import static flashablezipcreator.Operations.AdbOperations.getAppList;
 import static flashablezipcreator.Operations.AdbOperations.getFileList;
-import flashablezipcreator.Operations.TreeOperations;
-import flashablezipcreator.Protocols.Commands;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.setCardLayout;
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
@@ -78,9 +74,10 @@ public class Adb {
             String zipPath = "";
             if (!p.packageName.equals("")) {
                 pullFrom = p.updatedInstalledPath;
-                zipPath = p.getZipPath(p.installedPath);
+                String data[] = p.getImportFilePath(p.installedPath, parent);
+                zipPath = data[1];
                 updateProgress("Pulling " + pullFrom, fileIndex, true);
-                String pullTo = p.getImportFilePath(p.installedPath, parent);
+                String pullTo = data[0];
                 AdbOperations.pull(pullFrom, pullTo, zipPath, parent);
             } else {
                 for (String file : p.associatedFileList) {
@@ -103,22 +100,49 @@ public class Adb {
 
     public void checkForUpdate(ProjectItemNode parent) {
         new Thread(() -> {
-            ArrayList<FileNode> apkFiles = new ArrayList<>();
-            apkFiles = AdbOperations.getApkFiles(parent, apkFiles);
+            ArrayList<FileNode> files = new ArrayList<>();
+            files = AdbOperations.getFilesToUpdate(parent, files);
             index = 0;
-            int apkFilesSize = apkFiles.size();
-            if (apkFilesSize > 0) {
+            int filesSize = files.size();
+            if (filesSize > 0) {
                 setCardLayout(2);
-                for (FileNode file : apkFiles) {
-                    int fileIndex = (index * 100 / apkFilesSize);
+                for (FileNode file : files) {
+                    int fileIndex = (index * 100 / filesSize);
                     updateProgress("Updating " + file.prop.title, fileIndex, true);
                     try {
-                        String packageName = AdbOperations.getPackageName(file.prop.fileSourcePath);
-                        packageName = packageName.substring("package: name='".length(), packageName.length());
-                        packageName = packageName.substring(0, packageName.indexOf("'"));
-                        String packagePath = AdbOperations.getPackagePath(packageName);
-                        packagePath = packagePath.substring("package:".length(), packagePath.length());
-                        AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
+                        if (file.prop.title.endsWith(".apk")) {
+                            String packageName = AdbOperations.getPackageName(file.prop.fileSourcePath);
+                            packageName = packageName.substring("package: name='".length(), packageName.length());
+                            packageName = packageName.substring(0, packageName.indexOf("'"));
+                            String packagePath = AdbOperations.getPackagePath(packageName);
+                            packagePath = packagePath.substring("package:".length(), packagePath.length());
+                            File f = new File(packagePath);
+                            f.getParent();
+                            ArrayList<String> fileList = getFileList(f.getParent());
+                            for (String pullFrom : fileList) {
+                                if (!pullFrom.contains(packagePath)) {
+                                    updateProgress("Pulling " + pullFrom, fileIndex, false);
+                                    AdbOperations.pull(pullFrom, parent);
+                                    System.out.println(pullFrom);
+                                }
+                            }
+                            AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
+                        } else {
+                            String fileInstallPath = "";
+                            switch (file.prop.parent.prop.type) {
+                                case Types.NODE_GROUP:
+                                    fileInstallPath = file.prop.fileInstallLocation + "/" + file.prop.title;
+                                    break;
+                                case Types.NODE_SUBGROUP:
+                                    fileInstallPath = file.prop.fileInstallLocation + "/"
+                                            + file.prop.parent.prop.title + "/" + file.prop.title;
+                                    break;
+                                case Types.NODE_FOLDER:
+                                    fileInstallPath = file.prop.parent.prop.folderLocation + "/" + file.prop.title;
+                                    break;
+                            }
+                            AdbOperations.pullFile(fileInstallPath.replaceAll("\\\\", "/"), file.prop.fileSourcePath);
+                        }
                     } catch (Exception e) {
                         //need to handle exception in a better way! Device disconnecting doesn't break as the exception is handled in ADB functions.
                         JOptionPane.showMessageDialog(null, "Something went wrong!\nCouldn't update " + file.prop.title + "!");
@@ -129,7 +153,7 @@ public class Adb {
                 updateProgress("", 0, false);
                 setCardLayout(1);
             } else {
-                JOptionPane.showMessageDialog(null, "No Apk Files Found!");
+                JOptionPane.showMessageDialog(null, "No Files Found!");
             }
         }).start();
     }

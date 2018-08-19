@@ -108,6 +108,7 @@ public final class NodeProperties {
                 : "1000" + ", " + "1000" + ", " + "0755" + ", ";
         setPermissions();
         projectName = parent.prop.projectName;
+        groupName = parent.prop.groupName;
         originalGroupType = parent.prop.originalGroupType;
     }
 

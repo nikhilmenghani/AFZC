@@ -43,6 +43,7 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
     public ImageIcon iconUIFile = new ImageIcon(FlashableZipCreator.class.getResource("res/ui.png"));
     public ImageIcon iconZipFile = new ImageIcon(FlashableZipCreator.class.getResource("res/Winrar.png"));
     public ImageIcon iconFontFile = new ImageIcon(FlashableZipCreator.class.getResource("res/text.png"));
+    public ImageIcon iconLibFile = new ImageIcon(FlashableZipCreator.class.getResource("res/dll.png"));
 
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
@@ -130,6 +131,8 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
                     setIcon(iconZipFile);
                 } else if (node.prop.title.endsWith(".ttf")) {
                     setIcon(iconFontFile);
+                } else if (node.prop.title.endsWith(".so")) {
+                    setIcon(iconLibFile);
                 } else if (node.prop.parent.prop.groupType == Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS) {
                     setIcon(iconAlarmFile);
                 } else if (node.prop.parent.prop.groupType == Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS) {
