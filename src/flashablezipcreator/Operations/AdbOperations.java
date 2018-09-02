@@ -122,6 +122,16 @@ public class AdbOperations {
         }
     }
 
+    public static void pull(String dataPullFrom, String systemPullFrom, ProjectItemNode parent) {
+        Package f = new Package();
+        String data[] = f.getImportFilePath(systemPullFrom, parent);
+        String pullTo = data[0];
+        String zipPath = data[1];
+        if (!pullTo.equals("") && !zipPath.equals("")) {
+            pull(dataPullFrom, pullTo, zipPath, parent);
+        }
+    }
+
     public static ArrayList<String> getFileList(String folderPath) {
         folderPath = folderPath.replaceAll("\\\\", "/");
         StringBuilder sb = new StringBuilder();
@@ -147,7 +157,11 @@ public class AdbOperations {
         sb.append(path);
         sb.append('"');
         Commands.COMMAND_LIST_FILES[3] = sb.toString().replace(" ", "\\ ");
-        Adb.updateProgress("Scanning: " + path, 0, false);
+        try {
+            Adb.updateProgress("Scanning: " + path, -1, false);
+        } catch (Exception e) {
+            System.out.println("Method not found at run time!");
+        }
         ArrayList<String> pathFileList = runProcess(true, false, Commands.COMMAND_LIST_FILES);
         for (String dir : pathFileList) {
             String childPath = path + "/" + dir;
@@ -176,7 +190,7 @@ public class AdbOperations {
             app.packageName = data[1];
             data[0] = installedPath;
             data[1] = packageName;
-            Adb.updateProgress("Scanning: " + app.installedPath, 0, false);
+            Adb.updateProgress("Scanning: " + app.installedPath, -1, false);
             java.io.File file = new java.io.File(data[0]);
             String parent = file.getParent().replaceAll("\\\\", "/") + "/";
             String location = "";
@@ -236,12 +250,25 @@ public class AdbOperations {
 
     public static String getPackageName(String filePath) {
         ArrayList<String> list = runProcess(true, false, Commands.getAaptDumpBadging(filePath));
-        return list.get(0);
+        String packageName = list.get(0);
+        try {
+            packageName = packageName.substring("package: name='".length(), packageName.length());
+            packageName = packageName.substring(0, packageName.indexOf("'"));
+        } catch (Exception e) {
+            packageName = "";
+        }
+        return packageName;
     }
 
     public static String getPackagePath(String pack) {
         ArrayList<String> list = runProcess(true, false, Commands.getAdbPackagePath(pack));
-        return list.get(0);
+        String packagePath = list.get(0);
+        try {
+            packagePath = packagePath.substring("package:".length(), packagePath.length());
+        } catch (Exception e) {
+            packagePath = "";
+        }
+        return packagePath;
     }
 
     public static ArrayList<String> runProcess(boolean isWin, boolean wait, String... command) {

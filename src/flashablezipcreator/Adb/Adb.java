@@ -102,31 +102,59 @@ public class Adb {
         new Thread(() -> {
             ArrayList<FileNode> files = new ArrayList<>();
             files = AdbOperations.getFilesToUpdate(parent, files);
-            index = 0;
             int filesSize = files.size();
+            float maxFileIndex = 0;
+            float startFileIndex = 0;
+            int i = 0;
+            float window = 100 / filesSize;
             if (filesSize > 0) {
                 setCardLayout(2);
                 for (FileNode file : files) {
-                    int fileIndex = (index * 100 / filesSize);
-                    updateProgress("Updating " + file.prop.title, fileIndex, true);
+                    i++;
+                    startFileIndex = (i - 1) * window;
+                    maxFileIndex = (i * window);
+                    float filesIndex = 0;
+                    index = 1;
                     try {
                         if (file.prop.title.endsWith(".apk")) {
                             String packageName = AdbOperations.getPackageName(file.prop.fileSourcePath);
-                            packageName = packageName.substring("package: name='".length(), packageName.length());
-                            packageName = packageName.substring(0, packageName.indexOf("'"));
                             String packagePath = AdbOperations.getPackagePath(packageName);
-                            packagePath = packagePath.substring("package:".length(), packagePath.length());
                             File f = new File(packagePath);
-                            f.getParent();
-                            ArrayList<String> fileList = getFileList(f.getParent());
+                            ArrayList<String> fileList = new ArrayList<>();
+                            if (parent.prop.type != Types.NODE_FILE) {
+                                fileList = getFileList(f.getParent());
+                            }
+                            //check here if the device is connected. if filelist size = 1
+                            //no devices/error: no devices/emulators found
                             for (String pullFrom : fileList) {
+                                filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / fileList.size());
                                 if (!pullFrom.contains(packagePath)) {
-                                    updateProgress("Pulling " + pullFrom, fileIndex, false);
+                                    updateProgress("Pulling " + pullFrom, filesIndex, true);
+                                    switch (parent.prop.groupType) {
+                                        case Types.GROUP_SYSTEM_APK:
+                                        case Types.GROUP_SYSTEM_PRIV_APK:
+                                        case Types.GROUP_VENDOR_APP:
+                                            if (pullFrom.startsWith("/data/app")) {
+                                                String tempPullFrom = pullFrom.substring("/data/app/".length(), pullFrom.length());
+                                                tempPullFrom = file.prop.fileInstallLocation + tempPullFrom.substring(tempPullFrom.indexOf("/"), tempPullFrom.length());
+                                                AdbOperations.pull(pullFrom, tempPullFrom, parent);
+                                                System.out.println(pullFrom);
+                                                continue;
+                                            }
+                                            break;
+                                    }
                                     AdbOperations.pull(pullFrom, parent);
                                     System.out.println(pullFrom);
+                                } else {
+                                    updateProgress("Updating " + file.prop.title, filesIndex, true);
+                                    AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
                                 }
                             }
-                            AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
+                            if (fileList.isEmpty()) {
+                                filesIndex = startFileIndex + (index * (maxFileIndex - startFileIndex));
+                                updateProgress("Updating " + file.prop.title, filesIndex, true);
+                                AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
+                            }
                         } else {
                             String fileInstallPath = "";
                             switch (file.prop.parent.prop.type) {
@@ -141,6 +169,8 @@ public class Adb {
                                     fileInstallPath = file.prop.parent.prop.folderLocation + "/" + file.prop.title;
                                     break;
                             }
+                            filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)));
+                            updateProgress("Updating " + file.prop.title, filesIndex, true);
                             AdbOperations.pullFile(fileInstallPath.replaceAll("\\\\", "/"), file.prop.fileSourcePath);
                         }
                     } catch (Exception e) {
@@ -221,7 +251,7 @@ public class Adb {
         }
     }
 
-    public static void updateProgress(String progressText, int progressValue, boolean increase) {
+    public static void updateProgress(String progressText, float progressValue, boolean increase) {
         String str = progressText;
         if (progressText.length() > 60) {
             str = str.substring(0, progressText.length() / 3) + "..." + str.substring(progressText.length() - 10, progressText.length());
@@ -229,9 +259,11 @@ public class Adb {
             str = str.substring(0, progressText.length() / 2) + "..." + str.substring(progressText.length() - 10, progressText.length());
         }
         MyTree.txtProgress.setText(str);
-        MyTree.circularProgressBar.updateProgress(progressValue);
-        if (increase) {
-            index++;
+        if (progressValue != (-1)) {
+            MyTree.circularProgressBar.updateProgress(progressValue);
+            if (increase) {
+                index++;
+            }
         }
     }
 }

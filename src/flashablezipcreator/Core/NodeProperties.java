@@ -109,6 +109,7 @@ public final class NodeProperties {
         setPermissions();
         projectName = parent.prop.projectName;
         groupName = parent.prop.groupName;
+        groupType = parent.prop.groupType;
         originalGroupType = parent.prop.originalGroupType;
     }
 
@@ -134,6 +135,8 @@ public final class NodeProperties {
         setPermissions();
         projectName = parent.prop.projectName;
         originalGroupType = parent.prop.originalGroupType;
+        groupName = parent.prop.originalParent.getTitle();
+        groupType = parent.prop.groupParent.prop.groupType;
     }
 
     //creates properties of Project

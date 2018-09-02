@@ -35,6 +35,7 @@ public class FolderNode extends ProjectItemNode {
         }
         prop.folderName = title;
         prop.groupName = parent.prop.groupName;
+        prop.groupType = parent.prop.groupType;
         prop.projectName = parent.prop.projectName;
         prop.path = parent.prop.path + File.separator + title;
         prop.zipPath = parent.prop.zipPath + "/" + prop.folderZipPathPrefix + title;
@@ -53,6 +54,8 @@ public class FolderNode extends ProjectItemNode {
         super(title, Types.NODE_FOLDER, parent);
         prop.originalParent = parent.prop.originalParent;
         prop.groupParent = parent.prop.groupParent;
+        prop.groupName = parent.prop.groupParent.getTitle();
+        prop.groupType = parent.prop.groupParent.prop.groupType;
         prop.folderName = title;
         prop.path = parent.prop.path + File.separator + title;
         prop.zipPath = parent.prop.zipPath + "/" + prop.folderZipPathPrefix + title;

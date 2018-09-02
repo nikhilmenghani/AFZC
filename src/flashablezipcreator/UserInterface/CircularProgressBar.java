@@ -31,6 +31,11 @@ public class CircularProgressBar extends JPanel {
         repaint();
     }
 
+    public void updateProgress(float progress_value) {
+        progress = (int) progress_value;
+        repaint();
+    }
+
     public void updateProgress(String progress_value) {
         text = progress_value;
         repaint();
