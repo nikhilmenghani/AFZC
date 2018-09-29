@@ -6,7 +6,6 @@
 package flashablezipcreator.Core;
 
 import flashablezipcreator.Adb.Adb;
-import flashablezipcreator.Gapps.Pico;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -77,17 +76,18 @@ public class MyPopup {
 
     public static JPopupMenu getRootMenu() {
         JMenu addProjectMenu = new JMenu("Add Project");
-        JMenuItem mitemAddAromaProject = new JMenuItem("Files");
+        JMenu addGappsMenu = new JMenu("Gapps");
+        JMenuItem mitemAddAromaProject = new JMenuItem("Aroma");
         mitemAddAromaProject.addActionListener((ActionEvent ae) -> {
-            addQuickProjectObject(Types.PROJECT_AROMA);
+            addQuickProjectObject(Types.PROJECT_AROMA, Mod.MOD_LESS);
         });
-        JMenuItem mitemAddGappsProject = new JMenuItem("Gapps");
+        JMenuItem mitemAddGappsProject = new JMenuItem("Pico");
         mitemAddGappsProject.addActionListener((ActionEvent ae) -> {
-            new Adb(Pico.getList(), MyTree.rootNode);
-            //addQuickProjectObject(Types.PROJECT_GAPPS);
+            addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_PICO);
         });
+        addGappsMenu.add(mitemAddGappsProject);
         addProjectMenu.add(mitemAddAromaProject);
-        addProjectMenu.add(mitemAddGappsProject);
+        addProjectMenu.add(addGappsMenu);
         popup = new JPopupMenu();
         popup.add(addProjectMenu);
         return popup;
@@ -95,7 +95,6 @@ public class MyPopup {
 
     public static JPopupMenu getProjectMenu(ArrayList<ProjectItemNode> nodeList) {
         ProjectNode node = (ProjectNode) nodeList.get(0);
-
         JMenuItem mitemSystem = new JMenuItem("system");
         mitemSystem.addActionListener((ActionEvent ae) -> {
             addQuickGroupObject(Types.GROUP_SYSTEM, node, "System Files");
@@ -268,12 +267,43 @@ public class MyPopup {
                 mitemCustomGroup.addActionListener((ActionEvent ae) -> {
                     addName(Types.GROUP_CUSTOM, node);
                 });
+//                JMenu addGappsMenu = new JMenu("Build Gapps");
+                JMenuItem mitemBuildPicoGappsFromDevice = new JMenuItem("Build Gapps");
+                mitemBuildPicoGappsFromDevice.addActionListener((ActionEvent ae) -> {
+//                    String defaultName = "Pico Gapps";
+//                    defaultName = getUniqueName(node, defaultName);
+//                    ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
+//                    if (selNode != null) {
+//                        NodeProperties p = new NodeProperties(defaultName, Types.GROUP_GAPPS_PICO, node);
+//                        GroupNode newNode = new GroupNode(p);
+//                        node.addChild(newNode, false);
+//                        TreeNode[] nodes = model.getPathToRoot(newNode);
+//                        TreePath path = new TreePath(nodes);
+//                        tree.scrollPathToVisible(path);
+//                        tree.setSelectionPath(path);
+//                        tree.startEditingAtPath(path);
+//                        Adb device = new Adb();
+//                        device.importGapps(newNode);
+//                    } else {
+//                        JOptionPane.showMessageDialog(popup, "Select the Project first");
+//                    }
+                    Adb device = new Adb();
+                    device.importGapps(node);
+                });
+                switch (node.prop.projectType) {
+                    case Types.PROJECT_AROMA:
+                        addGroupMenu.add(addDataGroupMenu);
+                        addGroupMenu.add(addFontsGroupMenu);
+                        addGroupMenu.add(addTonesGroupMenu);
+                        addGroupMenu.add(addBootAnimationGroupMenu);
+                        break;
+                    case Types.PROJECT_GAPPS:
+//                        addGappsMenu.add(mitemBuildPicoGappsFromDevice);
+                        popup.add(mitemBuildPicoGappsFromDevice);
+                        break;
+                }
                 addGroupMenu.add(addSystemGroupMenu);
                 addGroupMenu.add(addVendorGroupMenu);
-                addGroupMenu.add(addDataGroupMenu);
-                addGroupMenu.add(addFontsGroupMenu);
-                addGroupMenu.add(addTonesGroupMenu);
-                addGroupMenu.add(addBootAnimationGroupMenu);
                 addGroupMenu.add(mitemDeleteGroup);
                 addGroupMenu.add(mitemCustomGroup);
                 popup.add(addGroupMenu);
@@ -295,7 +325,8 @@ public class MyPopup {
         GroupNode node = (GroupNode) nodeList.get(0);
         JMenuItem mitemAddSubGroup = null;
         JMenuItem mitemAddFromDevice = null;
-        JMenuItem mitemUpdateApp = new JMenuItem("Update Files From Device");
+        JMenu addDeviceTalksMenu = new JMenu("Device Talks");
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Files");
         mitemUpdateApp.addActionListener(
                 (ActionEvent ae) -> {
                     Adb adb = new Adb();
@@ -364,16 +395,16 @@ public class MyPopup {
         if (nodeList.size() == 1) {
             switch (node.prop.packageType) {
                 case Types.PACKAGE_APP:
-                    popup.add(mitemUpdateApp);
+                    addDeviceTalksMenu.add(mitemUpdateApp);
                 case Types.PACKAGE_FOLDER_FILE:
                     popup.add(mitemAddFolder);
                 case Types.PACKAGE_FILE:
-                    mitemAddFromDevice = new JMenuItem("Add " + node.prop.folderMenuName + " From Device");
+                    mitemAddFromDevice = new JMenuItem("Add " + node.prop.folderMenuName + "");
                 case Types.PACKAGE_THEME:
                     popup.add(mitemAddFile);
                     break;
                 case Types.PACKAGE_SUBGROUP_FILE:
-                    mitemAddFromDevice = new JMenuItem("Add " + node.prop.folderMenuName + " From Device");
+                    mitemAddFromDevice = new JMenuItem("Add " + node.prop.folderMenuName + "");
                 case Types.PACKAGE_DELETE_FILE:
                     popup.add(mitemAddSubGroup);
                     break;
@@ -384,12 +415,14 @@ public class MyPopup {
             if (mitemAddFromDevice != null) {
                 mitemAddFromDevice.addActionListener(
                         (ActionEvent ae) -> {
-                            new Adb(node);
+                            Adb device = new Adb();
+                            device.importFiles(node);
                         }
                 );
-                popup.add(mitemAddFromDevice);
+                addDeviceTalksMenu.add(mitemAddFromDevice);
             }
         }
+        popup.add(addDeviceTalksMenu);
         if (node.prop.parent.getChildCount() != 1) {
             if (node.prop.parent.getIndex(node) != 0) {
                 popup.add(mItemMoveUp);
@@ -404,6 +437,7 @@ public class MyPopup {
 
     public static JPopupMenu getSubGroupMenu(ArrayList<ProjectItemNode> nodeList) {
         ProjectItemNode node = nodeList.get(0);
+        JMenu addDeviceTalksMenu = new JMenu("Device Talks");
         JMenuItem mitemAddFile = new JMenuItem("Add File(s)");
         mitemAddFile.addActionListener(
                 (ActionEvent ae) -> {
@@ -414,7 +448,7 @@ public class MyPopup {
                     }
                 }
         );
-        JMenuItem mitemUpdateApp = new JMenuItem("Update Files From Device");
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Files");
         mitemUpdateApp.addActionListener(
                 (ActionEvent ae) -> {
                     Adb adb = new Adb();
@@ -429,8 +463,9 @@ public class MyPopup {
         );
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
-            popup.add(mitemUpdateApp);
+            addDeviceTalksMenu.add(mitemUpdateApp);
             popup.add(mitemAddFile);
+            popup.add(addDeviceTalksMenu);
         }
         popup.add(mitemDeleteSubGroup);
         return popup;
@@ -438,8 +473,9 @@ public class MyPopup {
 
     public static JPopupMenu getFolderMenu(ArrayList<ProjectItemNode> nodeList) {
         ProjectItemNode node = nodeList.get(0);
+        JMenu addDeviceTalksMenu = new JMenu("Device Talks");
         JMenuItem mitemAddFile = new JMenuItem("Add File(s)");
-        JMenuItem mitemUpdateApp = new JMenuItem("Update Files From Device");
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Files");
         mitemUpdateApp.addActionListener(
                 (ActionEvent ae) -> {
                     Adb adb = new Adb();
@@ -467,11 +503,13 @@ public class MyPopup {
         if (nodeList.size() == 1) {
             switch (node.prop.groupParent.prop.packageType) {
                 case Types.PACKAGE_APP:
-                    popup.add(mitemUpdateApp);
+                    addDeviceTalksMenu.add(mitemUpdateApp);
+                    popup.add(addDeviceTalksMenu);
                     break;
             }
             popup.add(mitemAddFile);
             popup.add(mitemAddFolder);
+
         }
         popup.add(mitemDeleteFolder);
         return popup;
@@ -479,11 +517,12 @@ public class MyPopup {
 
     public static JPopupMenu getFileMenu(ArrayList<ProjectItemNode> nodeList) {
         ProjectItemNode node = nodeList.get(0);
+        JMenu addDeviceTalksMenu = new JMenu("Device Talks");
         JMenuItem mitemDeleteFile = new JMenuItem("Delete File(s)");
         mitemDeleteFile.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList);
         });
-        JMenuItem mitemUpdateApp = new JMenuItem("Update Files From Device");
+        JMenuItem mitemUpdateApp = new JMenuItem("Update Files");
         mitemUpdateApp.addActionListener(
                 (ActionEvent ae) -> {
                     Adb adb = new Adb();
@@ -493,7 +532,8 @@ public class MyPopup {
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
             //all other popups will be added here.
-            popup.add(mitemUpdateApp);
+            addDeviceTalksMenu.add(mitemUpdateApp);
+            popup.add(addDeviceTalksMenu);
         }
         popup.add(mitemDeleteFile);
         return popup;
@@ -551,20 +591,17 @@ public class MyPopup {
         addGroup = new AddGroup(type, node);
     }
 
-    public static void addQuickProjectObject(int type) {
+    public static void addQuickProjectObject(int type, int modType) {
         String defaultProjName = "My Project";
-        if (rootNode.contains(defaultProjName)) {
-            for (int i = 1;; i++) {
-                if (rootNode.contains(defaultProjName + "(" + i + ")")) {
-                    continue;
-                }
-                defaultProjName = defaultProjName + "(" + i + ")";
+        switch (type) {
+            case Types.PROJECT_GAPPS:
+                defaultProjName = "My Gapps";
                 break;
-            }
         }
+        defaultProjName = getUniqueName(rootNode, defaultProjName);
         ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
         if (selNode != null) {
-            ProjectNode newNode = new ProjectNode(defaultProjName, type, Mod.MOD_LESS, rootNode);
+            ProjectNode newNode = new ProjectNode(defaultProjName, type, modType, rootNode);
             rootNode.addChild(newNode, false);
             TreeNode[] nodes = model.getPathToRoot(newNode);
             TreePath path = new TreePath(nodes);
@@ -580,15 +617,7 @@ public class MyPopup {
         if (!Preference.pp.isQuickSetup && type != Types.GROUP_DELETE_FILES) {
             addName(type, parent);
         } else {
-            if (parent.contains(defaultName)) {
-                for (int i = 1;; i++) {
-                    if (parent.contains(defaultName + "(" + i + ")")) {
-                        continue;
-                    }
-                    defaultName = defaultName + "(" + i + ")";
-                    break;
-                }
-            }
+            defaultName = getUniqueName(parent, defaultName);
             ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
             if (selNode != null) {
                 NodeProperties p = new NodeProperties(defaultName, type, parent);
@@ -662,5 +691,18 @@ public class MyPopup {
         } else {
             JOptionPane.showMessageDialog(popup, "Select the Group Node first");
         }
+    }
+
+    public static String getUniqueName(ProjectItemNode parent, String defaultName) {
+        if (parent.contains(defaultName)) {
+            for (int i = 1;; i++) {
+                if (parent.contains(defaultName + "(" + i + ")")) {
+                    continue;
+                }
+                defaultName = defaultName + "(" + i + ")";
+                break;
+            }
+        }
+        return defaultName;
     }
 }

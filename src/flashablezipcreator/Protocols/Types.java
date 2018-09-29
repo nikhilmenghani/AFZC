@@ -63,4 +63,6 @@ public class Types {
     public static final int PACKAGE_FOLDER_FILE = 86;
     public static final int PACKAGE_CUSTOM = 87;
     public static final int PACKAGE_SCRIPT = 88;
+    
+    public static final int GAPPS_PICO = 91;
 }

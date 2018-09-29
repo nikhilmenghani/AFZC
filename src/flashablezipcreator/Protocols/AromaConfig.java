@@ -40,6 +40,7 @@ public class AromaConfig {
                     case Types.PROJECT_AROMA:
                     case Types.PROJECT_CUSTOM:
                     case Types.PROJECT_MOD:
+                    case Types.PROJECT_GAPPS:
                         aromaConfig += buildAromaScript((ProjectNode) project);
                         break;
                     //following is not needed. added just in case.
@@ -71,6 +72,7 @@ public class AromaConfig {
                 case Types.PROJECT_AROMA:
                 case Types.PROJECT_CUSTOM:
                 case Types.PROJECT_MOD:
+                case Types.PROJECT_GAPPS:
                     str += op.addForm((GroupNode) group);
                     str += op.addSelectBox((GroupNode) group);
                     break;

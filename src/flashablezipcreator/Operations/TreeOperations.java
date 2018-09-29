@@ -223,6 +223,16 @@ public class TreeOperations {
         list = new ArrayList<>();
         return parseNode(this.rootNode, nodeType);
     }
+    
+    public boolean hasGappsProject(ProjectItemNode rootNode){
+        for (ProjectItemNode project : getNodeList(Types.NODE_PROJECT)) {
+            switch (((ProjectNode) project).prop.projectType) {
+                case Types.PROJECT_GAPPS:
+                    return true;
+            }
+        }
+        return false;
+    }
 
     public ArrayList<ProjectItemNode> getProjectsSorted(ProjectItemNode rootNode) {
         ArrayList<ProjectItemNode> projects = new ArrayList<>();
@@ -230,6 +240,7 @@ public class TreeOperations {
         ArrayList<ProjectItemNode> projectThemes = new ArrayList<>();
         ArrayList<ProjectItemNode> projectCustom = new ArrayList<>();
         ArrayList<ProjectItemNode> projectMod = new ArrayList<>();
+        ArrayList<ProjectItemNode> projectGapps = new ArrayList<>();
 
         for (ProjectItemNode project : getNodeList(Types.NODE_PROJECT)) {
             switch (((ProjectNode) project).prop.projectType) {
@@ -244,9 +255,13 @@ public class TreeOperations {
                     break;
                 case Types.PROJECT_MOD:
                     projectMod.add(project);
-
+                case Types.PROJECT_GAPPS:
+                    projectGapps.add(project);
             }
         }
+        projectGapps.stream().forEach((node) -> {
+            projects.add(node);
+        });
         projectAroma.stream().forEach((node) -> {
             projects.add(node);
         });

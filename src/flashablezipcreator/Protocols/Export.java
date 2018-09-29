@@ -14,6 +14,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.WriteZip;
+import flashablezipcreator.Operations.AdbOperations;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
 import static flashablezipcreator.UserInterface.MyTree.progressBarImportExport;
@@ -55,14 +56,29 @@ public class Export implements Runnable {
     }
 
     public static void zip() throws IOException, ParserConfigurationException, TransformerException {
+        to = new TreeOperations();
+        boolean hasGapps = to.hasGappsProject(MyTree.rootNode);
         if ((new File(Project.outputPath)).exists()) {
-            Project.outputPath = Project.outputPath.replaceAll(".zip", " ");
-            Project.outputPath += Logs.getShortTime()+ ".zip";
+            int dialogResult = JOptionPane.showConfirmDialog(null, "File Already Exists.\nDo you want to replace the file?", "", JOptionPane.YES_NO_OPTION);
+            if (dialogResult == JOptionPane.NO_OPTION) {
+                if (hasGapps) {
+                    Project.outputPath = Project.outputPath.replaceAll(".zip", "-Nikhil-Gapps" + ".zip");
+                }
+                Project.outputPath = Project.outputPath.replaceAll(".zip", "-" + Logs.getShortTime() + ".zip");
+            } else {
+                if (hasGapps) {
+                    Project.outputPath = Project.outputPath.replaceAll(".zip", "-Nikhil-Gapps" + "-" + Logs.getShortTime() + ".zip");
+                }
+            }
+        } else {
+            if (hasGapps) {
+                Project.outputPath = Project.outputPath.replaceAll(".zip", "-Nikhil-Gapps" + "-" + Logs.getShortTime() + ".zip");
+            }
         }
         Logs.write("Trying to export zip to path: " + Project.outputPath);
         ProjectItemNode rootNode = MyTree.rootNode;
         wz = new WriteZip(Project.outputPath);
-        to = new TreeOperations();
+
         txtProgress.setText("");
         int fileIndex = 0;
 //        ArrayList<String> tempPaths = new ArrayList<>();
@@ -258,8 +274,8 @@ public class Export implements Runnable {
         try {
             MyTree.setCardLayout(2);
             zip();
-            (new Adb()).pushZipToDevice(Project.outputPath, "/sdcard/Afzc/" + (new File(Project.outputPath)).getName());
             MyTree.setCardLayout(1);
+            (new Adb()).pushZipToDevice(Project.outputPath, "/sdcard/Afzc/" + (new File(Project.outputPath)).getName());
         } catch (IOException ex) {
             Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {

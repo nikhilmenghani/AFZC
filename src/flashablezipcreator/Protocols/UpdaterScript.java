@@ -42,6 +42,7 @@ public class UpdaterScript {
                     case Types.PROJECT_AROMA:
                     case Types.PROJECT_CUSTOM:
                     case Types.PROJECT_MOD:
+                    case Types.PROJECT_GAPPS:
                         if (Preference.pp.createZipType.equals("Aroma")) {
                             updaterScript += buildAromaScript((ProjectNode) project);
                         } else if (Preference.pp.createZipType.equals("Normal")) {

@@ -7,6 +7,7 @@ package flashablezipcreator.Operations;
 
 import flashablezipcreator.Adb.Adb;
 import static flashablezipcreator.Adb.Adb.index;
+import static flashablezipcreator.Adb.Adb.updateProgress;
 import flashablezipcreator.Adb.Package;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.ProjectItemNode;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -89,6 +91,15 @@ public class AdbOperations {
 
     public static boolean push(String pushSource, String pushDestination) {
         ArrayList<String> pushList = runProcess(true, false, Commands.getAdbPush(pushSource, pushDestination));
+        if (pushList.get(0).startsWith("adb: error:")) {
+            Adb.logs += pushSource + ": " + pushList.get(0) + Logs.newLine;
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean pushToDevice(String pushSource, String pushDestination) {
+        ArrayList<String> pushList = pushFileToDevice(true, false, pushSource, pushDestination);
         if (pushList.get(0).startsWith("adb: error:")) {
             Adb.logs += pushSource + ": " + pushList.get(0) + Logs.newLine;
             return false;
@@ -262,8 +273,12 @@ public class AdbOperations {
 
     public static String getPackagePath(String pack) {
         ArrayList<String> list = runProcess(true, false, Commands.getAdbPackagePath(pack));
-        String packagePath = list.get(0);
+        if (list.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Package: " + pack + " not found!");
+        }
+        String packagePath = "";
         try {
+            packagePath = list.get(0);
             packagePath = packagePath.substring("package:".length(), packagePath.length());
         } catch (Exception e) {
             packagePath = "";
@@ -297,6 +312,54 @@ public class AdbOperations {
                 line.add(_temp);
             }
 //            ArrayList<String> data = runProcess(true, false, Commands.COMMAND_LIST_FILES_SU);
+            return line;
+        } catch (IOException e) {
+            return null;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Adb.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public static ArrayList<String> pushFileToDevice(boolean isWin, boolean wait, String source, String destination) {
+        System.out.print("command to run: ");
+        String[] allCommand = null;
+        try {
+            if (isWin) {
+                allCommand = concat(WIN_RUNTIME, Commands.getAdbPush(source, destination));
+            } else {
+                allCommand = concat(OS_LINUX_RUNTIME, Commands.getAdbPush(source, destination));
+            }
+            for (String s : allCommand) {
+                System.out.print(s + " ");
+            }
+            System.out.println();
+            ProcessBuilder pb = new ProcessBuilder(allCommand);
+            pb.redirectErrorStream(true);
+            Process p = pb.start();
+            if (wait) {
+                p.waitFor();
+            }
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String _temp = null;
+            ArrayList<String> line = new ArrayList<>();
+            while ((_temp = in.readLine()) != null) {
+                if (_temp.contains("[") && _temp.contains("]")) {
+                    try {
+                        String updateP = _temp.substring(_temp.indexOf("["), _temp.indexOf("]"));
+                        updateP = updateP.replace("[", "");
+                        updateP = updateP.replace("]", "");
+                        updateP = updateP.trim();
+                        if (updateP.endsWith("%")) {
+                            updateP = updateP.substring(0, updateP.length() - 1);
+                        }
+                        updateProgress("Pushing to " + destination, Float.valueOf(updateP), false);
+                    } catch (Exception E) {
+                        updateProgress("Exception!", 0, true);
+                    }
+                }
+                line.add(_temp);
+            }
             return line;
         } catch (IOException e) {
             return null;

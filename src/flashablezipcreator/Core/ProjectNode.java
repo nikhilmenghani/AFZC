@@ -36,6 +36,8 @@ public class ProjectNode extends ProjectItemNode {
             case Types.PROJECT_MOD:
                 prop.zipPath = "customize" + "/" + "mod_" + modType + "/" + prop.projectZipPathPrefix + title;
                 break;
+            case Types.PROJECT_GAPPS:
+                prop.zipPath = "customize" + "/" + "gapps_" + modType + "/" + prop.projectZipPathPrefix + title;
         }
         prop.androidVersion = "5.x+";
         Logs.write("done adding project");

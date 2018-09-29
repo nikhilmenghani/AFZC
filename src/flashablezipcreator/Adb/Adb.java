@@ -7,6 +7,7 @@ package flashablezipcreator.Adb;
 
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.ProjectItemNode;
+import flashablezipcreator.Gapps.Pico;
 import flashablezipcreator.Operations.AdbOperations;
 import static flashablezipcreator.Operations.AdbOperations.checkDeviceConnectivity;
 import static flashablezipcreator.Operations.AdbOperations.getAppList;
@@ -39,58 +40,84 @@ public class Adb {
 
     }
 
-    public Adb(ProjectItemNode parent) {
+    public void importGapps(ProjectItemNode parent) {
         new Thread(() -> {
-            importFiles(parent);
-        }).start();
-    }
-
-    public Adb(ArrayList<Package> packages, ProjectItemNode parent) {
-        new Thread(() -> {
-            importPackages(packages, parent);
+            switch (parent.prop.projectType) {
+                case Types.PROJECT_GAPPS:
+                    importPackages(Pico.getList(), parent);
+                    break;
+            }
         }).start();
     }
 
     public void importPackages(ArrayList<Package> packages, ProjectItemNode parent) {
         MyTree.setCardLayout(2);
         Adb.logs = "";
-        ArrayList<Package> pList = new ArrayList<>();
-        int associatedFileListCount = 0;
-        for (Package p : packages) {
-            if (!p.packageName.equals("")) {
-                String path = AdbOperations.getPackagePath(p.packageName);
-                p.updatedInstalledPath = path.substring("package:".length(), path.length());
-                updateProgress("Reading Package: " + p.packageName, 0, false);
-                pList.add(p);
-            } else {
-                associatedFileListCount += p.associatedFileList.size();
-            }
-        }
         index = 0;
-        int fileListSize = pList.size() + associatedFileListCount;
+        int packageListSize = packages.size();
+        float maxFileIndex = 0;
+        float startFileIndex = 0;
+        int windowIndex = 0;
+        float window = 100 / packageListSize;
         for (Package p : packages) {
-            int fileIndex = (index * 100 / fileListSize);
-            String pullFrom = "";
+            windowIndex++;
+            startFileIndex = (windowIndex - 1) * window;
+            maxFileIndex = (windowIndex * window);
+            float filesIndex = 0;
+            index = 1;
             String zipPath = "";
             if (!p.packageName.equals("")) {
-                pullFrom = p.updatedInstalledPath;
-                String data[] = p.getImportFilePath(p.installedPath, parent);
-                zipPath = data[1];
-                updateProgress("Pulling " + pullFrom, fileIndex, true);
-                String pullTo = data[0];
-                AdbOperations.pull(pullFrom, pullTo, zipPath, parent);
+                String packagePath = AdbOperations.getPackagePath(p.packageName);
+                if (packagePath.equals("")) {
+                    continue;
+                }
+                String installPath = "";
+                if (!packagePath.startsWith("/data/app")) {
+                    installPath = packagePath;
+                } else {
+                    installPath = p.installedPath;
+                }
+                File f = new File(packagePath);
+                ArrayList<String> fileList = new ArrayList<>();
+                fileList = getFileList(f.getParent());//need to check if parent is not file node
+                for (String pullFrom : fileList) {
+                    filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / (fileList.size() + p.associatedFileList.size()));
+                    updateProgress("Pulling " + pullFrom, filesIndex, true);
+                    if (!pullFrom.contains(packagePath)) {
+                        if (pullFrom.startsWith("/data/app")) {
+                            String tempPullFrom = pullFrom.substring("/data/app/".length(), pullFrom.length());
+                            tempPullFrom = p.installedPath.substring(0, p.installedPath.lastIndexOf("/")) + tempPullFrom.substring(tempPullFrom.indexOf("/"), tempPullFrom.length());
+                            AdbOperations.pull(pullFrom, tempPullFrom, parent);
+                            System.out.println(pullFrom);
+                            continue;
+                        } else {
+                            AdbOperations.pull(pullFrom, parent);
+                            System.out.println(pullFrom);
+                        }
+                    } else {
+                        String data[] = p.getImportFilePath(installPath, parent);
+                        zipPath = data[1];
+                        String pullTo = data[0];
+                        AdbOperations.pull(pullFrom, pullTo, zipPath, parent);
+                    }
+                }
+                for (String file : p.associatedFileList) {
+                    filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / (fileList.size() + p.associatedFileList.size()));
+                    updateProgress("Pulling " + file, filesIndex, true);
+                    AdbOperations.pull(file, parent);
+                }
             } else {
                 for (String file : p.associatedFileList) {
-                    pullFrom = file;
-                    updateProgress("Pulling " + pullFrom, fileIndex, true);
-                    AdbOperations.pull(pullFrom, parent);
+                    filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / p.associatedFileList.size());
+                    updateProgress("Pulling " + file, filesIndex, true);
+                    AdbOperations.pull(file, parent);
                 }
             }
         }
         if (!Adb.logs.equals("")) {
             JOptionPane.showMessageDialog(null, Adb.logs);
         }
-        if (fileListSize > 0) {
+        if (packageListSize > 0) {
             updateProgress("Files Successfully Imported", 100, false);
             JOptionPane.showMessageDialog(null, "Files Successfully Imported!");
             updateProgress("", 0, false);
@@ -105,56 +132,20 @@ public class Adb {
             int filesSize = files.size();
             float maxFileIndex = 0;
             float startFileIndex = 0;
-            int i = 0;
+            int windowIndex = 0;
             float window = 100 / filesSize;
             if (filesSize > 0) {
                 setCardLayout(2);
                 for (FileNode file : files) {
-                    i++;
-                    startFileIndex = (i - 1) * window;
-                    maxFileIndex = (i * window);
+                    windowIndex++;
+                    startFileIndex = (windowIndex - 1) * window;
+                    maxFileIndex = (windowIndex * window);
                     float filesIndex = 0;
                     index = 1;
                     try {
                         if (file.prop.title.endsWith(".apk")) {
                             String packageName = AdbOperations.getPackageName(file.prop.fileSourcePath);
-                            String packagePath = AdbOperations.getPackagePath(packageName);
-                            File f = new File(packagePath);
-                            ArrayList<String> fileList = new ArrayList<>();
-                            if (parent.prop.type != Types.NODE_FILE) {
-                                fileList = getFileList(f.getParent());
-                            }
-                            //check here if the device is connected. if filelist size = 1
-                            //no devices/error: no devices/emulators found
-                            for (String pullFrom : fileList) {
-                                filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / fileList.size());
-                                if (!pullFrom.contains(packagePath)) {
-                                    updateProgress("Pulling " + pullFrom, filesIndex, true);
-                                    switch (parent.prop.groupType) {
-                                        case Types.GROUP_SYSTEM_APK:
-                                        case Types.GROUP_SYSTEM_PRIV_APK:
-                                        case Types.GROUP_VENDOR_APP:
-                                            if (pullFrom.startsWith("/data/app")) {
-                                                String tempPullFrom = pullFrom.substring("/data/app/".length(), pullFrom.length());
-                                                tempPullFrom = file.prop.fileInstallLocation + tempPullFrom.substring(tempPullFrom.indexOf("/"), tempPullFrom.length());
-                                                AdbOperations.pull(pullFrom, tempPullFrom, parent);
-                                                System.out.println(pullFrom);
-                                                continue;
-                                            }
-                                            break;
-                                    }
-                                    AdbOperations.pull(pullFrom, parent);
-                                    System.out.println(pullFrom);
-                                } else {
-                                    updateProgress("Updating " + file.prop.title, filesIndex, true);
-                                    AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
-                                }
-                            }
-                            if (fileList.isEmpty()) {
-                                filesIndex = startFileIndex + (index * (maxFileIndex - startFileIndex));
-                                updateProgress("Updating " + file.prop.title, filesIndex, true);
-                                AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
-                            }
+                            importPackage(file, packageName, parent, startFileIndex, maxFileIndex);
                         } else {
                             String fileInstallPath = "";
                             switch (file.prop.parent.prop.type) {
@@ -188,65 +179,110 @@ public class Adb {
         }).start();
     }
 
-    public void importFiles(ProjectItemNode parent) {
-        Adb.logs = "";
-        int connectivityFlag = checkDeviceConnectivity();
-        switch (connectivityFlag) {
-            case 0:
-                JOptionPane.showMessageDialog(null, "The device is not identified,"
-                        + " Cannot proceed with ADB process");
-                break;
-            case 2:
-                JOptionPane.showMessageDialog(null, "The device is unauthorized!\nGive Adb permissions in your mobile phone and try again.");
-                break;
+    public void importPackage(FileNode file, String packageName, ProjectItemNode parent, float startFileIndex, float maxFileIndex) {
+        float filesIndex = 0;
+        String packagePath = AdbOperations.getPackagePath(packageName);
+        File f = new File(packagePath);
+        ArrayList<String> fileList = new ArrayList<>();
+        if (parent.prop.type != Types.NODE_FILE) {
+            fileList = getFileList(f.getParent());
         }
-        if (connectivityFlag == 1) {
-            MyTree.setCardLayout(2);
-            index = 0;
-            ArrayList<String> fileList = new ArrayList<>();
-            switch (parent.prop.packageType) {
-                case Types.PACKAGE_FILE:
-                case Types.PACKAGE_SUBGROUP_FILE:
-                case Types.PACKAGE_FOLDER_FILE:
-                    fileList = getFileList(parent.prop.location);
+        //check here if the device is connected. if filelist size = 1
+        //no devices/error: no devices/emulators found
+        for (String pullFrom : fileList) {
+            filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / fileList.size());
+            if (!pullFrom.contains(packagePath)) {
+                updateProgress("Pulling " + pullFrom, filesIndex, true);
+                switch (parent.prop.groupType) {
+                    case Types.GROUP_SYSTEM_APK:
+                    case Types.GROUP_SYSTEM_PRIV_APK:
+                    case Types.GROUP_VENDOR_APP:
+                        if (pullFrom.startsWith("/data/app")) {
+                            String tempPullFrom = pullFrom.substring("/data/app/".length(), pullFrom.length());
+                            tempPullFrom = file.prop.fileInstallLocation + tempPullFrom.substring(tempPullFrom.indexOf("/"), tempPullFrom.length());
+                            AdbOperations.pull(pullFrom, tempPullFrom, parent);
+                            System.out.println(pullFrom);
+                            continue;
+                        }
+                        break;
+                }
+                AdbOperations.pull(pullFrom, parent);
+                System.out.println(pullFrom);
+            } else {
+                updateProgress("Updating " + file.prop.title, filesIndex, true);
+                AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
+            }
+        }
+        if (fileList.isEmpty()) {
+            filesIndex = startFileIndex + (index * (maxFileIndex - startFileIndex));
+            updateProgress("Updating " + file.prop.title, filesIndex, true);
+            AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
+        }
+    }
+
+    public void importFiles(ProjectItemNode parent) {
+        new Thread(() -> {
+            Adb.logs = "";
+            int connectivityFlag = checkDeviceConnectivity();
+            switch (connectivityFlag) {
+                case 0:
+                    JOptionPane.showMessageDialog(null, "The device is not identified,"
+                            + " Cannot proceed with ADB process");
                     break;
-                case Types.PACKAGE_APP:
-                    for (Package app : getAppList(new ArrayList<>(Arrays.asList(parent.prop.location)))) {
-                        if (app.associatedFileList.size() > 0) {
-                            for (String mPath : app.associatedFileList) {
-                                fileList.add(mPath);
+                case 2:
+                    JOptionPane.showMessageDialog(null, "The device is unauthorized!\nGive Adb permissions in your mobile phone and try again.");
+                    break;
+            }
+            if (connectivityFlag == 1) {
+                MyTree.setCardLayout(2);
+                index = 0;
+                ArrayList<String> fileList = new ArrayList<>();
+                switch (parent.prop.packageType) {
+                    case Types.PACKAGE_FILE:
+                    case Types.PACKAGE_SUBGROUP_FILE:
+                    case Types.PACKAGE_FOLDER_FILE:
+                        fileList = getFileList(parent.prop.location);
+                        break;
+                    case Types.PACKAGE_APP:
+                        for (Package app : getAppList(new ArrayList<>(Arrays.asList(parent.prop.location)))) {
+                            if (app.associatedFileList.size() > 0) {
+                                for (String mPath : app.associatedFileList) {
+                                    fileList.add(mPath);
+                                }
                             }
                         }
-                    }
-                    break;
-            }
-            int fileListSize = fileList.size();
-            if (fileListSize > 0) {
-                for (String pullFrom : fileList) {
-                    int fileIndex = (index * 100 / fileListSize);
-                    updateProgress("Pulling " + pullFrom, fileIndex, true);
-                    AdbOperations.pull(pullFrom, parent);
+                        break;
                 }
+                int fileListSize = fileList.size();
+                if (fileListSize > 0) {
+                    for (String pullFrom : fileList) {
+                        int fileIndex = (index * 100 / fileListSize);
+                        updateProgress("Pulling " + pullFrom, fileIndex, true);
+                        AdbOperations.pull(pullFrom, parent);
+                    }
+                }
+                if (!Adb.logs.equals("")) {
+                    JOptionPane.showMessageDialog(null, Adb.logs);
+                }
+                if (fileListSize > 0) {
+                    updateProgress("Files Successfully Imported", 100, false);
+                    JOptionPane.showMessageDialog(null, "Files Successfully Imported!");
+                    updateProgress("", 0, false);
+                }
+                setCardLayout(1);
+            } else {
+                JOptionPane.showMessageDialog(null, "Device Not Compatible!");
             }
-            if (!Adb.logs.equals("")) {
-                JOptionPane.showMessageDialog(null, Adb.logs);
-            }
-            if (fileListSize > 0) {
-                updateProgress("Files Successfully Imported", 100, false);
-                JOptionPane.showMessageDialog(null, "Files Successfully Imported!");
-                updateProgress("", 0, false);
-            }
-            setCardLayout(1);
-        } else {
-            JOptionPane.showMessageDialog(null, "Device Not Compatible!");
-        }
+        }).start();
     }
 
     public void pushZipToDevice(String source, String destination) {
         if (checkDeviceConnectivity() == 1) {
             int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to push file to Device?", "", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
-                AdbOperations.push(source, destination);
+                MyTree.setCardLayout(2);
+                AdbOperations.pushToDevice(source, destination);
+                MyTree.setCardLayout(1);
             }
         }
     }

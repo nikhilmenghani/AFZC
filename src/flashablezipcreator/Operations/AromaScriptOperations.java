@@ -184,6 +184,7 @@ public class AromaScriptOperations {
             case Types.PROJECT_AROMA:
             case Types.PROJECT_CUSTOM:
             case Types.PROJECT_MOD:
+            case Types.PROJECT_GAPPS:
                 str += "\nmenubox(\"" + "Menu" + " List\",\"Select from " + "following" + "\",\"@installmods\",\"" + project.prop.title + ".prop" + "\",\n"
                         + "\"Open " + project.prop.title + "\", \"Install files from " + project.prop.title + "\", \"@install\"";
                 str += ",\n\"" + "Skip" + "\", \"Do Not Install files from " + project.prop.title + "\", \"@apps\"";
@@ -200,6 +201,7 @@ public class AromaScriptOperations {
             case Types.PROJECT_AROMA:
             case Types.PROJECT_CUSTOM:
             case Types.PROJECT_MOD:
+            case Types.PROJECT_GAPPS:
                 str += "setvar(\"release_version\",\"" + project.prop.releaseVersion + "\");\n"
                         + "setvar(\"android_version\",\"" + project.prop.androidVersion + "\");\n"
                         + "setvar(\"file_creator\",\"" + Project.zipCreator + "\");\n";
@@ -214,6 +216,7 @@ public class AromaScriptOperations {
             case Types.PROJECT_AROMA:
             case Types.PROJECT_CUSTOM:
             case Types.PROJECT_MOD:
+            case Types.PROJECT_GAPPS:
                 str += "\nviewbox(\n"
                         + "\"Welcome\",\n"
                         + "\"You are about to make additional changes to your device.\\n\\n<b>\"+\n"

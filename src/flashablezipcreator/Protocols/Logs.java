@@ -34,7 +34,8 @@ public class Logs {
     
     public static String getShortTime() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("d_MMM_H_m");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMd");
+        //open_gapps-arm64-9.0-pico-20180909
         System.out.println(sdf.format(cal.getTime()));
         return sdf.format(cal.getTime());
     }

@@ -283,7 +283,22 @@ public class Identify {
                 return Types.PROJECT_CUSTOM;
             case "mod":
                 return Types.PROJECT_MOD;
+            case "gapps":
+                return Types.PROJECT_GAPPS;
         }
         return Types.PROJECT_MOD;//This might get changed in future and set to Custom
+    }
+
+    //below needs testing
+    public static int getGappsType(String path) throws IOException {
+        if (path.startsWith("customize")) {
+            path = path.substring(path.indexOf("/") + 1, path.length());
+            path = path.substring("gapps_".length(), path.indexOf("/"));
+        }
+        try {
+            return Integer.parseInt(path);
+        } catch (Exception e) {
+            return -1;
+        }
     }
 }
