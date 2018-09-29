@@ -145,6 +145,7 @@ public class Identify {
                     return fList;
                 }
             case Types.PROJECT_AROMA:
+            case Types.PROJECT_GAPPS:
             case Types.PROJECT_CUSTOM:
                 while (path.contains(folderSeparator)) {
                     path = path.substring(path.indexOf(folderSeparator) + folderSeparator.length(), path.length());

@@ -158,6 +158,9 @@ public final class NodeProperties {
             case Types.PROJECT_MOD:
                 zipPath = parent.prop.zipPath + "/" + "mod_" + modType + "/" + projectZipPathPrefix + title;
                 break;
+            case Types.PROJECT_GAPPS:
+                zipPath = parent.prop.zipPath + "/" + "gapps_" + modType + "/" + projectZipPathPrefix + title;
+                break;
         }
 
         androidVersion = "5.x+";

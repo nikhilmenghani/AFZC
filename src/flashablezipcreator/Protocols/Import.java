@@ -103,6 +103,9 @@ public class Import implements Runnable {
                         case Types.PROJECT_AROMA:
                             importAromaZip(filePath, projectName, in);
                             break;
+                        case Types.PROJECT_GAPPS:
+                            importGappsZip(filePath, projectName, in);
+                            break;
                         case Types.PROJECT_MOD:
                             importModZip(filePath, projectName, in, modType);
                             break;
@@ -205,6 +208,28 @@ public class Import implements Runnable {
         String fName = (new File(filePath)).getName();
         TreeOperations to = new TreeOperations();
         FileNode file = to.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_AROMA, Mod.MOD_LESS);
+        file.prop.fileSourcePath = file.prop.path;
+        rz.writeFileFromZip(in, file.prop.fileSourcePath);
+        Logs.write("Written File: " + fName);
+    }
+
+    public static void importGappsZip(String filePath, String projectName, InputStream in) throws IOException {
+        String groupName = Identify.getGroupName(filePath);
+        int groupType = Identify.getGroupType(filePath);
+        String originalGroupType = "";
+        if (groupType == Types.GROUP_CUSTOM) {
+            try {
+                originalGroupType = Identify.getOriginalGroupType(filePath);
+            } catch (Exception e) {
+                originalGroupType = "";
+            }
+        }
+        ArrayList<String> folderList = Identify.getFolderNames(filePath, Types.PROJECT_GAPPS);
+        String subGroupName = Identify.getSubGroupName(groupName, filePath);
+        int subGroupType = groupType; //Groups that have subGroups have same type.
+        String fName = (new File(filePath)).getName();
+        TreeOperations to = new TreeOperations();
+        FileNode file = to.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_GAPPS, Types.GAPPS_PICO);
         file.prop.fileSourcePath = file.prop.path;
         rz.writeFileFromZip(in, file.prop.fileSourcePath);
         Logs.write("Written File: " + fName);
