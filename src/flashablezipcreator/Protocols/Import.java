@@ -17,7 +17,6 @@ import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
 import static flashablezipcreator.UserInterface.MyTree.progressBarImportExport;
 import flashablezipcreator.Operations.TreeOperations;
 import static flashablezipcreator.UserInterface.MyTree.circularProgressBar;
-import static flashablezipcreator.UserInterface.MyTree.txtProgress;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,7 +77,7 @@ public class Import implements Runnable {
                     progressValue = (fileIndex * 100) / maxSize;
                     progressBarImportExport.setValue(progressValue);
                     circularProgressBar.updateProgress(progressValue);
-                    setProgressBar("Importing " + (new File(name)).getName() + "");
+                    setProgressBar("Importing", (new File(name)).getName() + "");
                     if (name.endsWith("/") || Project.getTempFilesList().contains(name)
                             || name.startsWith("META-INF")
                             || name.contains("Extract_")) {
@@ -119,20 +118,21 @@ public class Import implements Runnable {
                 Xml.terminate();
 
                 if (containsDataXml) {
-                    setProgressBar("Setting file details..");
+                    setProgressBar("", "Setting file details..");
                     Logs.write("Parsing file_data.xml");
                     Xml.parseXml(0); //this is to set additional details like description to nodes
                     Logs.write("Xml Parsing Successful");
-                    setProgressBar("Setting file details done.");
+                    setProgressBar("", "Setting file details done.");
 
                 }
                 progressBarImportExport.setString("Successfully Imported");
-                txtProgress.setText("Successfully Imported");
+                MyTree.txtProgressTitle.setText("");
+                MyTree.txtProgressContent.setText("Successfully Imported");
                 circularProgressBar.updateProgress(100);
                 progressBarImportExport.setValue(100);
                 Logs.write("File Imported Successfully");
                 JOptionPane.showMessageDialog(null, "Successfully Imported");
-                txtProgress.setText("");
+                MyTree.txtProgressContent.setText("");
                 circularProgressBar.updateProgress(0);
                 progressBarImportExport.setString("0%");
                 progressBarImportExport.setValue(0);
@@ -247,14 +247,15 @@ public class Import implements Runnable {
         }
     }
 
-    public static void setProgressBar(String value) {
+    public static void setProgressBar(String title, String value) {
         String str = value;
         if (value.length() > 60) {
             str = str.substring(0, value.length() / 3) + "..." + str.substring(value.length() - 10, value.length());
         } else if (value.length() > 40) {
             str = str.substring(0, value.length() / 2) + "..." + str.substring(value.length() - 10, value.length());
         }
-        txtProgress.setText(str);
+        MyTree.txtProgressTitle.setText(title);
+        MyTree.txtProgressContent.setText(str);
         circularProgressBar.updateProgress(value);
         circularProgressBar.updateProgress(progressValue);
         switch (MyTree.progressBarFlag) {

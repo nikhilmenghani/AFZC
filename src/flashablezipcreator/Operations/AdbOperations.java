@@ -169,7 +169,7 @@ public class AdbOperations {
         sb.append('"');
         Commands.COMMAND_LIST_FILES[3] = sb.toString().replace(" ", "\\ ");
         try {
-            Adb.updateProgress("Scanning: " + path, -1, false);
+            Adb.updateProgress("Scanning Device", path, -1, false);
         } catch (Exception e) {
             System.out.println("Method not found at run time!");
         }
@@ -201,7 +201,7 @@ public class AdbOperations {
             app.packageName = data[1];
             data[0] = installedPath;
             data[1] = packageName;
-            Adb.updateProgress("Scanning: " + app.installedPath, -1, false);
+            Adb.updateProgress("Scanning Device", app.installedPath, -1, false);
             java.io.File file = new java.io.File(data[0]);
             String parent = file.getParent().replaceAll("\\\\", "/") + "/";
             String location = "";
@@ -353,9 +353,9 @@ public class AdbOperations {
                         if (updateP.endsWith("%")) {
                             updateP = updateP.substring(0, updateP.length() - 1);
                         }
-                        updateProgress("Pushing to " + destination, Float.valueOf(updateP), false);
+                        updateProgress("Pushing to", destination, Float.valueOf(updateP), false);
                     } catch (Exception E) {
-                        updateProgress("Exception!", 0, true);
+                        updateProgress("", "Exception!", 0, true);
                     }
                 }
                 line.add(_temp);

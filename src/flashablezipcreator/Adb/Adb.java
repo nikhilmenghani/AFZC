@@ -82,7 +82,7 @@ public class Adb {
                 fileList = getFileList(f.getParent());//need to check if parent is not file node
                 for (String pullFrom : fileList) {
                     filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / (fileList.size() + p.associatedFileList.size()));
-                    updateProgress("Pulling " + pullFrom, filesIndex, true);
+                    updateProgress("Pulling", pullFrom, filesIndex, true);
                     if (!pullFrom.contains(packagePath)) {
                         if (pullFrom.startsWith("/data/app")) {
                             String tempPullFrom = pullFrom.substring("/data/app/".length(), pullFrom.length());
@@ -103,13 +103,13 @@ public class Adb {
                 }
                 for (String file : p.associatedFileList) {
                     filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / (fileList.size() + p.associatedFileList.size()));
-                    updateProgress("Pulling " + file, filesIndex, true);
+                    updateProgress("Pulling", file, filesIndex, true);
                     AdbOperations.pull(file, parent);
                 }
             } else {
                 for (String file : p.associatedFileList) {
                     filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / p.associatedFileList.size());
-                    updateProgress("Pulling " + file, filesIndex, true);
+                    updateProgress("Pulling", file, filesIndex, true);
                     AdbOperations.pull(file, parent);
                 }
             }
@@ -118,9 +118,9 @@ public class Adb {
             JOptionPane.showMessageDialog(null, Adb.logs);
         }
         if (packageListSize > 0) {
-            updateProgress("Files Successfully Imported", 100, false);
+            updateProgress("", "Files Successfully Imported", 100, false);
             JOptionPane.showMessageDialog(null, "Files Successfully Imported!");
-            updateProgress("", 0, false);
+            updateProgress("", "", 0, false);
         }
         setCardLayout(1);
     }
@@ -161,7 +161,7 @@ public class Adb {
                                     break;
                             }
                             filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)));
-                            updateProgress("Updating " + file.prop.title, filesIndex, true);
+                            updateProgress("Updating", file.prop.title, filesIndex, true);
                             AdbOperations.pullFile(fileInstallPath.replaceAll("\\\\", "/"), file.prop.fileSourcePath);
                         }
                     } catch (Exception e) {
@@ -169,9 +169,9 @@ public class Adb {
                         JOptionPane.showMessageDialog(null, "Something went wrong!\nCouldn't update " + file.prop.title + "!");
                     }
                 }
-                updateProgress("Updating Process Completed", 100, false);
+                updateProgress("", "Updating Process Completed", 100, false);
                 JOptionPane.showMessageDialog(null, "Updating Process Completed");
-                updateProgress("", 0, false);
+                updateProgress("", "", 0, false);
                 setCardLayout(1);
             } else {
                 JOptionPane.showMessageDialog(null, "No Files Found!");
@@ -192,7 +192,7 @@ public class Adb {
         for (String pullFrom : fileList) {
             filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / fileList.size());
             if (!pullFrom.contains(packagePath)) {
-                updateProgress("Pulling " + pullFrom, filesIndex, true);
+                updateProgress("Pulling", pullFrom, filesIndex, true);
                 switch (parent.prop.groupType) {
                     case Types.GROUP_SYSTEM_APK:
                     case Types.GROUP_SYSTEM_PRIV_APK:
@@ -209,13 +209,13 @@ public class Adb {
                 AdbOperations.pull(pullFrom, parent);
                 System.out.println(pullFrom);
             } else {
-                updateProgress("Updating " + file.prop.title, filesIndex, true);
+                updateProgress("Updating", file.prop.title, filesIndex, true);
                 AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
             }
         }
         if (fileList.isEmpty()) {
             filesIndex = startFileIndex + (index * (maxFileIndex - startFileIndex));
-            updateProgress("Updating " + file.prop.title, filesIndex, true);
+            updateProgress("Updating", file.prop.title, filesIndex, true);
             AdbOperations.pullFile(packagePath, file.prop.fileSourcePath);
         }
     }
@@ -257,7 +257,7 @@ public class Adb {
                 if (fileListSize > 0) {
                     for (String pullFrom : fileList) {
                         int fileIndex = (index * 100 / fileListSize);
-                        updateProgress("Pulling " + pullFrom, fileIndex, true);
+                        updateProgress("Pulling", pullFrom, fileIndex, true);
                         AdbOperations.pull(pullFrom, parent);
                     }
                 }
@@ -265,9 +265,9 @@ public class Adb {
                     JOptionPane.showMessageDialog(null, Adb.logs);
                 }
                 if (fileListSize > 0) {
-                    updateProgress("Files Successfully Imported", 100, false);
+                    updateProgress("", "Files Successfully Imported", 100, false);
                     JOptionPane.showMessageDialog(null, "Files Successfully Imported!");
-                    updateProgress("", 0, false);
+                    updateProgress("", "", 0, false);
                 }
                 setCardLayout(1);
             } else {
@@ -287,14 +287,15 @@ public class Adb {
         }
     }
 
-    public static void updateProgress(String progressText, float progressValue, boolean increase) {
+    public static void updateProgress(String progressTitle, String progressText, float progressValue, boolean increase) {
         String str = progressText;
         if (progressText.length() > 60) {
             str = str.substring(0, progressText.length() / 3) + "..." + str.substring(progressText.length() - 10, progressText.length());
         } else if (progressText.length() > 40) {
             str = str.substring(0, progressText.length() / 2) + "..." + str.substring(progressText.length() - 10, progressText.length());
         }
-        MyTree.txtProgress.setText(str);
+        MyTree.txtProgressTitle.setText(progressTitle);
+        MyTree.txtProgressContent.setText(str);
         if (progressValue != (-1)) {
             MyTree.circularProgressBar.updateProgress(progressValue);
             if (increase) {
