@@ -54,7 +54,7 @@ public class MyTree extends javax.swing.JFrame {
         this();
         MyTree.setCardLayout(cardLayoutNo);
     }
-    
+
     public MyTree() throws IOException {
         tree = ProjectTreeBuilder.buildTree();
         model = ProjectTreeBuilder.buildModel();
@@ -102,6 +102,8 @@ public class MyTree extends javax.swing.JFrame {
         menuFile = new javax.swing.JMenu();
         menuItemPreference = new javax.swing.JMenuItem();
         menuItemExit = new javax.swing.JMenuItem();
+        menuView = new javax.swing.JMenu();
+        menuItemSwitchView = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenu();
         menuItemDevelopers = new javax.swing.JMenuItem();
         menuItemDonate = new javax.swing.JMenuItem();
@@ -304,12 +306,12 @@ public class MyTree extends javax.swing.JFrame {
         javax.swing.GroupLayout circularProgressBarLayout = new javax.swing.GroupLayout(circularProgressBar);
         circularProgressBar.setLayout(circularProgressBarLayout);
         circularProgressBarLayout.setHorizontalGroup(
-            circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 423, Short.MAX_VALUE)
+                circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 423, Short.MAX_VALUE)
         );
         circularProgressBarLayout.setVerticalGroup(
-            circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 364, Short.MAX_VALUE)
+                circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 364, Short.MAX_VALUE)
         );
 
         txtProgressTitle.setEditable(false);
@@ -329,24 +331,24 @@ public class MyTree extends javax.swing.JFrame {
         javax.swing.GroupLayout panelProgressBarLayout = new javax.swing.GroupLayout(panelProgressBar);
         panelProgressBar.setLayout(panelProgressBarLayout);
         panelProgressBarLayout.setHorizontalGroup(
-            panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(circularProgressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(panelProgressBarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtProgressTitle)
-                    .addComponent(txtProgressContent, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE))
-                .addContainerGap())
+                panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(circularProgressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(panelProgressBarLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtProgressTitle)
+                                        .addComponent(txtProgressContent, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE))
+                                .addContainerGap())
         );
         panelProgressBarLayout.setVerticalGroup(
-            panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelProgressBarLayout.createSequentialGroup()
-                .addComponent(circularProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtProgressTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtProgressContent, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelProgressBarLayout.createSequentialGroup()
+                                .addComponent(circularProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtProgressTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtProgressContent, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         layeredPaneProgress.setLayer(panelProgressBar, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -389,6 +391,18 @@ public class MyTree extends javax.swing.JFrame {
         menuFile.add(menuItemExit);
 
         menuBar.add(menuFile);
+
+        menuView.setText("View");
+
+        menuItemSwitchView.setText("Switch View");
+        menuItemSwitchView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSwitchViewActionPerformed(evt);
+            }
+        });
+        menuView.add(menuItemSwitchView);
+
+        menuBar.add(menuView);
 
         menuAbout.setText("About");
 
@@ -549,7 +563,7 @@ public class MyTree extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "Your version is Up-to-date!");
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "Please Check Yout Internet Connection!!");
         }
     }
@@ -588,6 +602,10 @@ public class MyTree extends javax.swing.JFrame {
         }
     }
 
+    private void menuItemSwitchViewActionPerformed(java.awt.event.ActionEvent evt) {
+        toggleCardLayout();
+    }
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc=" Functions ">
     public static void setCardLayout(int cardNo) {
@@ -601,8 +619,19 @@ public class MyTree extends javax.swing.JFrame {
                 layeredPaneProgress.setVisible(true);
                 break;
         }
-        CardLayout cardLayout = (CardLayout) panelLower.getLayout();
-        cardLayout.show(panelLower, "card" + Integer.toString(cardNo));
+        //Disabling traditional progress bar since we have circular progressbar
+        //CardLayout cardLayout = (CardLayout) panelLower.getLayout();
+        //cardLayout.show(panelLower, "card" + Integer.toString(cardNo));
+    }
+    
+    public static void toggleCardLayout(){
+        if(layeredPaneHome.isVisible()){
+            layeredPaneHome.setVisible(false);
+            layeredPaneProgress.setVisible(true);
+        }else{
+            layeredPaneHome.setVisible(true);
+            layeredPaneProgress.setVisible(false);
+        }
     }
 
     public boolean deleteDirectory(File directory) {
@@ -642,7 +671,7 @@ public class MyTree extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MyTreeUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         //</editor-fold>
 
         /* Create and display the form */
@@ -674,6 +703,8 @@ public class MyTree extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemInstructions;
     private javax.swing.JMenuItem menuItemPreference;
+    private javax.swing.JMenuItem menuItemSwitchView;
+    private javax.swing.JMenu menuView;
     private javax.swing.JPanel panelCreateZip;
     private javax.swing.JPanel panelImportZip;
     public static javax.swing.JPanel panelLower;

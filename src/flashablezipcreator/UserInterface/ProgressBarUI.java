@@ -81,7 +81,7 @@ public class ProgressBarUI extends javax.swing.JFrame {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 1; i <= 100; i++) {
+                for (int i = 0; i < 100; i++) {
                     try {
                         panelProgress.updateProgress(i);
                         Thread.sleep(50);

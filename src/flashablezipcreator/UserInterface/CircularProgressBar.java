@@ -51,7 +51,11 @@ public class CircularProgressBar extends JPanel {
         Arc2D.Float arc = new Arc2D.Float(Arc2D.PIE);
         Ellipse2D circle = new Ellipse2D.Float(0, 0, 110, 110);
         arc.setFrameFromCenter(new Point(0, 0), new Point(120, 120));
-        circle.setFrameFromCenter(new Point(0, 0), new Point(110, 110));
+        if (progress == 0) {
+            circle.setFrameFromCenter(new Point(0, 0), new Point(120, 120));
+        }else{
+            circle.setFrameFromCenter(new Point(0, 0), new Point(110, 110));
+        }
         arc.setAngleStart(1);
         arc.setAngleExtent(-progress * 3.6);
         g2.setColor(Color.red);

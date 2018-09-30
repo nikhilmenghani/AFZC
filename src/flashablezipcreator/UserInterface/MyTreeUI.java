@@ -48,11 +48,14 @@ public class MyTreeUI extends javax.swing.JFrame {
         layeredPaneProgress = new javax.swing.JLayeredPane();
         panelProgressBar = new javax.swing.JPanel();
         circularProgressBar = new flashablezipcreator.UserInterface.CircularProgressBar();
-        txtProgress = new javax.swing.JTextField();
+        txtProgressTitle = new javax.swing.JTextField();
+        txtProgressContent = new javax.swing.JTextField();
         menuBar = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuItemPreferences = new javax.swing.JMenuItem();
         menuItemExit = new javax.swing.JMenuItem();
+        menuView = new javax.swing.JMenu();
+        menuItemSwitchView = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenu();
         menuItemDevelopers = new javax.swing.JMenuItem();
         menuItemDonate = new javax.swing.JMenuItem();
@@ -257,34 +260,48 @@ public class MyTreeUI extends javax.swing.JFrame {
         circularProgressBar.setLayout(circularProgressBarLayout);
         circularProgressBarLayout.setHorizontalGroup(
             circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 423, Short.MAX_VALUE)
         );
         circularProgressBarLayout.setVerticalGroup(
             circularProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 364, Short.MAX_VALUE)
         );
 
-        txtProgress.setEditable(false);
-        txtProgress.setBackground(new java.awt.Color(255, 255, 255));
-        txtProgress.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        txtProgress.setForeground(new java.awt.Color(0, 121, 107));
-        txtProgress.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtProgress.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        txtProgressTitle.setEditable(false);
+        txtProgressTitle.setBackground(new java.awt.Color(255, 255, 255));
+        txtProgressTitle.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
+        txtProgressTitle.setForeground(new java.awt.Color(0, 121, 107));
+        txtProgressTitle.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtProgressTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+
+        txtProgressContent.setEditable(false);
+        txtProgressContent.setBackground(new java.awt.Color(255, 255, 255));
+        txtProgressContent.setFont(new java.awt.Font("Tahoma", 0, 21)); // NOI18N
+        txtProgressContent.setForeground(new java.awt.Color(0, 121, 107));
+        txtProgressContent.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtProgressContent.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         javax.swing.GroupLayout panelProgressBarLayout = new javax.swing.GroupLayout(panelProgressBar);
         panelProgressBar.setLayout(panelProgressBarLayout);
         panelProgressBarLayout.setHorizontalGroup(
             panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(circularProgressBar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(txtProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)
+            .addGroup(panelProgressBarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtProgressTitle)
+                    .addComponent(txtProgressContent, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelProgressBarLayout.setVerticalGroup(
             panelProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelProgressBarLayout.createSequentialGroup()
                 .addComponent(circularProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(txtProgress, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtProgressTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtProgressContent, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         layeredPaneProgress.setLayer(panelProgressBar, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -321,6 +338,18 @@ public class MyTreeUI extends javax.swing.JFrame {
         menuFile.add(menuItemExit);
 
         menuBar.add(menuFile);
+
+        menuView.setText("View");
+
+        menuItemSwitchView.setText("Switch View");
+        menuItemSwitchView.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSwitchViewActionPerformed(evt);
+            }
+        });
+        menuView.add(menuItemSwitchView);
+
+        menuBar.add(menuView);
 
         menuAbout.setText("About");
 
@@ -410,6 +439,10 @@ public class MyTreeUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuItemDonateActionPerformed
 
+    private void menuItemSwitchViewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSwitchViewActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuItemSwitchViewActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -466,6 +499,8 @@ public class MyTreeUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemInstructions;
     private javax.swing.JMenuItem menuItemPreferences;
+    private javax.swing.JMenuItem menuItemSwitchView;
+    private javax.swing.JMenu menuView;
     private javax.swing.JPanel panelCreateZip;
     private javax.swing.JPanel panelImportZip;
     public static javax.swing.JPanel panelLower;
@@ -474,6 +509,7 @@ public class MyTreeUI extends javax.swing.JFrame {
     private javax.swing.JPanel panel_logo;
     public static javax.swing.JProgressBar progressBarImportExport;
     public static javax.swing.JTree tree;
-    private javax.swing.JTextField txtProgress;
+    private javax.swing.JTextField txtProgressContent;
+    private javax.swing.JTextField txtProgressTitle;
     // End of variables declaration//GEN-END:variables
 }
