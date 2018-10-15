@@ -71,6 +71,28 @@ public class AdbOperations {
         }
     }
 
+    public static String getDeviceAndroidVersion() {
+        boolean isWin = System.getProperty("os.name").toLowerCase().contains("windows");
+        boolean wait = false;
+        ArrayList<String> list = runProcess(isWin, wait, Commands.COMMAND_ANDROID_VERSION);
+        if (list.size() > 0) {
+            return String.valueOf(list.get(0));
+        } else {
+            return "0";
+        }
+    }
+
+    public static String getDeviceArchitecture() {
+        boolean isWin = System.getProperty("os.name").toLowerCase().contains("windows");
+        boolean wait = false;
+        ArrayList<String> list = runProcess(isWin, wait, Commands.COMMAND_DEVICE_ARCHITECHTURE);
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return "";
+        }
+    }
+
     public static boolean pullFile(String pullFrom, String pullTo) {
         java.io.File sFile = new java.io.File(pullTo);
         Write w = new Write();
@@ -311,7 +333,12 @@ public class AdbOperations {
             while ((_temp = in.readLine()) != null) {
                 line.add(_temp);
             }
-//            ArrayList<String> data = runProcess(true, false, Commands.COMMAND_LIST_FILES_SU);
+            if (line.size() > 0) {
+                if (line.get(0).equals("error: no devices/emulators found") || line.get(0).contains("error")) {
+                    line = new ArrayList<>();
+                    //JOptionPane.showMessageDialog(null, "error: no devices/emulators found!");
+                }
+            }
             return line;
         } catch (IOException e) {
             return null;

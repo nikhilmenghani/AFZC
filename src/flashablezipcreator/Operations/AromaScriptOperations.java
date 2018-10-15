@@ -178,15 +178,29 @@ public class AromaScriptOperations {
         return str;
     }
 
-    public String addMenuBox(ProjectNode project) {
+    public String addAromaMenuBox(ProjectNode project) {
         String str = "";
         switch (project.prop.projectType) {
             case Types.PROJECT_AROMA:
             case Types.PROJECT_CUSTOM:
             case Types.PROJECT_MOD:
-            case Types.PROJECT_GAPPS:
                 str += "\nmenubox(\"" + "Menu" + " List\",\"Select from " + "following" + "\",\"@installmods\",\"" + project.prop.title + ".prop" + "\",\n"
                         + "\"Open " + project.prop.title + "\", \"Install files from " + project.prop.title + "\", \"@install\"";
+                str += ",\n\"" + "Skip" + "\", \"Do Not Install files from " + project.prop.title + "\", \"@apps\"";
+                str += ");\n";
+                str += "writetmpfile(\"" + project.prop.title + ".prop" + "\",readtmpfile(\"" + project.prop.title + ".prop" + "\"));\n";
+                break;
+        }
+        return str;
+    }
+
+    public String addGappsMenuBox(ProjectNode project) {
+        String str = "";
+        switch (project.prop.projectType) {
+            case Types.PROJECT_GAPPS:
+                str += "\nmenubox(\"" + "Menu" + " List\",\"Select from " + "following" + "\",\"@installmods\",\"" + project.prop.title + ".prop" + "\",\n"
+                        + "\"Open " + project.prop.title + "\", \"Choose files to install from " + project.prop.title + "\", \"@install\""
+                        + ",\n\"Install " + project.prop.title + "\", \"Install All Files from " + project.prop.title + "\", \"@install\"";
                 str += ",\n\"" + "Skip" + "\", \"Do Not Install files from " + project.prop.title + "\", \"@apps\"";
                 str += ");\n";
                 str += "writetmpfile(\"" + project.prop.title + ".prop" + "\",readtmpfile(\"" + project.prop.title + ".prop" + "\"));\n";
@@ -303,6 +317,9 @@ public class AromaScriptOperations {
                         + "\"" + node.prop.title + "\",\"Choose files which you want to add on install/exclude list\",\"\", \"group\"";
                 for (int i = 0; i < node.getChildCount(); i++) {
                     switch (node.getChildAt(i).prop.type) {
+                        case Types.NODE_DELETE:
+                            str += ",\n\"" + "item." + (i + 1) + "\", \"" + ((DeleteNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
+                            break;
                         case Types.NODE_FOLDER:
                             str += ",\n\"" + "item." + (i + 1) + "\", \"" + ((FolderNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
                             break;

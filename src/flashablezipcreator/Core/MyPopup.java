@@ -81,11 +81,26 @@ public class MyPopup {
         mitemAddAromaProject.addActionListener((ActionEvent ae) -> {
             addQuickProjectObject(Types.PROJECT_AROMA, Mod.MOD_LESS);
         });
-        JMenuItem mitemAddGappsProject = new JMenuItem("Pico");
-        mitemAddGappsProject.addActionListener((ActionEvent ae) -> {
+        JMenuItem mitemAddPicoGappsProject = new JMenuItem("Pico");
+        mitemAddPicoGappsProject.addActionListener((ActionEvent ae) -> {
             addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_PICO);
         });
-        addGappsMenu.add(mitemAddGappsProject);
+        JMenuItem mitemAddCoreGappsProject = new JMenuItem("Core");
+        mitemAddCoreGappsProject.addActionListener((ActionEvent ae) -> {
+            addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_CORE);
+        });
+        JMenuItem mitemAddNanoGappsProject = new JMenuItem("Nano");
+        mitemAddNanoGappsProject.addActionListener((ActionEvent ae) -> {
+            addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_NANO);
+        });
+        JMenuItem mitemAddMyGappsProject = new JMenuItem("My");
+        mitemAddMyGappsProject.addActionListener((ActionEvent ae) -> {
+            addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_MY);
+        });
+        addGappsMenu.add(mitemAddCoreGappsProject);
+        addGappsMenu.add(mitemAddPicoGappsProject);
+        addGappsMenu.add(mitemAddNanoGappsProject);
+        addGappsMenu.add(mitemAddMyGappsProject);
         addProjectMenu.add(mitemAddAromaProject);
         addProjectMenu.add(addGappsMenu);
         popup = new JPopupMenu();
@@ -268,25 +283,8 @@ public class MyPopup {
                     addName(Types.GROUP_CUSTOM, node);
                 });
 //                JMenu addGappsMenu = new JMenu("Build Gapps");
-                JMenuItem mitemBuildPicoGappsFromDevice = new JMenuItem("Build Gapps");
-                mitemBuildPicoGappsFromDevice.addActionListener((ActionEvent ae) -> {
-//                    String defaultName = "Pico Gapps";
-//                    defaultName = getUniqueName(node, defaultName);
-//                    ProjectItemNode selNode = (ProjectItemNode) MyTree.tree.getLastSelectedPathComponent();
-//                    if (selNode != null) {
-//                        NodeProperties p = new NodeProperties(defaultName, Types.GROUP_GAPPS_PICO, node);
-//                        GroupNode newNode = new GroupNode(p);
-//                        node.addChild(newNode, false);
-//                        TreeNode[] nodes = model.getPathToRoot(newNode);
-//                        TreePath path = new TreePath(nodes);
-//                        tree.scrollPathToVisible(path);
-//                        tree.setSelectionPath(path);
-//                        tree.startEditingAtPath(path);
-//                        Adb device = new Adb();
-//                        device.importGapps(newNode);
-//                    } else {
-//                        JOptionPane.showMessageDialog(popup, "Select the Project first");
-//                    }
+                JMenuItem mitemBuildGappsFromDevice = new JMenuItem("Build Gapps");
+                mitemBuildGappsFromDevice.addActionListener((ActionEvent ae) -> {
                     Adb device = new Adb();
                     device.importGapps(node);
                 });
@@ -299,7 +297,7 @@ public class MyPopup {
                         break;
                     case Types.PROJECT_GAPPS:
 //                        addGappsMenu.add(mitemBuildPicoGappsFromDevice);
-                        popup.add(mitemBuildPicoGappsFromDevice);
+                        popup.add(mitemBuildGappsFromDevice);
                         break;
                 }
                 addGroupMenu.add(addSystemGroupMenu);
@@ -595,7 +593,19 @@ public class MyPopup {
         String defaultProjName = "My Project";
         switch (type) {
             case Types.PROJECT_GAPPS:
-                defaultProjName = "My Gapps";
+                switch(modType){
+                    case Types.GAPPS_CORE:
+                        defaultProjName = "Core Gapps";
+                        break;
+                    case Types.GAPPS_PICO:
+                        defaultProjName = "Pico Gapps";
+                        break;
+                    case Types.GAPPS_NANO:
+                        defaultProjName = "Nano Gapps";
+                        break;
+                    default:
+                        defaultProjName = "My Gapps";
+                }
                 break;
         }
         defaultProjName = getUniqueName(rootNode, defaultProjName);

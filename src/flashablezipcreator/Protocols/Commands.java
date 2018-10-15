@@ -26,6 +26,8 @@ public class Commands {
     public static String[] COMMAND_AAPT_DUMP_BADGING = {"aapt", "dump", "badging", ""};
     public static String[] COMMAND_LIST_FILES_SU = {"ls", "/data/app"};
     public static String[] COMMAND_ADB_SHELL_SU = {"adb", "shell", "su"};
+    public static String[] COMMAND_ANDROID_VERSION = {"adb", "shell", "getprop", "ro.build.version.release"};
+    public static String[] COMMAND_DEVICE_ARCHITECHTURE = {"adb", "shell", "getprop", "ro.product.cpu.abi"};
 
     public static String[] getAdbPull(String mPath, String sPath) {
         COMMAND_ADB_PULL[2] = "\"" + mPath + "\"";

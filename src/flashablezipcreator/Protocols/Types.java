@@ -64,5 +64,8 @@ public class Types {
     public static final int PACKAGE_CUSTOM = 87;
     public static final int PACKAGE_SCRIPT = 88;
     
-    public static final int GAPPS_PICO = 91;
+    public static final int GAPPS_CORE = 91;
+    public static final int GAPPS_PICO = 92;
+    public static final int GAPPS_NANO = 93;
+    public static final int GAPPS_MY = 94;
 }

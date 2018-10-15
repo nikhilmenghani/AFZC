@@ -17,8 +17,7 @@ import flashablezipcreator.Core.FolderNode;
 import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
-import static flashablezipcreator.Operations.UpdateBinaryOperations.copyString;
-import static flashablezipcreator.Operations.UpdateBinaryOperations.installString;
+import static flashablezipcreator.Operations.UpdateBinaryOperations.deleteString;
 import flashablezipcreator.UserInterface.Preference;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Script;
@@ -155,6 +154,11 @@ public class UpdaterScriptOperations {
                     str += "set_perm(" + ((FileNode) child).prop.filePermission + ");\n";
                 }
                 str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
+            } else if (child.prop.type == Types.NODE_DELETE) {
+                DeleteNode file = (DeleteNode) child;
+                str += addPrintString(file.prop.title, deleteString);
+                str += "delete_recursive(\"" + file.getDeleteLocation() + "\");\n";
+                str += getExecuteScriptString(Script.afzcScriptTempPath, "-di", file.getDeleteLocation());
             }
         }
         return str;
@@ -176,6 +180,11 @@ public class UpdaterScriptOperations {
                         str += "set_perm(" + ((FileNode) child).prop.filePermission + ");\n";
                     }
                     str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
+                } else if (child.prop.type == Types.NODE_DELETE) {
+                    DeleteNode file = (DeleteNode) child;
+                    str += addPrintString(file.prop.title, deleteString);
+                    str += "delete_recursive(\"" + file.getDeleteLocation() + "\");\n";
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-di", file.getDeleteLocation());
                 }
                 str += "endif;\n\n";
             }

@@ -161,6 +161,11 @@ public class UpdateBinaryOperations {
                     str += "set_perm " + ((FileNode) child).prop.filePermission + "\n";
                 }
                 str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
+            } else if (child.prop.type == Types.NODE_DELETE) {
+                DeleteNode file = (DeleteNode) child;
+                str += addPrintString(file.prop.title, deleteString);
+                str += "delete_recursive \"" + file.getDeleteLocation() + "\"\n";
+                str += getExecuteScriptString(Script.afzcScriptTempPath, "-di", file.getDeleteLocation());
             }
         }
         return str;
@@ -182,6 +187,11 @@ public class UpdateBinaryOperations {
                         str += "set_perm " + ((FileNode) child).prop.filePermission + "\n";
                     }
                     str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
+                } else if (child.prop.type == Types.NODE_DELETE) {
+                    DeleteNode file = (DeleteNode) child;
+                    str += addPrintString(file.prop.title, deleteString);
+                    str += "delete_recursive \"" + file.getDeleteLocation() + "\"\n";
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-di", file.getDeleteLocation());
                 }
                 str += "fi;\n";
             }
@@ -189,6 +199,7 @@ public class UpdateBinaryOperations {
         return str;
     }
 
+    //following is not being used as of now since we are using form and not check box in aroma
     public String predefinedAromaFolderGroupScript(GroupNode node) {
         String str = "";
         if (node.isCheckBox()) {

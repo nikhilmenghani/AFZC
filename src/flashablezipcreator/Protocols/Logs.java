@@ -34,7 +34,7 @@ public class Logs {
     
     public static String getShortTime() {
         Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         System.out.println(sdf.format(cal.getTime()));
         return sdf.format(cal.getTime());
     }

@@ -88,7 +88,20 @@ public class UpdateBinary {
         }
         str += "set_progress 1\n";
         //str += ubo.terminateUpdaterScript();
-        return str += "fi;\n";
+        str += "fi;\n";
+        str += "if [ $(file_getprop \"/tmp/aroma/" + project.prop.title + ".prop\" installAll) == 1 ]; then\n";
+        str += ubo.getMountMethod(1);
+        str += "set_progress 0\n";
+        for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {
+            if (((ProjectNode) group.prop.parent).prop.projectType == project.prop.projectType && ((ProjectNode) group.prop.parent).prop.title.equals(project.prop.title)) {
+                str += ubo.generateUpdaterScript((GroupNode) group);
+                //install everything here
+            }
+        }
+        str += "set_progress 1\n";
+        //str += ubo.terminateUpdaterScript();
+        str += "fi;\n";
+        return str;
     }
 
     public static String getDpiScript(String dpi) {

@@ -40,8 +40,10 @@ public class AromaConfig {
                     case Types.PROJECT_AROMA:
                     case Types.PROJECT_CUSTOM:
                     case Types.PROJECT_MOD:
-                    case Types.PROJECT_GAPPS:
                         aromaConfig += buildAromaScript((ProjectNode) project);
+                        break;
+                    case Types.PROJECT_GAPPS:
+                        aromaConfig += buildGappsScript((ProjectNode) project);
                         break;
                     //following is not needed. added just in case.
 //                    case Types.PROJECT_ADVANCED:
@@ -63,7 +65,7 @@ public class AromaConfig {
 
     public static String buildAromaScript(ProjectNode project) {
         String str = "";
-        str += op.addMenuBox(project);
+        str += op.addAromaMenuBox(project);
         str += "if prop(\"" + project.prop.title + ".prop\",\"selected\")==\"1\" then\n";
         str += op.addInitString(project);
         str += op.addWelcomeString(project);
@@ -72,6 +74,26 @@ public class AromaConfig {
                 case Types.PROJECT_AROMA:
                 case Types.PROJECT_CUSTOM:
                 case Types.PROJECT_MOD:
+                    str += op.addForm((GroupNode) group);
+                    str += op.addSelectBox((GroupNode) group);
+                    break;
+            }
+        }
+        str += "endif;\n";
+        str += "if prop(\"" + project.prop.title + ".prop\",\"selected\")==\"2\" then\n";
+        str += "writetmpfile(\"" + project.prop.title + ".prop\",\"init=no\\n\");\n";
+        str += "endif;\n";
+        return str;
+    }
+
+    public static String buildGappsScript(ProjectNode project) {
+        String str = "";
+        str += op.addGappsMenuBox(project);
+        str += "if prop(\"" + project.prop.title + ".prop\",\"selected\")==\"1\" then\n";
+        str += op.addInitString(project);
+        str += op.addWelcomeString(project);
+        for (ProjectItemNode group : project.prop.children) {
+            switch (((ProjectNode) group.prop.parent).prop.projectType) {
                 case Types.PROJECT_GAPPS:
                     str += op.addForm((GroupNode) group);
                     str += op.addSelectBox((GroupNode) group);
@@ -80,6 +102,9 @@ public class AromaConfig {
         }
         str += "endif;\n";
         str += "if prop(\"" + project.prop.title + ".prop\",\"selected\")==\"2\" then\n";
+        str += "writetmpfile(\"" + project.prop.title + ".prop\",\"installAll=1\\n\");\n";
+        str += "endif;\n";
+        str += "if prop(\"" + project.prop.title + ".prop\",\"selected\")==\"3\" then\n";
         str += "writetmpfile(\"" + project.prop.title + ".prop\",\"init=no\\n\");\n";
         str += "endif;\n";
         return str;

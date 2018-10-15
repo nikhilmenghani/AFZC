@@ -7,7 +7,7 @@ package flashablezipcreator.Adb;
 
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.ProjectItemNode;
-import flashablezipcreator.Gapps.Pico;
+import flashablezipcreator.Gapps.Gapps;
 import flashablezipcreator.Operations.AdbOperations;
 import static flashablezipcreator.Operations.AdbOperations.checkDeviceConnectivity;
 import static flashablezipcreator.Operations.AdbOperations.getAppList;
@@ -42,9 +42,18 @@ public class Adb {
 
     public void importGapps(ProjectItemNode parent) {
         new Thread(() -> {
-            switch (parent.prop.projectType) {
-                case Types.PROJECT_GAPPS:
-                    importPackages(Pico.getList(), parent);
+            switch (parent.prop.modType) {
+                case Types.GAPPS_CORE:
+                    importPackages(Gapps.getCoreList(), parent);
+                    break;
+                case Types.GAPPS_PICO:
+                    importPackages(Gapps.getPicoList(), parent);
+                    break;
+                case Types.GAPPS_MY:
+                    importPackages(Gapps.getMyList(), parent);
+                    break;
+                case Types.GAPPS_NANO:
+                    importPackages(Gapps.getNanoList(), parent);
                     break;
             }
         }).start();

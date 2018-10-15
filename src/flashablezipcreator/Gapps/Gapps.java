@@ -6,6 +6,7 @@
 package flashablezipcreator.Gapps;
 
 import flashablezipcreator.Adb.Package;
+import java.util.ArrayList;
 
 /**
  *
@@ -58,7 +59,7 @@ public class Gapps {
 //        files.associatedFileList.add("/system/etc/sysconfig/dialer_experience.xml");
 //        files.associatedFileList.add("/system/etc/sysconfig/google_build.xml");
 //        files.associatedFileList.add("/system/etc/g.prop");
-        
+
         files.associatedFileList.add("/system/framework/com.google.android.dialer.support.jar");
         //files.associatedFileList.add("/system/framework/com.google.android.maps.jar"); //corrupted for some reason
         files.associatedFileList.add("/system/framework/com.google.android.media.effects.jar");
@@ -73,5 +74,48 @@ public class Gapps {
 //        files.associatedFileList.add("/vendor/lib/libfrsdk.so");
 //        files.associatedFileList.add("/vendor/lib64/libfrsdk.so");
         files.isOptional = true;
+    }
+
+    public static ArrayList<Package> getCoreList() {
+        Gapps gapps = new Gapps();
+        ArrayList<Package> list = new ArrayList<>();
+        list.add(Gapps.Phonesky);
+        list.add(Gapps.PrebuiltGmsCore);
+        list.add(Gapps.GoogleServicesFramework);
+        list.add(Gapps.GoogleContactsSyncAdapter);
+        return list;
+    }
+
+    public static ArrayList<Package> getPicoList() {
+        ArrayList<Package> list = new ArrayList<>();
+        for (Package p : getCoreList()) {
+            list.add(p);
+        }
+        list.add(Gapps.GoogleBackupTransport);
+        list.add(Gapps.GoogleExtServices);
+        list.add(Gapps.GoogleExtShared);
+        return list;
+    }
+
+    public static ArrayList<Package> getNanoList() {
+        ArrayList<Package> list = new ArrayList<>();
+        for (Package p : getPicoList()) {
+            list.add(p);
+        }
+        list.add(Gapps.GoogleKeep);
+        list.add(Gapps.GoogleMaps);
+        return list;
+    }
+
+    public static ArrayList<Package> getMyList() {
+        ArrayList<Package> list = new ArrayList<>();
+        for (Package p : getPicoList()) {
+            list.add(p);
+        }
+        list.add(Gapps.FaceLock);
+        list.add(Gapps.GmsCoreSetupPrebuilt);
+        list.add(Gapps.GoogleKeep);
+        list.add(Gapps.GoogleMaps);
+        return list;
     }
 }
