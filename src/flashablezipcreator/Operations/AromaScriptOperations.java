@@ -83,6 +83,9 @@ public class AromaScriptOperations {
 
     public String addSelectBox(GroupNode node) {
         String str = "";
+        int childCount = node.getChildCount();
+        String skipGroupValue = (childCount == 1) ? "0" : "1";
+        String childNodeValue = skipGroupValue.equals("0") ? "1" : "0";
         switch (node.prop.groupType) {
             case Types.GROUP_DATA_LOCAL:
             case Types.GROUP_SYSTEM_MEDIA:
@@ -90,10 +93,9 @@ public class AromaScriptOperations {
             case Types.GROUP_SCRIPT:
                 str += "\nselectbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@personalize\",\"" + node.prop.propFile + "\",\n"
                         + "\"Select one from the list\", \"\", 2,\n"
-                        + "\"Select None\",\"Skip this Group.\", 1";
+                        + "\"Select None\",\"Skip this Group.\", " + skipGroupValue;
                 for (int i = 0; i < node.getChildCount(); i++) {
-
-                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", 0";
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", " + childNodeValue;
                 }
                 str += ");\n";
                 str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
@@ -145,10 +147,13 @@ public class AromaScriptOperations {
 
     public String configFonts(GroupNode node) {
         String str = "";
+        int childCount = node.getChildCount();
+        String skipGroupValue = (childCount == 1) ? "0" : "1";
+        String childNodeValue = skipGroupValue.equals("0") ? "1" : "0";
         str += "\nselectbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + " List For Preview\",\"@info\",\"" + node.prop.propFile + "\""
-                + ",\n\"Select None\",\"Skip this Group.\", 1";
+                + ",\n\"Select None\",\"Skip this Group.\", " + skipGroupValue;
         for (int i = 0; i < node.getChildCount(); i++) {
-            str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", " + 0 + "";
+            str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((SubGroupNode) node.getChildAt(i)).prop.description + "\", " + childNodeValue + "";
         }
         str += ");\n";
         str += "writetmpfile(\"" + node.prop.propFile.replace(".prop", "_" + node.prop.title + ".prop") + "\",\"init=no\\n\");\n";//initialize temp.prop.
