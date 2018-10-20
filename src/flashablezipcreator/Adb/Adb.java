@@ -33,6 +33,7 @@ public class Adb {
     public static ArrayList<String> filteredFilePath = new ArrayList<>();
     public static boolean filteredFileInclude = true;
     public static int index = 0;
+    public static String IPAddress = "";
 
     public static String logs = "";
 
@@ -232,7 +233,7 @@ public class Adb {
     public void importFiles(ProjectItemNode parent) {
         new Thread(() -> {
             Adb.logs = "";
-            int connectivityFlag = checkDeviceConnectivity();
+            int connectivityFlag = checkDeviceConnectivity(IPAddress);
             switch (connectivityFlag) {
                 case 0:
                     JOptionPane.showMessageDialog(null, "The device is not identified,"
@@ -286,7 +287,7 @@ public class Adb {
     }
 
     public void pushZipToDevice(String source, String destination) {
-        if (checkDeviceConnectivity() == 1) {
+        if (checkDeviceConnectivity(IPAddress) == 1) {
             int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to push file to Device?", "", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
                 MyTree.setCardLayout(2);

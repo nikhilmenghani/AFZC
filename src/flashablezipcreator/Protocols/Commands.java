@@ -28,6 +28,7 @@ public class Commands {
     public static String[] COMMAND_ADB_SHELL_SU = {"adb", "shell", "su"};
     public static String[] COMMAND_ANDROID_VERSION = {"adb", "shell", "getprop", "ro.build.version.release"};
     public static String[] COMMAND_DEVICE_ARCHITECHTURE = {"adb", "shell", "getprop", "ro.product.cpu.abi"};
+    public static String[] COMMAND_ADB_CONNECT_DEVICES = {"adb", "connect", "IP"};
 
     public static String[] getAdbPull(String mPath, String sPath) {
         COMMAND_ADB_PULL[2] = "\"" + mPath + "\"";
@@ -49,5 +50,10 @@ public class Commands {
     public static String[] getAdbPackagePath(String Package) {
         COMMAND_PATH_PACKAGES[4] = Package;
         return COMMAND_PATH_PACKAGES;
+    }
+    
+    public static String[] getAdbConnectCommand(String ip){
+        COMMAND_ADB_CONNECT_DEVICES[2] = ip;
+        return COMMAND_ADB_CONNECT_DEVICES;
     }
 }

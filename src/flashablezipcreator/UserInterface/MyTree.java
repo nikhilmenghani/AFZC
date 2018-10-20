@@ -5,10 +5,12 @@
  */
 package flashablezipcreator.UserInterface;
 
+import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectTreeBuilder;
 import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.FlashableZipCreator;
+import flashablezipcreator.Operations.AdbOperations;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.MyFileFilter;
 import flashablezipcreator.Operations.TreeOperations;
@@ -21,7 +23,6 @@ import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.Protocols.Web;
-import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -110,6 +111,10 @@ public class MyTree extends javax.swing.JFrame {
         menuHelp = new javax.swing.JMenu();
         menuItemInstructions = new javax.swing.JMenuItem();
         menuItemCheckForUpdates = new javax.swing.JMenuItem();
+        menuDevice = new javax.swing.JMenu();
+        menuItemQuickConnect = new javax.swing.JMenuItem();
+        menuItemUSB = new javax.swing.JMenuItem();
+        menuItemWifi = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -455,6 +460,34 @@ public class MyTree extends javax.swing.JFrame {
 
         menuBar.add(menuHelp);
 
+        menuDevice.setText("Device");
+
+        menuItemQuickConnect.setText("Quick Connect");
+        menuItemQuickConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemQuickConnectActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemQuickConnect);
+
+        menuItemUSB.setText("Connect Via USB");
+        menuItemUSB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemUSBActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemUSB);
+
+        menuItemWifi.setText("Connect Via Wifi");
+        menuItemWifi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemWifiActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemWifi);
+
+        menuBar.add(menuDevice);
+
         setJMenuBar(menuBar);
 
         getAccessibleContext().setAccessibleParent(layeredPaneHome);
@@ -462,8 +495,8 @@ public class MyTree extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>            
-
     //<editor-fold defaultstate="collapsed" desc=" Event Handling ">
+
     private void btnImportZipActionPerformed(java.awt.event.ActionEvent evt) {
         try {
             String importFrom = MyFileFilter.browseZipDestination();
@@ -606,6 +639,55 @@ public class MyTree extends javax.swing.JFrame {
         toggleCardLayout();
     }
 
+    private void menuItemQuickConnectActionPerformed(java.awt.event.ActionEvent evt) {
+        int i = AdbOperations.checkDeviceConnectivity("");
+        if (i == 3) {
+            String IP = "11";
+            i = AdbOperations.checkDeviceConnectivity("192.168.0." + IP + ":5555");
+            if (i == 3) {
+                IP = "15";
+                i = AdbOperations.checkDeviceConnectivity("192.168.0." + IP + ":5555");
+                if (i == 3) {
+                    JOptionPane.showMessageDialog(this, "Unable to connect to the device!\n"
+                            + "Make sure you are connected to correct IP or you have allowed this computer to connect to your device!");
+                }
+            }
+        }
+        switch (i) {
+            case 1:
+                JOptionPane.showMessageDialog(this, "Device Is Connected!");
+                break;
+            case 2:
+                JOptionPane.showMessageDialog(this, "Device Unauthorized, please allow the device to connect to this computer!");
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Cannot Connect To Device\n"
+                        + "Please make sure your device is connected via USB or same Wifi network!");
+                break;
+        }
+    }
+
+    private void menuItemUSBActionPerformed(java.awt.event.ActionEvent evt) {
+        int i = AdbOperations.checkDeviceConnectivity("");
+        switch (i) {
+            case 1:
+                JOptionPane.showMessageDialog(this, "Device Is Connected!");
+                break;
+            case 2:
+                JOptionPane.showMessageDialog(this, "Device Unauthorized, please allow the device to connect to this computer!");
+                break;
+            default:
+                JOptionPane.showMessageDialog(this, "Cannot Connect To Device\n"
+                        + "Please make sure your device is connected via USB or same Wifi network!");
+                break;
+        }
+    }
+
+    private void menuItemWifiActionPerformed(java.awt.event.ActionEvent evt) {
+        DeviceConnectUI dcui = new DeviceConnectUI();
+        dcui.setVisible(true);
+    }
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc=" Functions ">
     public static void setCardLayout(int cardNo) {
@@ -623,12 +705,12 @@ public class MyTree extends javax.swing.JFrame {
         //CardLayout cardLayout = (CardLayout) panelLower.getLayout();
         //cardLayout.show(panelLower, "card" + Integer.toString(cardNo));
     }
-    
-    public static void toggleCardLayout(){
-        if(layeredPaneHome.isVisible()){
+
+    public static void toggleCardLayout() {
+        if (layeredPaneHome.isVisible()) {
             layeredPaneHome.setVisible(false);
             layeredPaneProgress.setVisible(true);
-        }else{
+        } else {
             layeredPaneHome.setVisible(true);
             layeredPaneProgress.setVisible(false);
         }
@@ -695,6 +777,7 @@ public class MyTree extends javax.swing.JFrame {
     private javax.swing.JLabel lblVersion;
     private javax.swing.JMenu menuAbout;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuDevice;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenu menuHelp;
     private javax.swing.JMenuItem menuItemCheckForUpdates;
@@ -703,7 +786,10 @@ public class MyTree extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemInstructions;
     private javax.swing.JMenuItem menuItemPreference;
+    private javax.swing.JMenuItem menuItemQuickConnect;
     private javax.swing.JMenuItem menuItemSwitchView;
+    private javax.swing.JMenuItem menuItemUSB;
+    private javax.swing.JMenuItem menuItemWifi;
     private javax.swing.JMenu menuView;
     private javax.swing.JPanel panelCreateZip;
     private javax.swing.JPanel panelImportZip;

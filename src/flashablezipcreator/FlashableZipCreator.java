@@ -16,6 +16,7 @@ import flashablezipcreator.Protocols.Jar;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Update;
 import flashablezipcreator.Protocols.Xml;
+import flashablezipcreator.UserInterface.DeviceConnectUI;
 import flashablezipcreator.UserInterface.MyTree;
 import flashablezipcreator.UserInterface.Preference;
 import static flashablezipcreator.UserInterface.Preference.pp;
@@ -50,6 +51,7 @@ public class FlashableZipCreator {
     public static String OS = "Windoes";
     public static String VERSION = "v5.0 alpha";
     public static boolean useFTP = true;
+    public static MyTree tree;
 
     public static void main(String args[]) throws ClassNotFoundException, SQLException, FileNotFoundException, IOException, ParserConfigurationException, SAXException, URISyntaxException, TransformerException {
         /* Set the Nimbus look and feel */
@@ -159,7 +161,13 @@ public class FlashableZipCreator {
                 Xml.fileDetailsData = r.getFileString(Xml.file_details_path);
                 Xml.initializeProjectDetails(Xml.fileDetailsData);
             }
-            new MyTree().setVisible(true);
+            tree = new MyTree();
+            if (Preference.pp.checkForDeviceOnStartUp) {
+                tree.setVisible(false);
+                new DeviceConnectUI().setVisible(true);
+            } else {
+                tree.setVisible(true);
+            }
 //            new Adb();
         } catch (IOException | ParserConfigurationException | SAXException ex) {
             JOptionPane.showMessageDialog(null, Logs.getExceptionTrace(ex));

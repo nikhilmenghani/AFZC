@@ -62,6 +62,10 @@ public class MyTreeUI extends javax.swing.JFrame {
         menuHelp = new javax.swing.JMenu();
         menuItemInstructions = new javax.swing.JMenuItem();
         menuItemCheckForUpdates = new javax.swing.JMenuItem();
+        menuDevice = new javax.swing.JMenu();
+        menuItemQuickConnect = new javax.swing.JMenuItem();
+        menuItemUSB = new javax.swing.JMenuItem();
+        menuItemWifi = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -391,6 +395,34 @@ public class MyTreeUI extends javax.swing.JFrame {
 
         menuBar.add(menuHelp);
 
+        menuDevice.setText("Device");
+
+        menuItemQuickConnect.setText("Quick Connect");
+        menuItemQuickConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemQuickConnectActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemQuickConnect);
+
+        menuItemUSB.setText("Connect Via USB");
+        menuItemUSB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemUSBActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemUSB);
+
+        menuItemWifi.setText("Connect Via Wifi");
+        menuItemWifi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemWifiActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemWifi);
+
+        menuBar.add(menuDevice);
+
         setJMenuBar(menuBar);
 
         getAccessibleContext().setAccessibleParent(layeredPaneHome);
@@ -443,6 +475,18 @@ public class MyTreeUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_menuItemSwitchViewActionPerformed
 
+    private void menuItemQuickConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemQuickConnectActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuItemQuickConnectActionPerformed
+
+    private void menuItemUSBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemUSBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuItemUSBActionPerformed
+
+    private void menuItemWifiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemWifiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuItemWifiActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -491,6 +535,7 @@ public class MyTreeUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblVersion;
     private javax.swing.JMenu menuAbout;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuDevice;
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenu menuHelp;
     private javax.swing.JMenuItem menuItemCheckForUpdates;
@@ -499,7 +544,10 @@ public class MyTreeUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemInstructions;
     private javax.swing.JMenuItem menuItemPreferences;
+    private javax.swing.JMenuItem menuItemQuickConnect;
     private javax.swing.JMenuItem menuItemSwitchView;
+    private javax.swing.JMenuItem menuItemUSB;
+    private javax.swing.JMenuItem menuItemWifi;
     private javax.swing.JMenu menuView;
     private javax.swing.JPanel panelCreateZip;
     private javax.swing.JPanel panelImportZip;

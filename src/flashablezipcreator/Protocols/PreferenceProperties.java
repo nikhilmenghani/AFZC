@@ -29,4 +29,5 @@ public class PreferenceProperties {
     public boolean enableAddonDSupport = true;
     public boolean displayAddonDSupport = true;
     public String createZipType = "Aroma";
+    public boolean checkForDeviceOnStartUp = false;
 }

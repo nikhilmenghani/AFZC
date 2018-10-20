@@ -34,28 +34,26 @@ public class AdbOperations {
     private static final String[] OS_LINUX_RUNTIME = {"/bin/bash", "-l", "-c"};
     public static TreeOperations to = new TreeOperations();
 
-    public static int checkDeviceConnectivity() {
-        int flag = 0;
+    public static int checkDeviceConnectivity(String ipAddress) {
+        int flag = -1;
         boolean isWin = System.getProperty("os.name").toLowerCase().contains("windows");
         boolean wait = false;
-        ArrayList<String> list = runProcess(isWin, wait, Commands.COMMAND_ADB_DEVICES);
-        try {
-            String device = list.get(list.size() - 2);
-            String[] devices = device.split("\t");
-            if (devices.length > 1) {
-                if (devices[1].contains("unauthorized")) {
-                    flag = 2;
-                    System.out.println("Unauthorized Device Detected with ID: " + devices[0]);
-                } else if (devices[1].contains("device")) {
-                    flag = 1;
-                    System.out.println("Device Detected with ID: " + devices[0]);
-                } else {
-                    return 0;
-                }
+        ArrayList<String> list = new ArrayList<>();
+        if (ipAddress.startsWith("192.168")) {
+            list = runProcess(isWin, wait, Commands.getAdbConnectCommand(ipAddress));
+        }else{
+            list = runProcess(isWin, wait, Commands.COMMAND_ADB_DEVICES);
+        }
+        for(String response : list){
+            if(response.endsWith("device") || response.contains("connected to 192.168.")){
+                return 1;
             }
-
-        } catch (Exception e) {
-            System.out.println("Exception Caught: " + Logs.getExceptionTrace(e));
+            if(response.endsWith("unauthorized")){
+                return 2;
+            }
+            if(response.contains("A connection attempt failed because the connected party did not properly respond after a period of time")){
+                return 3;
+            }
         }
         return flag;
     }
