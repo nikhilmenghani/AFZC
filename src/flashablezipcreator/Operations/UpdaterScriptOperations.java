@@ -37,11 +37,11 @@ public class UpdaterScriptOperations {
     public String addPrintString(String str, int type) {
         switch (type) {
             case installString:
-                return "ui_print(\"" + (Preference.pp.createZipType.equals("Normal") ? "" : "@") + "Installing " + str + "\");\n";
+                return "ui_print(\"" + (Preference.pp.createZipType.equals("Normal") ? "** " : "@") + "Installing " + str + " **\");\n";
             case deleteString:
-                return "ui_print(\"" + (Preference.pp.createZipType.equals("Normal") ? "" : "@") + "Deleting " + str + "\");\n";
+                return "ui_print(\"" + (Preference.pp.createZipType.equals("Normal") ? "- " : "@") + "Deleting " + str + "\");\n";
             case copyString:
-                return "ui_print(\"" + (Preference.pp.createZipType.equals("Normal") ? "" : "@") + "Copying " + str + "\");\n";
+                return "ui_print(\"" + (Preference.pp.createZipType.equals("Normal") ? "- " : "@") + "Copying " + str + "\");\n";
         }
         return "ui_print(\"" + str + "\");\n";
     }
@@ -120,7 +120,7 @@ public class UpdaterScriptOperations {
             } else if (child.prop.type == Types.NODE_FILE) {
                 FileNode file = (FileNode) child;
                 if (file.prop.title.endsWith("apk")) {
-                    str += addPrintString("Copying " + file.prop.title);
+                    str += addPrintString("- Copying " + file.prop.title);
                     FolderNode folder = (FolderNode) (file.prop.parent);
                     GroupNode group = (GroupNode) (folder.prop.originalParent);
                     if (group.prop.groupType == Types.GROUP_DATA_APP) {
@@ -129,7 +129,7 @@ public class UpdaterScriptOperations {
                         str += "package_extract_file(\"" + file.prop.fileZipPath + "\", \"" + file.prop.fileInstallLocation + "/" + file.prop.title + "\");\n";
                     }
                 } else {
-                    str += addPrintString("Copying " + file.prop.title);
+                    str += addPrintString("- Copying " + file.prop.title);
                     str += "package_extract_file(\"" + file.prop.fileZipPath + "\", \"" + file.prop.fileInstallLocation + "/" + file.prop.title + "\");\n";
                 }
                 if (file.prop.setPermissions) {
