@@ -195,7 +195,13 @@ public class Adb {
         File f = new File(packagePath);
         ArrayList<String> fileList = new ArrayList<>();
         if (parent.prop.type != Types.NODE_FILE) {
-            fileList = getFileList(f.getParent());
+            //if the file is placed in /system/app or /system/priv-app following will prevent fetching all the files of parent folder
+            String parentFolder = f.getParent().replaceAll("\\\\", "/");
+            if (parentFolder.startsWith("/data/app") || parentFolder.endsWith(file.prop.title.replaceFirst("[.][^.]+$", ""))) {
+                fileList = getFileList(f.getParent());
+            } else {
+                fileList.add(packagePath);
+            }
         }
         //check here if the device is connected. if filelist size = 1
         //no devices/error: no devices/emulators found

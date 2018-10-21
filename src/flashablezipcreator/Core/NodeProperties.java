@@ -111,6 +111,7 @@ public final class NodeProperties {
         groupName = parent.prop.groupName;
         groupType = parent.prop.groupType;
         originalGroupType = parent.prop.originalGroupType;
+        packageType = parent.prop.packageType;
     }
 
     //creates properties of Folder having Folder parent
@@ -137,6 +138,7 @@ public final class NodeProperties {
         originalGroupType = parent.prop.originalGroupType;
         groupName = parent.prop.originalParent.getTitle();
         groupType = parent.prop.groupParent.prop.groupType;
+        packageType = parent.prop.packageType;
     }
 
     //creates properties of Project
@@ -510,6 +512,7 @@ public final class NodeProperties {
         projectName = parent.prop.projectName;
         originalGroupType = parent.prop.originalGroupType;
         location = parent.prop.location;
+        packageType = parent.prop.packageType;
         switch (type) {
             case Types.GROUP_SYSTEM_FONTS:
                 extension = "ttf";

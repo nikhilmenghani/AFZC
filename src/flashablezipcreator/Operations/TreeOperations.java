@@ -17,7 +17,6 @@ import flashablezipcreator.Protocols.Identify;
 import flashablezipcreator.Protocols.Mod;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
-import static flashablezipcreator.UserInterface.MyTree.rootNode;
 import flashablezipcreator.UserInterface.Preference;
 import java.io.File;
 import java.io.IOException;

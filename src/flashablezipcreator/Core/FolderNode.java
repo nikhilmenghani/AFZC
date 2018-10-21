@@ -48,6 +48,7 @@ public class FolderNode extends ProjectItemNode {
         setPermissions();
         prop.projectName = parent.prop.projectName;
         prop.originalGroupType = parent.prop.originalGroupType;
+        prop.packageType = parent.prop.packageType;
     }
 
     public FolderNode(String title, FolderNode parent) {
@@ -68,6 +69,7 @@ public class FolderNode extends ProjectItemNode {
         setPermissions();
         prop.projectName = parent.prop.projectName;
         prop.originalGroupType = parent.prop.originalGroupType;
+        prop.packageType = parent.prop.packageType;
     }
 
     public void setPermissions() {

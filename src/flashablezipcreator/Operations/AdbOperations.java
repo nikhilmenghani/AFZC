@@ -272,7 +272,9 @@ public class AdbOperations {
                     files = getFilesToUpdate(child, files);
                     break;
                 case Types.NODE_FILE:
-                    files.add((FileNode) child);
+                    if (!(child.prop.packageType == Types.PACKAGE_APP && child.prop.title.endsWith(".so"))) {
+                        files.add((FileNode) child);
+                    }
                     break;
             }
         }

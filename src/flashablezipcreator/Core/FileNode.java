@@ -36,6 +36,7 @@ public final class FileNode extends ProjectItemNode {
             prop.fileZipPath = prop.path.replaceAll("\\\\", "/");
         }
         prop.location = parent.prop.location;
+        prop.packageType = parent.prop.packageType;
     }
 
     public FileNode(String fileSourcePath, SubGroupNode parent) {
@@ -55,6 +56,7 @@ public final class FileNode extends ProjectItemNode {
         prop.originalGroupType = parent.prop.originalGroupType;
         prop.fileZipPath = parent.prop.zipPath + "/" + prop.title;
         prop.location = parent.prop.location;
+        prop.packageType = parent.prop.packageType;
     }
 
     public FileNode(String fileSourcePath, FolderNode parent) {
@@ -75,6 +77,7 @@ public final class FileNode extends ProjectItemNode {
         prop.originalGroupType = parent.prop.originalGroupType;
         prop.fileZipPath = parent.prop.zipPath + "/" + prop.title;
         prop.location = parent.prop.location;
+        prop.packageType = parent.prop.packageType;
     }
 
 //    public void updateZipPath() {
