@@ -409,6 +409,34 @@ public class MyTree extends javax.swing.JFrame {
 
         menuBar.add(menuView);
 
+        menuDevice.setText("Device");
+
+        menuItemQuickConnect.setText("Quick Connect");
+        menuItemQuickConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemQuickConnectActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemQuickConnect);
+
+        menuItemUSB.setText("Connect Via USB");
+        menuItemUSB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemUSBActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemUSB);
+
+        menuItemWifi.setText("Connect Via Wifi");
+        menuItemWifi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemWifiActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemWifi);
+
+        menuBar.add(menuDevice);
+
         menuAbout.setText("About");
 
         menuItemDevelopers.setText("Developers");
@@ -459,34 +487,6 @@ public class MyTree extends javax.swing.JFrame {
         menuHelp.add(menuItemCheckForUpdates);
 
         menuBar.add(menuHelp);
-
-        menuDevice.setText("Device");
-
-        menuItemQuickConnect.setText("Quick Connect");
-        menuItemQuickConnect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemQuickConnectActionPerformed(evt);
-            }
-        });
-        menuDevice.add(menuItemQuickConnect);
-
-        menuItemUSB.setText("Connect Via USB");
-        menuItemUSB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemUSBActionPerformed(evt);
-            }
-        });
-        menuDevice.add(menuItemUSB);
-
-        menuItemWifi.setText("Connect Via Wifi");
-        menuItemWifi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemWifiActionPerformed(evt);
-            }
-        });
-        menuDevice.add(menuItemWifi);
-
-        menuBar.add(menuDevice);
 
         setJMenuBar(menuBar);
 
@@ -644,14 +644,6 @@ public class MyTree extends javax.swing.JFrame {
         if (i == 3) {
             String IP = "11";
             i = AdbOperations.checkDeviceConnectivity("192.168.0." + IP + ":5555");
-            if (i == 3) {
-                IP = "15";
-                i = AdbOperations.checkDeviceConnectivity("192.168.0." + IP + ":5555");
-                if (i == 3) {
-                    JOptionPane.showMessageDialog(this, "Unable to connect to the device!\n"
-                            + "Make sure you are connected to correct IP or you have allowed this computer to connect to your device!");
-                }
-            }
         }
         switch (i) {
             case 1:
@@ -662,7 +654,7 @@ public class MyTree extends javax.swing.JFrame {
                 break;
             default:
                 JOptionPane.showMessageDialog(this, "Cannot Connect To Device\n"
-                        + "Please make sure your device is connected via USB or same Wifi network!");
+                        + "Please make sure your device is connected via USB or same Wifi network and you have allowed the device to connect to your computer!");
                 break;
         }
     }

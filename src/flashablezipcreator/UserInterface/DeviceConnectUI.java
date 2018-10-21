@@ -31,7 +31,7 @@ public class DeviceConnectUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        panel = new javax.swing.JPanel();
         panelWifiConnect = new javax.swing.JLayeredPane();
         txtIP1Address = new javax.swing.JTextField();
         lbldot1 = new javax.swing.JLabel();
@@ -48,12 +48,11 @@ public class DeviceConnectUI extends javax.swing.JFrame {
             }
         };
         btnConnectToDevice = new javax.swing.JButton();
-        panelUSBConnect = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setLayout(new java.awt.CardLayout());
+        panel.setBackground(new java.awt.Color(255, 255, 255));
+        panel.setLayout(new java.awt.CardLayout());
 
         txtIP1Address.setEditable(false);
         txtIP1Address.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
@@ -155,30 +154,17 @@ public class DeviceConnectUI extends javax.swing.JFrame {
                 .addGap(119, 119, 119))
         );
 
-        jPanel1.add(panelWifiConnect, "card2");
-
-        javax.swing.GroupLayout panelUSBConnectLayout = new javax.swing.GroupLayout(panelUSBConnect);
-        panelUSBConnect.setLayout(panelUSBConnectLayout);
-        panelUSBConnectLayout.setHorizontalGroup(
-            panelUSBConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 547, Short.MAX_VALUE)
-        );
-        panelUSBConnectLayout.setVerticalGroup(
-            panelUSBConnectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 473, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(panelUSBConnect, "card3");
+        panel.add(panelWifiConnect, "card2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -242,11 +228,10 @@ public class DeviceConnectUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnConnectToDevice;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbldot1;
     private javax.swing.JLabel lbldot2;
     private javax.swing.JLabel lbldot3;
-    private javax.swing.JLayeredPane panelUSBConnect;
+    private javax.swing.JPanel panel;
     private javax.swing.JLayeredPane panelWifiConnect;
     private javax.swing.JTextField txtIP1Address;
     private javax.swing.JTextField txtIP2Address;

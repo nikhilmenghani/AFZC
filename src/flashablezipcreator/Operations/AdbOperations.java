@@ -41,17 +41,17 @@ public class AdbOperations {
         ArrayList<String> list = new ArrayList<>();
         if (ipAddress.startsWith("192.168")) {
             list = runProcess(isWin, wait, Commands.getAdbConnectCommand(ipAddress));
-        }else{
+        } else {
             list = runProcess(isWin, wait, Commands.COMMAND_ADB_DEVICES);
         }
-        for(String response : list){
-            if(response.endsWith("device") || response.contains("connected to 192.168.")){
+        for (String response : list) {
+            if (response.endsWith("device") || response.endsWith("recovery") || response.contains("connected to 192.168.")) {
                 return 1;
             }
-            if(response.endsWith("unauthorized")){
+            if (response.endsWith("unauthorized")) {
                 return 2;
             }
-            if(response.contains("A connection attempt failed because the connected party did not properly respond after a period of time")){
+            if (response.equals("") || response.contains("A connection attempt failed because the connected party did not properly respond after a period of time")) {
                 return 3;
             }
         }

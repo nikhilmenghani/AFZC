@@ -56,16 +56,16 @@ public class MyTreeUI extends javax.swing.JFrame {
         menuItemExit = new javax.swing.JMenuItem();
         menuView = new javax.swing.JMenu();
         menuItemSwitchView = new javax.swing.JMenuItem();
+        menuDevice = new javax.swing.JMenu();
+        menuItemQuickConnect = new javax.swing.JMenuItem();
+        menuItemUSB = new javax.swing.JMenuItem();
+        menuItemWifi = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenu();
         menuItemDevelopers = new javax.swing.JMenuItem();
         menuItemDonate = new javax.swing.JMenuItem();
         menuHelp = new javax.swing.JMenu();
         menuItemInstructions = new javax.swing.JMenuItem();
         menuItemCheckForUpdates = new javax.swing.JMenuItem();
-        menuDevice = new javax.swing.JMenu();
-        menuItemQuickConnect = new javax.swing.JMenuItem();
-        menuItemUSB = new javax.swing.JMenuItem();
-        menuItemWifi = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -355,6 +355,34 @@ public class MyTreeUI extends javax.swing.JFrame {
 
         menuBar.add(menuView);
 
+        menuDevice.setText("Device");
+
+        menuItemQuickConnect.setText("Quick Connect");
+        menuItemQuickConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemQuickConnectActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemQuickConnect);
+
+        menuItemUSB.setText("Connect Via USB");
+        menuItemUSB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemUSBActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemUSB);
+
+        menuItemWifi.setText("Connect Via Wifi");
+        menuItemWifi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemWifiActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemWifi);
+
+        menuBar.add(menuDevice);
+
         menuAbout.setText("About");
 
         menuItemDevelopers.setText("Developers");
@@ -394,34 +422,6 @@ public class MyTreeUI extends javax.swing.JFrame {
         menuHelp.add(menuItemCheckForUpdates);
 
         menuBar.add(menuHelp);
-
-        menuDevice.setText("Device");
-
-        menuItemQuickConnect.setText("Quick Connect");
-        menuItemQuickConnect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemQuickConnectActionPerformed(evt);
-            }
-        });
-        menuDevice.add(menuItemQuickConnect);
-
-        menuItemUSB.setText("Connect Via USB");
-        menuItemUSB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemUSBActionPerformed(evt);
-            }
-        });
-        menuDevice.add(menuItemUSB);
-
-        menuItemWifi.setText("Connect Via Wifi");
-        menuItemWifi.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemWifiActionPerformed(evt);
-            }
-        });
-        menuDevice.add(menuItemWifi);
-
-        menuBar.add(menuDevice);
 
         setJMenuBar(menuBar);
 
