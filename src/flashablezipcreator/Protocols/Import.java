@@ -119,11 +119,15 @@ public class Import implements Runnable {
 
                 if (containsDataXml) {
                     setProgressBar("", "Setting file details..");
-                    Logs.write("Parsing file_data.xml");
-                    Xml.parseXml(0); //this is to set additional details like description to nodes
-                    Logs.write("Xml Parsing Successful");
+                    try {
+                        Logs.write("Parsing file_data.xml");
+                        Xml.parseXml(0); //this is to set additional details like description to nodes
+                        Logs.write("Xml Parsing Successful");
+                    } catch (NullPointerException e) {
+                        JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n" + Logs.getExceptionTrace(e));
+                        Logs.write(Logs.getExceptionTrace(e));
+                    }
                     setProgressBar("", "Setting file details done.");
-
                 }
                 progressBarImportExport.setString("Successfully Imported");
                 MyTree.txtProgressTitle.setText("");

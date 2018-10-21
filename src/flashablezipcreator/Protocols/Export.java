@@ -68,7 +68,7 @@ public class Export implements Runnable {
 
         }
         if (hasGapps) {
-            Project.outputPath = Project.outputPath.replaceAll(".zip", "-Gapps-Nikhil" + arch + "-" + Logs.getShortTime() + ".zip");
+            Project.outputPath = Project.outputPath.replaceAll(".zip", "-Nikhil-Gapps" + arch + "-" + Logs.getShortTime() + ".zip");
         }
         if ((new File(Project.outputPath)).exists()) {
             int dialogResult = JOptionPane.showConfirmDialog(null, "File Already Exists.\nDo you want to replace the file?", "", JOptionPane.YES_NO_OPTION);

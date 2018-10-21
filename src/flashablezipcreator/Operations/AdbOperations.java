@@ -296,7 +296,7 @@ public class AdbOperations {
     public static String getPackagePath(String pack) {
         ArrayList<String> list = runProcess(true, false, Commands.getAdbPackagePath(pack));
         if (list.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Package: " + pack + " not found!");
+            return "";
         }
         String packagePath = "";
         try {

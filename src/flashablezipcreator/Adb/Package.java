@@ -43,11 +43,19 @@ public class Package {
         } else if (installedPath.startsWith("/system/app")) {
             foldersPath = (installedPath.lastIndexOf("/") > "/system/app/".length())
                     ? installedPath.substring("/system/app/".length(), installedPath.lastIndexOf("/")) : "";
+            //sometimes apk files are stored at root folder which is not the expected behavior in Android 5+ Roms
+            //forcing the tool to create an additional folder
+            foldersPath = (foldersPath.equals("") && installedPath.endsWith(".apk"))
+                    ? f.getName().replaceFirst("[.][^.]+$", "") : foldersPath;
             groupType = "Type_" + "system_app";
             groupName = "System Apps";
         } else if (installedPath.startsWith("/system/priv-app")) {
             foldersPath = (installedPath.lastIndexOf("/") > "/system/priv-app/".length())
                     ? installedPath.substring("/system/priv-app/".length(), installedPath.lastIndexOf("/")) : "";
+            //sometimes apk files are stored at root folder which is not the expected behavior in Android 5+ Roms
+            //forcing the tool to create an additional folder
+            foldersPath = (foldersPath.equals("") && installedPath.endsWith(".apk"))
+                    ? f.getName().replaceFirst("[.][^.]+$", "") : foldersPath;
             groupType = "Type_" + "system_priv_app";
             groupName = "Priv Apps";
         } else if (installedPath.startsWith("/system/bin")) {
@@ -85,6 +93,8 @@ public class Package {
         } else if (installedPath.startsWith("/vendor/app")) {
             foldersPath = (installedPath.lastIndexOf("/") > "/vendor/app/".length())
                     ? installedPath.substring("/vendor/app/".length(), installedPath.lastIndexOf("/")) : "";
+            foldersPath = (foldersPath.equals("") && installedPath.endsWith(".apk"))
+                    ? f.getName().replaceFirst("[.][^.]+$", "") : foldersPath;
             groupType = "Type_" + "vendor_app";
             groupName = "Vendor Apps";
         } else if (installedPath.startsWith("/vendor/bin")) {
@@ -179,7 +189,7 @@ public class Package {
     }
 
     public String[] getImportFilePath(String installedPath, ProjectItemNode parent) {
-        String filePath[] = new String[]{"",""};
+        String filePath[] = new String[]{"", ""};
         String zipPath = getZipPath(installedPath, parent);
         if (zipPath.equals("")) {
             return filePath;
@@ -223,9 +233,11 @@ public class Package {
             filePath[0] += groupName + "\\" + f.getName();
         } else if (installedPath.startsWith("/system/app")) {
             foldersPath = installedPath.substring("/system/app/".length(), installedPath.length());
+            foldersPath = foldersPath.contains("/") ? foldersPath : foldersPath.replaceFirst("[.][^.]+$", "") + "/" + foldersPath;
             filePath[0] += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/priv-app")) {
             foldersPath = installedPath.substring("/system/priv-app/".length(), installedPath.length());
+            foldersPath = foldersPath.contains("/") ? foldersPath : foldersPath.replaceFirst("[.][^.]+$", "") + "/" + foldersPath;
             filePath[0] += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/system/bin")) {
             foldersPath = installedPath.substring("/system/bin/".length(), installedPath.length());
@@ -249,6 +261,7 @@ public class Package {
             filePath[0] += groupName + "\\" + f.getName();
         } else if (installedPath.startsWith("/vendor/app")) {
             foldersPath = installedPath.substring("/vendor/app/".length(), installedPath.length());
+            foldersPath = foldersPath.contains("/") ? foldersPath : foldersPath.replaceFirst("[.][^.]+$", "") + "/" + foldersPath;
             filePath[0] += groupName + "\\" + foldersPath.replaceAll("/", "\\\\");
         } else if (installedPath.startsWith("/vendor/bin")) {
             foldersPath = installedPath.substring("/vendor/bin/".length(), installedPath.length());

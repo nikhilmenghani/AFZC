@@ -25,8 +25,13 @@ public class Gapps {
     public static Package PrebuiltGmsCore = new Package();
     public static Package GoogleKeep = new Package();
     public static Package GoogleMaps = new Package();
+    public static Package GooglePhotos = new Package();
+    public static Package Gmail = new Package();
+    public static Package GoogleDrive = new Package();
+    public static Package GooglePlayBooks = new Package();
+    public static Package GoogleCamera = new Package();
     public static Package files = new Package();
-
+    
     public Gapps() {
         FaceLock.packageName = "com.android.facelock";
         FaceLock.associatedFileList.add("/system/app/FaceLock/lib/arm64/libfacenet.so");
@@ -53,6 +58,16 @@ public class Gapps {
         GoogleMaps.packageName = "com.google.android.apps.maps";
         GoogleMaps.installedPath = "/system/priv-app/Maps/Maps.apk";
         //GoogleMaps.associatedFileList.add("/system/etc/permissions/com.google.android.maps.xml");
+        GooglePhotos.packageName = "com.google.android.apps.photos";
+        GooglePhotos.installedPath = "/system/app/Photos/Photos.apk";
+        Gmail.packageName = "com.google.android.gm";
+        Gmail.installedPath = "/system/app/PrebuiltGmail/PrebuiltGmail.apk";
+        GoogleDrive.packageName = "com.google.android.apps.docs";
+        GoogleDrive.installedPath = "/system/app/Drive/Drive.apk";
+        GooglePlayBooks.packageName = "com.google.android.apps.books";
+        GooglePlayBooks.installedPath = "/system/app/Books/Books.apk";
+        GoogleCamera.packageName = "com.google.android.GoogleCamera";
+        GoogleCamera.installedPath = "system/app/GoogleCamera/GoogleCamera.apk";
         //following 5 not needed
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.dialer.support.xml");
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.media.effects.xml");
@@ -113,9 +128,15 @@ public class Gapps {
             list.add(p);
         }
         list.add(Gapps.FaceLock);
-        list.add(Gapps.GmsCoreSetupPrebuilt);
+        //following is not needed
+        //list.add(Gapps.GmsCoreSetupPrebuilt);
         list.add(Gapps.GoogleKeep);
         list.add(Gapps.GoogleMaps);
+        list.add(Gapps.Gmail);
+        list.add(Gapps.GoogleDrive);
+        list.add(Gapps.GooglePhotos);
+        list.add(Gapps.GooglePlayBooks);
+        list.add(Gapps.GoogleCamera);
         return list;
     }
 }

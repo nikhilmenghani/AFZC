@@ -69,6 +69,7 @@ public class Adb {
         float startFileIndex = 0;
         int windowIndex = 0;
         float window = 100 / packageListSize;
+        String packagesNotFound = "Following Packages were not found in Device while building Gapps";
         for (Package p : packages) {
             windowIndex++;
             startFileIndex = (windowIndex - 1) * window;
@@ -79,6 +80,7 @@ public class Adb {
             if (!p.packageName.equals("")) {
                 String packagePath = AdbOperations.getPackagePath(p.packageName);
                 if (packagePath.equals("")) {
+                    packagesNotFound += "\n" + p.packageName;
                     continue;
                 }
                 String installPath = "";
@@ -89,7 +91,13 @@ public class Adb {
                 }
                 File f = new File(packagePath);
                 ArrayList<String> fileList = new ArrayList<>();
-                fileList = getFileList(f.getParent());//need to check if parent is not file node
+                //if the file is placed in /system/app or /system/priv-app following will prevent fetching all the files of parent folder
+                String parentFolder = f.getParent().replaceAll("\\\\", "/");
+                if (parentFolder.startsWith("/data/app") || parentFolder.endsWith(f.getName().replaceFirst("[.][^.]+$", ""))) {
+                    fileList = getFileList(f.getParent());//need to check if parent is not file node
+                } else {
+                    fileList.add(packagePath);
+                }
                 for (String pullFrom : fileList) {
                     filesIndex = startFileIndex + ((index * (maxFileIndex - startFileIndex)) / (fileList.size() + p.associatedFileList.size()));
                     updateProgress("Pulling", pullFrom, filesIndex, true);
@@ -124,13 +132,19 @@ public class Adb {
                 }
             }
         }
-        if (!Adb.logs.equals("")) {
-            JOptionPane.showMessageDialog(null, Adb.logs);
-        }
-        if (packageListSize > 0) {
+        if (!packagesNotFound.equals("Following Packages were not found in Device while building Gapps")) {
             updateProgress("", "Files Successfully Imported", 100, false);
-            JOptionPane.showMessageDialog(null, "Files Successfully Imported!");
+            JOptionPane.showMessageDialog(dialog, packagesNotFound);
             updateProgress("", "", 0, false);
+        } else {
+            if (!Adb.logs.equals("")) {
+                JOptionPane.showMessageDialog(null, Adb.logs);
+            }
+            if (packageListSize > 0) {
+                updateProgress("", "Files Successfully Imported", 100, false);
+                JOptionPane.showMessageDialog(null, "Files Successfully Imported!");
+                updateProgress("", "", 0, false);
+            }
         }
         setCardLayout(1);
     }
