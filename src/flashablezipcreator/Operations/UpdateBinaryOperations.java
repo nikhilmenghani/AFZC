@@ -36,7 +36,7 @@ public class UpdateBinaryOperations {
     public String addPrintString(String str, int type) {
         switch (type) {
             case installString:
-                return "ui_print \"" + (Preference.pp.createZipType.equals("Normal") ? "** " : "@") + "Installing " + str + " **\"\n";
+                return "ui_print \"" + (Preference.pp.createZipType.equals("Normal") ? "-> " : "@") + "Installing " + str + "\"\n";
             case deleteString:
                 return "ui_print \"" + (Preference.pp.createZipType.equals("Normal") ? "- " : "@") + "Deleting " + str + "\"\n";
             case copyString:

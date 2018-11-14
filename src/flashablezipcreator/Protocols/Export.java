@@ -14,7 +14,7 @@ import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
 import flashablezipcreator.DiskOperations.WriteZip;
-import flashablezipcreator.Operations.AdbOperations;
+import flashablezipcreator.Operations.DeviceOperations;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.progressBarFlag;
 import static flashablezipcreator.UserInterface.MyTree.progressBarImportExport;
@@ -57,18 +57,18 @@ public class Export implements Runnable {
     public static void zip() throws IOException, ParserConfigurationException, TransformerException {
         to = new TreeOperations();
         boolean hasGapps = to.hasGappsProject(MyTree.rootNode);
-        String arch = AdbOperations.getDeviceArchitecture();
+        String arch = Device.getArchitecture();
         if (!arch.equals("")) {
             arch = "-" + arch;
             arch = arch.replaceAll("-v8a", "");
         }
-        String androidVersion = AdbOperations.getDeviceAndroidVersion();
+        String androidVersion = Device.getAndroidVersion();
         if (!androidVersion.equals("0")) {
             arch += "-" + String.valueOf(androidVersion);
 
         }
         if (hasGapps) {
-            Project.outputPath = Project.outputPath.replaceAll(".zip", "-Nikhil-Gapps" + arch + "-" + Logs.getShortTime() + ".zip");
+            Project.outputPath = Project.outputPath.replaceAll(".zip", "-NikGapps" + arch + "-" + Logs.getShortTime() + ".zip");
         }
         if ((new File(Project.outputPath)).exists()) {
             int dialogResult = JOptionPane.showConfirmDialog(null, "File Already Exists.\nDo you want to replace the file?", "", JOptionPane.YES_NO_OPTION);
@@ -279,7 +279,7 @@ public class Export implements Runnable {
             MyTree.setCardLayout(2);
             zip();
             MyTree.setCardLayout(1);
-            (new Adb()).pushZipToDevice(Project.outputPath, "/sdcard/Afzc/" + (new File(Project.outputPath)).getName());
+            (new DeviceOperations()).pushZipToDevice(Project.outputPath, "/sdcard/Afzc/" + (new File(Project.outputPath)).getName());
         } catch (IOException ex) {
             Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {

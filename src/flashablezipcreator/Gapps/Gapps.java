@@ -6,6 +6,7 @@
 package flashablezipcreator.Gapps;
 
 import flashablezipcreator.Adb.Package;
+import flashablezipcreator.Protocols.Project;
 import java.util.ArrayList;
 
 /**
@@ -30,8 +31,12 @@ public class Gapps {
     public static Package GoogleDrive = new Package();
     public static Package GooglePlayBooks = new Package();
     public static Package GoogleCamera = new Package();
+    public static Package Google = new Package();
+    public static Package Calculator = new Package();
+    public static Package Duo = new Package();
+    public static Package DigitalWellbeing = new Package();
     public static Package files = new Package();
-    
+
     public Gapps() {
         FaceLock.packageName = "com.android.facelock";
         FaceLock.associatedFileList.add("/system/app/FaceLock/lib/arm64/libfacenet.so");
@@ -68,6 +73,15 @@ public class Gapps {
         GooglePlayBooks.installedPath = "/system/app/Books/Books.apk";
         GoogleCamera.packageName = "com.google.android.GoogleCamera";
         GoogleCamera.installedPath = "system/app/GoogleCamera/GoogleCamera.apk";
+        Google.packageName = "com.google.android.googlequicksearchbox";
+        Google.installedPath = "/system/app/Google/Google";
+        Calculator.packageName = "com.google.android.calculator";
+        Calculator.installedPath = "/system/app/CalculatorGooglePrebuilt/CalculatorGooglePrebuilt.apk";
+        Duo.packageName = "com.google.android.apps.tachyon";
+        Duo.installedPath = "/system/app/Duo/Duo.apk";
+        DigitalWellbeing.packageName = "com.google.android.apps.wellbeing";
+        DigitalWellbeing.installedPath = "/system/priv-app/WellbeingPrebuilt/WellbeingPrebuilt.apk";
+        DigitalWellbeing.isOptional = true;
         //following 5 not needed
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.dialer.support.xml");
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.media.effects.xml");
@@ -137,6 +151,12 @@ public class Gapps {
         list.add(Gapps.GooglePhotos);
         list.add(Gapps.GooglePlayBooks);
         list.add(Gapps.GoogleCamera);
+        list.add(Gapps.Calculator);
+        list.add(Gapps.Google);
+        list.add(Gapps.Duo);
+        if (Project.androidVersion.startsWith("9")) {
+            list.add(DigitalWellbeing);
+        }
         return list;
     }
 }

@@ -5,17 +5,16 @@
  */
 package flashablezipcreator.UserInterface;
 
-import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectTreeBuilder;
 import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.FlashableZipCreator;
-import flashablezipcreator.Operations.AdbOperations;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.MyFileFilter;
 import flashablezipcreator.Operations.TreeOperations;
 import flashablezipcreator.Operations.UpdaterScriptOperations;
 import flashablezipcreator.Protocols.Control;
+import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Export;
 import flashablezipcreator.Protocols.Import;
 import flashablezipcreator.Protocols.Jar;
@@ -495,7 +494,7 @@ public class MyTree extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>            
-    //<editor-fold defaultstate="collapsed" desc=" Event Handling ">
+    //<editor-fold defaultstate="collapsed" desc="Event Handling ">
 
     private void btnImportZipActionPerformed(java.awt.event.ActionEvent evt) {
         try {
@@ -640,39 +639,11 @@ public class MyTree extends javax.swing.JFrame {
     }
 
     private void menuItemQuickConnectActionPerformed(java.awt.event.ActionEvent evt) {
-        int i = AdbOperations.checkDeviceConnectivity("");
-        if (i == 3) {
-            String IP = "11";
-            i = AdbOperations.checkDeviceConnectivity("192.168.0." + IP + ":5555");
-        }
-        switch (i) {
-            case 1:
-                JOptionPane.showMessageDialog(this, "Device Is Connected!");
-                break;
-            case 2:
-                JOptionPane.showMessageDialog(this, "Device Unauthorized, please allow the device to connect to this computer!");
-                break;
-            default:
-                JOptionPane.showMessageDialog(this, "Cannot Connect To Device\n"
-                        + "Please make sure your device is connected via USB or same Wifi network and you have allowed the device to connect to your computer!");
-                break;
-        }
+        Device.quickConnect();
     }
 
     private void menuItemUSBActionPerformed(java.awt.event.ActionEvent evt) {
-        int i = AdbOperations.checkDeviceConnectivity("");
-        switch (i) {
-            case 1:
-                JOptionPane.showMessageDialog(this, "Device Is Connected!");
-                break;
-            case 2:
-                JOptionPane.showMessageDialog(this, "Device Unauthorized, please allow the device to connect to this computer!");
-                break;
-            default:
-                JOptionPane.showMessageDialog(this, "Cannot Connect To Device\n"
-                        + "Please make sure your device is connected via USB or same Wifi network!");
-                break;
-        }
+        Device.connectWithUSB();
     }
 
     private void menuItemWifiActionPerformed(java.awt.event.ActionEvent evt) {
@@ -681,7 +652,7 @@ public class MyTree extends javax.swing.JFrame {
     }
 
     //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc=" Functions ">
+    //<editor-fold defaultstate="collapsed" desc="Functions ">
     public static void setCardLayout(int cardNo) {
         switch (cardNo) {
             case 1:

@@ -5,8 +5,7 @@
  */
 package flashablezipcreator.UserInterface;
 
-import flashablezipcreator.Adb.Adb;
-import flashablezipcreator.Operations.AdbOperations;
+import flashablezipcreator.Protocols.Device;
 import javax.swing.JOptionPane;
 
 /**
@@ -177,13 +176,13 @@ public class DeviceConnectUI extends javax.swing.JFrame {
         } else {
             String IP = txtIP1Address.getText() + "." + txtIP2Address.getText() + "."
                     + txtIP3Address.getText() + "." + txtIP4Address.getText() + ":5555";
-            Adb.IPAddress = IP;
-            int i = AdbOperations.checkDeviceConnectivity(IP);
-            if (i == 1) {
+            Device.IPAddress = IP;
+            
+            if (Device.checkDeviceConnectivity(IP)) {
                 JOptionPane.showMessageDialog(this, "Device Is Connected!");
                 flashablezipcreator.FlashableZipCreator.tree.setVisible(true);
                 this.dispose();
-            } else if (i == 3) {
+            } else {
                 JOptionPane.showMessageDialog(this, "Unable to connect to the device!\n"
                         + "Make sure you are connected to correct IP or you have allowed this computer to connect to your device!");
                 btnConnectToDevice.setText("Try Again!");

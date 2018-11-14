@@ -77,6 +77,10 @@ public class MyPopup {
     public static JPopupMenu getRootMenu() {
         JMenu addProjectMenu = new JMenu("Add Project");
         JMenu addGappsMenu = new JMenu("Gapps");
+        JMenuItem mitemAddModsProject = new JMenuItem("Mods");
+        mitemAddModsProject.addActionListener((ActionEvent ae) -> {
+        addQuickProjectObject(Types.PROJECT_MOD, Mod.MOD_LESS);
+    });
         JMenuItem mitemAddAromaProject = new JMenuItem("Aroma");
         mitemAddAromaProject.addActionListener((ActionEvent ae) -> {
             addQuickProjectObject(Types.PROJECT_AROMA, Mod.MOD_LESS);
