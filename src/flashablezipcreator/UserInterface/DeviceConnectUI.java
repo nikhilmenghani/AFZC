@@ -177,8 +177,8 @@ public class DeviceConnectUI extends javax.swing.JFrame {
             String IP = txtIP1Address.getText() + "." + txtIP2Address.getText() + "."
                     + txtIP3Address.getText() + "." + txtIP4Address.getText() + ":5555";
             Device.IPAddress = IP;
-            
-            if (Device.checkDeviceConnectivity(IP)) {
+
+            if (Device.checkDeviceConnectivity(IP) == 1) {
                 JOptionPane.showMessageDialog(this, "Device Is Connected!");
                 flashablezipcreator.FlashableZipCreator.tree.setVisible(true);
                 this.dispose();

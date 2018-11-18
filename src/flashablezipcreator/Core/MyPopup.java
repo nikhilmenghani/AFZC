@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.TreePath;
 import flashablezipcreator.Operations.MyFileFilter;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Mod;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.AddGroup;
@@ -92,28 +93,37 @@ public class MyPopup {
         JMenu addProjectMenu = new JMenu("Add Project");
         JMenu addGappsMenu = new JMenu("Gapps");
         JMenuItem mitemAddModsProject = new JMenuItem("Mods");
+
         mitemAddModsProject.addActionListener((ActionEvent ae) -> {
-            addQuickProjectObject(Types.PROJECT_MOD, Mod.MOD_LESS);
+            ProjectNode project = null;
+            project = (ProjectNode) addQuickProjectObject(Types.PROJECT_MOD, Mod.MOD_LESS);
         });
         JMenuItem mitemAddAromaProject = new JMenuItem("Aroma");
         mitemAddAromaProject.addActionListener((ActionEvent ae) -> {
-            addQuickProjectObject(Types.PROJECT_AROMA, Mod.MOD_LESS);
+            ProjectNode project = null;
+            project = (ProjectNode) addQuickProjectObject(Types.PROJECT_AROMA, Mod.MOD_LESS);
         });
         JMenuItem mitemAddPicoGappsProject = new JMenuItem("Pico");
         mitemAddPicoGappsProject.addActionListener((ActionEvent ae) -> {
-            addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_PICO);
+            ProjectNode project = null;
+            project = (ProjectNode) addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_PICO);
         });
         JMenuItem mitemAddCoreGappsProject = new JMenuItem("Core");
         mitemAddCoreGappsProject.addActionListener((ActionEvent ae) -> {
-            addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_CORE);
+            ProjectNode project = null;
+            project = (ProjectNode) addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_CORE);
         });
         JMenuItem mitemAddNanoGappsProject = new JMenuItem("Nano");
         mitemAddNanoGappsProject.addActionListener((ActionEvent ae) -> {
-            addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_NANO);
+            ProjectNode project = null;
+            project = (ProjectNode) addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_NANO);
         });
         JMenuItem mitemAddMyGappsProject = new JMenuItem("My");
         mitemAddMyGappsProject.addActionListener((ActionEvent ae) -> {
-            addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_MY);
+            ProjectNode project = null;
+            project = (ProjectNode) addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_MY);
+            Adb device = new Adb();
+            device.importGapps(project);
         });
         addGappsMenu.add(mitemAddCoreGappsProject);
         addGappsMenu.add(mitemAddPicoGappsProject);
@@ -306,6 +316,22 @@ public class MyPopup {
                     Adb device = new Adb();
                     device.importGapps(node);
                 });
+                JMenuItem mitemUpdateGappsFromDevice = new JMenuItem("Update Gapps");
+                mitemUpdateGappsFromDevice.addActionListener((ActionEvent ae) -> {
+                    Adb adb = new Adb();
+                    for (int i = 0; i < node.getChildCount(); i++) {
+                        try {
+                            GroupNode gNode = (GroupNode) node.getChildAt(i);
+                            switch (gNode.prop.packageType) {
+                                case Types.PACKAGE_APP:
+                                    adb.checkForUpdate(gNode);
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, Logs.getExceptionTrace(e));
+                        }
+                    }
+                });
                 switch (node.prop.projectType) {
                     case Types.PROJECT_AROMA:
                         addGroupMenu.add(addDataGroupMenu);
@@ -316,6 +342,7 @@ public class MyPopup {
                     case Types.PROJECT_GAPPS:
 //                        addGappsMenu.add(mitemBuildPicoGappsFromDevice);
                         popup.add(mitemBuildGappsFromDevice);
+                        popup.add(mitemUpdateGappsFromDevice);
                         break;
                 }
                 addGroupMenu.add(addSystemGroupMenu);
@@ -440,7 +467,7 @@ public class MyPopup {
                 addDeviceTalksMenu.add(mitemAddFromDevice);
             }
         }
-        if (mitemUpdateApp != null && mitemAddFromDevice != null) {
+        if (!(mitemUpdateApp == null && mitemAddFromDevice == null)) {
             popup.add(addDeviceTalksMenu);
         }
         if (node.prop.parent.getChildCount() != 1) {
@@ -611,7 +638,7 @@ public class MyPopup {
         addGroup = new AddGroup(type, node);
     }
 
-    public static void addQuickProjectObject(int type, int modType) {
+    public static ProjectItemNode addQuickProjectObject(int type, int modType) {
         String defaultProjName = "My Project";
         switch (type) {
             case Types.PROJECT_GAPPS:
@@ -640,9 +667,11 @@ public class MyPopup {
             tree.scrollPathToVisible(path);
             tree.setSelectionPath(path);
             tree.startEditingAtPath(path);
+            return newNode;
         } else {
             JOptionPane.showMessageDialog(popup, "Select the AFZC Projects node first");
         }
+        return null;
     }
 
     public static void addQuickGroupObject(int type, ProjectNode parent, String defaultName) {

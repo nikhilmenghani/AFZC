@@ -25,6 +25,7 @@ public class Package {
     public String packageName = "";
     boolean hasDataPath = false;
     public String updatedInstalledPath = "";
+    public String packagePath = "";
     public ArrayList<String> associatedFileList = new ArrayList<>();
     //customize/aroma_0/Project_My Project/Type_system_fonts/Group_Fonts/SubGroup_ComicSansMS/DroidSansFallback.ttf
 

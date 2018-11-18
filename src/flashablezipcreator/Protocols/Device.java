@@ -28,16 +28,8 @@ public class Device {
         return null;
     }
 
-    public static boolean checkDeviceConnectivity(String ipAddress) {
-        int status = dop.checkDeviceConnectivity(ipAddress);
-        switch (status) {
-            case 2:
-                JOptionPane.showMessageDialog(null, "Device is Unauthorized!");
-                return false;
-            case 3:
-                JOptionPane.showMessageDialog(null, "A connection attempt failed because the connected party did not properly respond after a period of time");
-        }
-        return true;
+    public static int checkDeviceConnectivity(String ipAddress) {
+        return dop.checkDeviceConnectivity(ipAddress);
     }
 
     public static void quickConnect() {
@@ -64,7 +56,7 @@ public class Device {
         return dop.pushToDevice(pushSource, pushDestination);
     }
 
-    public static boolean pullFile(String pullFrom, String pullTo) {
+    public static int pullFile(String pullFrom, String pullTo) {
         return dop.pullFile(pullFrom, pullTo);
     }
 
@@ -76,15 +68,15 @@ public class Device {
         return dop.push(pushSource, pushDestination);
     }
 
-    public static void pull(String pullFrom, String pullTo, String zipPath, ProjectItemNode parent) {
-        dop.pull(pullFrom, pullTo, zipPath, parent);
+    public static int pull(String pullFrom, String pullTo, String zipPath, ProjectItemNode parent) {
+        return dop.pull(pullFrom, pullTo, zipPath, parent);
     }
 
-    public static void pull(String pullFrom, ProjectItemNode parent) {
-        dop.pull(pullFrom, parent);
+    public static int pull(String pullFrom, ProjectItemNode parent) {
+        return dop.pull(pullFrom, parent);
     }
 
-    public static void pull(String dataPullFrom, String systemPullFrom, ProjectItemNode parent) {
-        dop.pull(dataPullFrom, systemPullFrom, parent);
+    public static int pull(String dataPullFrom, String systemPullFrom, ProjectItemNode parent) {
+        return dop.pull(dataPullFrom, systemPullFrom, parent);
     }
 }

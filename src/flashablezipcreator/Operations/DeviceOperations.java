@@ -14,6 +14,7 @@ import flashablezipcreator.Protocols.Commands;
 import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
+import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -139,7 +140,7 @@ public class DeviceOperations {
     }
 
     public void pushZipToDevice(String source, String destination) {
-        if (Device.checkDeviceConnectivity(Device.IPAddress)) {
+        if (Device.checkDeviceConnectivity(Device.IPAddress) == 1) {
             int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to push file to Device?", "", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.YES_OPTION) {
                 MyTree.setCardLayout(2);
@@ -150,22 +151,25 @@ public class DeviceOperations {
 
     }
 
-    public boolean pullFile(String pullFrom, String pullTo) {
+    public int pullFile(String pullFrom, String pullTo) {
         java.io.File sFile = new java.io.File(pullTo);
         Write w = new Write();
         String absolutePath = sFile.getAbsolutePath();
         sFile = new java.io.File(absolutePath);
         w.createFolders(sFile.getParent());
         ArrayList<String> pullList = Adb.runProcess(true, false, Commands.getAdbPull(pullFrom, pullTo));
-        if (pullList.get(0).startsWith("adb: error:")) {
+        if (pullList.get(0).contains("no devices/emulators found")) {
             Adb.logs += pullFrom + ": " + pullList.get(0) + Logs.newLine;
-            return false;
+            return Types.DEVICE_ERROR_NOT_CONNECTED;
+        } else if (pullList.get(0).startsWith("adb: error:")) {
+            Adb.logs += pullFrom + ": " + pullList.get(0) + Logs.newLine;
+            return Types.DEVICE_PULL_FILE_FAILURE;
         }
         //adb: error: failed to stat remote object ' not running. starting it now at tcp:5037 *': No such file or directory
         //for (String str : pullList) {
         //System.out.println(str);
         //}
-        return true;
+        return Types.DEVICE_PULL_FILE_SUCCESS;
     }
 
     public boolean push(String pushSource, String pushDestination) {
@@ -177,40 +181,49 @@ public class DeviceOperations {
         return true;
     }
 
-    public void pull(String pullFrom, String pullTo, String zipPath, ProjectItemNode parent) {
+    public int pull(String pullFrom, String pullTo, String zipPath, ProjectItemNode parent) {
+        int pullStatus = Types.DEVICE_PULL_FILE_SUCCESS;
         flashablezipcreator.Adb.Package f = new flashablezipcreator.Adb.Package();
         System.out.println(pullTo);
         if (!pullTo.equals("")) {
             try {
-                if (pullFile(pullFrom, pullTo)) {
+                pullStatus = pullFile(pullFrom, pullTo);
+                if (pullStatus == Types.DEVICE_PULL_FILE_SUCCESS) {
                     to.addFileNode(zipPath, parent);
                 }
             } catch (IOException ex) {
+                //it is possible that the problem appears while adding fileNode. in that case following status won't tell the correct reason
+                pullStatus = Types.DEVICE_PULL_FILE_FAILURE;
                 Logger.getLogger(Adb.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
             index += 1;
         }
+        return pullStatus;
     }
 
-    public void pull(String pullFrom, ProjectItemNode parent) {
+    public int pull(String pullFrom, ProjectItemNode parent) {
+        int pullStatus = Types.DEVICE_PULL_FILE_SUCCESS;
         flashablezipcreator.Adb.Package f = new flashablezipcreator.Adb.Package();
         String data[] = f.getImportFilePath(pullFrom, parent);
         String pullTo = data[0];
         String zipPath = data[1];
         if (!pullTo.equals("") && !zipPath.equals("")) {
-            pull(pullFrom, pullTo, zipPath, parent);
+            pullStatus = pull(pullFrom, pullTo, zipPath, parent);
         }
+        return pullStatus;
     }
 
-    public void pull(String dataPullFrom, String systemPullFrom, ProjectItemNode parent) {
+    public int pull(String dataPullFrom, String systemPullFrom, ProjectItemNode parent) {
+        int pullStatus = Types.DEVICE_PULL_FILE_SUCCESS;
         flashablezipcreator.Adb.Package f = new flashablezipcreator.Adb.Package();
         String data[] = f.getImportFilePath(systemPullFrom, parent);
         String pullTo = data[0];
         String zipPath = data[1];
         if (!pullTo.equals("") && !zipPath.equals("")) {
-            pull(dataPullFrom, pullTo, zipPath, parent);
+            pullStatus = pull(dataPullFrom, pullTo, zipPath, parent);
         }
+        return pullStatus;
     }
 
     public static ArrayList<String> pushFileToDevice(boolean isWin, boolean wait, String source, String destination) {

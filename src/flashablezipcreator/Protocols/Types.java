@@ -68,4 +68,13 @@ public class Types {
     public static final int GAPPS_PICO = 92;
     public static final int GAPPS_NANO = 93;
     public static final int GAPPS_MY = 94;
+    
+    public static final int DEVICE_ERROR_NOT_CONNECTED = 101;
+    public static final int DEVICE_ERROR_NOT_AUTHORIZED = 102;
+    public static final int DEVICE_CONNECTED = 103;
+    public static final int DEVICE_PULL_FILE_SUCCESS = 104;
+    public static final int DEVICE_PULL_FILE_FAILURE = 105;
+    public static final int PACKAGE_PATH_NOT_FOUND = 106;
+    public static final int PACKAGE_INVALID = 107;
+    public static final int PACKAGE_IMPORT_SUCCESS = 108;
 }
