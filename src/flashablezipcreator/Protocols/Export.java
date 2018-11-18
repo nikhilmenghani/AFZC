@@ -5,7 +5,6 @@
  */
 package flashablezipcreator.Protocols;
 
-import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.Core.DeleteNode;
 import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.FolderNode;
@@ -65,13 +64,14 @@ public class Export implements Runnable {
         String androidVersion = Device.getAndroidVersion();
         if (!androidVersion.equals("0")) {
             arch += "-" + String.valueOf(androidVersion);
-
         }
         if (hasGapps) {
             Project.outputPath = Project.outputPath.replaceAll(".zip", "-NikGapps" + arch + "-" + Logs.getShortTime() + ".zip");
+            File f = new File(Project.outputPath);
+            Project.outputPath = f.getParent() + File.pathSeparator + "NikGapps" + arch + "-" + Logs.getShortTime() + ".zip";
         }
         if ((new File(Project.outputPath)).exists()) {
-            int dialogResult = JOptionPane.showConfirmDialog(null, "File Already Exists.\nDo you want to replace the file?", "", JOptionPane.YES_NO_OPTION);
+            int dialogResult = JOptionPane.showConfirmDialog(null, "File " + (new File(Project.outputPath)).getName() + " Already Exists.\nDo you want to replace the file?", "", JOptionPane.YES_NO_OPTION);
             if (dialogResult == JOptionPane.NO_OPTION) {
                 Project.outputPath = Project.outputPath.replaceAll(".zip", "(1).zip");
             }

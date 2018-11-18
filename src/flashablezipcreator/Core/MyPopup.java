@@ -69,8 +69,22 @@ public class MyPopup {
                 case Types.NODE_FILE:
                     popup = getFileMenu(nodeList);
                     break;
+                case Types.NODE_DELETE:
+                    getDeleteGroup(nodeList);
+                    break;
             }
         }
+        return popup;
+    }
+
+    public static JPopupMenu getDeleteGroup(ArrayList<ProjectItemNode> nodeList) {
+        ProjectItemNode node = nodeList.get(0);
+        JMenuItem mitemDeleteFile = new JMenuItem("Delete File(s)");
+        mitemDeleteFile.addActionListener((ActionEvent ae) -> {
+            deleteNode(nodeList);
+        });
+        popup = new JPopupMenu();
+        popup.add(mitemDeleteFile);
         return popup;
     }
 
@@ -79,8 +93,8 @@ public class MyPopup {
         JMenu addGappsMenu = new JMenu("Gapps");
         JMenuItem mitemAddModsProject = new JMenuItem("Mods");
         mitemAddModsProject.addActionListener((ActionEvent ae) -> {
-        addQuickProjectObject(Types.PROJECT_MOD, Mod.MOD_LESS);
-    });
+            addQuickProjectObject(Types.PROJECT_MOD, Mod.MOD_LESS);
+        });
         JMenuItem mitemAddAromaProject = new JMenuItem("Aroma");
         mitemAddAromaProject.addActionListener((ActionEvent ae) -> {
             addQuickProjectObject(Types.PROJECT_AROMA, Mod.MOD_LESS);
@@ -338,7 +352,7 @@ public class MyPopup {
         int groupType = (node).prop.groupType;
         switch (node.prop.packageType) {
             case Types.PACKAGE_SUBGROUP_FILE:
-            case Types.GROUP_DELETE_FILES:
+            case Types.PACKAGE_DELETE_FILE:
                 mitemAddSubGroup = new JMenuItem("Add " + node.prop.folderMenuName);
                 break;
             default:
@@ -408,6 +422,8 @@ public class MyPopup {
                 case Types.PACKAGE_SUBGROUP_FILE:
                     mitemAddFromDevice = new JMenuItem("Add " + node.prop.folderMenuName + "");
                 case Types.PACKAGE_DELETE_FILE:
+                    mitemUpdateApp = null;
+                    mitemAddFromDevice = null;
                     popup.add(mitemAddSubGroup);
                     break;
                 case Types.PACKAGE_CUSTOM:
@@ -424,7 +440,9 @@ public class MyPopup {
                 addDeviceTalksMenu.add(mitemAddFromDevice);
             }
         }
-        popup.add(addDeviceTalksMenu);
+        if (mitemUpdateApp != null && mitemAddFromDevice != null) {
+            popup.add(addDeviceTalksMenu);
+        }
         if (node.prop.parent.getChildCount() != 1) {
             if (node.prop.parent.getIndex(node) != 0) {
                 popup.add(mItemMoveUp);
@@ -597,7 +615,7 @@ public class MyPopup {
         String defaultProjName = "My Project";
         switch (type) {
             case Types.PROJECT_GAPPS:
-                switch(modType){
+                switch (modType) {
                     case Types.GAPPS_CORE:
                         defaultProjName = "Core Gapps";
                         break;
