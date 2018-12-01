@@ -254,8 +254,10 @@ public class TreeOperations {
                     break;
                 case Types.PROJECT_MOD:
                     projectMod.add(project);
+                    break;
                 case Types.PROJECT_GAPPS:
                     projectGapps.add(project);
+                    break;
             }
         }
         projectGapps.stream().forEach((node) -> {

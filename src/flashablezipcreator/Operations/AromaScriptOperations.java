@@ -315,6 +315,7 @@ public class AromaScriptOperations {
             case Types.PACKAGE_FOLDER_FILE:
             case Types.PACKAGE_DELETE_FILE:
             case Types.PACKAGE_FILE:
+            case Types.PACKAGE_MOD_FILE:
                 str += "\nform(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
                         + "\"inclorexcl\",\"Choose to include or exclude the files below\",\"\",\"group\",\n"
                         + "\"1\",\"Include\",\"Choose the files you WANT installed from the list below.\",\"select\",\n"

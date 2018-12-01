@@ -155,18 +155,16 @@ public class Import implements Runnable {
     public static void importModZip(String filePath, String projectName, InputStream in, int modType) throws IOException {
         String fName = (new File(filePath)).getName();
         switch (modType) {
-            case Mod.TITANIUM_BACKUP:
-                String groupName = "Titanium Backup Apps";
-                int groupType = Types.GROUP_DATA_APP;
-                String folderName = fName.contains("-") ? fName.substring(0, fName.indexOf("-")) : fName.replaceFirst("[.][^.]+$", "");
-                ArrayList<String> folderList = new ArrayList<>();
-                if (!filePath.contains(Identify.folderSeparator)) {
-                    folderList.add(folderName);
-                } else {
-                    folderList = Identify.getFolderNames(filePath, Types.PROJECT_MOD);
-                }
-                fName = folderName + ".apk";
-                FileNode file = to.addFileToTree(fName, "", -1, groupName, groupType, "", folderList, projectName, Types.PROJECT_MOD, Mod.TITANIUM_BACKUP);
+            case Mod.MOD_LESS:
+                String groupName = Identify.getGroupName(filePath);
+                int groupType;// = Identify.getGroupType(filePath);
+                groupType = Types.GROUP_MOD;
+                String originalGroupType = "";
+                ArrayList<String> folderList = Identify.getFolderNames(filePath, Types.PROJECT_AROMA);
+                String subGroupName = Identify.getSubGroupName(groupName, filePath);
+                int subGroupType = groupType; //Groups that have subGroups have same type.
+                TreeOperations to = new TreeOperations();
+                FileNode file = to.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_MOD, Mod.MOD_LESS);
                 file.prop.fileSourcePath = file.prop.path;
                 rz.writeFileFromZip(in, file.prop.fileSourcePath);
                 Logs.write("Written File: " + fName);

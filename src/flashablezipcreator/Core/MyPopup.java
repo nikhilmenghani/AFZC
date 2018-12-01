@@ -97,26 +97,35 @@ public class MyPopup {
         mitemAddModsProject.addActionListener((ActionEvent ae) -> {
             ProjectNode project = null;
             project = (ProjectNode) addQuickProjectObject(Types.PROJECT_MOD, Mod.MOD_LESS);
+
         });
         JMenuItem mitemAddAromaProject = new JMenuItem("Aroma");
         mitemAddAromaProject.addActionListener((ActionEvent ae) -> {
             ProjectNode project = null;
             project = (ProjectNode) addQuickProjectObject(Types.PROJECT_AROMA, Mod.MOD_LESS);
+            Adb device = new Adb();
+            device.importGapps(project);
         });
         JMenuItem mitemAddPicoGappsProject = new JMenuItem("Pico");
         mitemAddPicoGappsProject.addActionListener((ActionEvent ae) -> {
             ProjectNode project = null;
             project = (ProjectNode) addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_PICO);
+            Adb device = new Adb();
+            device.importGapps(project);
         });
         JMenuItem mitemAddCoreGappsProject = new JMenuItem("Core");
         mitemAddCoreGappsProject.addActionListener((ActionEvent ae) -> {
             ProjectNode project = null;
             project = (ProjectNode) addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_CORE);
+            Adb device = new Adb();
+            device.importGapps(project);
         });
         JMenuItem mitemAddNanoGappsProject = new JMenuItem("Nano");
         mitemAddNanoGappsProject.addActionListener((ActionEvent ae) -> {
             ProjectNode project = null;
             project = (ProjectNode) addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_NANO);
+            Adb device = new Adb();
+            device.importGapps(project);
         });
         JMenuItem mitemAddMyGappsProject = new JMenuItem("My");
         mitemAddMyGappsProject.addActionListener((ActionEvent ae) -> {
@@ -131,6 +140,7 @@ public class MyPopup {
         addGappsMenu.add(mitemAddMyGappsProject);
         addProjectMenu.add(mitemAddAromaProject);
         addProjectMenu.add(addGappsMenu);
+        addProjectMenu.add(mitemAddModsProject);
         popup = new JPopupMenu();
         popup.add(addProjectMenu);
         return popup;
@@ -262,94 +272,102 @@ public class MyPopup {
             ((ProjectNode) node).prop.parent.moveDown(node);
         });
 
+        JMenuItem mitemDeleteGroup = new JMenuItem("Delete Files Group");
+        mitemDeleteGroup.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_DELETE_FILES, node, "Delete Files Group");
+        });
+        JMenuItem mitemCustomGroup = new JMenuItem("Custom Group");
+        mitemCustomGroup.addActionListener((ActionEvent ae) -> {
+            addName(Types.GROUP_CUSTOM, node);
+        });
+        JMenuItem mitemBuildGappsFromDevice = new JMenuItem("Build Gapps");
+        mitemBuildGappsFromDevice.addActionListener((ActionEvent ae) -> {
+            Adb device = new Adb();
+            device.importGapps(node);
+        });
+        JMenuItem mitemUpdateGappsFromDevice = new JMenuItem("Update Gapps");
+        mitemUpdateGappsFromDevice.addActionListener((ActionEvent ae) -> {
+            Adb adb = new Adb();
+            for (int i = 0; i < node.getChildCount(); i++) {
+                try {
+                    GroupNode gNode = (GroupNode) node.getChildAt(i);
+                    switch (gNode.prop.packageType) {
+                        case Types.PACKAGE_APP:
+                            adb.checkForUpdate(gNode);
+                            break;
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, Logs.getExceptionTrace(e));
+                }
+            }
+        });
+
+        JMenu addSystemGroupMenu = new JMenu("System Group");
+        addSystemGroupMenu.add(mitemSystem);
+        addSystemGroupMenu.add(mitemSystemApp);
+        addSystemGroupMenu.add(mitemPrivApp);
+        addSystemGroupMenu.add(mitemSystemBin);
+        addSystemGroupMenu.add(mitemSystemXBin);
+        addSystemGroupMenu.add(mitemSystemEtc);
+        addSystemGroupMenu.add(mitemSystemFramework);
+        addSystemGroupMenu.add(mitemSystemLib);
+        addSystemGroupMenu.add(mitemSystemLib64);
+        JMenu addVendorGroupMenu = new JMenu("Vendor Group");
+        addVendorGroupMenu.add(mitemVendor);
+        addVendorGroupMenu.add(mitemVendorApp);
+        addVendorGroupMenu.add(mitemVendorBin);
+        addVendorGroupMenu.add(mitemVendorEtc);
+        addVendorGroupMenu.add(mitemVendorFramework);
+        addVendorGroupMenu.add(mitemVendorLib);
+        addVendorGroupMenu.add(mitemVendorLib64);
+        JMenu addDataGroupMenu = new JMenu("Data Group");
+        addDataGroupMenu.add(mitemDataApp);
+        JMenu addFontsGroupMenu = new JMenu("Fonts Group");
+        addFontsGroupMenu.add(mitemFonts);
+        JMenu addTonesGroupMenu = new JMenu("Tones Group");
+        addTonesGroupMenu.add(mitemAlarms);
+        addTonesGroupMenu.add(mitemNotifications);
+        addTonesGroupMenu.add(mitemRingtones);
+        addTonesGroupMenu.add(mitemUI);
+        JMenu addBootAnimationGroupMenu = new JMenu("Boot Animation Group");
+        addBootAnimationGroupMenu.add(mitemBootAnimSystem);
+        addBootAnimationGroupMenu.add(mitemBootAnimLocal);
+        JMenu addGroupMenu = new JMenu("Add Group");
+        JMenuItem mitemAddModGroup = new JMenuItem("Add Mod Group");
+        mitemAddModGroup.addActionListener((ActionEvent ae) -> {
+            addQuickGroupObject(Types.GROUP_MOD, node, "Mods");
+        });
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
-            if (((ProjectNode) node).prop.projectType == Types.PROJECT_THEMES) {
-                JMenuItem mitemAddThemes = new JMenuItem("Add Theme");
-                mitemAddThemes.addActionListener((ActionEvent ae) -> {
-                    addQuickGroupObject(Types.GROUP_AROMA_THEMES, node, "My Theme");
-                });
-                popup.add(mitemAddThemes);
-            } else {
-                JMenu addGroupMenu = new JMenu("Add Group");
-                JMenu addSystemGroupMenu = new JMenu("System Group");
-                addSystemGroupMenu.add(mitemSystem);
-                addSystemGroupMenu.add(mitemSystemApp);
-                addSystemGroupMenu.add(mitemPrivApp);
-                addSystemGroupMenu.add(mitemSystemBin);
-                addSystemGroupMenu.add(mitemSystemXBin);
-                addSystemGroupMenu.add(mitemSystemEtc);
-                addSystemGroupMenu.add(mitemSystemFramework);
-                addSystemGroupMenu.add(mitemSystemLib);
-                addSystemGroupMenu.add(mitemSystemLib64);
-                JMenu addVendorGroupMenu = new JMenu("Vendor Group");
-                addVendorGroupMenu.add(mitemVendor);
-                addVendorGroupMenu.add(mitemVendorApp);
-                addVendorGroupMenu.add(mitemVendorBin);
-                addVendorGroupMenu.add(mitemVendorEtc);
-                addVendorGroupMenu.add(mitemVendorFramework);
-                addVendorGroupMenu.add(mitemVendorLib);
-                addVendorGroupMenu.add(mitemVendorLib64);
-                JMenu addDataGroupMenu = new JMenu("Data Group");
-                addDataGroupMenu.add(mitemDataApp);
-                JMenu addFontsGroupMenu = new JMenu("Fonts Group");
-                addFontsGroupMenu.add(mitemFonts);
-                JMenu addTonesGroupMenu = new JMenu("Tones Group");
-                addTonesGroupMenu.add(mitemAlarms);
-                addTonesGroupMenu.add(mitemNotifications);
-                addTonesGroupMenu.add(mitemRingtones);
-                addTonesGroupMenu.add(mitemUI);
-                JMenu addBootAnimationGroupMenu = new JMenu("Boot Animation Group");
-                addBootAnimationGroupMenu.add(mitemBootAnimSystem);
-                addBootAnimationGroupMenu.add(mitemBootAnimLocal);
-                JMenuItem mitemDeleteGroup = new JMenuItem("Delete Files Group");
-                mitemDeleteGroup.addActionListener((ActionEvent ae) -> {
-                    addQuickGroupObject(Types.GROUP_DELETE_FILES, node, "Delete Files Group");
-                });
-                JMenuItem mitemCustomGroup = new JMenuItem("Custom Group");
-                mitemCustomGroup.addActionListener((ActionEvent ae) -> {
-                    addName(Types.GROUP_CUSTOM, node);
-                });
-//                JMenu addGappsMenu = new JMenu("Build Gapps");
-                JMenuItem mitemBuildGappsFromDevice = new JMenuItem("Build Gapps");
-                mitemBuildGappsFromDevice.addActionListener((ActionEvent ae) -> {
-                    Adb device = new Adb();
-                    device.importGapps(node);
-                });
-                JMenuItem mitemUpdateGappsFromDevice = new JMenuItem("Update Gapps");
-                mitemUpdateGappsFromDevice.addActionListener((ActionEvent ae) -> {
-                    Adb adb = new Adb();
-                    for (int i = 0; i < node.getChildCount(); i++) {
-                        try {
-                            GroupNode gNode = (GroupNode) node.getChildAt(i);
-                            switch (gNode.prop.packageType) {
-                                case Types.PACKAGE_APP:
-                                    adb.checkForUpdate(gNode);
-                                    break;
-                            }
-                        } catch (Exception e) {
-                            JOptionPane.showMessageDialog(null, Logs.getExceptionTrace(e));
-                        }
+            switch (((ProjectNode) node).prop.projectType) {
+                case Types.PROJECT_THEMES:
+                    JMenuItem mitemAddThemes = new JMenuItem("Add Theme");
+                    mitemAddThemes.addActionListener((ActionEvent ae) -> {
+                        addQuickGroupObject(Types.GROUP_AROMA_THEMES, node, "My Theme");
+                    });
+                    popup.add(mitemAddThemes);
+                    break;
+                case Types.PROJECT_MOD:
+                    popup.add(mitemAddModGroup);
+                    break;
+                default:
+                    addGroupMenu.add(addSystemGroupMenu);
+                    addGroupMenu.add(addVendorGroupMenu);
+                    addGroupMenu.add(mitemDeleteGroup);
+                    addGroupMenu.add(mitemCustomGroup);
+                    switch (node.prop.projectType) {
+                        case Types.PROJECT_AROMA:
+                            addGroupMenu.add(addDataGroupMenu);
+                            addGroupMenu.add(addFontsGroupMenu);
+                            addGroupMenu.add(addTonesGroupMenu);
+                            addGroupMenu.add(addBootAnimationGroupMenu);
+                            break;
+                        case Types.PROJECT_GAPPS:
+                            popup.add(mitemBuildGappsFromDevice);
+                            popup.add(mitemUpdateGappsFromDevice);
+                            break;
                     }
-                });
-                switch (node.prop.projectType) {
-                    case Types.PROJECT_AROMA:
-                        addGroupMenu.add(addDataGroupMenu);
-                        addGroupMenu.add(addFontsGroupMenu);
-                        addGroupMenu.add(addTonesGroupMenu);
-                        addGroupMenu.add(addBootAnimationGroupMenu);
-                        break;
-                    case Types.PROJECT_GAPPS:
-//                        addGappsMenu.add(mitemBuildPicoGappsFromDevice);
-                        popup.add(mitemBuildGappsFromDevice);
-                        popup.add(mitemUpdateGappsFromDevice);
-                        break;
-                }
-                addGroupMenu.add(addSystemGroupMenu);
-                addGroupMenu.add(addVendorGroupMenu);
-                addGroupMenu.add(mitemDeleteGroup);
-                addGroupMenu.add(mitemCustomGroup);
-                popup.add(addGroupMenu);
+                    popup.add(addGroupMenu);
             }
         }
         if (node.prop.parent.getChildCount() != 1) {
@@ -442,12 +460,14 @@ public class MyPopup {
                 case Types.PACKAGE_FOLDER_FILE:
                     popup.add(mitemAddFolder);
                 case Types.PACKAGE_FILE:
+                case Types.PACKAGE_MOD_FILE:
                     mitemAddFromDevice = new JMenuItem("Add " + node.prop.folderMenuName + "");
                 case Types.PACKAGE_THEME:
                     popup.add(mitemAddFile);
                     break;
                 case Types.PACKAGE_SUBGROUP_FILE:
                     mitemAddFromDevice = new JMenuItem("Add " + node.prop.folderMenuName + "");
+                    break;
                 case Types.PACKAGE_DELETE_FILE:
                     mitemUpdateApp = null;
                     mitemAddFromDevice = null;
@@ -467,7 +487,7 @@ public class MyPopup {
                 addDeviceTalksMenu.add(mitemAddFromDevice);
             }
         }
-        if (!(mitemUpdateApp == null && mitemAddFromDevice == null)) {
+        if (node.prop.groupType != Types.GROUP_MOD && !(mitemUpdateApp == null && mitemAddFromDevice == null)) {
             popup.add(addDeviceTalksMenu);
         }
         if (node.prop.parent.getChildCount() != 1) {
@@ -655,6 +675,9 @@ public class MyPopup {
                     default:
                         defaultProjName = "My Gapps";
                 }
+                break;
+            case Types.PROJECT_MOD:
+                defaultProjName = "My Mods";
                 break;
         }
         defaultProjName = getUniqueName(rootNode, defaultProjName);

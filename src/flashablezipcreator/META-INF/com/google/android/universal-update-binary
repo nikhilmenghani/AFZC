@@ -5,6 +5,11 @@ OUTFD=/proc/self/fd/$2;
 ZIPFILE="$3";
 DIR=$(dirname "$ZIPFILE");
 
+#Variable Mods Flashing
+tmpzipdir=/tmp/Install;
+metadir=META-INF/com/google/android;
+mkdir -p $tmpzipdir;
+
 # ui_print "<message>" ["<message 2>" ...]
 ui_print() {
   until [ ! "$1" ]; do

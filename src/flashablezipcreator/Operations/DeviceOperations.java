@@ -46,6 +46,9 @@ public class DeviceOperations {
             list = Adb.runProcess(isWin, wait, Commands.COMMAND_ADB_DEVICES);
         }
         for (String response : list) {
+            //unable to connect to 192.168.0.15:5555: cannot connect to 192.168.0.15:5555:
+            //A connection attempt failed because the connected party did not properly respond
+            //after a period of time, or established connection failed because connected host has failed to respond. (10060)
             if (response.endsWith("device") || response.endsWith("recovery") || response.contains("connected to 192.168.")) {
                 Project.androidVersion = getDeviceAndroidVersion();
                 return 1;

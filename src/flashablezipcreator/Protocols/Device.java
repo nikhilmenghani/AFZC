@@ -9,7 +9,6 @@ package flashablezipcreator.Protocols;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Operations.DeviceOperations;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 
 /**
  *

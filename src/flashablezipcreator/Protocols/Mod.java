@@ -25,28 +25,29 @@ public final class Mod {
     public static final int DEFAULT = -1;
 
     public static int getModType(ReadZip rz) {
-        ArrayList<String> fileList = new ArrayList<>();
-        for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
-            ZipEntry ze = e.nextElement();
-            String name = ze.getName();
-            if (name.endsWith("/") || (new File(name)).isDirectory() || name.startsWith("META-INF")) {
-                continue;
-            }
-            if (name.startsWith("customize") && name.contains("mod")) {
-                String path = name.substring(name.indexOf("_") + 1, name.length());
-                path = path.substring(0, path.indexOf("/"));
-                if (!fileList.contains("mod__" + path)) {
-                    fileList.add("mod__" + path);
-                }
-                fileList.add(name);
-                continue;
-            }
-            fileList.add(name);
-        }
-        if (isTitanium(fileList)) {
-            return TITANIUM_BACKUP;
-        }
-        return DEFAULT;
+        return MOD_LESS;
+//        ArrayList<String> fileList = new ArrayList<>();
+//        for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
+//            ZipEntry ze = e.nextElement();
+//            String name = ze.getName();
+//            if (name.endsWith("/") || (new File(name)).isDirectory() || name.startsWith("META-INF")) {
+//                continue;
+//            }
+//            if (name.startsWith("customize") && name.contains("mod")) {
+//                String path = name.substring(name.indexOf("_") + 1, name.length());
+//                path = path.substring(0, path.indexOf("/"));
+//                if (!fileList.contains("mod__" + path)) {
+//                    fileList.add("mod__" + path);
+//                }
+//                fileList.add(name);
+//                continue;
+//            }
+//            fileList.add(name);
+//        }
+//        if (isTitanium(fileList)) {
+//            return TITANIUM_BACKUP;
+//        }
+//        return DEFAULT;
     }
 
     public static boolean isTitanium(ArrayList<String> fileList) {

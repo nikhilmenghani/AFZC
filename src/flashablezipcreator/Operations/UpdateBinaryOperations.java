@@ -161,7 +161,8 @@ public class UpdateBinaryOperations {
                     str += "package_extract_file \"" + ((FileNode) child).prop.fileZipPath + "\" \"" + ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title + "\"\n";
                     if (((FileNode) child).prop.setPermissions) {
                         str += "set_perm " + ((FileNode) child).prop.filePermission + "\n";
-                    }   str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
+                    }
+                    str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) child).prop.fileInstallLocation + "/" + ((FileNode) child).prop.title);
                     break;
                 case Types.NODE_DELETE:
                     DeleteNode file = (DeleteNode) child;
@@ -259,6 +260,66 @@ public class UpdateBinaryOperations {
                     str += "set_perm " + ((FileNode) file).prop.filePermission + "\n";
                 }
                 str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title);
+            }
+        }
+        return str;
+    }
+
+    public String predefinedNormalModsScript(GroupNode node) {
+        String str = "";
+        for (ProjectItemNode cNode : node.prop.children) {
+            if (node.prop.groupType == Types.GROUP_MOD) {
+                FileNode file = (FileNode) cNode;
+                str += addPrintString(file.prop.title, installString);
+                str += "mkdir -p \"/tmp/Install\"\n";
+                str += "package_extract_file \"" + ((FileNode) file).prop.fileZipPath + "\" \"" + "/tmp/Install/" + ((FileNode) file).prop.title + "\"\n";;
+                str += "tmpzipdir=/tmp/Install;\n";
+                str += "i=\"$tmpzipdir/" + ((FileNode) file).prop.title + "\";\n";
+                str += "metadir=META-INF/com/google/android;\n";
+                str += "unzip \"$i\" -d \"$tmpzipdir\" \"$metadir/*\"\n";
+                str += "chmod 755 \"$tmpzipdir/$metadir/update-binary\"\n";
+                str += "\"$tmpzipdir/$metadir/update-binary\" 1 1 \"$i\";\n";
+                str += "rm -rf \"$tmpzipdir\";\n";
+                str += addPrintString(file.prop.title + " installed...");
+            }
+        }
+        return str;
+    }
+
+    public String predefinedAromaModsScript(GroupNode node) {
+        String str = "";
+        if (node.isCheckBox()) {
+            int count = 1;
+            str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item." + count++ + ") == $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" inclorexcl) ]; then\n";
+            for (ProjectItemNode cnode : node.prop.children) {
+                FileNode file = (FileNode) cnode;
+                str += addPrintString(file.prop.title, installString);
+                str += "mkdir -p \"/tmp/Install\"\n";
+                str += "package_extract_file \"" + ((FileNode) file).prop.fileZipPath + "\" \"" + "/tmp/Install/" + ((FileNode) file).prop.title + "\"\n";;
+                str += "tmpzipdir=/tmp/Install;\n";
+                str += "i=\"$tmpzipdir/" + ((FileNode) file).prop.title + "\";\n";
+                str += "metadir=META-INF/com/google/android;\n";
+                str += "unzip \"$i\" -d \"$tmpzipdir\" \"$metadir/*\"\n";
+                str += "chmod 755 \"$tmpzipdir/$metadir/update-binary\"\n";
+                str += "\"$tmpzipdir/$metadir/update-binary\" 1 1 \"$i\";\n";
+                str += "rm -rf \"$tmpzipdir\";\n";
+                str += addPrintString(file.prop.title + " installed...");
+            }
+            str += "fi;\n";
+            for (ProjectItemNode file : node.prop.children) {
+                str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item.1." + count++ + ") == 1 ]; then\n";
+                str += addPrintString(file.prop.title, installString);
+                str += "mkdir -p \"/tmp/Install\"\n";
+                str += "package_extract_file \"" + ((FileNode) file).prop.fileZipPath + "\" \"" + "/tmp/Install/" + ((FileNode) file).prop.title + "\"\n";;
+                str += "tmpzipdir=/tmp/Install;\n";
+                str += "i=\"$tmpzipdir/" + ((FileNode) file).prop.title + "\";\n";
+                str += "metadir=META-INF/com/google/android;\n";
+                str += "unzip \"$i\" -d \"$tmpzipdir\" \"$metadir/*\"\n";
+                str += "chmod 755 \"$tmpzipdir/$metadir/update-binary\"\n";
+                str += "\"$tmpzipdir/$metadir/update-binary\" 1 1 \"$i\";\n";
+                str += "rm -rf \"$tmpzipdir\";\n";
+                str += addPrintString(file.prop.title + " installed...");
+                str += "fi;\n";
             }
         }
         return str;
@@ -510,6 +571,12 @@ public class UpdateBinaryOperations {
                     return customAromaGroupScript(node);
                 } else if (Preference.pp.createZipType.equals("Normal")) {
                     return customNormalGroupScript(node);
+                }
+            case Types.PACKAGE_MOD_FILE:
+                if (Preference.pp.createZipType.equals("Aroma")) {
+                    return predefinedAromaModsScript(node);
+                } else if (Preference.pp.createZipType.equals("Normal")) {
+                    return predefinedNormalModsScript(node);
                 }
         }
         return "";

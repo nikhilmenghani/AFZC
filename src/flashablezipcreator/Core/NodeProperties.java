@@ -467,9 +467,12 @@ public final class NodeProperties {
                 break;
             case Types.GROUP_MOD:
                 //following properties not needed but added.
-                propFile = getProp("other");
+                extension = "zip";
+                propFile = getProp("mod");
                 isSelectBox = false;
-                originalGroupType = typePrefix + "other";
+                originalGroupType = typePrefix + "mod";
+                folderMenuName = "Mods";
+                packageType = Types.PACKAGE_MOD_FILE;
                 break;
             case Types.GROUP_AROMA_THEMES:
                 Logs.write("adding themes");

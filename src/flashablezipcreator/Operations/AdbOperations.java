@@ -252,7 +252,11 @@ public class AdbOperations {
         } else {
             if (p.installedPath.equals("")) {
                 String fileName = f.getName().replaceFirst("[.][^.]+$", "");
-                p.updatedInstalledPath = "/system/priv-app/" + fileName + "/" + fileName + ".apk";
+                if (fileName.endsWith("base.apk")) {
+                    //fetch the parent folder name and create a file with that name
+                } else {
+                    p.updatedInstalledPath = "/system/priv-app/" + fileName + "/" + fileName + ".apk";
+                }
             } else {
                 p.updatedInstalledPath = p.installedPath;
             }
