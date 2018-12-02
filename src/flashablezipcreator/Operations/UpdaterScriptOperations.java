@@ -18,6 +18,7 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.SubGroupNode;
 import static flashablezipcreator.Operations.UpdateBinaryOperations.deleteString;
+import static flashablezipcreator.Operations.UpdateBinaryOperations.installString;
 import flashablezipcreator.UserInterface.Preference;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Script;
@@ -246,6 +247,52 @@ public class UpdaterScriptOperations {
                     str += "set_perm(" + ((FileNode) file).prop.filePermission + ");\n";
                 }
                 str += getExecuteScriptString(Script.afzcScriptTempPath, "-ei", ((FileNode) file).prop.fileInstallLocation + "/" + ((FileNode) file).prop.title);
+            }
+        }
+        return str;
+    }
+
+    public String predefinedNormalModsScript(GroupNode node) {
+        String str = "";
+        for (ProjectItemNode cNode : node.prop.children) {
+            if (node.prop.groupType == Types.GROUP_MOD) {
+                FileNode file = (FileNode) cNode;
+                str += addPrintString(file.prop.title, installString);
+                str += createDirectory("\"/tmp/Install\"");
+                str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + "/tmp/Install" + "/" + ((FileNode) file).prop.title + "\");\n";
+                str += getUnzipCommand(((FileNode) file).prop.title);
+                str += getExecuteCommand(((FileNode) file).prop.title);
+                str += addPrintString(file.prop.title + " installed...");
+            }
+        }
+        return str;
+    }
+
+    public String predefinedAromaModsScript(GroupNode node) {
+        String str = "";
+        int count = 1;
+        if (node.isCheckBox()) {
+            for (ProjectItemNode file : node.prop.children) {
+                str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"item." + count++ + "\")==file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"inclorexcl\")) then \n";
+                str += addPrintString(file.prop.title, installString);
+                str += createDirectory("\"/tmp/Install\"");
+                str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + "/tmp/Install" + "/" + ((FileNode) file).prop.title + "\");\n";
+                str += getUnzipCommand(((FileNode) file).prop.title);
+                str += getExecuteCommand(((FileNode) file).prop.title);
+                str += addPrintString(file.prop.title + " installed...");
+                str += "endif;\n";
+            }
+        } else {
+            count = 2;
+            for (ProjectItemNode file : node.prop.children) {
+                str += "if (file_getprop(\"/tmp/aroma/" + node.prop.propFile + "\", \"selected.1\")==\"" + count++ + "\") then \n";
+                str += addPrintString(file.prop.title, installString);
+                str += createDirectory("\"/tmp/Install\"");
+                str += "package_extract_file(\"" + ((FileNode) file).prop.fileZipPath + "\", \"" + "/tmp/Install" + "/" + ((FileNode) file).prop.title + "\");\n";
+                str += getUnzipCommand(((FileNode) file).prop.title);
+                str += getExecuteCommand(((FileNode) file).prop.title);
+                str += addPrintString(file.prop.title + " installed...");
+                str += "endif;\n";
             }
         }
         return str;
@@ -496,6 +543,12 @@ public class UpdaterScriptOperations {
                 } else if (Preference.pp.createZipType.equals("Normal")) {
                     return customNormalGroupScript(node);
                 }
+            case Types.PACKAGE_MOD_FILE:
+                if (Preference.pp.createZipType.equals("Aroma")) {
+                    return predefinedAromaModsScript(node);
+                } else if (Preference.pp.createZipType.equals("Normal")) {
+                    return predefinedNormalModsScript(node);
+                }
         }
         return "";
     }
@@ -534,6 +587,17 @@ public class UpdaterScriptOperations {
 
     public String createDirectory(String dir) {
         return "run_program(\"/sbin/busybox\", \"mkdir\", \"-p\", \"" + dir + "\");\n";
+    }
+
+    public String getUnzipCommand(String zipName) {
+        return "run_program(\"/sbin/busybox\", "
+                + "\"unzip\", \"/tmp/Install/" + zipName + "\", "
+                + "\"META-INF/com/google/android/*\", \"-d\", \"/tmp/Install\");";
+    }
+
+    public String getExecuteCommand(String zipName) {
+        return "run_program(\"/sbin/sh\", \"/tmp/Install/META-INF/com/google/android/update-binary\", \"dummy\", \"1\", "
+                + "\"/tmp/Install/" + zipName + "\");";
     }
 
     public String getExecuteScriptString(String scriptPath, String command, String data) {

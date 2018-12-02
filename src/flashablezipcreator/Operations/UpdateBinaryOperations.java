@@ -288,11 +288,10 @@ public class UpdateBinaryOperations {
 
     public String predefinedAromaModsScript(GroupNode node) {
         String str = "";
+        int count = 1;
         if (node.isCheckBox()) {
-            int count = 1;
-            str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item." + count++ + ") == $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" inclorexcl) ]; then\n";
-            for (ProjectItemNode cnode : node.prop.children) {
-                FileNode file = (FileNode) cnode;
+            for (ProjectItemNode file : node.prop.children) {
+                str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item." + count++ + ") == $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" inclorexcl) ]; then\n";
                 str += addPrintString(file.prop.title, installString);
                 str += "mkdir -p \"/tmp/Install\"\n";
                 str += "package_extract_file \"" + ((FileNode) file).prop.fileZipPath + "\" \"" + "/tmp/Install/" + ((FileNode) file).prop.title + "\"\n";;
@@ -304,10 +303,12 @@ public class UpdateBinaryOperations {
                 str += "\"$tmpzipdir/$metadir/update-binary\" 1 1 \"$i\";\n";
                 str += "rm -rf \"$tmpzipdir\";\n";
                 str += addPrintString(file.prop.title + " installed...");
+                str += "fi;\n";
             }
-            str += "fi;\n";
+        } else {
+            count = 2;
             for (ProjectItemNode file : node.prop.children) {
-                str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" item.1." + count++ + ") == 1 ]; then\n";
+                str += "if [ $(file_getprop \"/tmp/aroma/" + node.prop.propFile + "\" selected.1 ) ==  " + count++ + " ]; then\n";
                 str += addPrintString(file.prop.title, installString);
                 str += "mkdir -p \"/tmp/Install\"\n";
                 str += "package_extract_file \"" + ((FileNode) file).prop.fileZipPath + "\" \"" + "/tmp/Install/" + ((FileNode) file).prop.title + "\"\n";;

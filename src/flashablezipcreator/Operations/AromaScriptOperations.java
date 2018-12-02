@@ -109,6 +109,16 @@ public class AromaScriptOperations {
             case Types.GROUP_SYSTEM_FONTS:
                 str += configFonts(node);
                 break;
+            case Types.GROUP_MOD:
+                str += "\nselectbox(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@personalize\",\"" + node.prop.propFile + "\",\n"
+                        + "\"Select one from the list\", \"\", 2,\n"
+                        + "\"Select None\",\"Skip this Group.\", " + skipGroupValue;
+                for (int i = 0; i < node.getChildCount(); i++) {
+                    str += ",\n\"" + node.getChildAt(i).toString() + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", " + childNodeValue;
+                }
+                str += ");\n";
+                str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
+                break;
         }
         return str;
     }

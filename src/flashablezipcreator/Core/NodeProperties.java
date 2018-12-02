@@ -473,6 +473,7 @@ public final class NodeProperties {
                 originalGroupType = typePrefix + "mod";
                 folderMenuName = "Mods";
                 packageType = Types.PACKAGE_MOD_FILE;
+                isSelectBox = (title.toLowerCase().contains("kernel"));
                 break;
             case Types.GROUP_AROMA_THEMES:
                 Logs.write("adding themes");
