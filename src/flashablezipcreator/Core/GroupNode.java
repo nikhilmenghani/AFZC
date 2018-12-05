@@ -44,7 +44,12 @@ public final class GroupNode extends ProjectItemNode {
         prop.groupName = newName;
         prop.path = prop.parent.prop.path + File.separator + newName;
         prop.zipPath = prop.parent.prop.zipPath + "/" + prop.originalGroupType + "/" + prop.groupZipPathPrefix + newName;
+        prop.propFile = prop.getProp();
+        if(prop.groupType == Types.GROUP_MOD){
+            prop.isSelectBox = (prop.title.toLowerCase().contains("kernel"));
+        }
         prop.reloadZipPath(newName);
+        
         this.updateChildrenPath();
         this.updateChildrenZipPath();
     }

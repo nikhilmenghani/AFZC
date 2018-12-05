@@ -5,10 +5,12 @@
  */
 package flashablezipcreator.UserInterface;
 
+import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectTreeBuilder;
 import flashablezipcreator.DiskOperations.Write;
 import flashablezipcreator.FlashableZipCreator;
+import flashablezipcreator.Operations.DeviceOperations;
 import flashablezipcreator.Operations.JarOperations;
 import flashablezipcreator.Operations.MyFileFilter;
 import flashablezipcreator.Operations.TreeOperations;
@@ -104,6 +106,7 @@ public class MyTree extends javax.swing.JFrame {
         menuItemExit = new javax.swing.JMenuItem();
         menuView = new javax.swing.JMenu();
         menuItemSwitchView = new javax.swing.JMenuItem();
+        menuItemPushFileToDevice = new javax.swing.JMenuItem();
         menuAbout = new javax.swing.JMenu();
         menuItemDevelopers = new javax.swing.JMenuItem();
         menuItemDonate = new javax.swing.JMenuItem();
@@ -418,14 +421,6 @@ public class MyTree extends javax.swing.JFrame {
         });
         menuDevice.add(menuItemQuickConnect);
 
-        menuItemUSB.setText("Connect Via USB");
-        menuItemUSB.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuItemUSBActionPerformed(evt);
-            }
-        });
-        menuDevice.add(menuItemUSB);
-
         menuItemWifi.setText("Connect Via Wifi");
         menuItemWifi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -433,6 +428,14 @@ public class MyTree extends javax.swing.JFrame {
             }
         });
         menuDevice.add(menuItemWifi);
+
+        menuItemPushFileToDevice.setText("Push File To Device");
+        menuItemPushFileToDevice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemPushFileToDeviceActionPerformed(evt);
+            }
+        });
+        menuDevice.add(menuItemPushFileToDevice);
 
         menuBar.add(menuDevice);
 
@@ -642,8 +645,14 @@ public class MyTree extends javax.swing.JFrame {
         Device.quickConnect();
     }
 
-    private void menuItemUSBActionPerformed(java.awt.event.ActionEvent evt) {
-        Device.connectWithUSB();
+    private void menuItemPushFileToDeviceActionPerformed(java.awt.event.ActionEvent evt) {
+        String importFrom = MyFileFilter.browseZipDestination();
+        File f = new File(importFrom);
+        new Thread(() -> {
+            MyTree.setCardLayout(2);
+            (new DeviceOperations()).pushToDevice(importFrom, "/sdcard/AFZC/" + f.getName());
+            MyTree.setCardLayout(1);
+        }).start();
     }
 
     private void menuItemWifiActionPerformed(java.awt.event.ActionEvent evt) {
@@ -750,6 +759,7 @@ public class MyTree extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemInstructions;
     private javax.swing.JMenuItem menuItemPreference;
     private javax.swing.JMenuItem menuItemQuickConnect;
+    private javax.swing.JMenuItem menuItemPushFileToDevice;
     private javax.swing.JMenuItem menuItemSwitchView;
     private javax.swing.JMenuItem menuItemUSB;
     private javax.swing.JMenuItem menuItemWifi;

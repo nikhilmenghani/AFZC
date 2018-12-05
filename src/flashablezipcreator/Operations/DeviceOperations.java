@@ -143,15 +143,16 @@ public class DeviceOperations {
     }
 
     public void pushZipToDevice(String source, String destination) {
-        if (Device.checkDeviceConnectivity(Device.IPAddress) == 1) {
-            int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to push file to Device?", "", JOptionPane.YES_NO_OPTION);
-            if (dialogResult == JOptionPane.YES_OPTION) {
-                MyTree.setCardLayout(2);
-                Device.pushToDevice(source, destination);
-                MyTree.setCardLayout(1);
+        new Thread(() -> {
+            if (Device.checkDeviceConnectivity(Device.IPAddress) == 1) {
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to push file to Device?", "", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    MyTree.setCardLayout(2);
+                    Device.pushToDevice(source, destination);
+                    MyTree.setCardLayout(1);
+                }
             }
-        }
-
+        }).start();
     }
 
     public int pullFile(String pullFrom, String pullTo) {

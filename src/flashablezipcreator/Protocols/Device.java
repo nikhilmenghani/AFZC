@@ -26,6 +26,10 @@ public class Device {
         }
         return null;
     }
+    
+    public static int checkDeviceConnectivity(){
+        return checkDeviceConnectivity(IPAddress);
+    }
 
     public static int checkDeviceConnectivity(String ipAddress) {
         return dop.checkDeviceConnectivity(ipAddress);

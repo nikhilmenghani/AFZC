@@ -225,8 +225,8 @@ public class AdbOperations {
         index = 1;
         if (!p.packageName.equals("")) {
             p = validatePackage(p);
-            //this executes 2 times in the execution, need to find a way to make it once
-            if (p.packagePath.equals("") && p.isOptional == false) {
+            //this executes 2 times in the execution, need to find a way to make it once //p.Optional check is removed, need to add with correct condition
+            if (p.packagePath.equals("")) {
                 return Types.PACKAGE_PATH_NOT_FOUND;
             } else if (p.packagePath.contains("no devices/emulators found")) {
                 return Types.DEVICE_ERROR_NOT_CONNECTED;
@@ -243,7 +243,7 @@ public class AdbOperations {
 
     public Package validatePackage(Package p) {
         p.packagePath = getPackagePath(p.packageName);
-        if ((p.packagePath.contains("no devices/emulators found") || p.packagePath.equals("")) && p.isOptional == false) {
+        if ((p.packagePath.contains("no devices/emulators found") || p.packagePath.equals(""))) {
             return p;
         }
         File f = new File(p.packagePath);

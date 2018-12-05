@@ -9,10 +9,7 @@ import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Gapps.Gapps;
 import flashablezipcreator.Operations.AdbOperations;
-import static flashablezipcreator.Operations.AdbOperations.updateProgress;
-import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Types;
-import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JDialog;
 

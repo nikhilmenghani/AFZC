@@ -56,19 +56,23 @@ public class Export implements Runnable {
     public static void zip() throws IOException, ParserConfigurationException, TransformerException {
         to = new TreeOperations();
         boolean hasGapps = to.hasGappsProject(MyTree.rootNode);
-        String arch = Device.getArchitecture();
-        if (!arch.equals("")) {
-            arch = "-" + arch;
-            arch = arch.replaceAll("-v8a", "");
-        }
-        String androidVersion = Device.getAndroidVersion();
-        if (!androidVersion.equals("0")) {
-            arch += "-" + String.valueOf(androidVersion);
-        }
-        if (hasGapps) {
-            Project.outputPath = Project.outputPath.replaceAll(".zip", "-NikGapps" + arch + "-" + Logs.getShortTime() + ".zip");
-            File f = new File(Project.outputPath);
-            Project.outputPath = f.getParent() + File.separator + "NikGapps" + arch + "-" + Logs.getShortTime() + ".zip";
+        boolean isDeviceConnected = Device.checkDeviceConnectivity() == 1;
+        String androidVersion = "0";
+        if (isDeviceConnected) {
+            String arch = Device.getArchitecture();
+            if (!arch.equals("")) {
+                arch = "-" + arch;
+                arch = arch.replaceAll("-v8a", "");
+            }
+            androidVersion = Device.getAndroidVersion();
+            if (!androidVersion.equals("0")) {
+                arch += "-" + String.valueOf(androidVersion);
+            }
+            if (hasGapps) {
+                Project.outputPath = Project.outputPath.replaceAll(".zip", "-NikGapps" + arch + "-" + Logs.getShortTime() + ".zip");
+                File f = new File(Project.outputPath);
+                Project.outputPath = f.getParent() + File.separator + "NikGapps" + arch + "-" + Logs.getShortTime() + ".zip";
+            }
         }
         if ((new File(Project.outputPath)).exists()) {
             int dialogResult = JOptionPane.showConfirmDialog(null, "File " + (new File(Project.outputPath)).getName() + " Already Exists.\nDo you want to replace the file?", "", JOptionPane.YES_NO_OPTION);

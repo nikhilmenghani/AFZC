@@ -32,6 +32,7 @@ public final class NodeProperties {
     public String folderPermission = "";
     public String defaultFolderPerm = "";
     public String propFile;
+    public String propType;
     public String extension = "";
     public String projectName;
     public String originalGroupType;
@@ -180,7 +181,8 @@ public final class NodeProperties {
         projectParent = parent;
         switch (type) {
             case Types.GROUP_SYSTEM:
-                propFile = getProp("system");
+                propType = "system";
+                propFile = getProp();
                 owner = "0";
                 group = "0";
                 perm = "0644";
@@ -191,7 +193,8 @@ public final class NodeProperties {
                 folderMenuName = "System Files";
                 break;
             case Types.GROUP_VENDOR:
-                propFile = getProp("vendor");
+                propType = "vendor";
+                propFile = getProp();
                 owner = "0";
                 group = "0";
                 perm = "0644";
@@ -202,7 +205,8 @@ public final class NodeProperties {
                 folderMenuName = "Vendor Files";
                 break;
             case Types.GROUP_SYSTEM_APK:
-                propFile = getProp("system_app");
+                propType = "system_app";
+                propFile = getProp();
                 extension = "apk";
                 owner = "0";
                 group = "0";
@@ -214,7 +218,8 @@ public final class NodeProperties {
                 folderMenuName = "System Apps";
                 break;
             case Types.GROUP_VENDOR_APP:
-                propFile = getProp("vendor_app");
+                propType = "vendor_app";
+                propFile = getProp();
                 extension = "apk";
                 owner = "0";
                 group = "0";
@@ -226,7 +231,8 @@ public final class NodeProperties {
                 folderMenuName = "Vendor Apps";
                 break;
             case Types.GROUP_SYSTEM_PRIV_APK:
-                propFile = getProp("system_priv");
+                propType = "system_priv";
+                propFile = getProp();
                 extension = "apk";
                 owner = "0";
                 group = "0";
@@ -238,7 +244,8 @@ public final class NodeProperties {
                 folderMenuName = "Priv Apps";
                 break;
             case Types.GROUP_SYSTEM_BIN:
-                propFile = getProp("system_bin");
+                propType = "system_bin";
+                propFile = getProp();
                 owner = "0";
                 group = "2000";
                 perm = "0755";
@@ -249,7 +256,8 @@ public final class NodeProperties {
                 folderMenuName = "System Bin";
                 break;
             case Types.GROUP_SYSTEM_XBIN:
-                propFile = getProp("system_xbin");
+                propType = "system_xbin";
+                propFile = getProp();
                 owner = "0";
                 group = "2000";
                 perm = "0755";
@@ -260,7 +268,8 @@ public final class NodeProperties {
                 folderMenuName = "System xBin";
                 break;
             case Types.GROUP_VENDOR_BIN:
-                propFile = getProp("vendor_bin");
+                propType = "vendor_bin";
+                propFile = getProp();
                 owner = "0";
                 group = "2000";
                 perm = "0755";
@@ -271,7 +280,8 @@ public final class NodeProperties {
                 folderMenuName = "Vendor Bin";
                 break;
             case Types.GROUP_SYSTEM_ETC:
-                propFile = getProp("system_etc");
+                propType = "system_etc";
+                propFile = getProp();
                 owner = "0";
                 group = "0";
                 perm = "0644";
@@ -282,7 +292,8 @@ public final class NodeProperties {
                 folderMenuName = "System Etc";
                 break;
             case Types.GROUP_VENDOR_ETC:
-                propFile = getProp("vendor_etc");
+                propType = "vendor_etc";
+                propFile = getProp();
                 owner = "0";
                 group = "0";
                 perm = "0644";
@@ -293,7 +304,8 @@ public final class NodeProperties {
                 folderMenuName = "Vendor Etc";
                 break;
             case Types.GROUP_SYSTEM_FRAMEWORK:
-                propFile = getProp("system_framework");
+                propType = "system_framework";
+                propFile = getProp();
                 owner = "0";
                 group = "0";
                 perm = "0644";
@@ -304,7 +316,8 @@ public final class NodeProperties {
                 folderMenuName = "System Framework";
                 break;
             case Types.GROUP_VENDOR_FRAMEWORK:
-                propFile = getProp("vendor_framework");
+                propType = "vendor_framework";
+                propFile = getProp();
                 owner = "0";
                 group = "0";
                 perm = "0644";
@@ -315,7 +328,8 @@ public final class NodeProperties {
                 folderMenuName = "Vendor Framework";
                 break;
             case Types.GROUP_SYSTEM_LIB:
-                propFile = getProp("system_lib");
+                propType = "system_lib";
+                propFile = getProp();
                 owner = "0";
                 group = "0";
                 perm = "0644";
@@ -326,7 +340,8 @@ public final class NodeProperties {
                 folderMenuName = "System Lib";
                 break;
             case Types.GROUP_VENDOR_LIB:
-                propFile = getProp("vendor_lib");
+                propType = "vendor_lib";
+                propFile = getProp();
                 owner = "0";
                 group = "0";
                 perm = "0644";
@@ -337,7 +352,8 @@ public final class NodeProperties {
                 folderMenuName = "Vendor Lib";
                 break;
             case Types.GROUP_SYSTEM_LIB64:
-                propFile = getProp("system_lib64");
+                propType = "system_lib64";
+                propFile = getProp();
                 owner = "0";
                 group = "0";
                 perm = "0644";
@@ -348,7 +364,8 @@ public final class NodeProperties {
                 folderMenuName = "System Lib64";
                 break;
             case Types.GROUP_VENDOR_LIB64:
-                propFile = getProp("vendor_lib64");
+                propType = "vendor_lib64";
+                propFile = getProp();
                 owner = "0";
                 group = "0";
                 perm = "0644";
@@ -359,7 +376,8 @@ public final class NodeProperties {
                 folderMenuName = "Vendor Lib64";
                 break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_ALARMS:
-                propFile = getProp("system_media_alarms");
+                propType = "system_media_alarms";
+                propFile = getProp();
                 extension = "audio";
                 owner = "0";
                 group = "0";
@@ -371,7 +389,8 @@ public final class NodeProperties {
                 folderMenuName = "Alarm Tones";
                 break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_NOTIFICATIONS:
-                propFile = getProp("system_media_notifications");
+                propType = "system_media_notifications";
+                propFile = getProp();
                 extension = "audio";
                 owner = "0";
                 group = "0";
@@ -383,7 +402,8 @@ public final class NodeProperties {
                 folderMenuName = "Notifications";
                 break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_RINGTONES:
-                propFile = getProp("system_media_ringtones");
+                propType = "system_media_ringtones";
+                propFile = getProp();
                 extension = "audio";
                 owner = "0";
                 group = "0";
@@ -395,7 +415,8 @@ public final class NodeProperties {
                 folderMenuName = "Ringtones";
                 break;
             case Types.GROUP_SYSTEM_MEDIA_AUDIO_UI:
-                propFile = getProp("system_media_ui");
+                propType = "system_media_ui";
+                propFile = getProp();
                 extension = "audio";
                 owner = "0";
                 group = "0";
@@ -407,7 +428,8 @@ public final class NodeProperties {
                 folderMenuName = "UI Tones";
                 break;
             case Types.GROUP_SYSTEM_MEDIA:
-                propFile = getProp("system_media");
+                propType = "system_media";
+                propFile = getProp();
                 isSelectBox = true;
                 extension = "zip";
                 owner = "0";
@@ -421,7 +443,8 @@ public final class NodeProperties {
                 folderMenuName = "Boot Animations";
                 break;
             case Types.GROUP_SYSTEM_FONTS:
-                propFile = getProp("system_fonts");
+                propType = "system_fonts";
+                propFile = getProp();
                 isSelectBox = true;
                 extension = "ttf";
                 owner = "0";
@@ -434,7 +457,8 @@ public final class NodeProperties {
                 folderMenuName = "Fonts";
                 break;
             case Types.GROUP_DATA_APP:
-                propFile = getProp("data_app");
+                propType = "data_app";
+                propFile = getProp();
                 extension = "apk";
                 owner = "0";
                 group = "0";
@@ -446,7 +470,8 @@ public final class NodeProperties {
                 folderMenuName = "Data Apps";
                 break;
             case Types.GROUP_DATA_LOCAL:
-                propFile = getProp("data_local");
+                propType = "data_local";
+                propFile = getProp();
                 isSelectBox = true;
                 extension = "zip";
                 owner = "0";
@@ -460,15 +485,17 @@ public final class NodeProperties {
                 folderMenuName = "Boot Animations";
                 break;
             case Types.GROUP_CUSTOM:
-                propFile = getProp("custom");
+                propType = "custom";
+                propFile = getProp();
                 isSelectBox = false;
                 packageType = Types.PACKAGE_CUSTOM;
                 folderMenuName = "Custom Files";
                 break;
             case Types.GROUP_MOD:
+                propType = "mod";
                 //following properties not needed but added.
                 extension = "zip";
-                propFile = getProp("mod");
+                propFile = getProp();
                 isSelectBox = false;
                 originalGroupType = typePrefix + "mod";
                 folderMenuName = "Mods";
@@ -485,7 +512,8 @@ public final class NodeProperties {
                 folderMenuName = "Themes";
                 break;
             case Types.GROUP_DELETE_FILES:
-                propFile = getProp("delete");
+                propType = "delete";
+                propFile = getProp();
                 isSelectBox = false;
                 extension = "delete";
                 originalGroupType = typePrefix + "delete";
@@ -493,7 +521,8 @@ public final class NodeProperties {
                 folderMenuName = "Files/Folders to Delete";
                 break;
             case Types.GROUP_SCRIPT:
-                propFile = getProp("dpi");
+                propType = "dpi";
+                propFile = getProp();
                 isSelectBox = true;
                 extension = "sh";
                 originalGroupType = typePrefix + "script";
@@ -535,8 +564,8 @@ public final class NodeProperties {
         setPermissions = parent.prop.setPermissions;
     }
 
-    public String getProp(String str) {
-        return str + "_" + groupName.replaceAll(" ", "_") + "_" + parent.prop.title.replaceAll(" ", "_") + ".prop";
+    public String getProp() {
+        return propType + "_" + groupName.replaceAll(" ", "_") + "_" + parent.prop.title.replaceAll(" ", "_") + ".prop";
     }
 
     public void reloadOriginalStringType() {

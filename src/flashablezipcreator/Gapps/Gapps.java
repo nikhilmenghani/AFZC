@@ -72,7 +72,7 @@ public class Gapps {
         GooglePlayBooks.packageName = "com.google.android.apps.books";
         GooglePlayBooks.installedPath = "/system/app/Books/Books.apk";
         GoogleCamera.packageName = "com.google.android.GoogleCamera";
-        GoogleCamera.installedPath = "system/app/GoogleCamera/GoogleCamera.apk";
+        GoogleCamera.installedPath = "/system/app/GoogleCamera/GoogleCamera.apk";
         Google.packageName = "com.google.android.googlequicksearchbox";
         Google.installedPath = "/system/app/Google/Google";
         Calculator.packageName = "com.google.android.calculator";

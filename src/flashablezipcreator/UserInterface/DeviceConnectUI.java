@@ -73,7 +73,7 @@ public class DeviceConnectUI extends javax.swing.JFrame {
 
         txtIP3Address.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         txtIP3Address.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtIP3Address.setText("0");
+        txtIP3Address.setText("2");
 
         lbldot3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lbldot3.setText(".");
@@ -81,6 +81,7 @@ public class DeviceConnectUI extends javax.swing.JFrame {
 
         txtIP4Address.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         txtIP4Address.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtIP4Address.setText("11");
 
         btnConnectToDevice.setBackground(new java.awt.Color(153, 153, 255));
         btnConnectToDevice.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
