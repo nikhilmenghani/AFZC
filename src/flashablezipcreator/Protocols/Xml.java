@@ -94,13 +94,13 @@ public class Xml {
         xo = new XmlOperations();
         return xo.getBoolConfigValue(configData, "IsQuickSetup");
     }
-    
-    public static boolean getDisplayAddonDSupport(String configData) throws ParserConfigurationException, SAXException, IOException{
+
+    public static boolean getDisplayAddonDSupport(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
         return xo.getBoolConfigValue(configData, "displayAddonDSupport");
     }
-    
-    public static boolean getEnableAddonDSupport(String configData) throws ParserConfigurationException, SAXException, IOException{
+
+    public static boolean getEnableAddonDSupport(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
         return xo.getBoolConfigValue(configData, "enableAddonDSupport");
     }
@@ -129,9 +129,19 @@ public class Xml {
         xo = new XmlOperations();
         return xo.getBoolConfigValue(configData, "CheckUpdates");
     }
-    
-    public static String getCreateZipType(String configData) throws ParserConfigurationException, SAXException, IOException{
+
+    public static String getCreateZipType(String configData) throws ParserConfigurationException, SAXException, IOException {
         xo = new XmlOperations();
         return xo.getStringConfigValue(configData, "createZipType");
+    }
+
+    public static String getStringConfigValue(String configData, String key) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getStringConfigValue(configData, key);
+    }
+
+    public static boolean getBoolConfigValue(String configData, String key) throws ParserConfigurationException, SAXException, IOException {
+        xo = new XmlOperations();
+        return xo.getBoolConfigValue(configData, key);
     }
 }

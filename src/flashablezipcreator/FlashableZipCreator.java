@@ -49,7 +49,7 @@ public class FlashableZipCreator {
      * @throws org.xml.sax.SAXException
      */
     public static String OS = "Windoes";
-    public static String VERSION = "v5.0 alpha";
+    public static String VERSION = "v5.0 beta";
     public static boolean useFTP = true;
     public static MyTree tree;
 
@@ -85,7 +85,34 @@ public class FlashableZipCreator {
         }
         //</editor-fold>
 
+        if (Preference.pp.forceConnect) {
+            Thread t = new Thread(() -> {
+                connectDevice();
+            });
+            t.start();
+        }
         letsBegin();
+    }
+
+    public static void connectDevice() {
+        while(Preference.pp.keepConnected){
+            int i = Device.checkDeviceConnectivity(Preference.pp.connectIp);
+            int j = 0;
+            if(i==1){
+                Preference.pp.isConnected = true;
+                while(Preference.pp.isConnected){
+                    try {
+                        Thread.sleep(1000);
+                        j++;
+                        if(j>6){
+                            Preference.pp.isConnected = false;
+                        }
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(FlashableZipCreator.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
     }
 
     public static void letsBegin() throws URISyntaxException, TransformerException {
@@ -116,6 +143,7 @@ public class FlashableZipCreator {
                 Preference.pp.displayAddonDSupport = Xml.getDisplayAddonDSupport(preferencesConfig);
                 Preference.pp.enableAddonDSupport = Xml.getEnableAddonDSupport(preferencesConfig);
                 Preference.pp.createZipType = Xml.getCreateZipType(preferencesConfig);
+                Preference.pp.connectIp = Xml.getStringConfigValue(preferencesConfig, "connectIp");
                 Logs.write("Created Logs File..");
                 Logs.write(OS + " Operating System Found..!!");
                 Logs.write("Preferences.config Found");

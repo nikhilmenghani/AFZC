@@ -500,10 +500,14 @@ public class Preference extends javax.swing.JFrame {
         pp.zipVersion = "1.0";
         Project.releaseVersion = pp.zipVersion;
         pp.saveLogs = btnSaveTools.isContentAreaFilled();
-        xml = Xml.getPreferenceConfigString(pp);
+        update();
+        dialog.dispose();
+    }
+    
+    public static void update() throws ParserConfigurationException, TransformerException, IOException{
+        String xml = Xml.getPreferenceConfigString(pp);
         Write w = new Write();
         w.writeStringToFile(xml, "Preferences.config");
-        dialog.dispose();
     }
 
     /**

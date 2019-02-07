@@ -30,4 +30,8 @@ public class PreferenceProperties {
     public boolean displayAddonDSupport = true;
     public String createZipType = "Aroma";
     public boolean checkForDeviceOnStartUp = false;
+    public boolean forceConnect = true;
+    public boolean keepConnected = true;
+    public String connectIp = "192.168.2.19:5555";
+    public boolean isConnected = true;
 }

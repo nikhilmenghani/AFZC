@@ -6,7 +6,13 @@
 package flashablezipcreator.UserInterface;
 
 import flashablezipcreator.Protocols.Device;
+import flashablezipcreator.Protocols.Logs;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 /**
  *
@@ -48,7 +54,7 @@ public class DeviceConnectUI extends javax.swing.JFrame {
         };
         btnConnectToDevice = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         panel.setBackground(new java.awt.Color(255, 255, 255));
         panel.setLayout(new java.awt.CardLayout());
@@ -73,7 +79,7 @@ public class DeviceConnectUI extends javax.swing.JFrame {
 
         txtIP3Address.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         txtIP3Address.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtIP3Address.setText("2");
+        txtIP3Address.setText(getIP3());
 
         lbldot3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         lbldot3.setText(".");
@@ -81,7 +87,7 @@ public class DeviceConnectUI extends javax.swing.JFrame {
 
         txtIP4Address.setFont(new java.awt.Font("Calibri", 0, 22)); // NOI18N
         txtIP4Address.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtIP4Address.setText("11");
+        txtIP4Address.setText(getIP4());
 
         btnConnectToDevice.setBackground(new java.awt.Color(153, 153, 255));
         btnConnectToDevice.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -178,9 +184,15 @@ public class DeviceConnectUI extends javax.swing.JFrame {
             String IP = txtIP1Address.getText() + "." + txtIP2Address.getText() + "."
                     + txtIP3Address.getText() + "." + txtIP4Address.getText() + ":5555";
             Device.IPAddress = IP;
+            Preference.pp.connectIp = IP;
 
             if (Device.checkDeviceConnectivity(IP) == 1) {
                 JOptionPane.showMessageDialog(this, "Device Is Connected!");
+                try {
+                    Preference.update();
+                } catch (ParserConfigurationException | TransformerException | IOException ex) {
+                    Logger.getLogger(DeviceConnectUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 flashablezipcreator.FlashableZipCreator.tree.setVisible(true);
                 this.dispose();
             } else {
@@ -190,6 +202,30 @@ public class DeviceConnectUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnConnectToDeviceActionPerformed
+
+    private String getIP3() {
+        String ip = Preference.pp.connectIp;
+        try {
+            ip = ip.substring(8, ip.lastIndexOf(":"));
+            ip = ip.substring(0, ip.indexOf("."));
+        } catch (Exception e) {
+            Logs.write(e.getMessage());
+            return "2";
+        }
+        return ip;
+    }
+
+    private String getIP4() {
+        String ip = Preference.pp.connectIp;
+        try {
+            ip = ip.substring(8, ip.lastIndexOf(":"));
+            ip = ip.substring(ip.indexOf(".") + 1, ip.length());
+        } catch (Exception e) {
+            Logs.write(e.getMessage());
+            return "11";
+        }
+        return ip;
+    }
 
     /**
      * @param args the command line arguments
