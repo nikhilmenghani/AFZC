@@ -84,7 +84,23 @@ public class MyPopup {
         mitemDeleteFile.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList);
         });
+        JMenuItem mItemMoveUp = new JMenuItem("Move Up");
+        mItemMoveUp.addActionListener((ActionEvent ae) -> {
+            (node).prop.parent.moveUp(node);
+        });
+        JMenuItem mItemMoveDown = new JMenuItem("Move Down");
+        mItemMoveDown.addActionListener((ActionEvent ae) -> {
+            (node).prop.parent.moveDown(node);
+        });
         popup = new JPopupMenu();
+        if (node.prop.parent.getChildCount() != 1) {
+            if (node.prop.parent.getIndex(node) != 0) {
+                popup.add(mItemMoveUp);
+            }
+            if (node.prop.parent.getIndex(node) != node.prop.parent.getChildCount() - 1) {
+                popup.add(mItemMoveDown);
+            }
+        }
         popup.add(mitemDeleteFile);
         return popup;
     }
@@ -467,6 +483,7 @@ public class MyPopup {
                     break;
                 case Types.PACKAGE_SUBGROUP_FILE:
                     mitemAddFromDevice = new JMenuItem("Add " + node.prop.folderMenuName + "");
+                    popup.add(mitemAddSubGroup);
                     break;
                 case Types.PACKAGE_DELETE_FILE:
                     mitemUpdateApp = null;
@@ -522,6 +539,14 @@ public class MyPopup {
                     adb.checkForUpdate(node);
                 }
         );
+        JMenuItem mItemMoveUp = new JMenuItem("Move Up");
+        mItemMoveUp.addActionListener((ActionEvent ae) -> {
+            (node).prop.parent.moveUp(node);
+        });
+        JMenuItem mItemMoveDown = new JMenuItem("Move Down");
+        mItemMoveDown.addActionListener((ActionEvent ae) -> {
+            (node).prop.parent.moveDown(node);
+        });
         JMenuItem mitemDeleteSubGroup = new JMenuItem("Delete SubGroup(s)");
         mitemDeleteSubGroup.addActionListener(
                 (ActionEvent ae) -> {
@@ -533,6 +558,14 @@ public class MyPopup {
             addDeviceTalksMenu.add(mitemUpdateApp);
             popup.add(mitemAddFile);
             popup.add(addDeviceTalksMenu);
+        }
+        if (node.prop.parent.getChildCount() != 1) {
+            if (node.prop.parent.getIndex(node) != 0) {
+                popup.add(mItemMoveUp);
+            }
+            if (node.prop.parent.getIndex(node) != node.prop.parent.getChildCount() - 1) {
+                popup.add(mItemMoveDown);
+            }
         }
         popup.add(mitemDeleteSubGroup);
         return popup;
@@ -566,6 +599,22 @@ public class MyPopup {
         mitemDeleteFolder.addActionListener((ActionEvent ae) -> {
             deleteNode(nodeList);
         });
+        JMenuItem mItemMoveUp = new JMenuItem("Move Up");
+        mItemMoveUp.addActionListener((ActionEvent ae) -> {
+            (node).prop.parent.moveUp(node);
+        });
+        JMenuItem mItemMoveDown = new JMenuItem("Move Down");
+        mItemMoveDown.addActionListener((ActionEvent ae) -> {
+            (node).prop.parent.moveDown(node);
+        });
+        if (node.prop.parent.getChildCount() != 1) {
+            if (node.prop.parent.getIndex(node) != 0) {
+                popup.add(mItemMoveUp);
+            }
+            if (node.prop.parent.getIndex(node) != node.prop.parent.getChildCount() - 1) {
+                popup.add(mItemMoveDown);
+            }
+        }
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
             switch (node.prop.groupParent.prop.packageType) {
@@ -596,11 +645,27 @@ public class MyPopup {
                     adb.checkForUpdate(node);
                 }
         );
+        JMenuItem mItemMoveUp = new JMenuItem("Move Up");
+        mItemMoveUp.addActionListener((ActionEvent ae) -> {
+            (node).prop.parent.moveUp(node);
+        });
+        JMenuItem mItemMoveDown = new JMenuItem("Move Down");
+        mItemMoveDown.addActionListener((ActionEvent ae) -> {
+            (node).prop.parent.moveDown(node);
+        });
         popup = new JPopupMenu();
         if (nodeList.size() == 1) {
             //all other popups will be added here.
             addDeviceTalksMenu.add(mitemUpdateApp);
             popup.add(addDeviceTalksMenu);
+        }
+        if (node.prop.parent.getChildCount() != 1) {
+            if (node.prop.parent.getIndex(node) != 0) {
+                popup.add(mItemMoveUp);
+            }
+            if (node.prop.parent.getIndex(node) != node.prop.parent.getChildCount() - 1) {
+                popup.add(mItemMoveDown);
+            }
         }
         popup.add(mitemDeleteFile);
         return popup;
