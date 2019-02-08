@@ -6,7 +6,9 @@
 package flashablezipcreator.Gapps;
 
 import flashablezipcreator.Adb.Package;
+import flashablezipcreator.Protocols.Device;
 import flashablezipcreator.Protocols.Project;
+import flashablezipcreator.UserInterface.Preference;
 import java.util.ArrayList;
 
 /**
@@ -32,9 +34,11 @@ public class Gapps {
     public static Package GooglePlayBooks = new Package();
     public static Package GoogleCamera = new Package();
     public static Package Google = new Package();
+    public static Package GoogleAssistant = new Package();
     public static Package Calculator = new Package();
     public static Package Duo = new Package();
     public static Package DigitalWellbeing = new Package();
+    public static Package GoogleCalendarSync = new Package();
     public static Package files = new Package();
 
     public Gapps() {
@@ -74,7 +78,7 @@ public class Gapps {
         GoogleCamera.packageName = "com.google.android.GoogleCamera";
         GoogleCamera.installedPath = "/system/app/GoogleCamera/GoogleCamera.apk";
         Google.packageName = "com.google.android.googlequicksearchbox";
-        Google.installedPath = "/system/app/Google/Google";
+        Google.installedPath = "/system/priv-app/Velvet/Velvet.apk";
         Calculator.packageName = "com.google.android.calculator";
         Calculator.installedPath = "/system/app/CalculatorGooglePrebuilt/CalculatorGooglePrebuilt.apk";
         Duo.packageName = "com.google.android.apps.tachyon";
@@ -82,6 +86,11 @@ public class Gapps {
         DigitalWellbeing.packageName = "com.google.android.apps.wellbeing";
         DigitalWellbeing.installedPath = "/system/priv-app/WellbeingPrebuilt/WellbeingPrebuilt.apk";
         DigitalWellbeing.isOptional = true;
+        GoogleCalendarSync.packageName = "com.google.android.syncadapters.calendar";
+        GoogleCalendarSync.installedPath = "/system/app/GoogleCalendarSyncAdapter/GoogleCalendarSyncAdapter.apk";
+        GoogleAssistant.packageName = "com.google.android.apps.googleassistant";
+        GoogleAssistant.installedPath = "/system/priv-app/Assistant/Assistant.apk";
+        GoogleAssistant.isOptional = true;
         //following 5 not needed
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.dialer.support.xml");
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.media.effects.xml");
@@ -112,6 +121,7 @@ public class Gapps {
         list.add(Gapps.PrebuiltGmsCore);
         list.add(Gapps.GoogleServicesFramework);
         list.add(Gapps.GoogleContactsSyncAdapter);
+        list.add(Gapps.GoogleCalendarSync);
         return list;
     }
 
@@ -121,8 +131,8 @@ public class Gapps {
             list.add(p);
         }
         list.add(Gapps.GoogleBackupTransport);
-        list.add(Gapps.GoogleExtServices);
-        list.add(Gapps.GoogleExtShared);
+//        list.add(Gapps.GoogleExtServices);
+//        list.add(Gapps.GoogleExtShared);
         return list;
     }
 
@@ -154,7 +164,8 @@ public class Gapps {
         list.add(Gapps.Calculator);
         list.add(Gapps.Google);
         list.add(Gapps.Duo);
-        if (Project.androidVersion.startsWith("9")) {
+        list.add(Gapps.GoogleAssistant);
+        if ((Device.checkDeviceConnectivity(Preference.pp.connectIp) == 1) && Project.androidVersion.startsWith("9")) {
             list.add(DigitalWellbeing);
         }
         return list;
