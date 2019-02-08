@@ -67,14 +67,16 @@ public class AdbOperations {
         }
         ArrayList<String> pathFileList = runProcess(true, false, Commands.COMMAND_LIST_FILES);
         for (String dir : pathFileList) {
-            String childPath = path + "/" + dir;
-            if (childPath.endsWith("oat") || childPath.contains("split_config.en.apk")) {
-                continue;
-            }
-            if (fullList.contains(childPath + ":")) {
-                fileList = getFileList(fileList, childPath, fullList);
-            } else {
-                fileList.add(childPath);
+            if (!dir.equals("")) {
+                String childPath = path + "/" + dir;
+                if (childPath.endsWith("oat") || childPath.contains("split_config.en.apk")) {
+                    continue;
+                }
+                if (fullList.contains(childPath + ":")) {
+                    fileList = getFileList(fileList, childPath, fullList);
+                } else {
+                    fileList.add(childPath);
+                }
             }
         }
         return fileList;
@@ -515,10 +517,12 @@ public class AdbOperations {
                 line.add(_temp);
             }
             if (line.size() > 0) {
-                if (line.get(0).contains("no devices/emulators found") || line.get(0).contains("error")) {
+                if (line.get(0).contains("no devices/emulators found")) {
                     line = new ArrayList<>();
                     line.add("no devices/emulators found");
-                    //JOptionPane.showMessageDialog(null, "error: no devices/emulators found!");
+                } else if (line.get(0).contains("No such file or directory")) {
+                    line = new ArrayList<>();
+                    line.add("No such file or directory");
                 }
             }
             return line;

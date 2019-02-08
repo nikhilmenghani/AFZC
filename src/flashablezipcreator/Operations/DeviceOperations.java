@@ -165,6 +165,9 @@ public class DeviceOperations {
         if (pullList.get(0).contains("no devices/emulators found")) {
             Adb.logs += pullFrom + ": " + pullList.get(0) + Logs.newLine;
             return Types.DEVICE_ERROR_NOT_CONNECTED;
+        } else if (pullList.get(0).startsWith("No such file or directory")) {
+            Adb.logs += pullFrom + ": " + pullList.get(0) + Logs.newLine;
+            return Types.PACKAGE_PATH_NOT_FOUND;
         } else if (pullList.get(0).startsWith("adb: error:")) {
             Adb.logs += pullFrom + ": " + pullList.get(0) + Logs.newLine;
             return Types.DEVICE_PULL_FILE_FAILURE;
