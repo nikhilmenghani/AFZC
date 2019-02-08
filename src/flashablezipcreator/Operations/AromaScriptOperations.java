@@ -12,6 +12,7 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
+import flashablezipcreator.Protocols.AromaConfig;
 import flashablezipcreator.UserInterface.Preference;
 import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Types;
@@ -38,12 +39,12 @@ public class AromaScriptOperations {
     }
 
     public String addThemesString(ProjectItemNode rootNode) {
-        String str = "theme(\"" + "Nikhil" + "\");\n";
+        String str = "theme(\"" + AromaConfig.defaultTheme + "\");\n";
         str += "\nselectbox(\"Themes\",\"Choose your desired theme from following\",\"@customize\",\"theme.prop\",\n";
         for (ProjectItemNode projectNode : rootNode.prop.children) {
             if (((ProjectNode) projectNode).prop.projectType == Types.PROJECT_THEMES) {
                 for (ProjectItemNode theme : ((ProjectNode) projectNode).prop.children) {
-                    str += "\"" + theme.prop.title + "\", \"\", " + (theme.prop.title.equals("Nikhil") ? 1 : 0) + ",\n";
+                    str += "\"" + theme.prop.title + "\", \"\", " + (theme.prop.title.equals(AromaConfig.defaultTheme) ? 1 : 0) + ",\n";
                 }
             }
         }
@@ -323,7 +324,6 @@ public class AromaScriptOperations {
         switch (node.prop.packageType) {
             case Types.PACKAGE_APP:
             case Types.PACKAGE_FOLDER_FILE:
-            case Types.PACKAGE_DELETE_FILE:
             case Types.PACKAGE_FILE:
             case Types.PACKAGE_MOD_FILE:
                 str += "\nform(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
@@ -333,14 +333,27 @@ public class AromaScriptOperations {
                         + "\"" + node.prop.title + "\",\"Choose files which you want to add on install/exclude list\",\"\", \"group\"";
                 for (int i = 0; i < node.getChildCount(); i++) {
                     switch (node.getChildAt(i).prop.type) {
-                        case Types.NODE_DELETE:
-                            str += ",\n\"" + "item." + (i + 1) + "\", \"" + ((DeleteNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
-                            break;
                         case Types.NODE_FOLDER:
                             str += ",\n\"" + "item." + (i + 1) + "\", \"" + ((FolderNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
                             break;
                         case Types.NODE_FILE:
                             str += ",\n\"" + "item." + (i + 1) + "\", \"" + ((FileNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
+                            break;
+                    }
+                }
+                str += ");\n";
+                str += "writetmpfile(\"" + node.prop.propFile + "\",readtmpfile(\"" + node.prop.propFile + "\"));\n";
+                break;
+            case Types.PACKAGE_DELETE_FILE:
+                str += "\nform(\"" + node.prop.title + " List\",\"Select from " + node.prop.title + "\",\"@apps\",\"" + node.prop.propFile + "\",\n"
+                        + "\"inclorexcl\",\"Choose to include or exclude the files below\",\"\",\"group\",\n"
+                        + "\"1\",\"Include\",\"Choose the files you WANT installed from the list below.\",\"select.selected\",\n"
+                        + "\"0\",\"Exclude\",\"Choose the files you DON'T WANT installed from the list below.\",\"select\",\n"
+                        + "\"" + node.prop.title + "\",\"Choose files which you want to add on install/exclude list\",\"\", \"group\"";
+                for (int i = 0; i < node.getChildCount(); i++) {
+                    switch (node.getChildAt(i).prop.type) {
+                        case Types.NODE_DELETE:
+                            str += ",\n\"" + "item." + (i + 1) + "\", \"" + ((DeleteNode) node.getChildAt(i)).prop.description + "\", \"" + node.getChildAt(i).toString() + "\", \"check\"";
                             break;
                     }
                 }

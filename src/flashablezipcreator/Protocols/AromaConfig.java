@@ -22,6 +22,7 @@ public class AromaConfig {
     public static AromaScriptOperations op = new AromaScriptOperations();
     public static String aromaConfig = "";
     public static String aromaConfigPath = "META-INF/com/google/android/aroma-config";
+    public static String defaultTheme = "RedBlack";
 
     public static String build(ProjectItemNode rootNode) {
         Logs.write("Building Aroma.config");
@@ -67,8 +68,8 @@ public class AromaConfig {
         String str = "";
         str += op.addAromaMenuBox(project);
         str += "if prop(\"" + project.prop.title + ".prop\",\"selected\")==\"1\" then\n";
-        str += op.addInitString(project);
-        str += op.addWelcomeString(project);
+//        str += op.addInitString(project);
+//        str += op.addWelcomeString(project);
         for (ProjectItemNode group : project.prop.children) {
             switch (((ProjectNode) group.prop.parent).prop.projectType) {
                 case Types.PROJECT_AROMA:
