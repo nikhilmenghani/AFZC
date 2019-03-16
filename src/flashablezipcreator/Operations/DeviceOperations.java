@@ -50,7 +50,12 @@ public class DeviceOperations {
             //A connection attempt failed because the connected party did not properly respond
             //after a period of time, or established connection failed because connected host has failed to respond. (10060)
             if (response.endsWith("device") || response.endsWith("recovery") || response.contains("connected to 192.168.")) {
-                Project.androidVersion = getDeviceAndroidVersion();
+                String androidVersion = getDeviceAndroidVersion();
+                if (androidVersion.equals("Device Unauthorized")) {
+                    return 2;
+                } else {
+                    Project.androidVersion = androidVersion;
+                }
                 return 1;
             }
             if (response.endsWith("unauthorized")) {
@@ -192,6 +197,8 @@ public class DeviceOperations {
         int pullStatus = Types.DEVICE_PULL_FILE_SUCCESS;
         flashablezipcreator.Adb.Package f = new flashablezipcreator.Adb.Package();
         System.out.println(pullTo);
+        Logs.write("Device is pulling from: " + pullFrom);
+        Logs.write("Device is pulling to: " + pullTo);
         if (!pullTo.equals("")) {
             try {
                 pullStatus = pullFile(pullFrom, pullTo);
@@ -199,6 +206,7 @@ public class DeviceOperations {
                     to.addFileNode(zipPath, parent);
                 }
             } catch (IOException ex) {
+                Logs.write(ex.getMessage());
                 //it is possible that the problem appears while adding fileNode. in that case following status won't tell the correct reason
                 pullStatus = Types.DEVICE_PULL_FILE_FAILURE;
                 Logger.getLogger(Adb.class.getName()).log(Level.SEVERE, null, ex);
@@ -272,6 +280,7 @@ public class DeviceOperations {
                 }
                 line.add(_temp);
             }
+            AdbOperations.updateProgress("", "", 0, false);
             return line;
         } catch (IOException e) {
             return null;

@@ -9,6 +9,7 @@ import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Gapps.Gapps;
 import flashablezipcreator.Operations.AdbOperations;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Types;
 import java.util.ArrayList;
 import javax.swing.JDialog;
@@ -42,15 +43,19 @@ public class Adb {
         new Thread(() -> {
             switch (parent.prop.modType) {
                 case Types.GAPPS_CORE:
+                    Logs.write("Importing Core Gapps");
                     importPackages(Gapps.getCoreList(), parent);
                     break;
                 case Types.GAPPS_PICO:
+                    Logs.write("Importing Pico Gapps");
                     importPackages(Gapps.getPicoList(), parent);
                     break;
                 case Types.GAPPS_MY:
+                    Logs.write("Importing My Gapps");
                     importPackages(Gapps.getMyList(), parent);
                     break;
                 case Types.GAPPS_NANO:
+                    Logs.write("Importing Nano Gapps");
                     importPackages(Gapps.getNanoList(), parent);
                     break;
             }

@@ -75,7 +75,7 @@ public class Gapps {
         GoogleDrive.installedPath = "/system/app/Drive/Drive.apk";
         GooglePlayBooks.packageName = "com.google.android.apps.books";
         GooglePlayBooks.installedPath = "/system/app/Books/Books.apk";
-        GoogleCamera.packageName = "com.google.android.GoogleCamera";
+        GoogleCamera.packageName = "com.google.android.GoogleCameraEng";
         GoogleCamera.installedPath = "/system/app/GoogleCamera/GoogleCamera.apk";
         Google.packageName = "com.google.android.googlequicksearchbox";
         Google.installedPath = "/system/priv-app/Velvet/Velvet.apk";

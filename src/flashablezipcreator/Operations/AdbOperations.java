@@ -12,6 +12,7 @@ import flashablezipcreator.Core.FileNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Protocols.Commands;
 import flashablezipcreator.Protocols.Device;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.setCardLayout;
@@ -176,10 +177,12 @@ public class AdbOperations {
         String packagePath = "";
         try {
             packagePath = list.get(0);
-            if (!(packagePath.contains("no devices/emulators found") || packagePath.contains("error"))) {
+            Logs.write("getPackagePath Response: " + packagePath);
+            if (!(packagePath.contains("no devices/emulators found") || packagePath.contains("error") || packagePath.contains("Device Unauthorized"))) {
                 packagePath = packagePath.substring("package:".length(), packagePath.length());
             }
         } catch (Exception e) {
+            Logs.write(e.getMessage());
             packagePath = "";
         }
         return packagePath;
@@ -194,6 +197,7 @@ public class AdbOperations {
         String packagesNotFound = "Following Packages were not found in Device while building Gapps";
         int packageImportStatus = Types.PACKAGE_IMPORT_SUCCESS;
         for (Package p : packages) {
+            Logs.write("Importing " + p.packageName);
             packageImportStatus = importOnePackage(p, ++windowIndex, window, parent);
             switch (packageImportStatus) {
                 case Types.PACKAGE_PATH_NOT_FOUND:
@@ -232,6 +236,8 @@ public class AdbOperations {
                 return Types.PACKAGE_PATH_NOT_FOUND;
             } else if (p.packagePath.contains("no devices/emulators found")) {
                 return Types.DEVICE_ERROR_NOT_CONNECTED;
+            } else if (p.packagePath.equals("Device Unauthorized")) {
+                return Types.DEVICE_ERROR_NOT_AUTHORIZED;
             }
             return importFileList(p, windowIndex, window, parent);
         } else {
@@ -244,8 +250,10 @@ public class AdbOperations {
     }
 
     public Package validatePackage(Package p) {
+        Logs.write("Validating Package");
         p.packagePath = getPackagePath(p.packageName);
-        if ((p.packagePath.contains("no devices/emulators found") || p.packagePath.equals(""))) {
+        Logs.write("Package Path: " + p.packagePath);
+        if ((p.packagePath.contains("no devices/emulators found") || p.packagePath.equals("")) || p.packagePath.equals("Device Unauthorized")) {
             return p;
         }
         File f = new File(p.packagePath);
@@ -523,6 +531,9 @@ public class AdbOperations {
                 } else if (line.get(0).contains("No such file or directory")) {
                     line = new ArrayList<>();
                     line.add("No such file or directory");
+                } else if (line.get(0).contains("device unauthorized")) {
+                    line = new ArrayList<>();
+                    line.add("Device Unauthorized");
                 }
             }
             return line;

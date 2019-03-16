@@ -185,8 +185,8 @@ public class DeviceConnectUI extends javax.swing.JFrame {
                     + txtIP3Address.getText() + "." + txtIP4Address.getText() + ":5555";
             Device.IPAddress = IP;
             Preference.pp.connectIp = IP;
-
-            if (Device.checkDeviceConnectivity(IP) == 1) {
+            int connectivityStatus = Device.checkDeviceConnectivity(IP);
+            if (connectivityStatus == 1) {
                 JOptionPane.showMessageDialog(this, "Device Is Connected!");
                 try {
                     Preference.update();
@@ -195,6 +195,10 @@ public class DeviceConnectUI extends javax.swing.JFrame {
                 }
                 flashablezipcreator.FlashableZipCreator.tree.setVisible(true);
                 this.dispose();
+            } else if (connectivityStatus == 2) {
+                JOptionPane.showMessageDialog(this, "Device is connected but unauthorized!\n"
+                        + "Make sure you have allowed this computer to connect to your device otherwise you won't be able to push/pull files!");
+                btnConnectToDevice.setText("Try Again!");
             } else {
                 JOptionPane.showMessageDialog(this, "Unable to connect to the device!\n"
                         + "Make sure you are connected to correct IP or you have allowed this computer to connect to your device!");

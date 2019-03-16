@@ -457,6 +457,12 @@ public class MyPopup {
                     deleteNode(nodeList);
                 }
         );
+        JMenuItem mitemFetchPackage = new JMenuItem("Fetch Package");
+        mitemFetchPackage.addActionListener(
+                (ActionEvent ae) -> {
+
+                }
+        );
         if (((GroupNode) node).prop.groupType == Types.GROUP_AROMA_THEMES) {
             mitemDeleteGroup.setText("Delete Theme(s)");
         }
@@ -473,6 +479,7 @@ public class MyPopup {
             switch (node.prop.packageType) {
                 case Types.PACKAGE_APP:
                     addDeviceTalksMenu.add(mitemUpdateApp);
+                    popup.add(mitemFetchPackage);
                 case Types.PACKAGE_FOLDER_FILE:
                     popup.add(mitemAddFolder);
                 case Types.PACKAGE_FILE:
