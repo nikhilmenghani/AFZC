@@ -16,6 +16,7 @@ import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
 import static flashablezipcreator.UserInterface.MyTree.setCardLayout;
+import flashablezipcreator.UserInterface.Preference;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -526,8 +527,22 @@ public class AdbOperations {
             }
             if (line.size() > 0) {
                 if (line.get(0).contains("no devices/emulators found")) {
-                    line = new ArrayList<>();
-                    line.add("no devices/emulators found");
+                    int selection = JOptionPane.YES_OPTION;
+                    if (!Preference.pp.deviceReConnect) {
+                        selection = JOptionPane.showConfirmDialog(null, "Device Disconnected!\nDo you want to connect your device again?", "Information", JOptionPane.YES_NO_OPTION);
+                    }
+                    if (selection == JOptionPane.YES_OPTION) {
+                        int i = Device.checkDeviceConnectivity(Device.IPAddress);
+                        if (i == 1) {
+                            return runProcess(isWin, wait, command);
+                        } else {
+                            line = new ArrayList<>();
+                            line.add("no devices/emulators found");
+                        }
+                    } else {
+                        line = new ArrayList<>();
+                        line.add("no devices/emulators found");
+                    }
                 } else if (line.get(0).contains("No such file or directory")) {
                     line = new ArrayList<>();
                     line.add("No such file or directory");

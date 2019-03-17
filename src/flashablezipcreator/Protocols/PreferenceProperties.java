@@ -34,4 +34,5 @@ public class PreferenceProperties {
     public boolean keepConnected = true;
     public String connectIp = "192.168.2.19:5555";
     public boolean isConnected = true;
+    public boolean deviceReConnect = true;
 }
