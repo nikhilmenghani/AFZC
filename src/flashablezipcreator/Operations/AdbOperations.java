@@ -71,7 +71,7 @@ public class AdbOperations {
         for (String dir : pathFileList) {
             if (!dir.equals("")) {
                 String childPath = path + "/" + dir;
-                if (childPath.endsWith("oat") || childPath.contains("split_config.en.apk")) {
+                if (childPath.endsWith("oat")) {
                     continue;
                 }
                 if (fullList.contains(childPath + ":")) {
@@ -149,7 +149,9 @@ public class AdbOperations {
                     break;
                 case Types.NODE_FILE:
                     if (!(child.prop.packageType == Types.PACKAGE_APP
-                            && (child.prop.title.endsWith(".so") || child.prop.title.endsWith("split_config.en.apk")))) {
+                            && (child.prop.title.endsWith(".so") 
+                            || child.prop.title.contains("split_config")
+                            || !child.prop.title.endsWith(".apk")))) {
                         files.add((FileNode) child);
                     }
                     break;
