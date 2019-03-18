@@ -39,6 +39,7 @@ public class Gapps {
     public static Package Duo = new Package();
     public static Package DigitalWellbeing = new Package();
     public static Package GoogleCalendarSync = new Package();
+    public static Package YouTube = new Package();
     public static Package files = new Package();
 
     public Gapps() {
@@ -75,7 +76,7 @@ public class Gapps {
         GoogleDrive.installedPath = "/system/app/Drive/Drive.apk";
         GooglePlayBooks.packageName = "com.google.android.apps.books";
         GooglePlayBooks.installedPath = "/system/app/Books/Books.apk";
-        GoogleCamera.packageName = "com.google.android.GoogleCameraEng";
+        GoogleCamera.packageName = "com.google.android.GoogleCamera";
         GoogleCamera.installedPath = "/system/app/GoogleCamera/GoogleCamera.apk";
         Google.packageName = "com.google.android.googlequicksearchbox";
         Google.installedPath = "/system/priv-app/Velvet/Velvet.apk";
@@ -91,6 +92,8 @@ public class Gapps {
         GoogleAssistant.packageName = "com.google.android.apps.googleassistant";
         GoogleAssistant.installedPath = "/system/priv-app/Assistant/Assistant.apk";
         GoogleAssistant.isOptional = true;
+        YouTube.packageName = "com.google.android.youtube";
+        YouTube.packagePath="/system/app/YouTube/YouTube.apk";
         //following 5 not needed
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.dialer.support.xml");
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.media.effects.xml");
@@ -165,6 +168,7 @@ public class Gapps {
         list.add(Gapps.Google);
         list.add(Gapps.Duo);
         list.add(Gapps.GoogleAssistant);
+        list.add(Gapps.YouTube);
         if ((Device.checkDeviceConnectivity(Preference.pp.connectIp) == 1) && Project.androidVersion.startsWith("9")) {
             list.add(DigitalWellbeing);
         }
