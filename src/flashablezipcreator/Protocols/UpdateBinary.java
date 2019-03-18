@@ -67,12 +67,16 @@ public class UpdateBinary {
         String str = "";
         str += ubo.getMountMethod(1);
         str += "set_progress 0\n";
+        str += "\n";
+        str += ubo.addPrintString("");
+        str += ubo.addPrintString("--> Created by Nikhil Menghani <--");
+        str += ubo.addPrintString("");
+        str += "\n";
         for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {
             if (((ProjectNode) group.prop.parent).prop.projectType == project.prop.projectType && ((ProjectNode) group.prop.parent).prop.title.equals(project.prop.title)) {
                 str += ubo.generateUpdaterScript((GroupNode) group);
             }
         }
-        str += "set_progress 1\n";
         return str;
     }
 
@@ -81,6 +85,11 @@ public class UpdateBinary {
         str += "if [ $(file_getprop \"/tmp/aroma/" + project.prop.title + ".prop\" selected) == 1 ]; then\n";
         str += ubo.getMountMethod(1);
         str += "set_progress 0\n";
+        str += "\n";
+        str += ubo.addPrintString("");
+        str += ubo.addPrintString("--> Created by Nikhil Menghani <--");
+        str += ubo.addPrintString("");
+        str += "\n";
         for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {
             if (((ProjectNode) group.prop.parent).prop.projectType == project.prop.projectType && ((ProjectNode) group.prop.parent).prop.title.equals(project.prop.title)) {
                 str += ubo.generateUpdaterScript((GroupNode) group);

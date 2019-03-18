@@ -71,6 +71,11 @@ public class UpdaterScript {
         String str = "";
         str += op.getMountMethod(1);
         str += "set_progress(0);\n";
+        str += "\n";
+        str += op.addPrintString("");
+        str += op.addPrintString("--> Created by Nikhil Menghani <--");
+        str += op.addPrintString("");
+        str += "\n";
         for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {
             if (((ProjectNode) group.prop.parent).prop.projectType == project.prop.projectType && ((ProjectNode) group.prop.parent).prop.title.equals(project.prop.title)) {
                 str += op.generateUpdaterScript((GroupNode) group);
@@ -86,6 +91,11 @@ public class UpdaterScript {
         str += op.getMountMethod(1);
         //str += op.getExtractDataString();
         str += "set_progress(0);\n";
+        str += "\n";
+        str += op.addPrintString("");
+        str += op.addPrintString("--> Created by Nikhil Menghani <--");
+        str += op.addPrintString("");
+        str += "\n";
         for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {
             if (((ProjectNode) group.prop.parent).prop.projectType == project.prop.projectType && ((ProjectNode) group.prop.parent).prop.title.equals(project.prop.title)) {
                 str += op.generateUpdaterScript((GroupNode) group);
