@@ -41,12 +41,7 @@ greater_than_int() { test $1 -gt $2 && echo 1 || echo 0; }
 # unmount <partition>
 unmount() { umount "$1"; }
 # is_mounted <partition>
-is_mounted() {
-  case `mount` in
-    *" $1 "*) echo 1;;
-    *) echo 0;;
-  esac;
-}
+is_mounted() { test "$(mount | grep " $1 ")" && echo 1 || echo 0; }
 # tune2fs(device[, arg, …]) {} should be done directly with the tune2fs command
 
 # write_raw_image <file> <block>
@@ -58,15 +53,13 @@ write_raw_image() { dd if="$1" of="$2"; }
 # package_extract_file <file> <destination_file>
 package_extract_file() { mkdir -p "$(dirname "$2")"; unzip -o "$ZIPFILE" "$1" -p > "$2"; }
 # package_extract_dir <dir> <destination_dir>
-package_extract_dir() { 
-	unzip -o "$ZIPFILE";
-	cd $1;
-	find . -mindepth 1 -maxdepth 1 -type d | while read -r dir
-	do
-		cp -r "$dir" $2/
-	done;
-	rm -rf *;
-	cd /tmp/zipContent
+package_extract_dir() {
+  local entry outfile;
+  for entry in $(unzip -l "$ZIPFILE" "$1/*" 2>/dev/null | tail -n+4 | grep -v '/$' | grep -o " $1.*$" | cut -c2-); do
+    outfile="$(echo "$entry" | sed "s|${1}|${2}|")";
+    mkdir -p "$(dirname "$outfile")";
+    test ! -d "$outfile" && unzip -o "$ZIPFILE" "$entry" -p > "$outfile";
+  done;
 }
 
 # rename <file> <destination_file>
@@ -78,10 +71,17 @@ delete() { rm -f "$@"; }
 delete_recursive() { rm -rf "$@"; }
 
 # symlink <file/dir> <link> [<link2> ...]
-symlink() { ln -s "$@"; }
+symlink() {
+  local file="$1";
+  until [ ! "$2" ]; do
+    ln -sf "$file" "$2";
+    shift;
+  done;
+}
 
 # set_metadata <file> <uid|gid|mode|capabilities|selabel> <value> [<uid|gid|mode|capabilities|selabel_2> <value2> ...]
 set_metadata() {
+  local file i;
   file="$1";
   shift;
   until [ ! "$2" ]; do
@@ -89,14 +89,11 @@ set_metadata() {
       uid) chown $2 "$file";;
       gid) chown :$2 "$file";;
       mode) chmod $2 "$file";;
-      capabilities) twrp setcap $2 "$file";;
+      capabilities) twrp setcap "$file" $2;;
       selabel)
         for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
-          LD_LIBRARY_PATH=/system/lib $i chcon -h $2 "$file";
-          LD_LIBRARY_PATH=/system/lib $i chcon $2 "$file";
-        done;
-        chcon -h $2 "$file";
-        chcon $2 "$file";
+          LD_LIBRARY_PATH=/system/lib $i chcon -h $2 "$file" || LD_LIBRARY_PATH=/system/lib $i chcon $2 "$file";
+        done || chcon -h $2 "$file" || chcon $2 "$file";
       ;;
       *) ;;
     esac;
@@ -105,6 +102,7 @@ set_metadata() {
 }
 # set_metadata_recursive <dir> <uid|gid|dmode|fmode|capabilities|selabel> <value> [<uid|gid|dmode|fmode|capabilities|selabel_2> <value2> ...]
 set_metadata_recursive() {
+  local dir i;
   dir="$1";
   shift;
   until [ ! "$2" ]; do
@@ -113,14 +111,11 @@ set_metadata_recursive() {
       gid) chown -R :$2 "$dir";;
       dmode) find "$dir" -type d -exec chmod $2 {} +;;
       fmode) find "$dir" -type f -exec chmod $2 {} +;;
-      capabilities) find "$dir" -exec twrp setcap $2 {} +;;
+      capabilities) find "$dir" -exec twrp setcap {} $2 +;;
       selabel)
         for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
-          find "$dir" -exec LD_LIBRARY_PATH=/system/lib $i chcon -h $2 {} +;
-          find "$dir" -exec LD_LIBRARY_PATH=/system/lib $i chcon $2 {} +;
-        done;
-        find "$dir" -exec chcon -h $2 '{}' +;
-        find "$dir" -exec chcon $2 '{}' +;
+          find "$dir" -exec LD_LIBRARY_PATH=/system/lib $i chcon -h $2 {} + || find "$dir" -exec LD_LIBRARY_PATH=/system/lib $i chcon $2 {} +;
+        done || find "$dir" -exec chcon -h $2 '{}' + || find "$dir" -exec chcon $2 '{}' +;
       ;;
       *) ;;
     esac;
@@ -130,18 +125,19 @@ set_metadata_recursive() {
 
 # set_perm <owner> <group> <mode> <file> [<file2> ...]
 set_perm() {
+  local uid gid mod;
   uid=$1; gid=$2; mod=$3;
   shift 3;
-  #ui_print "Setting ""$mod"" permissions to ""$@";
-  chown $uid.$gid "$@"; chown $uid:$gid "$@";
+  chown $uid:$gid "$@" || chown $uid.$gid "$@";
   chmod $mod "$@";
 }
 # set_perm_recursive <owner> <group> <dir_mode> <file_mode> <dir> [<dir2> ...]
 set_perm_recursive() {
+  local uid gid dmod fmod;
   uid=$1; gid=$2; dmod=$3; fmod=$4;
   shift 4;
   until [ ! "$1" ]; do
-    chown -R $uid.$gid "$1"; chown -R $uid:$gid "$1";
+    chown -R $uid:$gid "$1" || chown -R $uid.$gid "$1";
     find "$1" -type d -exec chmod $dmod {} +;
     find "$1" -type f -exec chmod $fmod {} +;
     shift;
@@ -150,39 +146,32 @@ set_perm_recursive() {
 
 # ch_con <context> <file> [<file2> ...]
 ch_con() {
+  local con i;
   con=$1;
   shift;
   for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
-    LD_LIBRARY_PATH=/system/lib $i chcon -h u:object_r:$con:s0 "$@";
-    LD_LIBRARY_PATH=/system/lib $i chcon u:object_r:$con:s0 "$@";
-  done;
-  chcon -h u:object_r:$con:s0 "$@";
-  chcon u:object_r:$con:s0 "$@";
+    LD_LIBRARY_PATH=/system/lib $i chcon -h u:object_r:$con:s0 "$@" || LD_LIBRARY_PATH=/system/lib $i chcon u:object_r:$con:s0 "$@";
+  done || chcon -h u:object_r:$con:s0 "$@" || chcon u:object_r:$con:s0 "$@";
 }
 # ch_con_recursive <dir_context> <file_context> <dir> [<dir2> ...]
 ch_con_recursive() {
+  local dcon fcon i;
   dcon=$1; fcon=$2;
   shift 2;
   until [ ! "$1" ]; do
     for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
-      find "$1" -type d -exec LD_LIBRARY_PATH=/system/lib $i chcon -h u:object_r:$dcon:s0 {} +;
-      find "$1" -type f -exec LD_LIBRARY_PATH=/system/lib $i chcon -h u:object_r:$fcon:s0 {} +;
-      find "$1" -type d -exec LD_LIBRARY_PATH=/system/lib $i chcon u:object_r:$dcon:s0 {} +;
-      find "$1" -type f -exec LD_LIBRARY_PATH=/system/lib $i chcon u:object_r:$fcon:s0 {} +;
-    done;
-    find "$1" -type d -exec chcon -h u:object_r:$dcon:s0 '{}' +;
-    find "$1" -type f -exec chcon -h u:object_r:$fcon:s0 '{}' +;
-    find "$1" -type d -exec chcon u:object_r:$dcon:s0 '{}' +;
-    find "$1" -type f -exec chcon u:object_r:$fcon:s0 '{}' +;
+      find "$1" -type d -exec LD_LIBRARY_PATH=/system/lib $i chcon -h u:object_r:$dcon:s0 {} + || find "$1" -type d -exec LD_LIBRARY_PATH=/system/lib $i chcon u:object_r:$dcon:s0 {} +;
+      find "$1" -type f -exec LD_LIBRARY_PATH=/system/lib $i chcon -h u:object_r:$fcon:s0 {} + || find "$1" -type f -exec LD_LIBRARY_PATH=/system/lib $i chcon u:object_r:$fcon:s0 {} +;
+    done || ( find "$1" -type d -exec chcon -h u:object_r:$dcon:s0 '{}' + || find "$1" -type d -exec chcon u:object_r:$dcon:s0 '{}' + ) || ( find "$1" -type f -exec chcon -h u:object_r:$fcon:s0 '{}' + || find "$1" -type f -exec chcon u:object_r:$fcon:s0 '{}' + );
     shift;
   done;
 }
 # restore_con <file/dir> [<file2/dir2> ...]
-restore_con() { 
+restore_con() {
+  local i;
   for i in /system/bin/toybox /system/toolbox /system/bin/toolbox; do
     LD_LIBRARY_PATH=/system/lib $i restorecon -R "$@";
-  done;
-  restorecon -R "$@";
+  done || restorecon -R "$@";
 }
 
 # read_file(filename) {} is unneeded since file contents can be read directly with the cat command
@@ -190,13 +179,13 @@ restore_con() {
 # stdout(expr[, expr, ...]) {} is unneeded since all output goes to stdout by default
 
 # file_getprop <file> <property>
-file_getprop() { grep "^$2" "$1" | head -n1 | cut -d= -f2; }
+file_getprop() { grep "^$2=" "$1" | cut -d= -f2-; }
 # getprop <property>
-getprop() { test -e /sbin/getprop && /sbin/getprop $1 || grep "^$1" /default.prop | head -n1 | cut -d= -f2; }
+getprop() { test -e /sbin/getprop && /sbin/getprop $1 || grep "^$1=" /default.prop | cut -d= -f2; }
 
 # sha1_check <file> [<sha1_hex> [<sha1_hex2> ...]]
 sha1_check() {
-  sum=$(sha1sum $1 | cut -d  -f1);
+  local sum=$(sha1sum $1 | cut -c-40);
   if [ ! "$2" -o $(is_substring $sum "$*") == 1 ]; then
     echo $sum;
   fi;
@@ -212,7 +201,7 @@ apply_patch_check() {
 }
 # apply_patch_space <bytes>
 apply_patch_space() {
- LIBRARY_PATH=/system/lib applypatch -s $1;
+  LD_LIBRARY_PATH=/system/lib applypatch -s $1;
 }
 
 # run_program(program) {} is unneeded since programs may be run directly
@@ -223,7 +212,7 @@ abort() { ui_print "$*"; exit 1; }
 assert() {
   until [ ! "$1" ]; do
     $1;
-    test $? == 1 && abort "assert failed($1)";
+    test $? != 0 && abort 'assert failed('"$1"')';
     shift;
   done;
 }
