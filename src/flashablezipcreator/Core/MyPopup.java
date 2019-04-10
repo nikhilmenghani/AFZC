@@ -122,10 +122,10 @@ public class MyPopup {
             Adb device = new Adb();
             device.importGapps(project);
         });
-        JMenuItem mitemAddPicoGappsProject = new JMenuItem("Pico");
+        JMenuItem mitemAddPicoGappsProject = new JMenuItem("Basic");
         mitemAddPicoGappsProject.addActionListener((ActionEvent ae) -> {
             ProjectNode project = null;
-            project = (ProjectNode) addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_PICO);
+            project = (ProjectNode) addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_BASIC);
             Adb device = new Adb();
             device.importGapps(project);
         });
@@ -150,10 +150,18 @@ public class MyPopup {
             Adb device = new Adb();
             device.importGapps(project);
         });
+        JMenuItem mitemAddStockGappsProject = new JMenuItem("Stock");
+        mitemAddStockGappsProject.addActionListener((ActionEvent ae) -> {
+            ProjectNode project = null;
+            project = (ProjectNode) addQuickProjectObject(Types.PROJECT_GAPPS, Types.GAPPS_STOCK);
+            Adb device = new Adb();
+            device.importGapps(project);
+        });
         addGappsMenu.add(mitemAddCoreGappsProject);
         addGappsMenu.add(mitemAddPicoGappsProject);
         addGappsMenu.add(mitemAddNanoGappsProject);
         addGappsMenu.add(mitemAddMyGappsProject);
+        addGappsMenu.add(mitemAddStockGappsProject);
         addProjectMenu.add(mitemAddAromaProject);
         addProjectMenu.add(addGappsMenu);
         addProjectMenu.add(mitemAddModsProject);
@@ -738,11 +746,14 @@ public class MyPopup {
                     case Types.GAPPS_CORE:
                         defaultProjName = "Core Gapps";
                         break;
-                    case Types.GAPPS_PICO:
-                        defaultProjName = "Pico Gapps";
+                    case Types.GAPPS_BASIC:
+                        defaultProjName = "Basic Gapps";
                         break;
                     case Types.GAPPS_NANO:
                         defaultProjName = "Nano Gapps";
+                        break;
+                    case Types.GAPPS_STOCK:
+                        defaultProjName = "Stock Gapps";
                         break;
                     default:
                         defaultProjName = "My Gapps";

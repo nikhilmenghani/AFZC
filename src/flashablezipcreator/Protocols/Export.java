@@ -55,7 +55,25 @@ public class Export implements Runnable {
 
     public static void zip() throws IOException, ParserConfigurationException, TransformerException {
         to = new TreeOperations();
-        boolean hasGapps = to.hasGappsProject(MyTree.rootNode);
+        int hasGapps = to.getGappsProject(MyTree.rootNode);
+        String gappsType = "";
+        switch (hasGapps) {
+            case Types.GAPPS_CORE:
+                gappsType = "core";
+                break;
+            case Types.GAPPS_NANO:
+                gappsType = "my";
+                break;
+            case Types.GAPPS_BASIC:
+                gappsType = "basic";
+                break;
+            case Types.GAPPS_MY:
+                gappsType = "my";
+                break;
+            case Types.GAPPS_STOCK:
+                gappsType = "stock";
+                break;
+        }
         boolean isDeviceConnected = Device.checkDeviceConnectivity() == 1;
         String androidVersion = "0";
         if (isDeviceConnected) {
@@ -68,10 +86,10 @@ public class Export implements Runnable {
             if (!androidVersion.equals("0")) {
                 arch += "-" + String.valueOf(androidVersion);
             }
-            if (hasGapps) {
+            if (hasGapps != -1) {
                 Project.outputPath = Project.outputPath.replaceAll(".zip", "-NikGapps" + arch + "-" + Logs.getShortTime() + ".zip");
                 File f = new File(Project.outputPath);
-                Project.outputPath = f.getParent() + File.separator + "NikGapps" + arch + "-" + Logs.getShortTime() + ".zip";
+                Project.outputPath = f.getParent() + File.separator + "NikGapps" + ((!gappsType.equals("")) ? ("-" + gappsType) : "") + arch + "-" + Logs.getShortTime() + ".zip";
             }
         }
         if ((new File(Project.outputPath)).exists()) {

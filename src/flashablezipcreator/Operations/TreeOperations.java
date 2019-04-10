@@ -75,7 +75,7 @@ public class TreeOperations {
     public void removeNode(ProjectItemNode node) {
         node.removeMe();
     }
-    
+
     public FileNode Add(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, String originalGroupType,
             ArrayList<String> folders, String projectName, int projectType, int modType) {
         NodeProperties np = new NodeProperties(projectName, projectType, modType, rootNode);
@@ -222,15 +222,15 @@ public class TreeOperations {
         list = new ArrayList<>();
         return parseNode(this.rootNode, nodeType);
     }
-    
-    public boolean hasGappsProject(ProjectItemNode rootNode){
+
+    public int getGappsProject(ProjectItemNode rootNode) {
         for (ProjectItemNode project : getNodeList(Types.NODE_PROJECT)) {
             switch (((ProjectNode) project).prop.projectType) {
                 case Types.PROJECT_GAPPS:
-                    return true;
+                    return ((ProjectNode) project).prop.modType;
             }
         }
-        return false;
+        return -1;
     }
 
     public ArrayList<ProjectItemNode> getProjectsSorted(ProjectItemNode rootNode) {
@@ -419,7 +419,7 @@ public class TreeOperations {
     }
 
     //get the missing nodes and add them
-    public FileNode addFileNode(String zipPath, ProjectItemNode parent) throws IOException{
+    public FileNode addFileNode(String zipPath, ProjectItemNode parent) throws IOException {
         String projectName = Identify.getProjectName(zipPath);
         String groupName = Identify.getGroupName(zipPath);
         int groupType = Identify.getGroupType(zipPath);
@@ -436,7 +436,7 @@ public class TreeOperations {
         int subGroupType = groupType; //Groups that have subGroups have same type.
         String fName = (new File(zipPath)).getName();
         TreeOperations to = new TreeOperations();
-        switch(parent.prop.type){
+        switch (parent.prop.type) {
             case Types.NODE_PROJECT:
                 projectName = parent.prop.projectName;
                 break;
@@ -452,13 +452,13 @@ public class TreeOperations {
                 subGroupName = parent.prop.subGroupName;
                 subGroupType = parent.prop.subGroupType;
                 break;
-                
+
         }
         FileNode file = to.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_AROMA, Mod.MOD_LESS);
         file.prop.fileSourcePath = file.prop.path;
         return file;
     }
-    
+
     public void expandDirectories(JTree tree) {
         for (int i = 0; i < tree.getRowCount(); i++) {
             tree.expandRow(i);

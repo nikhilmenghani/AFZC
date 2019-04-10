@@ -93,7 +93,9 @@ public class UpdaterScript {
         str += "set_progress(0);\n";
         str += "\n";
         str += op.addPrintString("");
+        str += op.addPrintString("----------------------------------");
         str += op.addPrintString("--> Created by Nikhil Menghani <--");
+        str += op.addPrintString("----------------------------------");
         str += op.addPrintString("");
         str += "\n";
         for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {

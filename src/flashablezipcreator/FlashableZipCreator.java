@@ -85,12 +85,12 @@ public class FlashableZipCreator {
         }
         //</editor-fold>
 
-        if (Preference.pp.forceConnect) {
-            Thread t = new Thread(() -> {
-                connectDevice();
-            });
-            t.start();
-        }
+        //if (Preference.pp.forceConnect) {
+            //Thread t = new Thread(() -> {
+                //connectDevice();
+            //});
+            //t.start();
+        //}
         letsBegin();
     }
 

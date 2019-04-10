@@ -7,7 +7,9 @@ package flashablezipcreator.Gapps;
 
 import flashablezipcreator.Adb.Package;
 import flashablezipcreator.Protocols.Device;
+import flashablezipcreator.Protocols.Logs;
 import flashablezipcreator.Protocols.Project;
+import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.Preference;
 import java.util.ArrayList;
 
@@ -40,6 +42,20 @@ public class Gapps {
     public static Package DigitalWellbeing = new Package();
     public static Package GoogleCalendarSync = new Package();
     public static Package YouTube = new Package();
+    public static Package GoogleCalendar = new Package();
+    public static Package GoogleContacts = new Package();
+    public static Package GoogleClock = new Package();
+    public static Package GoogleBoard = new Package();
+    public static Package GoogleWallpaper = new Package();
+    public static Package GoogleDialer = new Package();
+    public static Package GoogleMessages = new Package();
+    public static Package GoogleARCore = new Package();
+    public static Package GooglePlayground = new Package();
+    public static Package GoogleSetupWizard = new Package();
+    public static Package GooglePartnerSetup = new Package();
+    //Google calendar, Google clock, Google dailer, 
+    //Google contact, google message, google calculator, 
+    //google gboard, youtube vanced, pixel launcher and wallpaper
     public static Package files = new Package();
 
     public Gapps() {
@@ -81,7 +97,8 @@ public class Gapps {
         Google.packageName = "com.google.android.googlequicksearchbox";
         Google.installedPath = "/system/priv-app/Velvet/Velvet.apk";
         Calculator.packageName = "com.google.android.calculator";
-        Calculator.installedPath = "/system/app/CalculatorGooglePrebuilt/CalculatorGooglePrebuilt.apk";
+        Calculator.installedPath = "/system/app/Calculator/Calculator.apk";
+//        Calculator.installedPath = "/system/app/CalculatorGooglePrebuilt/CalculatorGooglePrebuilt.apk";
         Duo.packageName = "com.google.android.apps.tachyon";
         Duo.installedPath = "/system/app/Duo/Duo.apk";
         DigitalWellbeing.packageName = "com.google.android.apps.wellbeing";
@@ -93,7 +110,29 @@ public class Gapps {
         GoogleAssistant.installedPath = "/system/priv-app/Assistant/Assistant.apk";
         GoogleAssistant.isOptional = true;
         YouTube.packageName = "com.google.android.youtube";
-        YouTube.packagePath="/system/app/YouTube/YouTube.apk";
+        YouTube.packagePath = "/system/app/YouTube/YouTube.apk";
+        GoogleCalendar.packageName = "com.google.android.calendar";
+        GoogleCalendar.installedPath = "/system/priv-app/CalendarGooglePrebuilt/CalendarGooglePrebuilt.apk";
+        GoogleContacts.packageName = "com.google.android.contacts";
+        GoogleContacts.installedPath = "/system/priv-app/Contacts/Contacts.apk";
+        GoogleClock.packageName = "com.google.android.deskclock";
+        GoogleClock.installedPath = "/system/app/DeskClock/DeskClock.apk";
+        GoogleBoard.packageName = "com.google.android.inputmethod.latin";
+        GoogleBoard.installedPath = "/system/app/GBoard/GBoard.apk";
+        GoogleWallpaper.packageName = "com.google.android.apps.wallpaper";
+        GoogleWallpaper.installedPath = "/system/priv-app/WallpaperPickerGooglePrebuilt/WallpaperPickerGooglePrebuilt.apk";
+        GoogleDialer.packageName = "com.google.android.dialer";
+        GoogleDialer.installedPath = "/system/priv-app/Phone/Phone.apk";
+        GoogleMessages.packageName = "com.google.android.apps.messaging";
+        GoogleMessages.installedPath = "/system/app/Messaging/Messaging.apk";
+        GoogleARCore.packageName = "com.google.ar.core";
+        GoogleARCore.installedPath = "/system/app/ARCore/ARCore.apk";
+        GooglePlayground.packageName = "com.google.vr.apps.ornament";
+        GooglePlayground.installedPath = "/system/app/PlaygroundMod/PlaygroundMod.apk";
+        GoogleSetupWizard.packageName = "com.google.android.setupwizard";
+        GoogleSetupWizard.installedPath = "/system/priv-app/SetupWizard/SetupWizard.apk";
+        GooglePartnerSetup.packageName = "com.google.android.partnersetup";
+        GooglePartnerSetup.installedPath = "/system/priv-app/GooglePartnerSetup/GooglePartnerSetup.apk";
         //following 5 not needed
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.dialer.support.xml");
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.media.effects.xml");
@@ -128,12 +167,18 @@ public class Gapps {
         return list;
     }
 
-    public static ArrayList<Package> getPicoList() {
+    public static ArrayList<Package> getBasicList() {
         ArrayList<Package> list = new ArrayList<>();
         for (Package p : getCoreList()) {
             list.add(p);
         }
         list.add(Gapps.GoogleBackupTransport);
+        list.add(Gapps.FaceLock);
+        list.add(Gapps.YouTube);
+        list.add(Gapps.GoogleCamera);
+        if ((Device.checkDeviceConnectivity(Preference.pp.connectIp) == 1) && Project.androidVersion.startsWith("9")) {
+            list.add(DigitalWellbeing);
+        }
 //        list.add(Gapps.GoogleExtServices);
 //        list.add(Gapps.GoogleExtShared);
         return list;
@@ -141,7 +186,7 @@ public class Gapps {
 
     public static ArrayList<Package> getNanoList() {
         ArrayList<Package> list = new ArrayList<>();
-        for (Package p : getPicoList()) {
+        for (Package p : getBasicList()) {
             list.add(p);
         }
         list.add(Gapps.GoogleKeep);
@@ -151,10 +196,9 @@ public class Gapps {
 
     public static ArrayList<Package> getMyList() {
         ArrayList<Package> list = new ArrayList<>();
-        for (Package p : getPicoList()) {
+        for (Package p : getBasicList()) {
             list.add(p);
         }
-        list.add(Gapps.FaceLock);
         //following is not needed
         //list.add(Gapps.GmsCoreSetupPrebuilt);
         list.add(Gapps.GoogleKeep);
@@ -163,15 +207,54 @@ public class Gapps {
         list.add(Gapps.GoogleDrive);
         list.add(Gapps.GooglePhotos);
         list.add(Gapps.GooglePlayBooks);
-        list.add(Gapps.GoogleCamera);
-        list.add(Gapps.Calculator);
+//        list.add(Gapps.Calculator);
         list.add(Gapps.Google);
         list.add(Gapps.Duo);
         list.add(Gapps.GoogleAssistant);
-        list.add(Gapps.YouTube);
-        if ((Device.checkDeviceConnectivity(Preference.pp.connectIp) == 1) && Project.androidVersion.startsWith("9")) {
-            list.add(DigitalWellbeing);
-        }
         return list;
+    }
+
+    public static ArrayList<Package> getStockList() {
+        ArrayList<Package> list = new ArrayList<>();
+        for (Package p : getBasicList()) {
+            list.add(p);
+        }
+        list.add(Gapps.Calculator);
+        list.add(Gapps.GoogleBoard);
+        list.add(Gapps.GoogleContacts);
+        list.add(Gapps.GoogleClock);
+        list.add(Gapps.GoogleDialer);
+        list.add(Gapps.GoogleClock);
+        list.add(Gapps.GoogleWallpaper);
+        list.add(Gapps.GoogleCalendar);
+        list.add(Gapps.GoogleMessages);
+        list.add(Gapps.GoogleARCore);
+        list.add(Gapps.GooglePlayground);
+        list.add(Gapps.GoogleAssistant);
+        list.add(Gapps.GoogleSetupWizard);
+        list.add(Gapps.GmsCoreSetupPrebuilt);
+        list.add(Gapps.GooglePartnerSetup);
+        return list;
+    }
+
+    public static ArrayList<Package> getPackage(int type) {
+        switch (type) {
+            case Types.GAPPS_CORE:
+                Logs.write("Importing Core List!");
+                return Gapps.getCoreList();
+            case Types.GAPPS_BASIC:
+                Logs.write("Importing Basic List!");
+                return Gapps.getBasicList();
+            case Types.GAPPS_NANO:
+                Logs.write("Importing Nano List!");
+                return Gapps.getNanoList();
+            case Types.GAPPS_MY:
+                Logs.write("Importing My List!");
+                return Gapps.getMyList();
+            case Types.GAPPS_STOCK:
+                Logs.write("Importing Stock List!");
+                return Gapps.getStockList();
+        }
+        return null;
     }
 }

@@ -41,31 +41,11 @@ public class Adb {
 
     public void importGapps(ProjectItemNode parent) {
         new Thread(() -> {
-            switch (parent.prop.modType) {
-                case Types.GAPPS_CORE:
-                    Logs.write("Importing Core Gapps");
-                    importPackages(Gapps.getCoreList(), parent);
-                    break;
-                case Types.GAPPS_PICO:
-                    Logs.write("Importing Pico Gapps");
-                    importPackages(Gapps.getPicoList(), parent);
-                    break;
-                case Types.GAPPS_MY:
-                    Logs.write("Importing My Gapps");
-                    importPackages(Gapps.getMyList(), parent);
-                    break;
-                case Types.GAPPS_NANO:
-                    Logs.write("Importing Nano Gapps");
-                    importPackages(Gapps.getNanoList(), parent);
-                    break;
+            ArrayList<Package> packages = Gapps.getPackage(parent.prop.modType);
+            if (packages.size() > 0) {
+                adbOp.importPackages(packages, parent);
             }
         }).start();
-    }
-
-    public static void importPackages(ArrayList<Package> packages, ProjectItemNode parent) {
-        if (packages.size() > 0) {
-            adbOp.importPackages(packages, parent);
-        }
     }
 
     public void checkForUpdate(ProjectItemNode parent) {

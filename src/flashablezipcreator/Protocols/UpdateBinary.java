@@ -69,7 +69,9 @@ public class UpdateBinary {
         str += "set_progress 0\n";
         str += "\n";
         str += ubo.addPrintString("");
+        str += ubo.addPrintString("----------------------------------");
         str += ubo.addPrintString("--> Created by Nikhil Menghani <--");
+        str += ubo.addPrintString("----------------------------------");
         str += ubo.addPrintString("");
         str += "\n";
         for (ProjectItemNode group : to.getNodeList(Types.NODE_GROUP)) {

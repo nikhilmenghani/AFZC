@@ -231,7 +231,7 @@ public class Import implements Runnable {
         int subGroupType = groupType; //Groups that have subGroups have same type.
         String fName = (new File(filePath)).getName();
         TreeOperations to = new TreeOperations();
-        FileNode file = to.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_GAPPS, Types.GAPPS_PICO);
+        FileNode file = to.Add(fName, subGroupName, subGroupType, groupName, groupType, originalGroupType, folderList, projectName, Types.PROJECT_GAPPS, Types.GAPPS_BASIC);
         file.prop.fileSourcePath = file.prop.path;
         rz.writeFileFromZip(in, file.prop.fileSourcePath);
         Logs.write("Written File: " + fName);
