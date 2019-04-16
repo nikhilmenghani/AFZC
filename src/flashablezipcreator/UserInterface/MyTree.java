@@ -650,7 +650,7 @@ public class MyTree extends javax.swing.JFrame {
         File f = new File(importFrom);
         new Thread(() -> {
             MyTree.setCardLayout(2);
-            (new DeviceOperations()).pushToDevice(importFrom, "/sdcard/AFZC/" + f.getName());
+            (new DeviceOperations()).pushToDevice(importFrom, "/sdcard/Afzc/" + f.getName());
             MyTree.setCardLayout(1);
         }).start();
     }

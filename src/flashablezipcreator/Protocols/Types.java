@@ -79,4 +79,5 @@ public class Types {
     public static final int PACKAGE_PATH_NOT_FOUND = 106;
     public static final int PACKAGE_INVALID = 107;
     public static final int PACKAGE_IMPORT_SUCCESS = 108;
+    public static final int DEVICE_ERROR_MULTIPLE_CONNECTED = 109;
 }

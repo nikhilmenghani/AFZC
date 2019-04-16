@@ -50,6 +50,21 @@ public final class Mod {
 //        return DEFAULT;
     }
 
+    public static int getModType(String path) {
+        if (path.startsWith("customize")) {
+            //path = path.substring(path.indexOf("/") + 1, path.indexOf("/", path.indexOf("/") + 1));
+            try {
+                path = path.substring(path.indexOf("/") + 1, path.indexOf("/Project_"));
+                path = path.substring(path.indexOf("_") + 1, path.length());
+                int modType = Integer.valueOf(path);
+                return modType;
+            } catch (Exception e) {
+                Logs.write("Exception Caught while fetching modType, path = " + path + " , more details: " + e.getMessage());
+            }
+        }
+        return MOD_LESS;
+    }
+
     public static boolean isTitanium(ArrayList<String> fileList) {
         boolean flag = false;
         if (fileList.contains("com.keramidas.TitaniumBackup.apk") || fileList.contains("mod__" + TITANIUM_BACKUP)) {

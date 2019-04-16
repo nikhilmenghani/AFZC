@@ -68,11 +68,11 @@ public class Import implements Runnable {
                 int maxSize = rz.filesCount;
                 fileIndex = 0;
                 Identify.fileName = (new File(path)).getName().replaceFirst("[.][^.]+$", "");
-                int modType = Mod.getModType(rz);
                 Logs.write("Reading Zip...");
                 for (Enumeration<? extends ZipEntry> e = rz.zf.entries(); e.hasMoreElements();) {
                     ZipEntry ze = e.nextElement();
                     String name = ze.getName();
+                    int modType = Mod.getModType(name);
                     Logs.write("Reading: " + name);
                     progressValue = (fileIndex * 100) / maxSize;
                     progressBarImportExport.setValue(progressValue);
@@ -95,7 +95,7 @@ public class Import implements Runnable {
                     String projectName = Identify.getProjectName(name);
                     int projectType = Identify.getProjectType(filePath);
                     if (name.endsWith("DeleteFilesPath")) {
-                        importDeleteNodes(filePath, projectName, in);
+                        importDeleteNodes(filePath, projectName, projectType, modType, in);
                         continue;
                     }
                     switch (projectType) {
@@ -237,10 +237,10 @@ public class Import implements Runnable {
         Logs.write("Written File: " + fName);
     }
 
-    public static void importDeleteNodes(String filePath, String projectName, InputStream in) throws IOException {
+    public static void importDeleteNodes(String filePath, String projectName, int projectType, int modType, InputStream in) throws IOException {
         String groupName = Identify.getGroupName(filePath);
         int groupType = Identify.getGroupType(filePath);
-        NodeProperties np = new NodeProperties(projectName, Types.PROJECT_AROMA, Mod.MOD_LESS, MyTree.rootNode);
+        NodeProperties np = new NodeProperties(projectName, projectType, modType, MyTree.rootNode);
         ProjectNode pNode = (ProjectNode) MyTree.rootNode.addChild(new ProjectNode(np), false);
         np = new NodeProperties(groupName, groupType, pNode);
         GroupNode gNode = (GroupNode) pNode.addChild(new GroupNode(np), false);

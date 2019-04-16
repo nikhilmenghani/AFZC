@@ -149,7 +149,7 @@ public class AdbOperations {
                     break;
                 case Types.NODE_FILE:
                     if (!(child.prop.packageType == Types.PACKAGE_APP
-                            && (child.prop.title.endsWith(".so") 
+                            && (child.prop.title.endsWith(".so")
                             || child.prop.title.contains("split_config")
                             || !child.prop.title.endsWith(".apk")))) {
                         files.add((FileNode) child);
@@ -181,7 +181,8 @@ public class AdbOperations {
         try {
             packagePath = list.get(0);
             Logs.write("getPackagePath Response: " + packagePath);
-            if (!(packagePath.contains("no devices/emulators found") || packagePath.contains("error") || packagePath.contains("Device Unauthorized"))) {
+            if (!(packagePath.contains("no devices/emulators found") || packagePath.contains("error") || packagePath.contains("Device Unauthorized")
+                    || packagePath.contains("Multiple Devices Connected"))) {
                 packagePath = packagePath.substring("package:".length(), packagePath.length());
             }
         } catch (Exception e) {
@@ -241,6 +242,8 @@ public class AdbOperations {
                 return Types.DEVICE_ERROR_NOT_CONNECTED;
             } else if (p.packagePath.equals("Device Unauthorized")) {
                 return Types.DEVICE_ERROR_NOT_AUTHORIZED;
+            } else if (p.packagePath.equals("Multiple Devices Connected")) {
+                return Types.DEVICE_ERROR_MULTIPLE_CONNECTED;
             }
             return importFileList(p, windowIndex, window, parent);
         } else {
@@ -256,7 +259,8 @@ public class AdbOperations {
         Logs.write("Validating Package");
         p.packagePath = getPackagePath(p.packageName);
         Logs.write("Package Path: " + p.packagePath);
-        if ((p.packagePath.contains("no devices/emulators found") || p.packagePath.equals("")) || p.packagePath.equals("Device Unauthorized")) {
+        if ((p.packagePath.contains("no devices/emulators found") || p.packagePath.equals("")) || p.packagePath.equals("Device Unauthorized")
+                || p.packagePath.contains("Multiple Devices Connected")) {
             return p;
         }
         File f = new File(p.packagePath);
@@ -305,6 +309,9 @@ public class AdbOperations {
                     System.out.println(pullFrom);
                 }
             } else {
+                if (p.packageName.equals("")) { //for the ones that doesn't have package name and have associated file list
+                    p.updatedInstalledPath = pullFrom;
+                }
                 String data[] = p.getImportFilePath(p.updatedInstalledPath, parent);
                 String zipPath = data[1];
                 String pullTo = data[0];
@@ -346,6 +353,9 @@ public class AdbOperations {
                             case Types.DEVICE_ERROR_NOT_AUTHORIZED:
                             case Types.DEVICE_ERROR_NOT_CONNECTED:
                                 packagesNotFound = "Device Not Connected!\nPlease connect the device and try again!";
+                                break;
+                            case Types.DEVICE_ERROR_MULTIPLE_CONNECTED:
+                                packagesNotFound = "Multiple Devices Connected!\nDisconnect 1 device and try again!";
                                 break;
                         }
 //                        importPackage(file, packageName, parent, startFileIndex, maxFileIndex);
@@ -551,6 +561,9 @@ public class AdbOperations {
                 } else if (line.get(0).contains("device unauthorized")) {
                     line = new ArrayList<>();
                     line.add("Device Unauthorized");
+                } else if (line.get(0).contains("error: more than one device/emulator")) {
+                    line = new ArrayList<>();
+                    line.add("Multiple Devices Connected");
                 }
             }
             return line;

@@ -53,6 +53,10 @@ public class Gapps {
     public static Package GooglePlayground = new Package();
     public static Package GoogleSetupWizard = new Package();
     public static Package GooglePartnerSetup = new Package();
+    public static Package GoogleOneTimeInitializer = new Package();
+    public static Package GoogleRestore = new Package();
+    public static Package GoogleFeedback = new Package();
+    public static Package AndroidMigratePrebuilt = new Package();
     //Google calendar, Google clock, Google dailer, 
     //Google contact, google message, google calculator, 
     //google gboard, youtube vanced, pixel launcher and wallpaper
@@ -133,17 +137,31 @@ public class Gapps {
         GoogleSetupWizard.installedPath = "/system/priv-app/SetupWizard/SetupWizard.apk";
         GooglePartnerSetup.packageName = "com.google.android.partnersetup";
         GooglePartnerSetup.installedPath = "/system/priv-app/GooglePartnerSetup/GooglePartnerSetup.apk";
+        GoogleOneTimeInitializer.packageName = "com.google.android.onetimeinitializer";
+        GoogleOneTimeInitializer.installedPath = "/system/priv-app/GoogleOneTimeInitializer/GoogleOneTimeInitializer.apk";
+        GoogleRestore.packageName = "com.google.android.apps.restore";
+        GoogleRestore.installedPath = "/system/priv-app/GoogleRestore/GoogleRestore.apk";
+        GoogleFeedback.packageName = "com.google.android.feedback";
+        GoogleFeedback.installedPath = "/system/priv-app/GoogleFeedback/GoogleFeedback.apk";
+        AndroidMigratePrebuilt.packageName = "com.google.android.apps.pixelmigrate";
+        AndroidMigratePrebuilt.installedPath = "/system/priv-app/AndroidMigratePrebuilt/AndroidMigratePrebuilt.apk";
+        files.packageName = "";
+        files.associatedFileList = new ArrayList<>();
+        files.associatedFileList.add("/system/etc/default-permissions/default-permissions.xml");
+        files.associatedFileList.add("/systen/etc/permissions/privapp-permissions-google.xml");
+        files.associatedFileList.add("/system/etc/sysconfig/google-hiddenapi-package-whitelist.xml");
+        files.associatedFileList.add("/system/etc/sysconfig/google.xml");
+
         //following 5 not needed
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.dialer.support.xml");
 //        files.associatedFileList.add("/system/etc/permissions/com.google.android.media.effects.xml");
 //        files.associatedFileList.add("/system/etc/sysconfig/dialer_experience.xml");
 //        files.associatedFileList.add("/system/etc/sysconfig/google_build.xml");
 //        files.associatedFileList.add("/system/etc/g.prop");
-
-        files.associatedFileList.add("/system/framework/com.google.android.dialer.support.jar");
+//        files.associatedFileList.add("/system/framework/com.google.android.dialer.support.jar");
         //files.associatedFileList.add("/system/framework/com.google.android.maps.jar"); //corrupted for some reason
-        files.associatedFileList.add("/system/framework/com.google.android.media.effects.jar");
-        files.associatedFileList.add("/system/framework/com.google.widevine.software.drm.jar");
+//        files.associatedFileList.add("/system/framework/com.google.android.media.effects.jar");
+//        files.associatedFileList.add("/system/framework/com.google.widevine.software.drm.jar");
 //        files.associatedFileList.add("/system/etc/sysconfig/whitelist_com.android.omadm.service.xml");
 //        files.associatedFileList.add("/system/etc/permissions/com.google.widevine.software.xml");
 //        files.associatedFileList.add("/system/lib/libfilterpack_facedetect.so");
@@ -179,8 +197,8 @@ public class Gapps {
         if ((Device.checkDeviceConnectivity(Preference.pp.connectIp) == 1) && Project.androidVersion.startsWith("9")) {
             list.add(DigitalWellbeing);
         }
-//        list.add(Gapps.GoogleExtServices);
-//        list.add(Gapps.GoogleExtShared);
+        list.add(Gapps.GoogleExtServices);
+        list.add(Gapps.GoogleExtShared);
         return list;
     }
 
@@ -199,15 +217,12 @@ public class Gapps {
         for (Package p : getBasicList()) {
             list.add(p);
         }
-        //following is not needed
-        //list.add(Gapps.GmsCoreSetupPrebuilt);
         list.add(Gapps.GoogleKeep);
         list.add(Gapps.GoogleMaps);
         list.add(Gapps.Gmail);
         list.add(Gapps.GoogleDrive);
         list.add(Gapps.GooglePhotos);
         list.add(Gapps.GooglePlayBooks);
-//        list.add(Gapps.Calculator);
         list.add(Gapps.Google);
         list.add(Gapps.Duo);
         list.add(Gapps.GoogleAssistant);
@@ -231,9 +246,13 @@ public class Gapps {
         list.add(Gapps.GoogleARCore);
         list.add(Gapps.GooglePlayground);
         list.add(Gapps.GoogleAssistant);
-        list.add(Gapps.GoogleSetupWizard);
+        list.add(Gapps.Google);
         list.add(Gapps.GmsCoreSetupPrebuilt);
+        list.add(Gapps.GoogleFeedback);
         list.add(Gapps.GooglePartnerSetup);
+        list.add(Gapps.GoogleServicesFramework);
+        list.add(Gapps.GoogleSetupWizard);
+        list.add(Gapps.files);
         return list;
     }
 

@@ -79,7 +79,8 @@ public class TreeOperations {
     public FileNode Add(String fileName, String subGroupName, int subGroupType, String groupName, int groupType, String originalGroupType,
             ArrayList<String> folders, String projectName, int projectType, int modType) {
         NodeProperties np = new NodeProperties(projectName, projectType, modType, rootNode);
-        ProjectNode pNode = (ProjectNode) rootNode.addChild(new ProjectNode(np), false);
+        ProjectNode p = new ProjectNode(np);
+        ProjectNode pNode = (ProjectNode) rootNode.addChild(p, false);
         np = new NodeProperties(groupName, groupType, pNode);
         if (groupType == Types.GROUP_CUSTOM && !originalGroupType.equals("")) {
             np.location = Identify.getLocation(originalGroupType);
