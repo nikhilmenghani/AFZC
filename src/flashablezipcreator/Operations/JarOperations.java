@@ -32,6 +32,8 @@ public class JarOperations {
     public static byte[] binary_MELATI = null;
     public static byte[] binary_FLAMBOYAN = null;
     public static byte[] binary_EDELWEIS = null;
+    public static byte[] binary_public_zipkey_x509_pem = null;
+    public static byte[] binary_private_zipkey_pk8 = null;
     public static String supported_devices = null;
     public static String instructions = null;
 
@@ -68,6 +70,10 @@ public class JarOperations {
                                 binary_FLAMBOYAN = r.getBytesFromFile(getInputStream(s));
                             } else if (s.equals("META-INF/com/google/android/EDELWEIS")) {
                                 binary_EDELWEIS = r.getBytesFromFile(getInputStream(s));
+                            } else if (s.equals("META-INF/com/google/android/zipkey.x509.pem")) {
+                                binary_public_zipkey_x509_pem = r.getBytesFromFile(getInputStream(s));
+                            } else if (s.equals("META-INF/com/google/android/zipkey.pk8")) {
+                                binary_private_zipkey_pk8 = r.getBytesFromFile(getInputStream(s));
                             } else if (s.endsWith("Supported Devices")) {
                                 supported_devices = r.getStringFromFile(getInputStream(s));
                             } else if (s.startsWith("META-INF/com/google/android/binary-files/")) {

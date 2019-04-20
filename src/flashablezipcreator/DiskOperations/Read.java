@@ -20,7 +20,9 @@ import javax.swing.JOptionPane;
  * @author Nikhil
  */
 public class Read {
+
     BufferedReader br;
+
     public String getFileString(String path) throws FileNotFoundException {
         File file = new File(path);
         if (file.exists()) {
@@ -34,12 +36,12 @@ public class Read {
             } catch (IOException ioe) {
                 System.out.println("Exception caught while reading from File.." + ioe);
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "External xml File Not Found");
         }
         return "";
     }
-    
+
     public byte[] getFileBytes(String path) throws IOException {
         FileInputStream fis = new FileInputStream(new File(path));
         int len;
@@ -50,7 +52,7 @@ public class Read {
         }
         return baos.toByteArray();
     }
-    
+
     public byte[] getBytesFromFile(InputStream is) throws IOException {
         int len;
         byte[] buffer = new byte[1024];
@@ -60,7 +62,7 @@ public class Read {
         }
         return baos.toByteArray();
     }
-    
+
     public String getStringFromFile(InputStream is) throws IOException {
         int len;
         byte[] buffer = new byte[1024];
@@ -70,5 +72,9 @@ public class Read {
         }
         return baos.toString();
     }
-    
+
+    public static String removeExtension(String name) {
+        return name.replaceFirst("[.][^.]+$", "");
+    }
+
 }

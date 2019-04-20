@@ -24,6 +24,11 @@ import flashablezipcreator.UserInterface.Preference;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.cert.X509Certificate;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -236,6 +241,15 @@ public class Export implements Runnable {
                     }
                 }
                 wz.close();
+                SignFile sf = new SignFile();
+                try {
+                    MyTree.txtProgressContent.setText("Signing The Zip!");
+                    sf.sign(Project.outputPath);
+                } catch (Exception e) {
+                    MyTree.txtProgressContent.setText("Sorry! Failed at Signing!");
+                    Logs.write("Failed at signing! " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Failed at signing!\n" + e.getStackTrace().toString());
+                }
                 Logs.write("Zip Created Successfully..");
                 MyTree.txtProgressTitle.setText("");
                 MyTree.txtProgressContent.setText("Zip Created Successfully..");
