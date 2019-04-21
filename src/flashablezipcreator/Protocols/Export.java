@@ -12,6 +12,7 @@ import flashablezipcreator.Core.GroupNode;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectNode;
 import flashablezipcreator.Core.SubGroupNode;
+import flashablezipcreator.DiskOperations.Read;
 import flashablezipcreator.DiskOperations.WriteZip;
 import flashablezipcreator.Operations.DeviceOperations;
 import flashablezipcreator.UserInterface.MyTree;
@@ -24,11 +25,6 @@ import flashablezipcreator.UserInterface.Preference;
 import java.awt.HeadlessException;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.security.KeyFactory;
-import java.security.PublicKey;
-import java.security.cert.X509Certificate;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -241,15 +237,7 @@ public class Export implements Runnable {
                     }
                 }
                 wz.close();
-                SignFile sf = new SignFile();
-                try {
-                    MyTree.txtProgressContent.setText("Signing The Zip!");
-                    sf.sign(Project.outputPath);
-                } catch (Exception e) {
-                    MyTree.txtProgressContent.setText("Sorry! Failed at Signing!");
-                    Logs.write("Failed at signing! " + e.getMessage());
-                    JOptionPane.showMessageDialog(null, "Failed at signing!\n" + e.getStackTrace().toString());
-                }
+
                 Logs.write("Zip Created Successfully..");
                 MyTree.txtProgressTitle.setText("");
                 MyTree.txtProgressContent.setText("Zip Created Successfully..");
@@ -262,12 +250,37 @@ public class Export implements Runnable {
                 MyTree.txtProgressContent.setText("");
                 circularProgressBar.updateProgress(0);
                 progressBarFlag = 0;
+                int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to sign the Zip?", "", JOptionPane.YES_NO_OPTION);
+                if (dialogResult == JOptionPane.YES_OPTION) {
+                    MyTree.setCardLayout(2);
+                    SignTheZip();
+                }
+
             }
         } catch (HeadlessException | IOException | ParserConfigurationException | TransformerException e) {
             JOptionPane.showMessageDialog(null, "Something Went Wrong!\nShare logs with developer!\n" + Logs.getExceptionTrace(e));
             Logs.write(Logs.getExceptionTrace(e));
             MyTree.setCardLayout(1);
         }
+    }
+
+    public static void SignTheZip() {
+        new Thread(() -> {
+            SignFile sf = new SignFile();
+            try {
+                MyTree.txtProgressContent.setText("Signing The Zip!");
+                if (sf.sign(Project.outputPath)) {
+                    JOptionPane.showMessageDialog(null, "Zip Signed Successfully!");
+                    Project.outputPath = Read.removeExtension(Project.outputPath) + "-signed.zip";
+                }
+                (new DeviceOperations()).pushZipToDevice(Project.outputPath, "/sdcard/Afzc/" + (new File(Project.outputPath)).getName());
+                MyTree.setCardLayout(1);
+            } catch (Exception e) {
+                MyTree.txtProgressContent.setText("Sorry! Failed at Signing!");
+                Logs.write("Failed at signing! " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Failed at signing!\n" + e.getStackTrace().toString());
+            }
+        }).start();
     }
 
     public static boolean isNormalZipValidated(List<ProjectItemNode> projectNodeList) {
@@ -314,8 +327,7 @@ public class Export implements Runnable {
         try {
             MyTree.setCardLayout(2);
             zip();
-            MyTree.setCardLayout(1);
-            (new DeviceOperations()).pushZipToDevice(Project.outputPath, "/sdcard/Afzc/" + (new File(Project.outputPath)).getName());
+            //MyTree.setCardLayout(1);
         } catch (IOException ex) {
             Logger.getLogger(Import.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParserConfigurationException ex) {

@@ -17,6 +17,7 @@ import flashablezipcreator.Protocols.Project;
 import flashablezipcreator.Protocols.Types;
 import flashablezipcreator.UserInterface.MyTree;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -138,6 +139,20 @@ public class DeviceOperations {
         }
     }
 
+    public boolean pushToDevice(File[] files) {
+        //importFrom, "/sdcard/Afzc/" + f.getName()
+        boolean status = false;
+        for (File f : files) {
+            String installFrom = f.getAbsolutePath();
+            String installTo = "/sdcard/Afzc/" + f.getName();
+            boolean tempStatus = pushToDevice(installFrom, installTo);
+            if (!tempStatus) {
+                status = false;
+            }
+        }
+        return status;
+    }
+
     public boolean pushToDevice(String pushSource, String pushDestination) {
         ArrayList<String> pushList = pushFileToDevice(true, false, pushSource, pushDestination);
         if (pushList.get(0).startsWith("adb: error:")) {
@@ -153,7 +168,7 @@ public class DeviceOperations {
                 int dialogResult = JOptionPane.showConfirmDialog(null, "Do you want to push file to Device?", "", JOptionPane.YES_NO_OPTION);
                 if (dialogResult == JOptionPane.YES_OPTION) {
                     MyTree.setCardLayout(2);
-                    Device.pushToDevice(source, destination);
+                    pushToDevice(source, destination);
                     MyTree.setCardLayout(1);
                 }
             }

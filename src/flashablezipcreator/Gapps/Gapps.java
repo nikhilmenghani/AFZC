@@ -266,13 +266,17 @@ public class Gapps {
                 return Gapps.getBasicList();
             case Types.GAPPS_NANO:
                 Logs.write("Importing Nano List!");
-                return Gapps.getNanoList();
+                return MicroG.getMicroGList();
+//                return Gapps.getNanoList();
             case Types.GAPPS_MY:
                 Logs.write("Importing My List!");
                 return Gapps.getMyList();
             case Types.GAPPS_STOCK:
                 Logs.write("Importing Stock List!");
                 return Gapps.getStockList();
+            case Types.GAPPS_MICROG:
+                Logs.write("Importing MicroG List");
+                return MicroG.getMicroGList();
         }
         return null;
     }

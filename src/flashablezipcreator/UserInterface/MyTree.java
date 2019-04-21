@@ -5,7 +5,6 @@
  */
 package flashablezipcreator.UserInterface;
 
-import flashablezipcreator.Adb.Adb;
 import flashablezipcreator.Core.ProjectItemNode;
 import flashablezipcreator.Core.ProjectTreeBuilder;
 import flashablezipcreator.DiskOperations.Write;
@@ -51,6 +50,8 @@ public class MyTree extends javax.swing.JFrame {
     TreeOperations to;
     UpdaterScriptOperations uso;
     MyFileFilter uio = new MyFileFilter();
+    public static int maxSize = 0;
+    public static int progressValue = 0;
 
     public MyTree(int cardLayoutNo) throws IOException {
         this();
@@ -646,11 +647,10 @@ public class MyTree extends javax.swing.JFrame {
     }
 
     private void menuItemPushFileToDeviceActionPerformed(java.awt.event.ActionEvent evt) {
-        String importFrom = MyFileFilter.browseZipDestination();
-        File f = new File(importFrom);
+        File[] files = MyFileFilter.getSelectedFiles("folder");
         new Thread(() -> {
             MyTree.setCardLayout(2);
-            (new DeviceOperations()).pushToDevice(importFrom, "/sdcard/Afzc/" + f.getName());
+            (new DeviceOperations()).pushToDevice(files);
             MyTree.setCardLayout(1);
         }).start();
     }
@@ -676,6 +676,19 @@ public class MyTree extends javax.swing.JFrame {
         //Disabling traditional progress bar since we have circular progressbar
         //CardLayout cardLayout = (CardLayout) panelLower.getLayout();
         //cardLayout.show(panelLower, "card" + Integer.toString(cardNo));
+    }
+
+    public static void updateProgressBar(int fileIndex, String progress_title_text, String progress_content_text) {
+        progressValue = (fileIndex * 100) / maxSize;
+        String str = (new File(progress_content_text)).getName();
+        if (str.length() > 60) {
+            str = str.substring(0, str.length() / 3) + "..." + str.substring(str.length() - 10, str.length());
+        } else if (str.length() > 40) {
+            str = str.substring(0, str.length() / 2) + "..." + str.substring(str.length() - 10, str.length());
+        }
+        txtProgressTitle.setText(progress_title_text);
+        txtProgressContent.setText(str);
+        circularProgressBar.updateProgress(progressValue);
     }
 
     public static void toggleCardLayout() {

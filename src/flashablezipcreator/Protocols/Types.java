@@ -70,6 +70,7 @@ public class Types {
     public static final int GAPPS_NANO = 93;
     public static final int GAPPS_MY = 94;
     public static final int GAPPS_STOCK = 95;
+    public static final int GAPPS_MICROG = 96;
 
     public static final int DEVICE_ERROR_NOT_CONNECTED = 101;
     public static final int DEVICE_ERROR_NOT_AUTHORIZED = 102;
